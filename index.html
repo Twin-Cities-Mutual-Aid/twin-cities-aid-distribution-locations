@@ -36,10 +36,48 @@
       height: 10px;
       margin-right: 5px;
     }
+
+    #side-pane {
+      top: 2em;
+      left: 0;
+      bottom: 2em;
+      width: 350px;
+      padding: 1em;
+      margin-left: 20px;
+    }
+    .card {
+      padding: .25em;
+      margin: .75em 0;
+      cursor: pointer;
+      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+      background-color: #fff;
+      transition: 0.3s;
+    }
+    .card:hover {
+      box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+    .card .indicator {
+      display: inline-block;
+      border-radius: 20%;
+      width: 16px;
+      height: 16px;
+    }
+    .container {
+      padding: 1em;
+    }
+    .container h2, .container h3, .container h4 {
+      margin: .25em;
+    }
+    .container h3 {
+      color: #777;
+    }
   </style>
 </head>
 <body>
   <div id="map"></div>
+  <div id="side-pane" class="map-overlay">
+    <div id="location-list"></div>
+  </div>
   <div id="legend" class="map-overlay">
     <div><span class="legend-key" style="background-color: #fc03df"></span>open for receiving donations</div>
     <div><span class="legend-key" style="background-color: #03bafc"></span>open for distributing donations</div>
@@ -66,13 +104,22 @@
       center: [-93.212471, 44.934473]
     })
 
+
+    let locations = []
+    function closePopups() {
+      locations.forEach(location => {
+        location.marker.getPopup().remove()
+      })
+    }
     map.on('load', function() {
       fetch('https://spreadsheets.google.com/feeds/list/1CyPozeKhmOuIaVnKDQAUKKsvA9R4F20hEQ3MSGWczP8/1/public/full?alt=json')
         .then(response => response.json())
         .then(data => {
-          const locations = _.chain(data.feed.entry)
+          const $locationList = document.getElementById('location-list')
+          locations = _.chain(data.feed.entry)
             .filter(item => (item.gsx$nameoforganization.$t != '') && (item.gsx$longitude.$t != '') && (item.gsx$latitude.$t != '')) // only items with names and lon,lat
-            .each(item => {
+            .sortBy(item => item.gsx$nameoforganization.$t )
+            .map(item => {
               const rawLocation = {
                 name: item.gsx$nameoforganization.$t,
                 neighborhood: item.gsx$neighborhood.$t,
@@ -106,10 +153,35 @@
 
               location.marker = new mapboxgl.Marker({ color: item.gsx$color.$t })
                 .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
-                .setPopup(new mapboxgl.Popup()
-                  .setMaxWidth('450px')
-                  .setHTML(markerHtml))
+                .setPopup(new mapboxgl.Popup().setMaxWidth('450px').setHTML(markerHtml))
                 .addTo(map);
+
+              const $item = document.createElement('div')
+              $item.classList.add('card')
+              $item.innerHTML = `
+                <div class="container">
+                  <h2 style="color: #444; font-size: 120%">
+                  <span class="indicator" style="background-color: ${item.gsx$color.$t}; margin-right: 10px"></span>
+                  ${location.name}
+                  </h2>
+                  <h3 style="color: #aaa; font-size: 80%">${location.neighborhood}</h3>
+                </div>
+              `
+              $item.addEventListener('click', (evt) => {
+                const popup = location.marker.getPopup()
+                if (popup.isOpen()) {
+                  popup.remove()
+                } else {
+                  closePopups()
+                  popup.addTo(map)
+                  map.flyTo({
+                    center: [ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ],
+                    essential: true,
+                    zoom: 13
+                  })
+                }
+              })
+              $locationList.appendChild($item)
 
               return location
             })
