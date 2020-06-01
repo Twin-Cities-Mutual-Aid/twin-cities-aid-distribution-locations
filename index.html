@@ -10,10 +10,43 @@
   <style>
     body { margin: 0; padding: 0; }
     #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    .map-overlay {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.8);
+      margin-right: 20px;
+      font-family: Arial, sans-serif;
+      overflow: auto;
+      border-radius: 3px;
+    }
+    #legend {
+      padding: 10px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      line-height: 18px;
+      height: 120px;
+      margin-bottom: 40px;
+      width: 250px;
+    }
+    .legend-key {
+      display: inline-block;
+      border-radius: 20%;
+      width: 10px;
+      height: 10px;
+      margin-right: 5px;
+    }
   </style>
 </head>
 <body>
   <div id="map"></div>
+  <div id="legend" class="map-overlay">
+    <div><span class="legend-key" style="background-color: #fc03df"></span>Open for Receiving Donations</div>
+    <div><span class="legend-key" style="background-color: #03bafc"></span>Open for Distributing Donations</div>
+    <div><span class="legend-key" style="background-color: #9f48ea"></span>Open for Both</div>
+    <div><span class="legend-key" style="background-color: #aaaaaa"></span>Status Unknown</div>
+    <p style="font-size: 12px; font-style:italic;">Source Data: <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSfnmh9CmtVoBMy2k_-NMhhvF7ursBs2L5IPF9VZ1J-l9P71vjDFw7y6Y6E98d5lNeOAEo7leisP0Y8/pubhtml" target="_blank">Google Sheets</a></p>
+  </div>
+
   <script>
     function camelToTitle(str) {
       const result = str.replace(/([A-Z])/g,' $1')
