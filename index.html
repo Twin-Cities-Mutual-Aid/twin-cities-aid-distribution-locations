@@ -193,6 +193,7 @@
                 address: (address) => `<h3><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></h3>`, // driving directions in google, consider doing inside mapbox
               }
 
+              const color = item.gsx$color.$t.toLowerCase();
               const accessibleColorTransform = { // this way you don't have to change everything in the google spreadsheet
                 "#fc03df": "#2c7bb6",
                 "#03bafc": "#abd9e9",
@@ -206,7 +207,7 @@
                 else return `<div><strong>${camelToTitle(key)}: </strong>${value}</div>`
               }).join('')
 
-              location.marker = new mapboxgl.Marker({ color: accessibleColorTransform[item.gsx$color.$t] })
+              location.marker = new mapboxgl.Marker({ color: accessibleColorTransform[color] })
                 .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
                 .setPopup(new mapboxgl.Popup().setMaxWidth('250px').setHTML(markerHtml))
                 .addTo(map);
@@ -217,7 +218,7 @@
               $item.innerHTML = `
                 <div class="container">
                   <h2 style="color: #444; font-size: 120%">
-                  <span class="indicator" style="background-color: ${accessibleColorTransform[item.gsx$color.$t]}; margin-right: 10px"></span>
+                  <span class="indicator" style="background-color: ${accessibleColorTransform[color]}; margin-right: 10px"></span>
                   ${location.name}
                   </h2>
                   <h3 color: #aaa; font-size: 80%>${location.neighborhood}</h3>
