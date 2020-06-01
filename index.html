@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Twin Cities Aid Distribution Locations</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <script src="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+  <style>
+    body { margin: 0; padding: 0; }
+    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script>
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoiamFjb2JyZGFsdG9uIiwiYSI6ImNrYXc2anFjbjIxNGwyeG14dWk0MDVycmIifQ.yILWplracVMB4mv1dWwTtg'
+
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/light-v10',
+      zoom: 10,
+      center: [-93.212471, 44.934473]
+    })
+
+    map.on('load', function() {
+      fetch('https://spreadsheets.google.com/feeds/list/1CyPozeKhmOuIaVnKDQAUKKsvA9R4F20hEQ3MSGWczP8/1/public/full?alt=json')
+        .then(response => response.json())
+        .then(data => {
+          let features = _.chain(data.feed.entry)
+            .filter(item => (item.gsx$nameoforganization.$t != '') && (item.gsx$longitude.$t != '') && (item.gsx$latitude.$t != '')) // only items with names and lon,lat
+            .map(item => {
+              return {
+                type: 'Feature',
+                geometry: {
+                  type: 'Point',
+                  coordinates: [ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ]
+                },
+                properties: {
+                  updatedAt: item.gsx$mostrecentlyupdated.$t,
+                  name: item.gsx$nameoforganization.$t,
+                  accepting: item.gsx$accepting.$t,
+                  urgentNeed: item.gsx$urgentneed.$t
+                }
+              }
+            })
+            .value()
+
+          const featureCollection = {
+            type: 'FeatureCollection',
+            features: features
+          }
+
+          map.addSource('drop-locations', {
+            type: 'geojson',
+            data: featureCollection
+          })
+
+          map.addLayer({
+            'id': 'drop-locations',
+            'type': 'circle',
+            'source': 'drop-locations',
+            'paint': {
+              'circle-radius': 6,
+              'circle-color': '#007cbf'
+            }
+          })
+        })
+    })
+
+    map.addControl(new mapboxgl.NavigationControl());
+  </script>
+</body>
+</html>
