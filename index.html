@@ -113,11 +113,11 @@
 <body>
   <div id="map"></div>
   <div id="legend" class="map-overlay">
-    <div><span class="legend-key" style="background-color: #fc03df"></span>open for receiving donations</div>
-    <div><span class="legend-key" style="background-color: #03bafc"></span>open for distributing donations</div>
-    <div><span class="legend-key" style="background-color: #9f48ea"></span>open for both</div>
-    <div><span class="legend-key" style="background-color: #c70000"></span>confirmed closed</div>
-    <div><span class="legend-key" style="background-color: #aaaaaa"></span>status unknown</div>
+    <div><span class="legend-key" style="background-color: #2c7bb6"></span>open for receiving donations</div>
+    <div><span class="legend-key" style="background-color: #abd9e9"></span>open for distributing donations</div>
+    <div><span class="legend-key" style="background-color: #fdae61"></span>open for both</div>
+    <div><span class="legend-key" style="background-color: #d7191c"></span>confirmed closed</div>
+    <div><span class="legend-key" style="background-color: #ffffbf"></span>status unknown</div>
     <p style="margin: 0.5em 0; font-size: 12px; font-style:italic;">Source Data: <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSfnmh9CmtVoBMy2k_-NMhhvF7ursBs2L5IPF9VZ1J-l9P71vjDFw7y6Y6E98d5lNeOAEo7leisP0Y8/pubhtml" target="_blank">Google Sheets</a></p>
     <script type="text/javascript" src="//counter.websiteout.net/js/7/0/0/0"></script>
   </div>
@@ -193,12 +193,20 @@
                 address: (address) => `<h3><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></h3>`, // driving directions in google, consider doing inside mapbox
               }
 
+              const accessibleColorTransform = { // this way you don't have to change everything in the google spreadsheet
+                "#fc03df": "#2c7bb6",
+                "#03bafc": "#abd9e9",
+                "#9f48ea": "#fdae61",
+                "#c70000": "#d7191c",
+                "#aaaaaa": "#ffffbf"
+              }
+
               const markerHtml = _.map(location, (value, key) => {
                 if (propertyTransforms[key]) return propertyTransforms[key](value)
                 else return `<div><strong>${camelToTitle(key)}: </strong>${value}</div>`
               }).join('')
 
-              location.marker = new mapboxgl.Marker({ color: item.gsx$color.$t })
+              location.marker = new mapboxgl.Marker({ color: accessibleColorTransform[item.gsx$color.$t] })
                 .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
                 .setPopup(new mapboxgl.Popup().setMaxWidth('250px').setHTML(markerHtml))
                 .addTo(map);
@@ -209,7 +217,7 @@
               $item.innerHTML = `
                 <div class="container">
                   <h2 style="color: #444; font-size: 120%">
-                  <span class="indicator" style="background-color: ${item.gsx$color.$t}; margin-right: 10px"></span>
+                  <span class="indicator" style="background-color: ${accessibleColorTransform[item.gsx$color.$t]}; margin-right: 10px"></span>
                   ${location.name}
                   </h2>
                   <h3 color: #aaa; font-size: 80%>${location.neighborhood}</h3>
