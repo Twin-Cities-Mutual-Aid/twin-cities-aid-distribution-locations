@@ -202,7 +202,7 @@
                 .setPopup(new mapboxgl.Popup().setMaxWidth('250px').setHTML(markerHtml))
                 .addTo(map);
 
-              const urgentNeed = item.gsx$urgentneed.$t ? `<h3 style="color: #f00; font-size: 80%">Urgent Need: ${item.gsx$urgentneed.$t}</h3>` : ''
+              const urgentNeed = location.urgentNeed ? `<h3 style="color: #f00; font-size: 80%">Urgent Need: ${location.urgentNeed}</h3>` : ''
               const $item = document.createElement('div')
               $item.classList.add('card')
               $item.innerHTML = `
