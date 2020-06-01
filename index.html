@@ -10,32 +10,6 @@
   <style>
     body { margin: 0; padding: 0; }
     #map { position: absolute; top: 0; bottom: 0; width: 100%; }
-    @media only screen and (min-width: 1024px) {
-      #left-hamburger {
-        display: none;
-      }
-    }
-    @media only screen and (max-width: 1024px) {
-      #side-pane {
-        display: none;
-      }
-      #side-pane.active {
-        display: block;
-      }
-    }
-    @media only screen and (max-width: 720px) {
-      #legend.map-overlay {
-        width: 100%;
-        margin: 0;
-        left: 0;
-        padding: 5px;
-        font-size: 10px;
-        height: 55px;
-      }
-      #legend.map-overlay div {
-        display: inline-block;
-      }
-    }
     .map-overlay {
       position: absolute;
       bottom: 0;
@@ -102,6 +76,35 @@
     }
     .container h3 {
       color: #777;
+    }
+    @media only screen and (max-width: 720px) {
+      #legend.map-overlay {
+        margin: 0;
+        left: 0;
+        width: 100%;
+        padding: 5px;
+        font-size: 10px;
+        height: 55px;
+      }
+      #legend.map-overlay div {
+        display: inline-block;
+      }
+      #side-pane {
+        width: 90%;
+      }
+    }
+    @media only screen and (max-width: 1024px) {
+      #side-pane {
+        display: none;
+      }
+      #side-pane.active {
+        display: block;
+      }
+    }
+    @media only screen and (min-width: 1024px) {
+      #left-hamburger {
+        display: none;
+      }
     }
   </style>
 </head>
