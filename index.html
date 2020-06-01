@@ -202,6 +202,7 @@
                 .setPopup(new mapboxgl.Popup().setMaxWidth('250px').setHTML(markerHtml))
                 .addTo(map);
 
+              const urgentNeed = item.gsx$urgentneed.$t ? `<h3 style="color: #f00; font-size: 80%">Urgent Need: ${item.gsx$urgentneed.$t}</h3>` : ''
               const $item = document.createElement('div')
               $item.classList.add('card')
               $item.innerHTML = `
@@ -210,7 +211,8 @@
                   <span class="indicator" style="background-color: ${item.gsx$color.$t}; margin-right: 10px"></span>
                   ${location.name}
                   </h2>
-                  <h3 style="color: #aaa; font-size: 80%">${location.neighborhood}</h3>
+                  <h3 color: #aaa; font-size: 80%>${location.neighborhood}</h3>
+                  ${urgentNeed}
                 </div>
               `
               $item.addEventListener('click', (evt) => {
