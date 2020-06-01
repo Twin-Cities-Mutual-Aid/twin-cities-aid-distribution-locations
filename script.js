@@ -48,11 +48,13 @@ const map = new mapboxgl.Map({
   center: [-93.212471, 44.934473]
 })
 
+// convert case
 function camelToTitle(str) {
   const result = str.replace(/([A-Z])/g,' $1')
   return result.charAt(0).toUpperCase() + result.slice(1)
 }
 
+// open/close sidebar
 function toggleSidePane($burger) {
   if ($sidePane.classList.contains('active')) {
     $sidePane.classList.remove('active')
@@ -61,6 +63,7 @@ function toggleSidePane($burger) {
   }
 }
 
+// close popups for all locations
 function closePopups() {
   locations.forEach(location => {
     location.marker.getPopup().remove()
@@ -168,4 +171,11 @@ const onMapLoad = async () => {
 
 // load map
 map.on('load', onMapLoad)
-map.addControl(new mapboxgl.NavigationControl());
+
+// render key
+const key = document.getElementById('key')
+statusMap.forEach(s => {
+  const el = document.createElement('div')
+  el.innerHTML = `<span class="legend-key" style="background-color: ${s.accessibleColor}"></span>${s.label}`
+  key.append(el)
+})
