@@ -29,44 +29,30 @@
       fetch('https://spreadsheets.google.com/feeds/list/1CyPozeKhmOuIaVnKDQAUKKsvA9R4F20hEQ3MSGWczP8/1/public/full?alt=json')
         .then(response => response.json())
         .then(data => {
-          let features = _.chain(data.feed.entry)
+          const locations = _.chain(data.feed.entry)
             .filter(item => (item.gsx$nameoforganization.$t != '') && (item.gsx$longitude.$t != '') && (item.gsx$latitude.$t != '')) // only items with names and lon,lat
-            .map(item => {
-              return {
-                type: 'Feature',
-                geometry: {
-                  type: 'Point',
-                  coordinates: [ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ]
-                },
-                properties: {
-                  updatedAt: item.gsx$mostrecentlyupdated.$t,
-                  name: item.gsx$nameoforganization.$t,
-                  accepting: item.gsx$accepting.$t,
-                  urgentNeed: item.gsx$urgentneed.$t
-                }
+            .each(item => {
+              const location = {
+                accepting: item.gsx$accepting.$t,
+                address: item.gsx$addresswithlink.$t,
+                name: item.gsx$nameoforganization.$t,
+                updatedAt: item.gsx$mostrecentlyupdated.$t,
+                urgentNeed: item.gsx$urgentneed.$t,
               }
+
+              location.marker = new mapboxgl.Marker()
+                .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
+                .setPopup(new mapboxgl.Popup().setHTML(`
+                  <h1>${location.name}</h1>
+                  <p><a href="https://www.google.com/maps/search/?api=1&query=${encodeURI(location.address)}">${location.address}</a></p>
+                  <h2>Accepting</h2>
+                  <p>${location.accepting}</p>
+                `))
+                .addTo(map);
+
+              return location
             })
             .value()
-
-          const featureCollection = {
-            type: 'FeatureCollection',
-            features: features
-          }
-
-          map.addSource('drop-locations', {
-            type: 'geojson',
-            data: featureCollection
-          })
-
-          map.addLayer({
-            'id': 'drop-locations',
-            'type': 'circle',
-            'source': 'drop-locations',
-            'paint': {
-              'circle-radius': 6,
-              'circle-color': '#007cbf'
-            }
-          })
         })
     })
 
