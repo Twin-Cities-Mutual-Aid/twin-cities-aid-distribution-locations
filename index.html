@@ -15,12 +15,18 @@
 <body>
   <div id="map"></div>
   <script>
+    function camelToTitle(str) {
+      const result = str.replace(/([A-Z])/g,' $1')
+      return result.charAt(0).toUpperCase() + result.slice(1)
+    }
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiamFjb2JyZGFsdG9uIiwiYSI6ImNrYXc2anFjbjIxNGwyeG14dWk0MDVycmIifQ.yILWplracVMB4mv1dWwTtg'
 
+    // Alternative base style: 'mapbox://styles/mapbox/light-v10',
+    // See also: https://docs.mapbox.com/mapbox-gl-js/example/setstyle/
     const map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/mapbox/light-v10',
+      style: 'mapbox://styles/mapbox/streets-v11',
       zoom: 10,
       center: [-93.212471, 44.934473]
     })
@@ -32,25 +38,43 @@
           const locations = _.chain(data.feed.entry)
             .filter(item => (item.gsx$nameoforganization.$t != '') && (item.gsx$longitude.$t != '') && (item.gsx$latitude.$t != '')) // only items with names and lon,lat
             .each(item => {
-              const location = {
-                accepting: item.gsx$accepting.$t,
-                address: item.gsx$addresswithlink.$t,
+              console.log('item', item)
+              const rawLocation = {
                 name: item.gsx$nameoforganization.$t,
-                updatedAt: item.gsx$mostrecentlyupdated.$t,
+                neighborhood: item.gsx$neighborhood.$t,
+                address: item.gsx$addresswithlink.$t,
+                currentlyOpenForDistributing: item.gsx$currentlyopenfordistributing.$t,
+                openingForDistributingDontations: item.gsx$openingfordistributingdonations.$t,
+                closingForDistributingDonations: item.gsx$closingfordistributingdonations.$t,
+                accepting: item.gsx$accepting.$t,
+                notAccepting: item.gsx$notaccepting.$t,
+                currentlyOpenForReceiving: item.gsx$currentlyopenforreceiving.$t,
+                openingForReceivingDontations: item.gsx$openingforreceivingdonations.$t,
+                closingForReceivingDonations: item.gsx$closingforreceivingdonations.$t,
+                seekingVolunteers: item.gsx$seekingvolunteers.$t,
                 urgentNeed: item.gsx$urgentneed.$t,
+                notes: item.gsx$notes.$t,
+                mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t,
               }
+
+              const location = _.pickBy(rawLocation, val => val != '')
+
+              const propertyTransforms = {
+                name: (name) => `<h1>${name}</h1>`,
+                neighborhood: (neighborhood) => `<h2>${neighborhood}</h2>`,
+                address: (address) => `<h3><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></h3>`
+              }
+
+              const markerHtml = _.map(location, (value, key) => {
+                if (propertyTransforms[key]) return propertyTransforms[key](value)
+                else return `<div><strong>${camelToTitle(key)}: </strong>${value}</div>`
+              }).join('')
 
               location.marker = new mapboxgl.Marker()
                 .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
                 .setPopup(new mapboxgl.Popup()
                   .setMaxWidth('450px')
-                  .setHTML(`
-                    <h1>${location.name}</h1>
-                    <p><a href="https://www.google.com/maps/search/?api=1&query=${encodeURI(location.address)}">${location.address}</a></p>
-                    <h2>Accepting</h2>
-                    <p>${location.accepting}</p>
-                    <p>Updated At: ${location.updatedAt}</p>
-                  `))
+                  .setHTML(markerHtml))
                 .addTo(map);
 
               return location
