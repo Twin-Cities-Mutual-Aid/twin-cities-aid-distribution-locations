@@ -1,5 +1,8 @@
 # twin-cities-aid-distribution-locations
 A webapp to coordinate aid and care in the Twin Cities.
+Data is sourced from a google spreadsheet. 
+* Example spreadsheet: https://docs.google.com/spreadsheets/d/1IIDsFN-If0IfNrRO-I3WbisHAz7EGjJ8aviSboX_-z4/
+* Google Apps Script utility script also available to automatically update a row timestamp and insert latitude and longitude when an address cell is added or updated: https://github.com/mc-funk/community-map-google-scripts/
 
 ## Run Locally
 
