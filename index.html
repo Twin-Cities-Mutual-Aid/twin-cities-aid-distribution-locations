@@ -10,6 +10,19 @@
   <style>
     body { margin: 0; padding: 0; }
     #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    @media only screen and (min-width: 1024px) {
+      #left-hamburger {
+        display: none;
+      }
+    }
+    @media only screen and (max-width: 1024px) {
+      #side-pane {
+        display: none;
+      }
+      #side-pane.active {
+        display: block;
+      }
+    }
     .map-overlay {
       position: absolute;
       bottom: 0;
@@ -19,6 +32,12 @@
       font-family: Arial, sans-serif;
       overflow: auto;
       border-radius: 3px;
+    }
+    #left-hamburger {
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
     }
     #legend {
       padding: 10px;
@@ -38,12 +57,12 @@
     }
 
     #side-pane {
-      top: 2em;
+      top: 0;
       left: 0;
-      bottom: 2em;
+      bottom: 0;
       width: 350px;
       padding: 1em;
-      margin-left: 20px;
+      margin-left: 0;
     }
     .card {
       padding: .25em;
@@ -75,9 +94,6 @@
 </head>
 <body>
   <div id="map"></div>
-  <div id="side-pane" class="map-overlay">
-    <div id="location-list"></div>
-  </div>
   <div id="legend" class="map-overlay">
     <div><span class="legend-key" style="background-color: #fc03df"></span>open for receiving donations</div>
     <div><span class="legend-key" style="background-color: #03bafc"></span>open for distributing donations</div>
@@ -86,11 +102,23 @@
     <div><span class="legend-key" style="background-color: #aaaaaa"></span>status unknown</div>
     <p style="margin: 0.5em 0; font-size: 12px; font-style:italic;">Source Data: <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSfnmh9CmtVoBMy2k_-NMhhvF7ursBs2L5IPF9VZ1J-l9P71vjDFw7y6Y6E98d5lNeOAEo7leisP0Y8/pubhtml" target="_blank">Google Sheets</a></p>
   </div>
+  <div id="side-pane" class="map-overlay">
+    <div id="location-list"></div>
+  </div>
+  <img id="left-hamburger" class="map-overlay" onClick="toggleSidePane(this)" src="/images/hamburger.png"></img>
 
   <script>
+    const $sidePane = document.getElementById('side-pane')
     function camelToTitle(str) {
       const result = str.replace(/([A-Z])/g,' $1')
       return result.charAt(0).toUpperCase() + result.slice(1)
+    }
+    function toggleSidePane($burger) {
+      if ($sidePane.classList.contains('active')) {
+        $sidePane.classList.remove('active')
+      } else {
+        $sidePane.classList.add('active')
+      }
     }
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiamFjb2JyZGFsdG9uIiwiYSI6ImNrYXc2anFjbjIxNGwyeG14dWk0MDVycmIifQ.yILWplracVMB4mv1dWwTtg'
@@ -153,7 +181,7 @@
 
               location.marker = new mapboxgl.Marker({ color: item.gsx$color.$t })
                 .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
-                .setPopup(new mapboxgl.Popup().setMaxWidth('450px').setHTML(markerHtml))
+                .setPopup(new mapboxgl.Popup().setMaxWidth('250px').setHTML(markerHtml))
                 .addTo(map);
 
               const $item = document.createElement('div')
@@ -173,6 +201,7 @@
                   popup.remove()
                 } else {
                   closePopups()
+                  $sidePane.classList.remove('active')
                   popup.addTo(map)
                   map.flyTo({
                     center: [ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ],
