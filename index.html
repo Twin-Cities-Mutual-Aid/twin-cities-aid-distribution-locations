@@ -24,9 +24,10 @@
       padding: 10px;
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
       line-height: 18px;
-      height: 120px;
+      height: 100px;
       margin-bottom: 40px;
       width: 250px;
+      overflow: hidden;
     }
     .legend-key {
       display: inline-block;
@@ -40,11 +41,11 @@
 <body>
   <div id="map"></div>
   <div id="legend" class="map-overlay">
-    <div><span class="legend-key" style="background-color: #fc03df"></span>Open for Receiving Donations</div>
-    <div><span class="legend-key" style="background-color: #03bafc"></span>Open for Distributing Donations</div>
-    <div><span class="legend-key" style="background-color: #9f48ea"></span>Open for Both</div>
-    <div><span class="legend-key" style="background-color: #aaaaaa"></span>Status Unknown</div>
-    <p style="font-size: 12px; font-style:italic;">Source Data: <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSfnmh9CmtVoBMy2k_-NMhhvF7ursBs2L5IPF9VZ1J-l9P71vjDFw7y6Y6E98d5lNeOAEo7leisP0Y8/pubhtml" target="_blank">Google Sheets</a></p>
+    <div><span class="legend-key" style="background-color: #fc03df"></span>open for receiving donations</div>
+    <div><span class="legend-key" style="background-color: #03bafc"></span>open for distributing donations</div>
+    <div><span class="legend-key" style="background-color: #9f48ea"></span>open for both</div>
+    <div><span class="legend-key" style="background-color: #aaaaaa"></span>status unknown</div>
+    <p style="margin: 0.5em 0; font-size: 12px; font-style:italic;">Source Data: <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSfnmh9CmtVoBMy2k_-NMhhvF7ursBs2L5IPF9VZ1J-l9P71vjDFw7y6Y6E98d5lNeOAEo7leisP0Y8/pubhtml" target="_blank">Google Sheets</a></p>
   </div>
 
   <script>
