@@ -42,13 +42,15 @@
 
               location.marker = new mapboxgl.Marker()
                 .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
-                .setPopup(new mapboxgl.Popup().setHTML(`
-                  <h1>${location.name}</h1>
-                  <p><a href="https://www.google.com/maps/search/?api=1&query=${encodeURI(location.address)}">${location.address}</a></p>
-                  <h2>Accepting</h2>
-                  <p>${location.accepting}</p>
-                  <p>Updated At: ${location.updatedAt}</p>
-                `))
+                .setPopup(new mapboxgl.Popup()
+                  .setMaxWidth('450px')
+                  .setHTML(`
+                    <h1>${location.name}</h1>
+                    <p><a href="https://www.google.com/maps/search/?api=1&query=${encodeURI(location.address)}">${location.address}</a></p>
+                    <h2>Accepting</h2>
+                    <p>${location.accepting}</p>
+                    <p>Updated At: ${location.updatedAt}</p>
+                  `))
                 .addTo(map);
 
               return location
