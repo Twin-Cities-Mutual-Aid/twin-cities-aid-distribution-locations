@@ -62,7 +62,7 @@
               const propertyTransforms = {
                 name: (name) => `<h1>${name}</h1>`,
                 neighborhood: (neighborhood) => `<h2>${neighborhood}</h2>`,
-                address: (address) => `<h3><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></h3>`
+                address: (address) => `<h3><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></h3>`, // driving directions in google, consider doing inside mapbox
               }
 
               const markerHtml = _.map(location, (value, key) => {
@@ -70,7 +70,7 @@
                 else return `<div><strong>${camelToTitle(key)}: </strong>${value}</div>`
               }).join('')
 
-              location.marker = new mapboxgl.Marker()
+              location.marker = new mapboxgl.Marker({ color: item.gsx$color.$t })
                 .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
                 .setPopup(new mapboxgl.Popup()
                   .setMaxWidth('450px')
