@@ -1,0 +1,20 @@
+{
+  "name": "twin-cities-aid-distribution-locations",
+  "version": "0.0.1",
+  "description": "A webapp to coordinate aid and care in the Twin Cities.",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx servor --reload",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/jdalt/twin-cities-aid-distribution-locations.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jdalt/twin-cities-aid-distribution-locations/issues"
+  },
+  "homepage": "https://github.com/jdalt/twin-cities-aid-distribution-locations#readme"
+}
