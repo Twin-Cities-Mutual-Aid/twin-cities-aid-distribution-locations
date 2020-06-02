@@ -17,7 +17,14 @@ class Filter {
 
   update() {
     const sortSettings = _.find(this.sortOptions, o => (o.name === this.$sort.value))
-    const filterValues = this.$filters.map(f => f.checked)
+    let filterValues = this.$filters.map(f => f.checked)
+    /** if "open for receiving donations" (item 0) or "open for distributing donations" (item 2)
+     * is checked, then "open for both" (item 3) information should be automatically displayed as well.
+     */
+    if (filterValues[0] === true || filterValues[1] === true) {
+      filterValues[2] = true
+      this.$filters[2].checked = true
+    }
 
     this.list.filter(i => {
         const index = _.findIndex(this.statusOptions, o => (o.id === i.values().status))
