@@ -111,20 +111,26 @@ const getStatus = id => _.find(statusOptions, s => (s.id === id.toLowerCase()))
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
   const urgentNeed = location.urgentNeed ? `<p class="p location-list--important">Urgent Need: ${location.urgentNeed}</p>` : ''
+  const seekingMoney = location.seekingMoney ? `<span class="location-list--badge">Needs Money Donations</span>` : ''
+  const seekingVolunteers = location.seekingVolunteers ? `<span class="location-list--badge">Needs Volunteer Support</span>` : ''
   const $item = document.createElement('div')
   $item.classList.add('location-list--item')
   $item.innerHTML = `
-    <div class="flex h2">
+    <div class="flex">
       <span title="${status.id}" class="location-list--indicator" style="background-color: ${status.accessibleColor};"></span>
       <div>
         <h2 class='h2'>
           <span class="name">${location.name}</span>
         </h2>
-        <h3 class="h3 neighborhood">${location.neighborhood}</h3>
+        <h3 class="h3 neighborhood">
+          ${location.neighborhood}
+        </h3>
+        ${urgentNeed}
+        ${seekingVolunteers}
+        ${seekingMoney}
       </div>
     </div>
-    ${urgentNeed}
-  `
+    `
   $item.addEventListener('click', (evt) => {
     const popup = location.marker.getPopup()
     if (popup.isOpen()) {
@@ -156,6 +162,8 @@ const onMapLoad = async () => {
     .filter(item => (item.gsx$nameoforganization.$t != '') && (item.gsx$longitude.$t != '') && (item.gsx$latitude.$t != '')) // only items with names and lon,lat
     .sortBy(item => item.gsx$nameoforganization.$t )
     .map(item => {
+      const moneySearchStr = `${item.gsx$accepting.$t}, ${item.gsx$urgentneed.$t}, ${item.gsx$notes.$t}`.toLowerCase()
+      const seekingMoney = moneySearchStr.includes('money') || moneySearchStr.includes('cash') || moneySearchStr.includes('venmo') || moneySearchStr.includes('monetary')
       // the location schema
       const rawLocation = {
         name: item.gsx$nameoforganization.$t,
@@ -170,12 +178,13 @@ const onMapLoad = async () => {
         openingForReceivingDontations: item.gsx$openingforreceivingdonations.$t,
         closingForReceivingDonations: item.gsx$closingforreceivingdonations.$t,
         seekingVolunteers: item.gsx$seekingvolunteers.$t,
+        seekingMoney: seekingMoney,
         urgentNeed: item.gsx$urgentneed.$t,
         notes: item.gsx$notes.$t,
         mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t
       }
       const location = _.pickBy(rawLocation, val => val != '')
-      const status = getStatus(item.gsx$color.$t)
+      const status = getStatus(item.gsx$color.$t) || {}
 
       // transform location properties into HTML
       const propertyTransforms = {
@@ -212,7 +221,7 @@ const onMapLoad = async () => {
         },
         {
           name: 'name',
-          label: 'Alphabetical (Name)',
+          label: 'Alphabetical (name)',
           sort: { order: 'asc' },
           selected: true
         },
@@ -223,8 +232,18 @@ const onMapLoad = async () => {
         },
         {
           name: 'neighborhood',
-          label: 'Alphabetical (Neighborhood)',
+          label: 'Alphabetical (neighborhood)',
           sort: { order: 'asc' }
+        },
+        {
+          name: 'seekingMoney',
+          label: 'Needs money',
+          sort: { order: 'desc' }
+        },
+        {
+          name: 'seekingVolunteers',
+          label: 'Needs volunteers',
+          sort: { order: 'desc' }
         }
       ],
       statusOptions,

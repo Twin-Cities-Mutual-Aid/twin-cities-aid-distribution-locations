@@ -38,6 +38,7 @@ a {
   border-bottom-right-radius: 3px;
   box-shadow: 0 3px 10px 0 rgba(0,0,0,0.2);
   flex-grow: 1;
+  flex-shrink: 0;
 }
 
 /* shared:layout */
@@ -112,6 +113,7 @@ input[type='checkbox'] + label {
   color: white;
   background-color: rgba(0,0,50,.9);
   padding: 15px;
+  height: 100%;
 }
 
 /* component:filters */
@@ -163,6 +165,17 @@ input[type='checkbox'] + label {
 .location-list--item:hover {
   cursor: pointer;
   background-color: rgba(187, 200, 0, 0.2);
+}
+
+.location-list--badge {
+  display: inline-block;
+  font-size: 12px;
+  padding: 5px 10px;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  border-radius: 100px;
+  color: rgba(200,80,40, 1);
+  background-color: rgba(200,80,40, .25);
 }
 
 .location-list--indicator {
@@ -238,7 +251,6 @@ input[type='checkbox'] + label {
     flex-direction: column;
   }
   .content { 
-    height: 33.3333%;
     width: 100%;
   }
   .legend {
