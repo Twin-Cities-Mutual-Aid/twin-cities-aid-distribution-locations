@@ -187,11 +187,18 @@ input[type='checkbox'] + label {
 /* component: map popup */
 .popup-content {
   padding: 15px;
-  max-height: 350px;
+  max-height: 300px;
   overflow: auto;
 }
 
-/* TO CLEANUP */
+/* component: traffic counter */
+.counter {
+  opacity: .5;
+  filter: invert(100);
+  position: absolute;
+  top: 0;
+  right: 0;
+}
 
 /* Mapbox overrides */
 .mapboxgl-map {
@@ -224,6 +231,7 @@ input[type='checkbox'] + label {
   height: 30px !important;
   padding: 5px 30px !important;
 }
+
 /* Small screens */
 @media only screen and (max-width: 640px) {
   body {
@@ -233,20 +241,30 @@ input[type='checkbox'] + label {
     height: 33.3333%;
     width: 100%;
   }
-  .legend--key {
+  .legend {
     display: flex;
     flex-wrap: wrap;
   }
   .legend--item {
-    margin-right: 15px;
+    margin-right: 10px;
+  }
+
+  .location-list-toggle { 
+    display: block;
+  }
+
+  .list-active .location-list {
+    display: block;
   }
   .location-list {
     display: none;
   }
-  .location-list.active {
+
+  .map {
     display: block;
   }
-  .location-list-toggle { 
-    display: block;
+  .list-active .map { 
+    display: none;
   }
+
 }

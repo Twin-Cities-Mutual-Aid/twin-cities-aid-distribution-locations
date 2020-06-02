@@ -44,12 +44,12 @@ let locations = []
 // See also: https://docs.mapbox.com/mapbox-gl-js/example/setstyle/
 const map = new mapboxgl.Map({
   container: 'map',
-  style: 'mapbox://styles/saman/ckawvg6bk011x1ipepu7nqlbh?fresh=true',
+  style: 'mapbox://styles/saman/ckawvg6bk011x1ipepu7nqlbh',
   zoom: 10,
   center: [-93.212471, 44.934473],
 })
 
-map.setPadding({ top: 200, bottom: 20, left: 20, right: 20 })
+map.setPadding({ top: 300, bottom: 20, left: 20, right: 20 })
 
 map.addControl(
   new MapboxGeocoder({
@@ -85,18 +85,16 @@ function camelToTitle(str) {
 }
 
 const $button = document.getElementById('toggle-button');
-const $map = document.getElementById('map');
+const $body = document.body;
 
 // open/close sidebar
 function toggleSidePane() {
-  if ($sidePane.classList.contains('active')) {
+  if ($body.classList.contains('list-active')) {
     $button.innerText = 'Show list of locations.'
-    $map.style.display = 'block';
-    $sidePane.classList.remove('active')
+    $body.classList.remove('list-active')
   } else {
     $button.innerText = 'Hide list of locations.'
-    $map.style.display = 'none';
-    $sidePane.classList.add('active')
+    $body.classList.add('list-active')
   }
 }
 
@@ -134,12 +132,12 @@ const createListItem = (location, status, lng, lat) => {
     } else {
       closePopups()
       toggleSidePane()
-      popup.addTo(map)
       map.jumpTo({
         center: popup.getLngLat(),
         essential: true,
         zoom: 13
       })
+      popup.addTo(map)
     }
   })
   return $item
