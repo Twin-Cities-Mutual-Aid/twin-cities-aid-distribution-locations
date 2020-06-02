@@ -171,7 +171,7 @@ const onMapLoad = async () => {
         mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t
       }
       const location = _.pickBy(rawLocation, val => val != '')
-      const status = getStatus(item.gsx$color.$t)
+      const status = getStatus(item.gsx$color.$t) || {}
 
       // transform location properties into HTML
       const propertyTransforms = {
