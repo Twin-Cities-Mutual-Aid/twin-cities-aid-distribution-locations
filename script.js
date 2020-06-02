@@ -149,53 +149,63 @@ const onMapLoad = async () => {
     .filter(item => (item.gsx$nameoforganization.$t != '') && (item.gsx$longitude.$t != '') && (item.gsx$latitude.$t != '')) // only items with names and lon,lat
     .sortBy(item => item.gsx$nameoforganization.$t )
     .map(item => {
-      const moneySearchStr = `${item.gsx$accepting.$t}, ${item.gsx$urgentneed.$t}, ${item.gsx$notes.$t}`.toLowerCase()
-      const seekingMoney = moneySearchStr.includes('money') || moneySearchStr.includes('cash') || moneySearchStr.includes('venmo') || moneySearchStr.includes('monetary')
-      // the location schema
-      const rawLocation = {
-        name: item.gsx$nameoforganization.$t,
-        neighborhood: item.gsx$neighborhood.$t,
-        address: item.gsx$addresswithlink.$t,
-        currentlyOpenForDistributing: item.gsx$currentlyopenfordistributing.$t,
-        openingForDistributingDontations: item.gsx$openingfordistributingdonations.$t,
-        closingForDistributingDonations: item.gsx$closingfordistributingdonations.$t,
-        accepting: item.gsx$accepting.$t,
-        notAccepting: item.gsx$notaccepting.$t,
-        currentlyOpenForReceiving: item.gsx$currentlyopenforreceiving.$t,
-        openingForReceivingDontations: item.gsx$openingforreceivingdonations.$t,
-        closingForReceivingDonations: item.gsx$closingforreceivingdonations.$t,
-        seekingVolunteers: item.gsx$seekingvolunteers.$t,
-        seekingMoney: seekingMoney,
-        urgentNeed: item.gsx$urgentneed.$t,
-        notes: item.gsx$notes.$t,
-        mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t
+
+      try {
+        const moneySearchStr = `${item.gsx$accepting.$t}, ${item.gsx$urgentneed.$t}, ${item.gsx$notes.$t}`.toLowerCase()
+        const seekingMoney = moneySearchStr.includes('money') || moneySearchStr.includes('cash') || moneySearchStr.includes('venmo') || moneySearchStr.includes('monetary')
+        // the location schema
+        const rawLocation = {
+          name: item.gsx$nameoforganization.$t,
+          neighborhood: item.gsx$neighborhood.$t,
+          address: item.gsx$addresswithlink.$t,
+          currentlyOpenForDistributing: item.gsx$currentlyopenfordistributing.$t,
+          openingForDistributingDontations: item.gsx$openingfordistributingdonations.$t,
+          closingForDistributingDonations: item.gsx$closingfordistributingdonations.$t,
+          accepting: item.gsx$accepting.$t,
+          notAccepting: item.gsx$notaccepting.$t,
+          currentlyOpenForReceiving: item.gsx$currentlyopenforreceiving.$t,
+          openingForReceivingDontations: item.gsx$openingforreceivingdonations.$t,
+          closingForReceivingDonations: item.gsx$closingforreceivingdonations.$t,
+          seekingVolunteers: item.gsx$seekingvolunteers.$t,
+          seekingMoney: seekingMoney,
+          urgentNeed: item.gsx$urgentneed.$t,
+          notes: item.gsx$notes.$t,
+          mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t
+        }
+        const location = _.pickBy(rawLocation, val => val != '')
+        const status = getStatus(item.gsx$color.$t)
+
+        if (!status) {
+          throw new Error("Malformed data for "+location.name+", could not find status: "+item.gsx$color.$t)
+        }
+
+        // transform location properties into HTML
+        const propertyTransforms = {
+          name: (name) => `<h1>${name}</h1>`,
+          neighborhood: (neighborhood) => `<h2>${neighborhood}</h2>`,
+          address: (address) => `<h3><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></h3>` // driving directions in google, consider doing inside mapbox
+        }
+
+        // render HTML for marker
+        const markerHtml = _.map(location, (value, key) => {
+          if (propertyTransforms[key]) return propertyTransforms[key](value)
+          else return `<div><strong>${camelToTitle(key)}: </strong>${value}</div>`
+        }).join('')
+
+        // create marker
+        location.marker = new mapboxgl.Marker({ color: status.accessibleColor })
+          .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
+          .setPopup(new mapboxgl.Popup().setMaxWidth('250px').setHTML(markerHtml))
+          .addTo(map);
+
+        // add to the side panel
+        $locationList.appendChild(createListItem(location, status, item.gsx$longitude.$, item.gsx$latitude.$))
+
+        return location
+      } catch (e) {
+        console.error(e)
+        return
       }
-      const location = _.pickBy(rawLocation, val => val != '')
-      const status = getStatus(item.gsx$color.$t) || {}
-
-      // transform location properties into HTML
-      const propertyTransforms = {
-        name: (name) => `<h1>${name}</h1>`,
-        neighborhood: (neighborhood) => `<h2>${neighborhood}</h2>`,
-        address: (address) => `<h3><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></h3>` // driving directions in google, consider doing inside mapbox
-      }
-
-      // render HTML for marker
-      const markerHtml = _.map(location, (value, key) => {
-        if (propertyTransforms[key]) return propertyTransforms[key](value)
-        else return `<div><strong>${camelToTitle(key)}: </strong>${value}</div>`
-      }).join('')
-
-      // create marker
-      location.marker = new mapboxgl.Marker({ color: status.accessibleColor })
-        .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
-        .setPopup(new mapboxgl.Popup().setMaxWidth('250px').setHTML(markerHtml))
-        .addTo(map);
-
-      // add to the side panel
-      $locationList.appendChild(createListItem(location, status, item.gsx$longitude.$, item.gsx$latitude.$))
-
-      return location
     }).value()
 
     // add nav
