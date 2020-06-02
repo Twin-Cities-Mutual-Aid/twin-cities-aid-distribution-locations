@@ -43,10 +43,35 @@ let locations = []
 // See also: https://docs.mapbox.com/mapbox-gl-js/example/setstyle/
 const map = new mapboxgl.Map({
   container: 'map',
-  style: 'mapbox://styles/mapbox/streets-v11',
+  style: 'mapbox://styles/saman/ckawvg6bk011x1ipepu7nqlbh',
   zoom: 10,
   center: [-93.212471, 44.934473]
 })
+
+map.addControl(
+  new MapboxGeocoder({
+    accessToken: mapboxgl.accessToken,
+    mapboxgl: mapboxgl,
+    trackProximity: true,
+    proximity: true,
+    collapsed: true,
+    clearAndBlurOnEsc: true,
+    clearOnBlur: true,
+    marker: false,
+    flyTo: {}
+  })
+)
+
+// Add geolocate control to the map.
+map.addControl(
+  new mapboxgl.GeolocateControl({
+    positionOptions: {
+      enableHighAccuracy: true
+    },
+    trackUserLocation: true
+  })
+)
+
 
 // convert case
 function camelToTitle(str) {
