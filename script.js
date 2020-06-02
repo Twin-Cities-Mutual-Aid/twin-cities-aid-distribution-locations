@@ -1,10 +1,11 @@
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
 
+
 // we're using the map color from google sheet to indicate location status,
 // but using a different display color for accessibility. so the original
 // color is treated ad an ID
-const statusMap = [
+const statusOptions = [
   {
     id: '#fc03df',
     name: 'recieving',
@@ -96,20 +97,20 @@ function closePopups() {
 }
 
 // get the status info for a location using the color as ID
-const getStatus = id => _.find(statusMap, s => (s.id === id.toLowerCase()))
+const getStatus = id => _.find(statusOptions, s => (s.id === id.toLowerCase()))
 
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
-  const urgentNeed = location.urgentNeed ? `<h3 style="color: #f00; font-size: 80%">Urgent Need: ${location.urgentNeed}</h3>` : ''
+  const urgentNeed = location.urgentNeed ? `<h3 class="urgentNeed" style="color: #f00; font-size: 80%">Urgent Need: ${location.urgentNeed}</h3>` : ''
   const $item = document.createElement('div')
   $item.classList.add('card')
   $item.innerHTML = `
     <div class="container">
       <h2 style="color: #444; font-size: 120%">
-      <span class="indicator" style="background-color: ${status.accessibleColor}; margin-right: 10px"></span>
-      ${location.name}
+        <span class="status indicator" style="background-color: ${status.accessibleColor}; margin-right: 10px">${status.id}</span>
+        <span class="name">${location.name}</span>
       </h2>
-      <h3 color: #aaa; font-size: 80%>${location.neighborhood}</h3>
+      <h3 class="neighborhood" style="color: #aaa; font-size: 80%">${location.neighborhood}</h3>
       ${urgentNeed}
     </div>
   `
@@ -191,6 +192,32 @@ const onMapLoad = async () => {
     }).value()
 
     // add nav
+    const filter = new Filter($sidePane, {
+      sortOptions: [
+        {
+          name: 'urgentNeed',
+          label: 'Urgent requests first',
+          sort: { order: 'desc' }
+        },
+        {
+          name: 'name',
+          label: 'Alphabetical (Name)',
+          sort: { order: 'asc' },
+          selected: true
+        },
+        {
+          name: 'status',
+          label: 'Location status',
+          sort: { order: 'desc' }
+        },
+        {
+          name: 'neighborhood',
+          label: 'Alphabetical (Neighborhood)',
+          sort: { order: 'asc' }
+        }
+      ],
+      statusOptions,
+    })
     map.addControl(new mapboxgl.NavigationControl());
 }
 
@@ -199,7 +226,7 @@ map.on('load', onMapLoad)
 
 // render key
 const key = document.getElementById('key')
-statusMap.forEach(s => {
+statusOptions.forEach(s => {
   const el = document.createElement('div')
   el.innerHTML = `<span class="legend-key" style="background-color: ${s.accessibleColor}"></span>${s.label}`
   key.append(el)

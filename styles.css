@@ -58,6 +58,9 @@ body { margin: 0; padding: 0; }
   border-radius: 20%;
   width: 16px;
   height: 16px;
+  /* old-school */
+  text-indent: -9999px;
+  overflow: hidden;
 }
 .container {
   padding: 1em;
@@ -67,6 +70,17 @@ body { margin: 0; padding: 0; }
 }
 .container h3 {
   color: #777;
+}
+
+
+ul.filters {
+  list-style: none;
+  padding: 0;
+  
+}
+
+ul.filters li {
+  padding: .25em 0;
 }
 @media only screen and (max-width: 720px) {
   #legend.map-overlay {
