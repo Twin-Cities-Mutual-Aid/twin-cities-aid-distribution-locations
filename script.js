@@ -44,10 +44,12 @@ let locations = []
 // See also: https://docs.mapbox.com/mapbox-gl-js/example/setstyle/
 const map = new mapboxgl.Map({
   container: 'map',
-  style: 'mapbox://styles/saman/ckawvg6bk011x1ipepu7nqlbh',
+  style: 'mapbox://styles/saman/ckawvg6bk011x1ipepu7nqlbh?fresh=true',
   zoom: 10,
-  center: [-93.212471, 44.934473]
+  center: [-93.212471, 44.934473],
 })
+
+map.setPadding({ top: 200, bottom: 20, left: 20, right: 20 })
 
 map.addControl(
   new MapboxGeocoder({
@@ -60,7 +62,7 @@ map.addControl(
     clearOnBlur: true,
     marker: false,
     flyTo: {}
-  })
+  }), 'bottom-right'
 )
 
 // Add geolocate control to the map.
@@ -70,9 +72,11 @@ map.addControl(
       enableHighAccuracy: true
     },
     trackUserLocation: true
-  })
+  }), 'bottom-right'
 )
 
+// Add zoom and rotate controls 
+map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 
 // convert case
 function camelToTitle(str) {
@@ -80,11 +84,18 @@ function camelToTitle(str) {
   return result.charAt(0).toUpperCase() + result.slice(1)
 }
 
+const $button = document.getElementById('toggle-button');
+const $map = document.getElementById('map');
+
 // open/close sidebar
-function toggleSidePane($burger) {
+function toggleSidePane() {
   if ($sidePane.classList.contains('active')) {
+    $button.innerText = 'Show list of locations.'
+    $map.style.display = 'block';
     $sidePane.classList.remove('active')
   } else {
+    $button.innerText = 'Hide list of locations.'
+    $map.style.display = 'none';
     $sidePane.classList.add('active')
   }
 }
@@ -101,18 +112,20 @@ const getStatus = id => _.find(statusOptions, s => (s.id === id.toLowerCase()))
 
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
-  const urgentNeed = location.urgentNeed ? `<h3 class="urgentNeed" style="color: #f00; font-size: 80%">Urgent Need: ${location.urgentNeed}</h3>` : ''
+  const urgentNeed = location.urgentNeed ? `<p class="p location-list--important">Urgent Need: ${location.urgentNeed}</p>` : ''
   const $item = document.createElement('div')
-  $item.classList.add('card')
+  $item.classList.add('location-list--item')
   $item.innerHTML = `
-    <div class="container">
-      <h2 style="color: #444; font-size: 120%">
-        <span class="status indicator" style="background-color: ${status.accessibleColor}; margin-right: 10px">${status.id}</span>
-        <span class="name">${location.name}</span>
-      </h2>
-      <h3 class="neighborhood" style="color: #aaa; font-size: 80%">${location.neighborhood}</h3>
-      ${urgentNeed}
+    <div class="flex h2">
+      <span title="${status.id}" class="location-list--indicator" style="background-color: ${status.accessibleColor};"></span>
+      <div>
+        <h2 class='h2'>
+          <span class="name">${location.name}</span>
+        </h2>
+        <h3 class="h3 neighborhood">${location.neighborhood}</h3>
+      </div>
     </div>
+    ${urgentNeed}
   `
   $item.addEventListener('click', (evt) => {
     const popup = location.marker.getPopup()
@@ -120,10 +133,10 @@ const createListItem = (location, status, lng, lat) => {
       popup.remove()
     } else {
       closePopups()
-      $sidePane.classList.remove('active')
+      toggleSidePane()
       popup.addTo(map)
-      map.flyTo({
-        center: [ parseFloat(lng), parseFloat(lat) ],
+      map.jumpTo({
+        center: popup.getLngLat(),
         essential: true,
         zoom: 13
       })
@@ -168,21 +181,21 @@ const onMapLoad = async () => {
 
       // transform location properties into HTML
       const propertyTransforms = {
-        name: (name) => `<h1>${name}</h1>`,
-        neighborhood: (neighborhood) => `<h2>${neighborhood}</h2>`,
-        address: (address) => `<h3><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></h3>` // driving directions in google, consider doing inside mapbox
+        name: (name) => `<h2 class='h2'>${name}</h2>`,
+        neighborhood: (neighborhood) => `<h3 class='h3'>${neighborhood}</h3>`,
+        address: (address) => `<address class='p'><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>` // driving directions in google, consider doing inside mapbox
       }
 
       // render HTML for marker
       const markerHtml = _.map(location, (value, key) => {
         if (propertyTransforms[key]) return propertyTransforms[key](value)
-        else return `<div><strong>${camelToTitle(key)}: </strong>${value}</div>`
+        else return `<p class='p'><span class='txt-deemphasize'>${camelToTitle(key)}: </span>${value}</p>`
       }).join('')
 
       // create marker
       location.marker = new mapboxgl.Marker({ color: status.accessibleColor })
         .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
-        .setPopup(new mapboxgl.Popup().setMaxWidth('250px').setHTML(markerHtml))
+        .setPopup(new mapboxgl.Popup().setMaxWidth('250px').setHTML(`<div class='popup-content'>${markerHtml}</div>`))
         .addTo(map);
 
       // add to the side panel
@@ -218,7 +231,6 @@ const onMapLoad = async () => {
       ],
       statusOptions,
     })
-    map.addControl(new mapboxgl.NavigationControl());
 }
 
 // load map
@@ -227,7 +239,8 @@ map.on('load', onMapLoad)
 // render key
 const key = document.getElementById('key')
 statusOptions.forEach(s => {
-  const el = document.createElement('div')
-  el.innerHTML = `<span class="legend-key" style="background-color: ${s.accessibleColor}"></span>${s.label}`
+  const el = document.createElement('div');
+  el.classList = ['legend--item'];
+  el.innerHTML = `<span class="legend--item--swatch" style="background-color: ${s.accessibleColor}"></span>${s.label}`
   key.append(el)
 })
