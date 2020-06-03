@@ -31,6 +31,7 @@ class Filter {
       filterValues[2] = false
     }
 
+    this.toggleMapPoints(filterValues);
     this.list.filter(i => {
         const index = _.findIndex(this.statusOptions, o => { 
           return o.id === i.values().status;
@@ -38,6 +39,17 @@ class Filter {
         return filterValues[index]
       })
     this.list.sort(sortSettings.name, sortSettings.sort)
+  }
+
+  toggleMapPoints(filterValues) {
+    const $map = document.getElementById("map");
+    this.statusOptions.map((status, i) => {
+      if (filterValues[i]) {
+        $map.classList.remove("hide-" + status.name);
+      } else {
+        $map.classList.add("hide-" + status.name);
+      }
+    });
   }
 
   renderControls() {
