@@ -60,7 +60,7 @@ class Filter {
 
 
     const filters = this.statusOptions.map(s => {
-      return `<li class='filter-item'><input class="filter" type="checkbox" id="filter-${s.name}" value="${s.name}" checked><label for="filter-${s.name}">${s.label}</label></li>`
+      return `<li class='filter-item'><input class="filter" type="checkbox" id="filter-${s.name}" value="${s.name}" checked><span class="legend--item--swatch" style="background-color: ${s.accessibleColor}"></span><label for="filter-${s.name}">${s.label}</label></li>`
     }).join('')
 
     this.$controls.innerHTML = `
@@ -70,14 +70,14 @@ class Filter {
           ${options}
         </select>
       </div>
-      <ul class="filters">
-        ${filters}
-      </ul>
     `
+
+    const $key = document.getElementById("key");
+    $key.innerHTML = `<ul class="filters">${filters}</ul>`;
 
     this.$sort = document.getElementById('sort-by')
     // // convert node list to array so we can use forEach
-    this.$filters = Array.prototype.slice.call(this.$controls.querySelectorAll('input[type="checkbox"]'))
+    this.$filters = Array.prototype.slice.call($key.querySelectorAll('input[type="checkbox"]'))
     this.$sort.addEventListener('change', this.update.bind(this))
     this.$filters.forEach($e => $e.addEventListener('change', this.update.bind(this)))
   }

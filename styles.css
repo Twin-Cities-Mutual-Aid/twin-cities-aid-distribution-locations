@@ -100,6 +100,7 @@ input[type='checkbox'] + label {
 
 .select-container {
   display: flex;
+  margin-bottom: 10px;
 }
 
 .select-container select { 
@@ -119,8 +120,7 @@ input[type='checkbox'] + label {
 .filters {
   list-style: none;
   padding: 0;
-  margin-top: 5px;
-  margin-bottom: 10px;
+  margin: 0px;
 }
 
 .filter-item {
@@ -143,6 +143,8 @@ input[type='checkbox'] + label {
   width: 10px;
   height: 10px;
   margin-right: 5px;
+  display: inline-block;
+  margin-left: 5px;
 }
 
 /* component: location list */
