@@ -195,7 +195,8 @@ const onMapLoad = async () => {
         const propertyTransforms = {
           name: (name) => `<h2 class='h2'>${name}</h2>`,
           neighborhood: (neighborhood) => `<h3 class='h3'>${neighborhood}</h3>`,
-          address: (address) => `<address class='p'><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>` // driving directions in google, consider doing inside mapbox
+          address: (address) => `<address class='p'><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>`, // driving directions in google, consider doing inside mapbox
+          status: (status) => `<p class='p'><span class='txt-deemphasize'>Status: </span>${status.label}</p>`
         }
 
         // render HTML for marker
