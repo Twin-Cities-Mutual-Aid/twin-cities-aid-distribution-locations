@@ -9,8 +9,8 @@ This project is unusual because there are two separate, siloed teams working in 
 * **Website team**: This team (us) is using a channel within the Open Twin Cities slack to communicate. There's a link at the top of the [Open Twin Cities](opentwincities.org) website to join, if you'd like to help out.
 * **Data team**: The team working on updating the underlying data to ensure the real-time info is up-to-date is partly coordinated via a very large Facebook group called [South Minneapolis Mutual Aid Autonomous Zone Coordination](https://www.facebook.com/groups/southsidemutualaid). We don't have much more information at this time, but will update this when we do.
 
-## Issues & Feature Requests
-Wer're using [Github Issues](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/issues) to manage tasks, and have a [kanban board](https://github.com/orgs/Twin-Cities-Mutual-Aid/projects/1) set up.
+## Feature requests & feedback
+We're using [Github Issues](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/issues) to manage tasks, and have a [kanban board](https://github.com/orgs/Twin-Cities-Mutual-Aid/projects/1) set up.
 
 If you've got a feature request or feedback to share on the website, feel free to submit an issue on GH issues, or bring it up in slack.
 
