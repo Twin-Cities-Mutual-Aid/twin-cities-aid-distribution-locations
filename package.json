@@ -4,7 +4,9 @@
   "description": "A webapp to coordinate aid and care in the Twin Cities.",
   "main": "index.html",
   "scripts": {
-    "dev": "npx servor --reload",
+    "dev": "snowpack dev",
+    "build": "snowpack build",
+    "snowpack": "snowpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,5 +18,19 @@
   "bugs": {
     "url": "https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/issues"
   },
-  "homepage": "https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations#readme"
+  "homepage": "https://twin-cities-mutual-aid.org/",
+  "devDependencies": {
+    "@babel/preset-env": "^7.10.2",
+    "@snowpack/plugin-babel": "^1.0.0",
+    "@snowpack/plugin-webpack": "^1.1.0",
+    "rollup-plugin-node-polyfills": "^0.2.1",
+    "snowpack": "^2.2.2"
+  },
+  "dependencies": {
+    "list.js": "^1.5.0",
+    "lodash": "^4.17.15",
+    "mapbox-gl": "^1.10.1",
+    "mapbox-gl-geocoder": "^2.0.1",
+    "moment": "^2.26.0"
+  }
 }
