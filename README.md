@@ -1,7 +1,7 @@
 # twin-cities-aid-distribution-locations
 A webapp to coordinate aid and care in the Twin Cities.
 
-https://jdalt.github.io/twin-cities-aid-distribution-locations/
+https://twin-cities-mutual-aid.org/
 
 Data is sourced from a google spreadsheet. 
 * Example spreadsheet: https://docs.google.com/spreadsheets/d/1IIDsFN-If0IfNrRO-I3WbisHAz7EGjJ8aviSboX_-z4/
