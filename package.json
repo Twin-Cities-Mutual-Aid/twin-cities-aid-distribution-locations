@@ -9,12 +9,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/jdalt/twin-cities-aid-distribution-locations.git"
+    "url": "git+ssh://git@github.com:Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jdalt/twin-cities-aid-distribution-locations/issues"
+    "url": "https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/issues"
   },
-  "homepage": "https://github.com/jdalt/twin-cities-aid-distribution-locations#readme"
+  "homepage": "https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations#readme"
 }
