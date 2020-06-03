@@ -14,7 +14,8 @@ class Filter {
       valueNames: this.sortOptions.map(o => o.name)
     })
     /** Hide "open for both" filter */
-    this.$filters[2].parentElement.style.display = 'none'
+    // this.$filters[2].parentElement.style.display = 'none'
+    document.getElementById("filter-both").style.opacity = 0;
   }
 
   update() {
