@@ -89,10 +89,10 @@ function camelToTitle(str) {
 // open/close sidebar
 function toggleSidePane() {
   if ($body.classList.contains('list-active')) {
-    $button.innerText = 'Show list of locations.'
+    $button.innerText = 'Show list of locations'
     $body.classList.remove('list-active')
   } else {
-    $button.innerText = 'Hide list of locations.'
+    $button.innerText = 'Hide list of locations'
     $body.classList.add('list-active')
   }
 }

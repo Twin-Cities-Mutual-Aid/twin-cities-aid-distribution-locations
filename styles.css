@@ -197,9 +197,18 @@ input[type='checkbox'] + label {
 
 /* component: location list toggle */
 .location-list-toggle {
+  padding: 5px 10px;
+  border: none;
+  color: black;
+  background-color: rgba(255,255,255,.75);
+  border-radius: 3px;
   display: none;
 }
 
+.location-list-toggle:hover {
+  cursor: pointer;
+  background-color: white;
+}
 /* component: map popup */
 .popup-content {
   padding: 15px;
