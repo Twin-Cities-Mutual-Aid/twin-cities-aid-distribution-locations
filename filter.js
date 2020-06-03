@@ -32,7 +32,9 @@ class Filter {
     }
 
     this.list.filter(i => {
-        const index = _.findIndex(this.statusOptions, o => (o.id === i.values().status))
+        const index = _.findIndex(this.statusOptions, o => { 
+          return o.id === i.values().status;
+        });
         return filterValues[index]
       })
     this.list.sort(sortSettings.name, sortSettings.sort)
@@ -40,29 +42,30 @@ class Filter {
 
   renderControls() {
     
-
     const options = this.sortOptions.map(o => {
       return `<option value="${o.name}" ${o.selected && 'selected'}>${o.label}</option>`
     }).join('')
 
 
     const filters = this.statusOptions.map(s => {
-      return `<li><input class="filter" type="checkbox" id="filter-${s.name}" value="${s.name}" checked><label for="filter-${s.name}">${s.label}</label></li>`
+      return `<li class='filter-item'><input class="filter" type="checkbox" id="filter-${s.name}" value="${s.name}" checked><label for="filter-${s.name}">${s.label}</label></li>`
     }).join('')
 
     this.$controls.innerHTML = `
-      <label for="sort-by">Sort by: </label>
-      <select name="sort-by" class="sort-by">
-        ${options}
-      </select>
+      <div class="select-container">  
+        <label for="sort-by">Sort by: </label>
+        <select name="sort-by" id="sort-by">
+          ${options}
+        </select>
+      </div>
       <ul class="filters">
         ${filters}
       </ul>
     `
 
-    this.$sort = this.$controls.querySelector('select.sort-by')
-    // // convert node list to array so we cacn use forEach
-    this.$filters = Array.prototype.slice.call(this.$controls.querySelectorAll('input.filter'))
+    this.$sort = document.getElementById('sort-by')
+    // // convert node list to array so we can use forEach
+    this.$filters = Array.prototype.slice.call(this.$controls.querySelectorAll('input[type="checkbox"]'))
     this.$sort.addEventListener('change', this.update.bind(this))
     this.$filters.forEach($e => $e.addEventListener('change', this.update.bind(this)))
   }

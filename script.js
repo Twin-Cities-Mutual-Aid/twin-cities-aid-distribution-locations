@@ -1,5 +1,7 @@
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
+const $button = document.getElementById('toggle-button');
+const $body = document.body;
 
 
 // we're using the map color from google sheet to indicate location status,
@@ -46,8 +48,10 @@ const map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/saman/ckawvg6bk011x1ipepu7nqlbh',
   zoom: 10,
-  center: [-93.212471, 44.934473]
+  center: [-93.212471, 44.934473],
 })
+
+map.setPadding({ top: 300, bottom: 20, left: 20, right: 20 })
 
 map.addControl(
   new MapboxGeocoder({
@@ -60,7 +64,7 @@ map.addControl(
     clearOnBlur: true,
     marker: false,
     flyTo: {}
-  })
+  }), 'bottom-right'
 )
 
 // Add geolocate control to the map.
@@ -70,9 +74,11 @@ map.addControl(
       enableHighAccuracy: true
     },
     trackUserLocation: true
-  })
+  }), 'bottom-right'
 )
 
+// Add zoom and rotate controls 
+map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 
 // convert case
 function camelToTitle(str) {
@@ -81,11 +87,13 @@ function camelToTitle(str) {
 }
 
 // open/close sidebar
-function toggleSidePane($burger) {
-  if ($sidePane.classList.contains('active')) {
-    $sidePane.classList.remove('active')
+function toggleSidePane() {
+  if ($body.classList.contains('list-active')) {
+    $button.innerText = 'Show list of locations'
+    $body.classList.remove('list-active')
   } else {
-    $sidePane.classList.add('active')
+    $button.innerText = 'Hide list of locations'
+    $body.classList.add('list-active')
   }
 }
 
@@ -101,36 +109,39 @@ const getStatus = id => _.find(statusOptions, s => (s.id === id.toLowerCase()))
 
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
-  const urgentNeed = location.urgentNeed ? `<h3 class="urgentNeed" style="color: #f00; font-size: 80%">Urgent Need: ${location.urgentNeed}</h3>` : ''
-  const seekingMoney = location.seekingMoney ? `<h3 class="seekingMoney" style="color: #f00; font-size: 80%">Needs Money Donations</h3>` : ''
-  const seekingVolunteers = location.seekingVolunteers ? `<h3 class="seekingVolunteers" style="color: #f00; font-size: 80%">Needs Volunteer Support</h3>` : ''
+  const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important">Urgent Need: ${location.urgentNeed}</p>` : ''
+  const seekingMoney = location.seekingMoney ? `<span class="seekingMoney location-list--badge">Needs Money Donations</span>` : ''
+  const seekingVolunteers = location.seekingVolunteers ? `<span class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>` : ''
   const $item = document.createElement('div')
-  $item.classList.add('card')
+  $item.classList.add('location-list--item')
+  $item.dataset.id = status.id;
   $item.innerHTML = `
-    <div class="container">
-      <h2 style="color: #444; font-size: 120%">
-        <span class="status indicator" style="background-color: ${status.accessibleColor}; margin-right: 10px">${status.id}</span>
-        <span class="name">${location.name}</span>
-      </h2>
-      <h3 class="neighborhood" style="color: #aaa; font-size: 80%">${location.neighborhood}</h3>
-      ${urgentNeed}
-      ${seekingVolunteers}
-      ${seekingMoney}
+    <div class="flex">
+      <span title="${status.id}" class="status location-list--indicator" style="background-color: ${status.accessibleColor};">${status.id}</span>
+      <div>
+        <h2 class='h2'>
+          <span class="name">${location.name}</span>
+        </h2>
+        <h3 class="h3 neighborhood">${location.neighborhood}</h3>
+        ${urgentNeed}
+        ${seekingVolunteers}
+        ${seekingMoney}
+      </div>
     </div>
-  `
+    `
   $item.addEventListener('click', (evt) => {
     const popup = location.marker.getPopup()
     if (popup.isOpen()) {
       popup.remove()
     } else {
       closePopups()
-      $sidePane.classList.remove('active')
-      popup.addTo(map)
-      map.flyTo({
-        center: [ parseFloat(lng), parseFloat(lat) ],
+      toggleSidePane()
+      map.jumpTo({
+        center: popup.getLngLat(),
         essential: true,
         zoom: 13
       })
+      popup.addTo(map)
     }
   })
   return $item
@@ -176,36 +187,36 @@ const onMapLoad = async () => {
         const status = getStatus(item.gsx$color.$t)
 
         if (!status) {
-          throw new Error("Malformed data for "+location.name+", could not find status: "+item.gsx$color.$t)
+          throw new Error("Malformed data for " + location.name + ", could not find status: " + item.gsx$color.$t)
         }
 
         // transform location properties into HTML
         const propertyTransforms = {
-          name: (name) => `<h1>${name}</h1>`,
-          neighborhood: (neighborhood) => `<h2>${neighborhood}</h2>`,
-          address: (address) => `<h3><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></h3>` // driving directions in google, consider doing inside mapbox
+          name: (name) => `<h2 class='h2'>${name}</h2>`,
+          neighborhood: (neighborhood) => `<h3 class='h3'>${neighborhood}</h3>`,
+          address: (address) => `<address class='p'><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>` // driving directions in google, consider doing inside mapbox
         }
 
         // render HTML for marker
         const markerHtml = _.map(location, (value, key) => {
           if (propertyTransforms[key]) return propertyTransforms[key](value)
-          else return `<div><strong>${camelToTitle(key)}: </strong>${value}</div>`
+          else return `<p class='p'><span class='txt-deemphasize'>${camelToTitle(key)}: </span>${value}</p>`
         }).join('')
 
         // create marker
         location.marker = new mapboxgl.Marker({ color: status.accessibleColor })
           .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
-          .setPopup(new mapboxgl.Popup().setMaxWidth('250px').setHTML(markerHtml))
+          .setPopup(new mapboxgl.Popup().setMaxWidth('250px').setHTML(`<div class='popup-content'>${markerHtml}</div>`))
           .addTo(map);
 
-        // add to the side panel
-        $locationList.appendChild(createListItem(location, status, item.gsx$longitude.$, item.gsx$latitude.$))
+          // add to the side panel
+          $locationList.appendChild(createListItem(location, status, item.gsx$longitude.$, item.gsx$latitude.$))
 
-        return location
-      } catch (e) {
-        console.error(e)
-        return
-      }
+          return location
+        } catch (e) {
+          console.error(e)
+          return
+        }
     }).value()
 
     // add nav
@@ -245,7 +256,6 @@ const onMapLoad = async () => {
       ],
       statusOptions,
     })
-    map.addControl(new mapboxgl.NavigationControl());
 }
 
 // load map
@@ -254,7 +264,8 @@ map.on('load', onMapLoad)
 // render key
 const key = document.getElementById('key')
 statusOptions.forEach(s => {
-  const el = document.createElement('div')
-  el.innerHTML = `<span class="legend-key" style="background-color: ${s.accessibleColor}"></span>${s.label}`
+  const el = document.createElement('div');
+  el.classList = ['legend--item'];
+  el.innerHTML = `<span class="legend--item--swatch" style="background-color: ${s.accessibleColor}"></span>${s.label}`
   key.append(el)
 })
