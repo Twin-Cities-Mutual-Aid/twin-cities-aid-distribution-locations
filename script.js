@@ -77,7 +77,7 @@ map.addControl(
   }), 'bottom-right'
 )
 
-// Add zoom and rotate controls 
+// Add zoom and rotate controls
 map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 
 // convert case
@@ -185,6 +185,7 @@ const onMapLoad = async () => {
         }
         const location = _.pickBy(rawLocation, val => val != '')
         const status = getStatus(item.gsx$color.$t)
+        location.status = status;
 
         if (!status) {
           throw new Error("Malformed data for " + location.name + ", could not find status: " + item.gsx$color.$t)

@@ -2,7 +2,7 @@
  * Filter adds a filter control to the side panel location list
  */
 class Filter {
-  
+
   constructor(el, options) {
     Object.assign(this, options)
     this.$filters = []
@@ -32,16 +32,28 @@ class Filter {
     }
 
     this.list.filter(i => {
-        const index = _.findIndex(this.statusOptions, o => { 
+        const index = _.findIndex(this.statusOptions, o => {
           return o.id === i.values().status;
         });
         return filterValues[index]
       })
+
     this.list.sort(sortSettings.name, sortSettings.sort)
+
+    // remove and re-add markers to map:
+    locations.map(l => l.marker.remove())
+    locations.filter(location => {
+        const index = _.findIndex(this.statusOptions, o => {
+          return o.id === location.status.id;
+        });
+        return filterValues[index]
+      })
+      .map(location => location.marker.addTo(map))
+
   }
 
   renderControls() {
-    
+
     const options = this.sortOptions.map(o => {
       return `<option value="${o.name}" ${o.selected && 'selected'}>${o.label}</option>`
     }).join('')
@@ -52,7 +64,7 @@ class Filter {
     }).join('')
 
     this.$controls.innerHTML = `
-      <div class="select-container">  
+      <div class="select-container">
         <label for="sort-by">Sort by: </label>
         <select name="sort-by" id="sort-by">
           ${options}
