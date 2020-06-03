@@ -150,6 +150,7 @@ input[type='checkbox'] + label {
 .location-list {
   padding: 15px;
   max-width: 100%;
+  max-height: 100%;
   flex-grow: 1;
   overflow: auto;
 }
@@ -186,6 +187,8 @@ input[type='checkbox'] + label {
   border: 2px solid  rgba(0, 0, 0, .1);
   margin-right: 5px;
   flex-shrink: 0;
+  text-indent: -10000px;
+  overflow: hidden;
 }
 
 .location-list--important {

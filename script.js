@@ -1,5 +1,7 @@
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
+const $button = document.getElementById('toggle-button');
+const $body = document.body;
 
 
 // we're using the map color from google sheet to indicate location status,
@@ -84,9 +86,6 @@ function camelToTitle(str) {
   return result.charAt(0).toUpperCase() + result.slice(1)
 }
 
-const $button = document.getElementById('toggle-button');
-const $body = document.body;
-
 // open/close sidebar
 function toggleSidePane() {
   if ($body.classList.contains('list-active')) {
@@ -110,21 +109,20 @@ const getStatus = id => _.find(statusOptions, s => (s.id === id.toLowerCase()))
 
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
-  const urgentNeed = location.urgentNeed ? `<p class="p location-list--important">Urgent Need: ${location.urgentNeed}</p>` : ''
-  const seekingMoney = location.seekingMoney ? `<span class="location-list--badge">Needs Money Donations</span>` : ''
-  const seekingVolunteers = location.seekingVolunteers ? `<span class="location-list--badge">Needs Volunteer Support</span>` : ''
+  const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important">Urgent Need: ${location.urgentNeed}</p>` : ''
+  const seekingMoney = location.seekingMoney ? `<span class="seekingMoney location-list--badge">Needs Money Donations</span>` : ''
+  const seekingVolunteers = location.seekingVolunteers ? `<span class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>` : ''
   const $item = document.createElement('div')
   $item.classList.add('location-list--item')
+  $item.dataset.id = status.id;
   $item.innerHTML = `
     <div class="flex">
-      <span title="${status.id}" class="location-list--indicator" style="background-color: ${status.accessibleColor};"></span>
+      <span title="${status.id}" class="status location-list--indicator" style="background-color: ${status.accessibleColor};">${status.id}</span>
       <div>
         <h2 class='h2'>
           <span class="name">${location.name}</span>
         </h2>
-        <h3 class="h3 neighborhood">
-          ${location.neighborhood}
-        </h3>
+        <h3 class="h3 neighborhood">${location.neighborhood}</h3>
         ${urgentNeed}
         ${seekingVolunteers}
         ${seekingMoney}
@@ -186,12 +184,12 @@ const onMapLoad = async () => {
           mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t
         }
         const location = _.pickBy(rawLocation, val => val != '')
-        const status = getStatus(item.gsx$color.$t) || {}
+        const status = getStatus(item.gsx$color.$t)
 
         if (!status) {
           throw new Error("Malformed data for " + location.name + ", could not find status: " + item.gsx$color.$t)
         }
-        
+
         // transform location properties into HTML
         const propertyTransforms = {
           name: (name) => `<h2 class='h2'>${name}</h2>`,

@@ -20,7 +20,9 @@ class Filter {
     const filterValues = this.$filters.map(f => f.checked)
 
     this.list.filter(i => {
-        const index = _.findIndex(this.statusOptions, o => (o.id === i.values().status))
+        const index = _.findIndex(this.statusOptions, o => { 
+          return o.id === i.values().status;
+        });
         return filterValues[index]
       })
     this.list.sort(sortSettings.name, sortSettings.sort)
@@ -28,7 +30,6 @@ class Filter {
 
   renderControls() {
     
-
     const options = this.sortOptions.map(o => {
       return `<option value="${o.name}" ${o.selected && 'selected'}>${o.label}</option>`
     }).join('')
@@ -41,7 +42,7 @@ class Filter {
     this.$controls.innerHTML = `
       <div class="select-container">  
         <label for="sort-by">Sort by: </label>
-        <select name="sort-by" class="sort-by">
+        <select name="sort-by" id="sort-by">
           ${options}
         </select>
       </div>
@@ -50,9 +51,9 @@ class Filter {
       </ul>
     `
 
-    this.$sort = this.$controls.querySelector('select.sort-by')
-    // // convert node list to array so we cacn use forEach
-    this.$filters = Array.prototype.slice.call(this.$controls.querySelectorAll('input.filter'))
+    this.$sort = document.getElementById('sort-by')
+    // // convert node list to array so we can use forEach
+    this.$filters = Array.prototype.slice.call(this.$controls.querySelectorAll('input[type="checkbox"]'))
     this.$sort.addEventListener('change', this.update.bind(this))
     this.$filters.forEach($e => $e.addEventListener('change', this.update.bind(this)))
   }
