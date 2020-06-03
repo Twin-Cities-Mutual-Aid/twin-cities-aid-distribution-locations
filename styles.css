@@ -18,6 +18,14 @@ a {
   color: royalblue;
 }
 
+a.txt-white {
+  color: white
+}
+
+a.txt-white:hover {
+  color: royalblue
+}
+
 .map { 
   left: 0;
   top: 0;
@@ -85,13 +93,16 @@ a {
 }
 
 .txt-small {
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .txt-deemphasize {
   opacity: .75;
 }
 
+.spaced-lines {
+  line-height: 1.7rem;
+}
 
 /* Shared:forms */
 input[type='checkbox'] + label {
