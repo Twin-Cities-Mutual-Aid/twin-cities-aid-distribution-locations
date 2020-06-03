@@ -209,6 +209,8 @@ const onMapLoad = async () => {
           .setPopup(new mapboxgl.Popup().setMaxWidth('250px').setHTML(`<div class='popup-content'>${markerHtml}</div>`))
           .addTo(map);
 
+          location.marker.getElement().className += " status-" + status.name;
+
           // add to the side panel
           $locationList.appendChild(createListItem(location, status, item.gsx$longitude.$, item.gsx$latitude.$))
 

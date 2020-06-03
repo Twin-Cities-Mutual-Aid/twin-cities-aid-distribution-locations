@@ -14,7 +14,8 @@ class Filter {
       valueNames: this.sortOptions.map(o => o.name)
     })
     /** Hide "open for both" filter */
-    this.$filters[2].parentElement.style.display = 'none'
+    // this.$filters[2].parentElement.style.display = 'none'
+    document.getElementById("filter-both").style.opacity = 0;
   }
 
   update() {
@@ -31,6 +32,7 @@ class Filter {
       filterValues[2] = false
     }
 
+    this.toggleMapPoints(filterValues);
     this.list.filter(i => {
         const index = _.findIndex(this.statusOptions, o => { 
           return o.id === i.values().status;
@@ -38,6 +40,17 @@ class Filter {
         return filterValues[index]
       })
     this.list.sort(sortSettings.name, sortSettings.sort)
+  }
+
+  toggleMapPoints(filterValues) {
+    const $map = document.getElementById("map");
+    this.statusOptions.map((status, i) => {
+      if (filterValues[i]) {
+        $map.classList.remove("hide-" + status.name);
+      } else {
+        $map.classList.add("hide-" + status.name);
+      }
+    });
   }
 
   renderControls() {
@@ -48,7 +61,7 @@ class Filter {
 
 
     const filters = this.statusOptions.map(s => {
-      return `<li class='filter-item'><input class="filter" type="checkbox" id="filter-${s.name}" value="${s.name}" checked><label for="filter-${s.name}">${s.label}</label></li>`
+      return `<li class='filter-item'><input class="filter" type="checkbox" id="filter-${s.name}" value="${s.name}" checked><span class="legend--item--swatch" style="background-color: ${s.accessibleColor}"></span><label for="filter-${s.name}">${s.label}</label></li>`
     }).join('')
 
     this.$controls.innerHTML = `
@@ -58,14 +71,14 @@ class Filter {
           ${options}
         </select>
       </div>
-      <ul class="filters">
-        ${filters}
-      </ul>
     `
+
+    const $key = document.getElementById("key");
+    $key.innerHTML = `<ul class="filters">${filters}</ul>`;
 
     this.$sort = document.getElementById('sort-by')
     // // convert node list to array so we can use forEach
-    this.$filters = Array.prototype.slice.call(this.$controls.querySelectorAll('input[type="checkbox"]'))
+    this.$filters = Array.prototype.slice.call($key.querySelectorAll('input[type="checkbox"]'))
     this.$sort.addEventListener('change', this.update.bind(this))
     this.$filters.forEach($e => $e.addEventListener('change', this.update.bind(this)))
   }
