@@ -13,11 +13,23 @@ class Filter {
     this.list = new List(this.$el.id, {
       valueNames: this.sortOptions.map(o => o.name)
     })
+    /** Hide "open for both" filter */
+    this.$filters[2].parentElement.style.display = 'none'
   }
 
   update() {
     const sortSettings = _.find(this.sortOptions, o => (o.name === this.$sort.value))
-    const filterValues = this.$filters.map(f => f.checked)
+    let filterValues = this.$filters.map(f => f.checked)
+    /** if "open for receiving donations" (item 0) or "open for distributing donations" (item 1)
+     * is checked, then items categorized as "open for both" (item 2) information should be
+     * automatically displayed as well.
+     */
+    if (filterValues[0] === true || filterValues[1] === true) {
+      filterValues[2] = true
+    }
+    if (!filterValues[0] && !filterValues[1]) {
+      filterValues[2] = false
+    }
 
     this.list.filter(i => {
         const index = _.findIndex(this.statusOptions, o => (o.id === i.values().status))
