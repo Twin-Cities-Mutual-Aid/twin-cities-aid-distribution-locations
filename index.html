@@ -27,7 +27,7 @@
   <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
   <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css" type="text/css" />
   <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
-	
+
 	<!-- CONFIG -->
 	<script>
 		mapboxgl.accessToken = 'pk.eyJ1IjoiamFjb2JyZGFsdG9uIiwiYSI6ImNrYXc2anFjbjIxNGwyeG14dWk0MDVycmIifQ.yILWplracVMB4mv1dWwTtg'
@@ -42,13 +42,14 @@
   <div class="content">
     <div class="title">
       <h1 class='h1'>Twin Cities Aid Map</h1>
-      <p class='p txt-small spaced-lines'>See this data in <a class="txt-white" href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSfnmh9CmtVoBMy2k_-NMhhvF7ursBs2L5IPF9VZ1J-l9P71vjDFw7y6Y6E98d5lNeOAEo7leisP0Y8/pubhtml" target="_blank">Google Sheets</a>. About <a class="txt-white" href="https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations" target="_blank">this project</a>.</p>
+      <p class='p txt-small spaced-lines'>See this data in <a class="txt-white" href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSfnmh9CmtVoBMy2k_-NMhhvF7ursBs2L5IPF9VZ1J-l9P71vjDFw7y6Y6E98d5lNeOAEo7leisP0Y8/pubhtml" target="_blank">Google Sheets</a>.</p>
       <div class='legend' id="key"></div>
       <button id="toggle-button" class="location-list-toggle" onClick="toggleSidePane(this)">Show list of locations</button>
       <div class='counter'>
         <script type="text/javascript" src="//counter.websiteout.net/js/7/0/41000/0"></script>
       </div>
-      <p class='p txt-small spaced-lines'>Seeing Issues? <a class="txt-white" href="mailto:support@tcmap.org">Email Us</a></p>
+      <p class='p txt-small spaced-lines'>Seeing Issues? <a class="txt-white" href="mailto:support@tcmap.org">Email Us</a>.</p>
+      <p class='p txt-small spaced-lines'>Learn about this project on <a class="txt-white" href="https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/blob/master/README.md" target="_blank">GitHub</a>.</p>
     </div>
     <div id="side-pane" class="location-list">
       <div id="filter-controls"></div>
@@ -56,7 +57,7 @@
     </div>
   </div>
   <div class='map' id="map"></div>
-  
+
   <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
   <script src="./filter.js"></script>
   <script src="./script.js"></script>
