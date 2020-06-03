@@ -2,10 +2,10 @@
  * Filter adds a filter control to the side panel location list
  */
 class Filter {
-  $filters = []
   
   constructor(el, options) {
     Object.assign(this, options)
+    this.$filters = []
 
     this.$el = el
     this.$controls = document.getElementById('filter-controls')
