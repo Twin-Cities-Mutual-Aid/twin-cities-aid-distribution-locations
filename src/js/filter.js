@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 /**
  * Filter adds a filter control to the side panel location list
  */
@@ -87,3 +89,5 @@ class Filter {
     this.$filters.forEach($e => $e.addEventListener('change', this.update.bind(this)))
   }
 }
+
+export default Filter

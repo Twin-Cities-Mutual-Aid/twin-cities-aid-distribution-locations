@@ -1,8 +1,21 @@
+import mapboxgl from 'mapbox-gl'
+import MapboxGeocoder from 'mapbox-gl-geocoder'
+import Config from './config.js'
+import _ from 'lodash'
+import Filter from './js/filter.js'
+
+// Import Styles
+import 'mapbox-gl/dist/mapbox-gl.css'
+import 'mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
+import './styles/normalize.css'
+import './styles/styles.css'
+
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
 const $locationsButton = document.getElementById('locations-toggle-button');
 const $body = document.body;
 
+mapboxgl.accessToken = Config.accessToken
 
 // we're using the map color from google sheet to indicate location status,
 // but using a different display color for accessibility. so the original
@@ -87,12 +100,12 @@ function camelToTitle(str) {
 }
 
 // open/close location sidebar
-function toggleSidePane() {
+function toggleSidePane(button) {
   if ($body.classList.contains('list-active')) {
-    $locationsButton.innerText = 'Show list of locations'
+    button.innerText = 'Show list of locations'
     $body.classList.remove('list-active')
   } else {
-    $locationsButton.innerText = 'Hide list of locations'
+    button.innerText = 'Hide list of locations'
     $body.classList.add('list-active')
   }
 }
@@ -159,7 +172,7 @@ const createListItem = (location, status, lng, lat) => {
 }
 
 // start fetching data right away
-const dataPromise = fetch(DATA_URL)
+const dataPromise = fetch(Config.dataUrl)
 
 // handle the map load event
 const onMapLoad = async () => {
@@ -273,6 +286,23 @@ const onMapLoad = async () => {
 
 // load map
 map.on('load', onMapLoad)
+
+// add sidebar-toggle-button handler
+const sidebarToggleButton = document.getElementById('locations-toggle-button')
+sidebarToggleButton.addEventListener("click", function(){
+  toggleSidePane(sidebarToggleButton)
+});
+
+// add help-toggle-button handler
+const helpInfoOpenButton = document.getElementById('help-info-toggle-button')
+helpInfoOpenButton.addEventListener("click", function(){
+  toggleHelpInfo()
+});
+
+const helpInfoCloseButton = document.getElementById('help-info-close-button')
+helpInfoCloseButton.addEventListener("click", function(){
+  toggleHelpInfo()
+});
 
 // render key
 const key = document.getElementById('key')
