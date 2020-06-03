@@ -158,6 +158,14 @@ input[type='checkbox'] + label {
   margin-left: 5px;
 }
 
+label[for="filter-both"] { /* hide filter both option during load. */
+  display: none;
+}
+
+#filter-both {
+  display: none;
+}
+
 /* component: location list */
 .location-list {
   padding: 15px;

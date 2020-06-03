@@ -14,8 +14,7 @@ class Filter {
       valueNames: this.sortOptions.map(o => o.name)
     })
     /** Hide "open for both" filter */
-    // this.$filters[2].parentElement.style.display = 'none'
-    document.getElementById("filter-both").style.opacity = 0;
+    document.getElementById("filter-both").parentElement.style.display = 'none';
   }
 
   update() {
@@ -61,7 +60,12 @@ class Filter {
 
 
     const filters = this.statusOptions.map(s => {
-      return `<li class='filter-item'><input class="filter" type="checkbox" id="filter-${s.name}" value="${s.name}" checked><span class="legend--item--swatch" style="background-color: ${s.accessibleColor}"></span><label for="filter-${s.name}">${s.label}</label></li>`
+      /** Open for receiving / distributing donations should have two colors */
+      if (s.accessibleColor === "#2c7bb6" || s.accessibleColor === "#abd9e9") {
+        return `<li class='filter-item'><input class="filter" type="checkbox" id="filter-${s.name}" value="${s.name}" checked><span class="legend--item--swatch" style="background-color: ${s.accessibleColor}"></span>/<span class="legend--item--swatch" style="background-color: #fdae61"></span><label for="filter-${s.name}">${s.label}</label></li>`
+      } else {
+        return `<li class='filter-item'><input class="filter" type="checkbox" id="filter-${s.name}" value="${s.name}" checked><span class="legend--item--swatch" style="background-color: ${s.accessibleColor}"></span><label for="filter-${s.name}">${s.label}</label></li>`
+      }
     }).join('')
 
     this.$controls.innerHTML = `

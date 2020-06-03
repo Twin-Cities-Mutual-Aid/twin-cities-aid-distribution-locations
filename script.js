@@ -268,6 +268,16 @@ const key = document.getElementById('key')
 statusOptions.forEach(s => {
   const el = document.createElement('div');
   el.classList = ['legend--item'];
-  el.innerHTML = `<span class="legend--item--swatch" style="background-color: ${s.accessibleColor}"></span>${s.label}`
+  if (s.accessibleColor === "#2c7bb6" || s.accessibleColor === "#abd9e9") {
+    el.innerHTML = `<span class="legend--item--swatch" style="background-color: ${s.accessibleColor}"></span> / <span class="legend--item--swatch" style="background-color: #fdae61"></span>${s.label}`
+  } else {
+    el.innerHTML = `<span class="legend--item--swatch" style="background-color: ${s.accessibleColor}"></span>${s.label}`
+  }
   key.append(el)
 })
+
+/*
+  if ($item.dataset.id === "filter-recieving" || $item.dataset.id === "filter-distributing") {
+    const span = `<span title="${status.id}" class="status location-list--indicator" style="background-color: ${status.accessibleColor};">${status.id}</span>`;
+  };
+*/
