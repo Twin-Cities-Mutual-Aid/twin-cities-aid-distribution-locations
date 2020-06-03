@@ -194,19 +194,19 @@ const onMapLoad = async () => {
         const propertyTransforms = {
           name: (name) => `<h2 class='h2'>${name}</h2>`,
           neighborhood: (neighborhood) => `<h3 class='h3'>${neighborhood}</h3>`,
-          address: (address) => `<address class='p'><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>` // driving directions in google, consider doing inside mapbox
+          address: (address) => `<address><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>` // driving directions in google, consider doing inside mapbox
         }
 
         // render HTML for marker
         const markerHtml = _.map(location, (value, key) => {
           if (propertyTransforms[key]) return propertyTransforms[key](value)
-          else return `<p class='p'><span class='txt-deemphasize'>${camelToTitle(key)}: </span>${value}</p>`
+          else return `<div class='p row'><p class='txt-deemphasize key'>${camelToTitle(key)}:</p><p class='value'>${value}</p></div>`
         }).join('')
 
         // create marker
         location.marker = new mapboxgl.Marker({ color: status.accessibleColor })
           .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
-          .setPopup(new mapboxgl.Popup().setMaxWidth('250px').setHTML(`<div class='popup-content'>${markerHtml}</div>`))
+          .setPopup(new mapboxgl.Popup().setMaxWidth('275px').setHTML(`<div class='popup-content'>${markerHtml}</div>`))
           .addTo(map);
 
           location.marker.getElement().className += " status-" + status.name;
