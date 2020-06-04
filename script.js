@@ -194,9 +194,11 @@ function addSymbolLayer(els, geoJSON) {
       'text-field': ['get', 'name'],
       'text-font': ['Arial Unicode MS Bold'],
       'text-radial-offset': 1.2,
-      'text-variable-anchor': ['top','bottom'],
+      'text-anchor': 'top',
       'text-justify': 'auto',
-      'text-padding': 0
+      'text-padding': 0,
+      'text-optional': true,
+      'icon-allow-overlap': true
     }
   });
 }
