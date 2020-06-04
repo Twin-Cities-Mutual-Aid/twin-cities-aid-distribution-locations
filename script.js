@@ -187,7 +187,7 @@ function addSymbolLayer(els, geoJSON) {
     },
     'layout': {
       'symbol-sort-key': ['get', '_priorityRank'], // locations with urgent need get placement priority
-      'icon-image': ['get', '_color'],
+      'icon-image': ['get', '_id'],
       'icon-size': .6,
       'icon-padding': 0,
       'text-size': 13,
@@ -253,7 +253,7 @@ function toGeoJson(data) {
         notes: item.gsx$notes.$t,
         mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t,
         // Private
-        _color: item.gsx$color.$t,
+        _id: item.gsx$color.$t,
         _priorityRank: item.gsx$urgentneed.$t ? 0 : 1
       }
 
@@ -263,7 +263,7 @@ function toGeoJson(data) {
       });
 
     try {
-      const status = getStatus(properties._color);
+      const status = getStatus(properties._id);
       properties._status = status;
     } catch(e) { 
       throw new Error("Malformed data for " + properties.name + ", could not find status: " + properties.color)
@@ -335,16 +335,19 @@ const onMapLoad = async () => {
     statusOptions,
   })
 
+  // Map event handlers
+
+  // show popup on click
   map.on('click', 'locations', function (e) {
     updatePopup(e.features[0]);
   });
 
-  // Map event handlers
+  // set pointer cursor when hovering over clickable point
   map.on('mouseenter', 'locations', function () {
     map.getCanvas().style.cursor = 'pointer';
   });
 
-  // Change it back to a pointer when it leaves.
+  // clear pointer cursor when not hovering over clickable point
   map.on('mouseleave', 'locations', function () {
     map.getCanvas().style.cursor = '';
   });

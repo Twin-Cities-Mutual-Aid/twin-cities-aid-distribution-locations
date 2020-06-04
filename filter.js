@@ -43,14 +43,16 @@ class Filter {
   }
 
   toggleMapPoints(filterValues) {
-    const $map = document.getElementById("map");
-    this.statusOptions.map((status, i) => {
-      if (filterValues[i]) {
-        $map.classList.remove("hide-" + status.name);
-      } else {
-        $map.classList.add("hide-" + status.name);
-      }
-    });
+    const filterExpressions = filterValues.reduce((memo, v, i) => {
+      if (!v) {
+        return memo.concat([['!=', ['get', '_id'], this.statusOptions[i].id]]);
+      } 
+      return memo;
+    }, []);
+
+    // map is a global variable
+    // see addSymbolLayer in script.js for layer declaration.
+    map.setFilter('locations', ['all'].concat(filterExpressions));
   }
 
   renderControls() {
