@@ -6,9 +6,9 @@ The Twin Cities Aid Map comunity welcomes participation from everyone.
 
 Our community expects that participants:
 
-* Provide an environment where people are free from discrimination or harassment
+* Provide an environment where people are free from discrimination and harassment
 * Are safe, respected, friendly, and free to fully express their identities
-* Presume the value of everyone’s ideas, skills, and contributions
+* Value everyone’s ideas, skills, and contributions
 * Don’t assume everyone has the same context 
 * Encourage participation, questions, and discussion
 * Find ways for people to productively contribute their time and skills (technical or not) 
