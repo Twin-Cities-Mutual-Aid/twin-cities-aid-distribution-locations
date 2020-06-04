@@ -15,17 +15,76 @@
 
 
 class Translator {
-  constructor(translations) {
-    this.translations = translations
+  constructor() {
+    this.language = ''
+    this.availableLanguages = []
+    this.translations = {}
+    this.detectLanguage()
   }
 
+  setTranslations(translations) {
+    this.translations = translations
+
+    // look for row that includes native language names
+    const langNames = this.translations['lang_name']
+
+    // set available languages based on langNames
+    if (langNames) {
+      Object.keys(langNames).forEach(k => {
+        this.availableLanguages.push({
+          name: k,
+          label: langNames[k]
+        })
+      })
+    }
+  }
+
+  languageIsSet() {
+    return (this.language && this.language.length && this.language.length === 3)
+  }
+
+  getAvailableLanguages() {
+    return this.availableLanguages
+  }
+
+  setLanguage(lang) {
+    this.language = lang
+    window.localStorage.setItem('lang', lang)
+  }
+
+  getLanguage() {
+    return this.language
+  }
+
+  /**
+   * Detect language from environment
+   */
+  detectLanguage() {
+    let lang
+
+    // if language is defined in querystring, use that one
+    const qs = window.location.search.substring(1)
+    const m = /lang=([A-z]+)/i.exec(qs)
+    if (m && m.length > 1) {
+      lang = m[1]
+
+    // otherwise, check local storage 
+    } else if (window.localStorage.getItem('lang')) {
+      lang = window.localStorage.getItem('lang')
+    }
+
+    if (lang) this.setLanguage(lang)
+  }
 
   /**
    * Replace the translatable elements on the page with translated terms (if available)
-   * 
-   * @param {string} lang key for the desired language (example: 'spa')
    */
-  translate(lang) {
+  translate() {
+    if(!this.language) {
+      console.error('Attempting to translate without selected language')
+      return
+    }
+
     this.els = document.querySelectorAll(`[data-translation-id]`) 
     
     // convert NodeList to Array so we can use forEach
@@ -38,7 +97,7 @@ class Translator {
       if (!id || !this.translations[id] ) return
 
       // get translated term and replace
-      const term = this.translations[id][lang]
+      const term = this.translations[id][this.language]
       if (term && term.length) {
         el.innerHTML = term
       }

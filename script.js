@@ -3,9 +3,6 @@ const $sidePane = document.getElementById('side-pane')
 const $button = document.getElementById('toggle-button');
 const $body = document.body;
 
-// this will be an instance of our Translator class
-let translator
-
 // we're using the map color from google sheet to indicate location status,
 // but using a different display color for accessibility. so the original
 // color is treated ad an ID
@@ -41,6 +38,42 @@ const statusOptions = [
     accessibleColor: '#ffffbf'
   }
 ]
+
+
+// initialize translator and load translations file
+const translator = new Translator()
+fetch(TRANSLATION_URL).then(async (resp) => {
+  console.log('translation file loaded')
+  try {
+    const data = await resp.json()
+
+    // add translation definitions to translator
+    translator.setTranslations(Translator.ParseGoogleSheetData(data))
+
+    // show welcome modal if no language is selected
+    if (!translator.languageIsSet()) {
+      console.log('show welcome modal')
+      const welcome = new WelcomeModal({
+        // get list of languages
+        languages: translator.getAvailableLanguages(),
+        // when language is selected, run translation
+        onLanguageSelect: lang => {
+          translator.setLanguage(lang)
+          translator.translate()
+        }
+      })
+      welcome.open()
+    
+    // otherwise just run translator
+    } else {
+      console.log('language found', translator.getLanguage())
+      translator.translate()
+    }
+
+  } catch (e) {
+    console.error('Translation error', e)
+  }
+})
 
 let locations = []
 
@@ -106,12 +139,6 @@ function closePopups() {
   })
 }
 
-// get language code from the URL
-const getLanguage = () => {
-  const qs = window.location.search.substring(1)
-  const m = /lang=([A-z]+)/i.exec(qs)
-  return (m && m.length > 1) ? m[1] : null
-}
 
 // get the status info for a location using the color as ID
 const getStatus = id => _.find(statusOptions, s => (s.id === id.toLowerCase()))
@@ -158,7 +185,6 @@ const createListItem = (location, status, lng, lat) => {
 
 // start fetching data right away
 const dataPromise = fetch(DATA_URL)
-const translationsPromise = fetch(TRANSLATION_URL)
 
 // handle the map load event
 const onMapLoad = async () => {
@@ -269,40 +295,11 @@ const onMapLoad = async () => {
       statusOptions,
     })
 
-    // do translation
-    translationsPromise.then(async (resp) => {
-      // avoid blowing up the page on error
-      try {
-        const data = await resp.json()
-        // get languagae code from query string
-        const lang = getLanguage()
-        const parsedData = Translator.ParseGoogleSheetData(data)
-
-        const selector = document.getElementById('language-select')
-        translator = new Translator(parsedData)
-        
-        // if a language is selected in qs, translate to that lang
-        if (lang) {
-          translator.translate(lang)
-          selector.value = lang
-        }
-
-        selector.disabled = false
-
-        // handle language menu selection
-        selector.addEventListener('change', evt => {
-          const selectedLang = evt.target.value
-          if (selectedLang === 'eng') {
-            window.location.search = ''
-          } else {
-            window.location.search = `?lang=${selectedLang}`
-          }
-        })
-      } catch (e) {
-        console.error('Error translating page', e)
-      }
-
-    })
+    // making sure to run translations after
+    // everything else is loaded
+    if (translator.getLanguage()) {
+      translator.translate()
+    }
 }
 
 // load map
