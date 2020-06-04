@@ -145,6 +145,7 @@ ul.languages a {
   background-color: rgba(255,255,255,.75);
   border-radius: 3px;
   margin-right: 0.67em;
+  margin-bottom: 0.67em;
 }
 
 .toggle-button:hover {
@@ -183,7 +184,7 @@ input[type='checkbox'] + label {
 }
 
 .filter-pane {
-  padding: 0px 15px 15px 15px;
+  padding: 0px 15px 5px 15px;
 }
 
 /* component:filters */
