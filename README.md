@@ -10,14 +10,14 @@ This project is unusual because there are two separate, siloed teams working in 
 * **Data team**: The team working on updating the underlying data to ensure the real-time info is up-to-date is partly coordinated via a very large Facebook group called [South Minneapolis Mutual Aid Autonomous Zone Coordination](https://www.facebook.com/groups/southsidemutualaid). We don't have much more information at this time, but will update this when we do.
 
 ## Feature requests & feedback
-We're using [Github Issues](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/issues) to manage tasks, and have a [kanban board](https://github.com/orgs/Twin-Cities-Mutual-Aid/projects/1) set up. If you'd like access to the kanban board reach out in the (OTC slack channel)[https://otc-slackin.herokuapp.com/].
+We're using [Github Issues](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/issues) to manage tasks, and have a [kanban board](https://github.com/orgs/Twin-Cities-Mutual-Aid/projects/1) set up. If you'd like access to the kanban board reach out in the [OTC slack channel](https://otc-slackin.herokuapp.com/).
 
 If you've got a feature request or feedback to share on the website, feel free to submit an issue on GH issues, or bring it up in slack.
 
 ## Data
 
 Data is sourced from a google spreadsheet.
-* Example spreadsheet: https://docs.google.com/spreadsheets/d/1IIDsFN-If0IfNrRO-I3WbisHAz7EGjJ8aviSboX_-z4/
+* Example spreadsheet: https://docs.google.com/spreadsheets/d/1ETV6xakGCkp3dmgfpayjEBQii8p_ElMXYuDut3EDZTE/edit#gid=0
 * Google Apps Script utility script also available to automatically update a row timestamp and insert latitude and longitude when an address cell is added or updated: https://github.com/mc-funk/community-map-google-scripts/
 
 To test locally with your own copy of the spreadsheet, duplicate the example
