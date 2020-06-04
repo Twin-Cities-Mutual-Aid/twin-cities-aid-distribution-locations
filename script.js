@@ -77,13 +77,18 @@ map.addControl(
   }), 'bottom-right'
 )
 
-// Add zoom and rotate controls 
+// Add zoom and rotate controls
 map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 
 // convert case
 function camelToTitle(str) {
   const result = str.replace(/([A-Z])/g,' $1')
   return result.charAt(0).toUpperCase() + result.slice(1)
+}
+
+function truthy(str) {
+  const normalizedStr = str.toUpperCase();
+  return ['TRUE', 'YES', 'T', 'Y'].includes(normalizedStr);
 }
 
 // open/close sidebar
@@ -104,14 +109,19 @@ function closePopups() {
   })
 }
 
+function needsMoneyComponent(location) {
+  return location.seekingMoney ? `<span class="seeking-money location-list--badge">Needs Money <a href="${location.seekingMoneyURL}" target="_blank">DONATE NOW!</a></span>` : ''
+}
+
 // get the status info for a location using the color as ID
 const getStatus = id => _.find(statusOptions, s => (s.id === id.toLowerCase()))
 
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
   const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important">Urgent Need: ${location.urgentNeed}</p>` : ''
-  const seekingMoney = location.seekingMoney ? `<span class="seekingMoney location-list--badge">Needs Money Donations</span>` : ''
+  const seekingMoney = needsMoneyComponent(location);
   const seekingVolunteers = location.seekingVolunteers ? `<span class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>` : ''
+
   const $item = document.createElement('div')
   $item.classList.add('location-list--item')
   $item.dataset.id = status.id;
@@ -162,13 +172,13 @@ const onMapLoad = async () => {
     .map(item => {
 
       try {
-        const moneySearchStr = `${item.gsx$accepting.$t}, ${item.gsx$urgentneed.$t}, ${item.gsx$notes.$t}`.toLowerCase()
-        const seekingMoney = moneySearchStr.includes('money') || moneySearchStr.includes('cash') || moneySearchStr.includes('venmo') || moneySearchStr.includes('monetary')
         // the location schema
         const rawLocation = {
           name: item.gsx$nameoforganization.$t,
           neighborhood: item.gsx$neighborhood.$t,
           address: item.gsx$addresswithlink.$t,
+          seekingMoney: truthy(item.gsx$seekingmoney.$t),
+          seekingMoneyURL: item.gsx$seekingmoneyurl.$t,
           currentlyOpenForDistributing: item.gsx$currentlyopenfordistributing.$t,
           openingForDistributingDontations: item.gsx$openingfordistributingdonations.$t,
           closingForDistributingDonations: item.gsx$closingfordistributingdonations.$t,
@@ -178,7 +188,6 @@ const onMapLoad = async () => {
           openingForReceivingDontations: item.gsx$openingforreceivingdonations.$t,
           closingForReceivingDonations: item.gsx$closingforreceivingdonations.$t,
           seekingVolunteers: item.gsx$seekingvolunteers.$t,
-          seekingMoney: seekingMoney,
           urgentNeed: item.gsx$urgentneed.$t,
           notes: item.gsx$notes.$t,
           mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t
@@ -192,14 +201,16 @@ const onMapLoad = async () => {
 
         // transform location properties into HTML
         const propertyTransforms = {
-          name: (name) => `<h2 class='h2'>${name}</h2>`,
-          neighborhood: (neighborhood) => `<h3 class='h3'>${neighborhood}</h3>`,
-          address: (address) => `<address class='p'><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>` // driving directions in google, consider doing inside mapbox
+          name: (name, _) => `<h2 class='h2'>${name}</h2>`,
+          neighborhood: (neighborhood, _) => `<h3 class='h3'>${neighborhood}</h3>`,
+          address: (address, _) => `<address class='p'><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>`,
+          seekingMoney: (value, location) => needsMoneyComponent(location),
+          seekingMoneyURL: (value, _) => ''
         }
 
         // render HTML for marker
         const markerHtml = _.map(location, (value, key) => {
-          if (propertyTransforms[key]) return propertyTransforms[key](value)
+          if (propertyTransforms[key]) return propertyTransforms[key](value, location)
           else return `<p class='p'><span class='txt-deemphasize'>${camelToTitle(key)}: </span>${value}</p>`
         }).join('')
 
