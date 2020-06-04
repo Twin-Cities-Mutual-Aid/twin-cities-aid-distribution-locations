@@ -1,6 +1,6 @@
 # Code of Conduct
 
-The Twin Cities Aid Map comunity welcomes participation from everyone. 
+The Twin Cities Aid Map community welcomes participation from everyone. 
 
 ## Expectations 
 
@@ -17,7 +17,7 @@ Our community expects that participants:
 * Ensure our local community is well-represented in the design and implementation of projects. This includes encouraging participation from women, minorities, and traditionally marginalized groups.
 * Respect our local community partners and ensure relationships with them remain participatory and productive
 
-Our community members organize with resources of [Open Twin Cities](https://www.opentwincities.org/), so members are obliged to abide by that orgainzation's similar [code of conduct](https://www.opentwincities.org/about/#code-of-conduct).
+Our community members organize with resources of [Open Twin Cities](https://www.opentwincities.org/), so are obliged to abide by that organization's similar [code of conduct](https://www.opentwincities.org/about/#code-of-conduct).
 
 ## Attributions 
 
