@@ -220,6 +220,7 @@ input[type='checkbox'] + label {
   background-color: rgba(255,255,255,.75);
   border-radius: 3px;
   display: none;
+  margin-bottom: 1em;
 }
 
 .location-list-toggle:hover {
