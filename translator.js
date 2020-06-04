@@ -1,28 +1,24 @@
 /**
- * A super simple language translation tool
+ * A super simple language translation tool.
+ * Expects translation data to be in this format: 
+ * 
+ * {
+ *   'hello' : {
+ *      'eng': 'Hello!',
+ *      'spa': 'Hola!',
+ *      'kar': '',
+ *      'som': 'Salaan!',
+ *      'hmn': 'Nyob zoo!'
+ * }
+ * 
  */
 
-// const translationDataExample = {
-//   'hello' : {
-//     'eng': 'Hello!',
-//     'spa': 'Hola!',
-//     'kar': '',
-//     'som': 'Salaan!',
-//     'hmn': 'Nyob zoo!'
-//   }
-// }
 
 class Translator {
-  attr = 'data-translation-id'
-
   constructor(translations) {
     this.translations = translations
   }
 
-  // this converts a `gsx$keyname` to `keyname
-  convertGoogleKey(key) {
-    return 
-  }
 
   /**
    * Replace the translatable elements on the page with translated terms (if available)
@@ -30,25 +26,31 @@ class Translator {
    * @param {string} lang key for the desired language (example: 'spa')
    */
   translate(lang) {
-    this.els = document.querySelectorAll(`[${this.attr}]`) 
+    this.els = document.querySelectorAll(`[data-translation-id]`) 
     
-    let current
-    for (let i = 0; i < this.els.length; i++) {
-      current = this.els[i]
-      
-      const id = current.getAttribute(this.attr)
-      // skip if theres no id, or no translation
-      if (!id || !this.translations[id] ) continue;
+    // convert NodeList to Array so we can use forEach
+    const els = Array.prototype.slice.call(this.els)
 
+    // replace with translation wherever possible
+    els.forEach(el => {
+      const id = el.getAttribute('data-translation-id')
+      // skip if theres no id, or no translation
+      if (!id || !this.translations[id] ) return
+
+      // get translated term and replace
       const term = this.translations[id][lang]
       if (term && term.length) {
-        current.innerHTML = term
+        el.innerHTML = term
       }
-    }
+    })
+
   }
 }
 
-
+/**
+ * Convert data structure recieved from Google to format compatible
+ * with our constructor
+ */
 Translator.ParseGoogleSheetData = function(data) {
   const idKey = 'gsx$id'
   const map = {}
