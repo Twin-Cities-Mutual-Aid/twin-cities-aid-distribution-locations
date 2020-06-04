@@ -13,9 +13,11 @@ class Filter {
     this.list = new List(this.$el.id, {
       valueNames: this.sortOptions.map(o => o.name)
     })
-    /** Hide "open for both" filter */
-    // this.$filters[2].parentElement.style.display = 'none'
-    document.getElementById("filter-both").style.opacity = 0;
+    /** Default filter-both checkbox to be disabled. only
+     * enabled if "receiving" and "distributing" checkboxes
+     * are BOTH unchecked.
+     */
+    document.getElementById("filter-both").disabled = true
   }
 
   update() {
@@ -27,9 +29,11 @@ class Filter {
      */
     if (filterValues[0] === true || filterValues[1] === true) {
       filterValues[2] = true
+      document.getElementById("filter-both").checked = true
+      document.getElementById("filter-both").disabled = true
     }
-    if (!filterValues[0] && !filterValues[1]) {
-      filterValues[2] = false
+    else {
+      document.getElementById("filter-both").disabled = false
     }
 
     this.toggleMapPoints(filterValues);

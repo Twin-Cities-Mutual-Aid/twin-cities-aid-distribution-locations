@@ -7,19 +7,19 @@
   <link rel="icon" href="favicon.ico">
 
   <!-- META TAGS -->
-  <meta property="og:image" content="https://twin-cities-mutual-aid.org/images/aid.png">
+  <meta property="og:image" content="https://twin-cities-mutual-aid.org/images/aid1.png">
   <meta name="title" content="Twin Cities Aid Distribution Locations">
   <meta name="description" content="A map to coordinate aid and care in the Twin Cities.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://twin-cities-mutual-aid.org/">
   <meta property="og:title" content="Twin Cities Aid Distribution Locations">
   <meta property="og:description" content="A map to coordinate aid and care in the Twin Cities.">
-  <meta property="og:image" content="https://twin-cities-mutual-aid.org/images/aid.png">
+  <meta property="og:image" content="https://twin-cities-mutual-aid.org/images/aid1.png">
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://twin-cities-mutual-aid.org/">
   <meta property="twitter:title" content="Twin Cities Aid Distribution Locations">
   <meta property="twitter:description" content="A map to coordinate aid and care in the Twin Cities.">
-  <meta property="twitter:image" content="https://twin-cities-mutual-aid.org/images/aid.png">
+  <meta property="twitter:image" content="https://twin-cities-mutual-aid.org/images/aid1.png">
 
   <!-- MAPBOX -->
   <script src="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js"></script>
@@ -47,19 +47,17 @@
       <h1 data-translation-id="page_title" class='h1'>Twin Cities Aid Map</h1>
     </div>
     <div class="filter-pane white-and-blue">
-      <p class='p txt-small'><span data-translation-id="see_this_data_in">See this data in</span> <a class="txt-white" href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSfnmh9CmtVoBMy2k_-NMhhvF7ursBs2L5IPF9VZ1J-l9P71vjDFw7y6Y6E98d5lNeOAEo7leisP0Y8/pubhtml" target="_blank">Google Sheets</a>.</p>
       <div class='legend' id="key"></div>
-      <button data-translation-id="show_list_button" id="toggle-button" class="location-list-toggle" onClick="toggleSidePane(this)">Show list of locations</button>
-      <div class='counter'>
-        <script type="text/javascript" src="//counter.websiteout.net/js/7/0/41000/0"></script>
-      </div>
-      <p class='p txt-small'>Seeing Issues? <a class="txt-white" href="mailto:support@tcmap.org">Email Us</a>.</p>
-      <p class='p txt-small'>Learn about this project on <a class="txt-white" href="https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/blob/master/README.md" target="_blank">GitHub</a>.</p>
       <div class="select-container">
         <label for="" >Language: </label>
         <select disabled name="language-select" id="language-select">
           <option value="eng" selected>English</option>
         </select>
+      </div>
+      <button data-translation-id="show_list_button" id="locations-toggle-button" class="location-list-toggle toggle-button" onClick="toggleSidePane(this)" aria-label="Toggle list of locations">Show list of locations</button>
+      <button id="help-info-toggle-button" class="toggle-button" onClick="toggleHelpInfo(this)" aria-label="Toggle help info section">Help/info</button>
+      <div class='counter'>
+        <script type="text/javascript" src="//counter.websiteout.net/js/7/0/41000/0"></script>
       </div>
     </div>
     <div id="side-pane" class="location-list">
@@ -67,7 +65,13 @@
       <div class="list" id="location-list"></div>
     </div>
   </div>
-
+  <div id="help-info" class='help-info padded spaced-lines'>
+    <button class='help-info-close-button' onClick="toggleHelpInfo(this)" aria-label="Close help info section">X Close</button>
+    <p class='p txt-small'>Twin Cities Aid Map is run by volunteers.</p><br />
+    <p class='p txt-small bold'>Have feedback? <a href="mailto:support@tcmap.org">Email Us</a>.</p>
+    <p class='p txt-small bold'><span data-translation-id="see_this_data_in">See this data in</span> <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSfnmh9CmtVoBMy2k_-NMhhvF7ursBs2L5IPF9VZ1J-l9P71vjDFw7y6Y6E98d5lNeOAEo7leisP0Y8/pubhtml" target="_blank">Google Sheets</a>.</p>
+    <p class='p txt-small bold'>Learn about this project on <a href="https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/blob/master/README.md" target="_blank">GitHub</a>.</p>
+  </div>
   <div class='map' id="map"></div>
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
