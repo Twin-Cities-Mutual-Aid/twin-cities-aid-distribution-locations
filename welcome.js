@@ -26,7 +26,7 @@ class WelcomeModal {
 
     return `
       <div class="modal">
-        <h1>Welcome!</h1>
+        <h1 class="welcome-message">Welcome!</h1>
         <p>Please select a language:</p>
         <div class="modal-languages">
           ${buttons}

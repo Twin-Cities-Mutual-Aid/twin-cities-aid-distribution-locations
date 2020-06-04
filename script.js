@@ -41,9 +41,10 @@ const statusOptions = [
 
 
 // initialize translator and load translations file
-const translator = new Translator()
+const translator = new Translator({
+  enabledLanguages: ['eng', 'spa']
+})
 fetch(TRANSLATION_URL).then(async (resp) => {
-  console.log('translation file loaded')
   try {
     const data = await resp.json()
 
@@ -51,14 +52,13 @@ fetch(TRANSLATION_URL).then(async (resp) => {
     translator.setTranslations(Translator.ParseGoogleSheetData(data))
 
     // show welcome modal if no language is selected
-    if (!translator.languageIsSet()) {
-      console.log('show welcome modal')
+    if (!translator.language) {
       const welcome = new WelcomeModal({
         // get list of languages
-        languages: translator.getAvailableLanguages(),
+        languages: translator.availableLanguages,
         // when language is selected, run translation
         onLanguageSelect: lang => {
-          translator.setLanguage(lang)
+          translator.language = lang
           translator.translate()
         }
       })
@@ -66,9 +66,22 @@ fetch(TRANSLATION_URL).then(async (resp) => {
     
     // otherwise just run translator
     } else {
-      console.log('language found', translator.getLanguage())
       translator.translate()
     }
+
+    const select = document.getElementById('language-select')
+    select.innerHTML = ''
+    const options = translator.availableLanguages.map(l => {
+      const selected = l.name === translator.language ? 'selected' : ''
+      return `<option value="${l.name}" ${selected}>${l.label}</option>`
+    })
+    select.innerHTML = options
+    select.addEventListener('change', evt => {
+      evt.preventDefault()
+      translator.language = evt.target.value
+      translator.translate()
+    })
+    select.disabled = false
 
   } catch (e) {
     console.error('Translation error', e)
@@ -124,10 +137,10 @@ function camelToTitle(str) {
 // open/close sidebar
 function toggleSidePane() {
   if ($body.classList.contains('list-active')) {
-    $button.innerText = 'Show list of locations'
+    $button.innerText = translator.get('show_list_button', 'Show list of locations')
     $body.classList.remove('list-active')
   } else {
-    $button.innerText = 'Hide list of locations'
+    $button.innerText = translator.get('hide_list_button', 'Hide list of locations')
     $body.classList.add('list-active')
   }
 }
@@ -297,7 +310,7 @@ const onMapLoad = async () => {
 
     // making sure to run translations after
     // everything else is loaded
-    if (translator.getLanguage()) {
+    if (translator.language) {
       translator.translate()
     }
 }

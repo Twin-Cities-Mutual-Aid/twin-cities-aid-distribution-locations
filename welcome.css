@@ -20,6 +20,26 @@
   height: 100%;
   padding: 2vw;
   background-color: #fff;
+  text-align: center;
+}
+
+.welcome-message {
+  color:rgba(0,0,50,.9);;
+}
+
+.modal-languages {
+  display: flex;
+  flex-direction: column;
+}
+.language-button {
+  cursor: pointer;
+  margin: 1em;
+  padding: .75em 0;
+  font-size: 120%;
+  font-weight: bold;
+  border: none;
+  color: white;
+  background-color: royalblue;
 }
 
 /** Larger screens */

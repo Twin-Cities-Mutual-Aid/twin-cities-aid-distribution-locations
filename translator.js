@@ -15,9 +15,9 @@
 
 
 class Translator {
-  constructor() {
-    this.language = ''
-    this.availableLanguages = []
+  constructor(options) {
+    this.enabledLanguages = options.enabledLanguages || false
+    this._languages = []
     this.translations = {}
     this.detectLanguage()
   }
@@ -31,7 +31,8 @@ class Translator {
     // set available languages based on langNames
     if (langNames) {
       Object.keys(langNames).forEach(k => {
-        this.availableLanguages.push({
+        if (!this.languageIsEnabled(k)) return
+        this._languages.push({
           name: k,
           label: langNames[k]
         })
@@ -39,21 +40,34 @@ class Translator {
     }
   }
 
-  languageIsSet() {
-    return (this.language && this.language.length && this.language.length === 3)
+  languageIsEnabled(lang) {
+    if (!this.enabledLanguages.length) return true
+    return (this.enabledLanguages.indexOf(lang) > -1)
   }
 
-  getAvailableLanguages() {
-    return this.availableLanguages
+  /**
+   * Simple string format validation
+   * @param {string} lang 
+   */
+  validateLanguageKey(lang) {
+    return (lang && lang.length && lang.length === 3)
   }
 
-  setLanguage(lang) {
-    this.language = lang
-    window.localStorage.setItem('lang', lang)
+  get availableLanguages() {
+    return this._languages
   }
 
-  getLanguage() {
-    return this.language
+  set language(lang) {
+    if (!this.validateLanguageKey(lang)) {
+      // console.error('Attempting to use invalid language: '+lang)
+      return
+    }
+    window.localStorage.setItem(Translator.LOCAL_STORAGE_KEY, lang)
+  }
+
+  get language() {
+    const lang = window.localStorage.getItem(Translator.LOCAL_STORAGE_KEY)
+    if (this.validateLanguageKey(lang)) return lang
   }
 
   /**
@@ -69,11 +83,11 @@ class Translator {
       lang = m[1]
 
     // otherwise, check local storage 
-    } else if (window.localStorage.getItem('lang')) {
-      lang = window.localStorage.getItem('lang')
+    } else if (window.localStorage.getItem(Translator.LOCAL_STORAGE_KEY)) {
+      lang = window.localStorage.getItem(Translator.LOCAL_STORAGE_KEY)
     }
 
-    if (lang) this.setLanguage(lang)
+    this.language = lang
   }
 
   /**
@@ -97,14 +111,30 @@ class Translator {
       if (!id || !this.translations[id] ) return
 
       // get translated term and replace
-      const term = this.translations[id][this.language]
+      const term = this.get(id)
       if (term && term.length) {
         el.innerHTML = term
       }
     })
+  }
 
+  /**
+   * Get a translation for a given term id
+   */
+  get(id, fallback) {
+    if (!this.language) {
+      console.error('Language is not set')
+      return fallback
+    }
+    if (!this.translations[id]) {
+      console.error('Invalid translation id: '+id)
+      return fallback
+    }
+    return this.translations[id][this.language]
   }
 }
+
+Translator.LOCAL_STORAGE_KEY = 'twma_lang'
 
 /**
  * Convert data structure recieved from Google to format compatible
