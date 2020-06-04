@@ -87,8 +87,8 @@ function camelToTitle(str) {
 }
 
 function truthy(str) {
-  const normalizedStr = str.toUpperCase();
-  return ['TRUE', 'YES', 'T', 'Y'].includes(normalizedStr);
+  const normalizedStr = _.toUpper(str);
+  return _.includes(['TRUE', 'YES', 'T', 'Y'], normalizedStr);
 }
 
 // open/close sidebar
