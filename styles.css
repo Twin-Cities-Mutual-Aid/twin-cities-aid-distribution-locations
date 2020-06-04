@@ -102,10 +102,6 @@ a.txt-white:hover {
   font-size: 0.9em;
 }
 
-.spaced-lines {
-  line-height: 1.7rem;
-}
-
 /* Shared:forms */
 input[type='checkbox'] + label {
   margin-left: 5px;
@@ -224,6 +220,7 @@ input[type='checkbox'] + label {
   background-color: rgba(255,255,255,.75);
   border-radius: 3px;
   display: none;
+  margin-bottom: 1em;
 }
 
 .location-list-toggle:hover {
@@ -282,7 +279,7 @@ input[type='checkbox'] + label {
   min-width: 30px !important;
   height: 30px !important;
 }
-.mapboxgl-ctrl-geocoder--icon-search { 
+.mapboxgl-ctrl-geocoder--icon-search {
   fill: black;
   left: 4px !important;
   top: 4px !important;
