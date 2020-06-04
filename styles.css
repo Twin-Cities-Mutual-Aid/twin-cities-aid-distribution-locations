@@ -44,6 +44,10 @@ a.txt-white:hover {
   display: none;
 }
 
+.help-info:target + .map {
+  display: none;
+}
+
 .content {
   z-index: 1;
   width: 33.3333%;
@@ -109,6 +113,10 @@ a.txt-white:hover {
 .txt-deemphasize {
   opacity: 0.70;
   font-size: 0.9em;
+}
+
+.bold {
+  font-weight: 600;
 }
 
 .padded {
@@ -250,6 +258,17 @@ input[type='checkbox'] + label {
   display: none;
 }
 
+/* component: help info close button */
+.help-info-close-button {
+  display: inline;
+  float: right;
+  margin-top: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 5px 10px;
+}
+
 /* component: map popup */
 .popup-content {
   padding: 15px;
@@ -350,5 +369,8 @@ input[type='checkbox'] + label {
   }
   .h1 {
     margin: 0;
+  }
+  .help-info-close-button {
+    margin-top: 0;
   }
 }

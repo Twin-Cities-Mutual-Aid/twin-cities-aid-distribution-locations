@@ -29,7 +29,7 @@ const statusOptions = [
   {
     id: '#c70000',
     name: 'closed',
-    label: 'confirmed closed',
+    label: 'currently closed',
     accessibleColor: '#d7191c'
   },
   {
@@ -86,7 +86,7 @@ function camelToTitle(str) {
   return result.charAt(0).toUpperCase() + result.slice(1)
 }
 
-// open/close sidebar
+// open/close location sidebar
 function toggleSidePane() {
   if ($body.classList.contains('list-active')) {
     $locationsButton.innerText = 'Show list of locations'
@@ -94,6 +94,17 @@ function toggleSidePane() {
   } else {
     $locationsButton.innerText = 'Hide list of locations'
     $body.classList.add('list-active')
+  }
+}
+
+// open/close help info
+function toggleHelpInfo() {
+  if (window.location.hash === '#help-info') {
+    // this currently leaves a '#' at the end of the URL on close. there's definitely a
+    // better solution out there, but this works even if it's not pretty
+    window.location.hash = ''
+  } else {
+    window.location.hash = '#help-info'
   }
 }
 
