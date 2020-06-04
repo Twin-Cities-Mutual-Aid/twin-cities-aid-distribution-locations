@@ -155,7 +155,7 @@ input[type='checkbox'] + label {
 }
 
 .legend--item--swatch {
-  border-radius: 20%;
+  border-radius: 100%;
   width: 10px;
   height: 10px;
   margin-right: 5px;
@@ -198,10 +198,10 @@ input[type='checkbox'] + label {
 
 .location-list--indicator {
   display: block;
-  border-radius: 3px;
-  width: 16px;
-  height: 16px;
-  border: 2px solid  rgba(0, 0, 0, .1);
+  border-radius: 100%;
+  width: 20px;
+  height: 20px;
+  border: 4px solid white;
   margin-right: 5px;
   flex-shrink: 0;
   text-indent: -10000px;
@@ -232,7 +232,7 @@ input[type='checkbox'] + label {
 .popup-content {
   padding: 15px;
   max-height: 300px;
-  overflow: auto;
+  overflow-y: auto;
 }
 
 .popup-content .key {

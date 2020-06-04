@@ -3,7 +3,6 @@ const $sidePane = document.getElementById('side-pane')
 const $button = document.getElementById('toggle-button');
 const $body = document.body;
 
-
 // we're using the map color from google sheet to indicate location status,
 // but using a different display color for accessibility. so the original
 // color is treated ad an ID
@@ -39,8 +38,6 @@ const statusOptions = [
     accessibleColor: '#ffffbf'
   }
 ]
-
-let locations = []
 
 // Alternative base style: 'mapbox://styles/mapbox/light-v10',
 // See also: https://docs.mapbox.com/mapbox-gl-js/example/setstyle/
@@ -97,52 +94,55 @@ function toggleSidePane() {
   }
 }
 
-// close popups for all locations
-function closePopups() {
-  locations.forEach(location => {
-    location.marker.getPopup().remove()
-  })
-}
-
 // get the status info for a location using the color as ID
 const getStatus = id => _.find(statusOptions, s => (s.id === id.toLowerCase()))
 
+let popup;
+function updatePopup(feature) {
+  if (popup) {
+    popup.remove();
+  }
+  popup = new mapboxgl.Popup({ offset: 15, maxWidth: '275px' })
+    .setLngLat(feature.geometry.coordinates)
+    .setHTML(`<div class='popup-content'>${getPopupContent(feature)}</div>`)
+    .addTo(map);
+}
+
 // create an item for the side pane using a location
-const createListItem = (location, status, lng, lat) => {
-  const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important">Urgent Need: ${location.urgentNeed}</p>` : ''
-  const seekingMoney = location.seekingMoney ? `<span class="seekingMoney location-list--badge">Needs Money Donations</span>` : ''
-  const seekingVolunteers = location.seekingVolunteers ? `<span class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>` : ''
+const createListItem = (f) => {
+  const urgentNeed = f.properties.urgentNeed ? `<p class="urgentNeed p location-list--important">Urgent Need: ${f.properties.urgentNeed}</p>` : ''
+  const seekingMoney = f.properties.seekingMoney === 'yes' ? `<span class="seekingMoney location-list--badge">Needs Money Donations</span>` : ''
+  const seekingVolunteers = f.properties.seekingVolunteers ? `<span class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>` : ''
   const $item = document.createElement('div')
   $item.classList.add('location-list--item')
-  $item.dataset.id = status.id;
   $item.innerHTML = `
     <div class="flex">
-      <span title="${status.id}" class="status location-list--indicator" style="background-color: ${status.accessibleColor};">${status.id}</span>
+      <span title="${f.properties._status.id}" class="status location-list--indicator" style="background-color: ${f.properties._status.accessibleColor};">${f.properties._status.id}</span>
       <div>
         <h2 class='h2'>
-          <span class="name">${location.name}</span>
+          <span class="name">${f.properties.name}</span>
         </h2>
-        <h3 class="h3 neighborhood">${location.neighborhood}</h3>
+        <h3 class="h3 neighborhood">${f.properties.neighborhood}</h3>
         ${urgentNeed}
         ${seekingVolunteers}
         ${seekingMoney}
       </div>
     </div>
     `
+
   $item.addEventListener('click', (evt) => {
-    const popup = location.marker.getPopup()
-    if (popup.isOpen()) {
-      popup.remove()
-    } else {
-      closePopups()
-      toggleSidePane()
-      map.jumpTo({
-        center: popup.getLngLat(),
-        essential: true,
-        zoom: 13
-      })
-      popup.addTo(map)
-    }
+    // Add popup
+    const feature = f;
+    updatePopup(feature);
+
+    // Show map if not visible
+    toggleSidePane()
+
+    // Center map on popup
+    map.jumpTo({
+      center: feature.geometry.coordinates,
+      zoom: 14
+    })
   })
   return $item
 }
@@ -150,114 +150,204 @@ const createListItem = (location, status, lng, lat) => {
 // start fetching data right away
 const dataPromise = fetch(DATA_URL)
 
+async function addMapImages() {
+  let count = statusOptions.length;
+  return new Promise((resolve, reject) => {
+
+    statusOptions.forEach(o => {
+      map.loadImage(`./images/${o.id.substring(1)}.png`, (err, img) => {
+        if (err) throw err;
+        map.addImage(o.id, img);
+
+        count--;
+        if (count === 0) {
+          resolve();
+        }
+
+      });
+    });
+
+  });
+}
+
+function addSymbolLayer(els, geoJSON) {
+  map.addSource('locations', { 
+    type: 'geojson',
+    data: geoJSON,
+  });
+
+  map.addLayer({
+    'id': 'locations',
+    'type': 'symbol',
+    'source': 'locations',
+    'paint': {
+      'text-color': 'black',
+      'text-halo-color': 'white',
+      'text-halo-width': 2.5
+    },
+    'layout': {
+      'symbol-sort-key': ['get', '_priorityRank'], // locations with urgent need get placement priority
+      'icon-image': ['get', '_color'],
+      'icon-size': .6,
+      'icon-padding': 0,
+      'text-size': 13,
+      'text-field': ['get', 'name'],
+      'text-font': ['Arial Unicode MS Bold'],
+      'text-radial-offset': 1.2,
+      'text-variable-anchor': ['top','bottom'],
+      'text-justify': 'auto',
+      'text-padding': 0
+    }
+  });
+}
+
+function prepData(items) { 
+  return _.chain(items)
+    .filter(item => (item.gsx$nameoforganization.$t != '') && (item.gsx$longitude.$t != '') && (item.gsx$latitude.$t != '')) // only items with names and lon,lat
+    .sortBy(item => item.gsx$nameoforganization.$t)
+    .value();
+}
+
+function getPopupContent(featureData) { 
+  // transform location properties into HTML
+  const propertyTransforms = {
+    name: (name) => `<h2 class='h2'>${name}</h2>`,
+    neighborhood: (neighborhood) => `<h3 class='h3'>${neighborhood}</h3>`,
+    address: (address) => `<address><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>`
+  }
+
+  // render HTML for marker
+  return _.map(featureData.properties, (value, key) => {
+    if (propertyTransforms[key]) return propertyTransforms[key](value);
+    if (key.charAt(0) === '_') return; // skip private properties used for map rendering
+    else return `<div class='p row'><p class='txt-deemphasize key'>${camelToTitle(key)}</p><p class='value'>${value}</p></div>`
+  }).join('')
+}
+
+function getIsSeekingMoney(el) {
+  const moneySearchStr = `${el.gsx$accepting.$t}, ${el.gsx$urgentneed.$t}, ${el.gsx$notes.$t}`.toLowerCase()
+  const seekingMoney = moneySearchStr.includes('money') || moneySearchStr.includes('cash') || moneySearchStr.includes('venmo') || moneySearchStr.includes('monetary')
+  return seekingMoney ? 'yes' : 'no';
+}
+
+function toGeoJson(data) {
+  return {
+    'type': 'FeatureCollection',
+    'features': data.map(item => {
+
+      const properties = {
+        name: item.gsx$nameoforganization.$t,
+        neighborhood: item.gsx$neighborhood.$t,
+        address: item.gsx$addresswithlink.$t,
+        currentlyOpenForDistributing: item.gsx$currentlyopenfordistributing.$t,
+        openingForDistributingDontations: item.gsx$openingfordistributingdonations.$t,
+        closingForDistributingDonations: item.gsx$closingfordistributingdonations.$t,
+        accepting: item.gsx$accepting.$t,
+        notAccepting: item.gsx$notaccepting.$t,
+        currentlyOpenForReceiving: item.gsx$currentlyopenforreceiving.$t,
+        openingForReceivingDontations: item.gsx$openingforreceivingdonations.$t,
+        closingForReceivingDonations: item.gsx$closingforreceivingdonations.$t,
+        seekingVolunteers: item.gsx$seekingvolunteers.$t,
+        seekingMoney: getIsSeekingMoney(item),
+        urgentNeed: item.gsx$urgentneed.$t,
+        notes: item.gsx$notes.$t,
+        mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t,
+        // Private
+        _color: item.gsx$color.$t,
+        _priorityRank: item.gsx$urgentneed.$t ? 0 : 1
+      }
+
+      // Delete empty values
+      Object.keys(properties).forEach(p => {
+        if (properties[p] === '') delete properties[p];
+      });
+
+    try {
+      const status = getStatus(properties._color);
+      properties._status = status;
+    } catch(e) { 
+      throw new Error("Malformed data for " + properties.name + ", could not find status: " + properties.color)
+    }
+
+    return {
+        'type': 'Feature',
+        'properties': properties,
+      'id': item.name,
+        'geometry': {
+          'type': "Point",
+          'coordinates': [parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t)]
+        }
+      };
+    })
+  }
+}
+
+function buildList(geoJSON) {
+  geoJSON.features.forEach(f => { 
+    $locationList.appendChild(createListItem(f, f.properties._status))
+  });
+}
+
 // handle the map load event
 const onMapLoad = async () => {
   const resp = await dataPromise
-  const data = await resp.json()
+  const data = await resp.json().then(d => prepData(d.feed.entry));
+  const geoJSON = toGeoJson(data);
+  await addMapImages();
+  addSymbolLayer(data, geoJSON);
+  buildList(geoJSON);
 
-  // filter and transform data from google sheet
-  locations = _.chain(data.feed.entry)
-    .filter(item => (item.gsx$nameoforganization.$t != '') && (item.gsx$longitude.$t != '') && (item.gsx$latitude.$t != '')) // only items with names and lon,lat
-    .sortBy(item => item.gsx$nameoforganization.$t )
-    .map(item => {
+  // add nav
+  new Filter($sidePane, {
+    sortOptions: [
+      {
+        name: 'urgentNeed',
+        label: 'Urgent requests first',
+        sort: { order: 'desc' }
+      },
+      {
+        name: 'name',
+        label: 'Alphabetical (name)',
+        sort: { order: 'asc' },
+        selected: true
+      },
+      {
+        name: 'status',
+        label: 'Location status',
+        sort: { order: 'desc' }
+      },
+      {
+        name: 'neighborhood',
+        label: 'Alphabetical (neighborhood)',
+        sort: { order: 'asc' }
+      },
+      {
+        name: 'seekingMoney',
+        label: 'Needs money',
+        sort: { order: 'desc' }
+      },
+      {
+        name: 'seekingVolunteers',
+        label: 'Needs volunteers',
+        sort: { order: 'desc' }
+      }
+    ],
+    statusOptions,
+  })
 
-      try {
-        const moneySearchStr = `${item.gsx$accepting.$t}, ${item.gsx$urgentneed.$t}, ${item.gsx$notes.$t}`.toLowerCase()
-        const seekingMoney = moneySearchStr.includes('money') || moneySearchStr.includes('cash') || moneySearchStr.includes('venmo') || moneySearchStr.includes('monetary')
-        // the location schema
-        const rawLocation = {
-          name: item.gsx$nameoforganization.$t,
-          neighborhood: item.gsx$neighborhood.$t,
-          address: item.gsx$addresswithlink.$t,
-          currentlyOpenForDistributing: item.gsx$currentlyopenfordistributing.$t,
-          openingForDistributingDontations: item.gsx$openingfordistributingdonations.$t,
-          closingForDistributingDonations: item.gsx$closingfordistributingdonations.$t,
-          accepting: item.gsx$accepting.$t,
-          notAccepting: item.gsx$notaccepting.$t,
-          currentlyOpenForReceiving: item.gsx$currentlyopenforreceiving.$t,
-          openingForReceivingDontations: item.gsx$openingforreceivingdonations.$t,
-          closingForReceivingDonations: item.gsx$closingforreceivingdonations.$t,
-          seekingVolunteers: item.gsx$seekingvolunteers.$t,
-          seekingMoney: seekingMoney,
-          urgentNeed: item.gsx$urgentneed.$t,
-          notes: item.gsx$notes.$t,
-          mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t
-        }
-        const location = _.pickBy(rawLocation, val => val != '')
-        const status = getStatus(item.gsx$color.$t)
+  map.on('click', 'locations', function (e) {
+    updatePopup(e.features[0]);
+  });
 
-        if (!status) {
-          throw new Error("Malformed data for " + location.name + ", could not find status: " + item.gsx$color.$t)
-        }
+  // Map event handlers
+  map.on('mouseenter', 'locations', function () {
+    map.getCanvas().style.cursor = 'pointer';
+  });
 
-        // transform location properties into HTML
-        const propertyTransforms = {
-          name: (name) => `<h2 class='h2'>${name}</h2>`,
-          neighborhood: (neighborhood) => `<h3 class='h3'>${neighborhood}</h3>`,
-          address: (address) => `<address><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>` // driving directions in google, consider doing inside mapbox
-        }
-
-        // render HTML for marker
-        const markerHtml = _.map(location, (value, key) => {
-          if (propertyTransforms[key]) return propertyTransforms[key](value)
-          else return `<div class='p row'><p class='txt-deemphasize key'>${camelToTitle(key)}</p><p class='value'>${value}</p></div>`
-        }).join('')
-
-        // create marker
-        location.marker = new mapboxgl.Marker({ color: status.accessibleColor })
-          .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
-          .setPopup(new mapboxgl.Popup().setMaxWidth('275px').setHTML(`<div class='popup-content'>${markerHtml}</div>`))
-          .addTo(map);
-
-          location.marker.getElement().className += " status-" + status.name;
-
-          // add to the side panel
-          $locationList.appendChild(createListItem(location, status, item.gsx$longitude.$, item.gsx$latitude.$))
-
-          return location
-        } catch (e) {
-          console.error(e)
-          return
-        }
-    }).value()
-
-    // add nav
-    const filter = new Filter($sidePane, {
-      sortOptions: [
-        {
-          name: 'urgentNeed',
-          label: 'Urgent requests first',
-          sort: { order: 'desc' }
-        },
-        {
-          name: 'name',
-          label: 'Alphabetical (name)',
-          sort: { order: 'asc' },
-          selected: true
-        },
-        {
-          name: 'status',
-          label: 'Location status',
-          sort: { order: 'desc' }
-        },
-        {
-          name: 'neighborhood',
-          label: 'Alphabetical (neighborhood)',
-          sort: { order: 'asc' }
-        },
-        {
-          name: 'seekingMoney',
-          label: 'Needs money',
-          sort: { order: 'desc' }
-        },
-        {
-          name: 'seekingVolunteers',
-          label: 'Needs volunteers',
-          sort: { order: 'desc' }
-        }
-      ],
-      statusOptions,
-    })
+  // Change it back to a pointer when it leaves.
+  map.on('mouseleave', 'locations', function () {
+    map.getCanvas().style.cursor = '';
+  });
 }
 
 // load map
