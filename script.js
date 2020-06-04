@@ -113,6 +113,10 @@ function needsMoneyComponent(location) {
   return location.seekingMoney ? `<span class="seeking-money location-list--badge">Needs Money <a href="${location.seekingMoneyURL}" target="_blank">DONATE NOW!</a></span>` : ''
 }
 
+function addressComponent(address) {
+  return `<address><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>`;
+}
+
 // get the status info for a location using the color as ID
 const getStatus = id => _.find(statusOptions, s => (s.id === id.toLowerCase()))
 
@@ -157,6 +161,50 @@ const createListItem = (location, status, lng, lat) => {
   return $item
 }
 
+//////////////////////////
+// Protect against columns not yet existing in the spreadsheet.
+// We can remove once they are added to the sheet.
+function extractSeekingMoney(item) {
+  try {
+    truthy(item.gsx$seekingmoney.$t);
+  } catch (err) {
+    console.info("Seeking Money Column does not exist yet.");
+    return false;
+  }
+}
+
+function extractSeekingMoneyURL(item) {
+  try {
+    return item.gsx$seekingmoneyurl.$t;
+  } catch (err) {
+    console.info("Seeking Money URL Column does not exist yet.");
+    return '';
+  }
+}
+//////////////////////////
+
+function extractRawLocation(item) {
+  return {
+    name: item.gsx$nameoforganization.$t,
+    neighborhood: item.gsx$neighborhood.$t,
+    address: item.gsx$addresswithlink.$t,
+    seekingMoney: extractSeekingMoney(item),
+    seekingMoneyURL: extractSeekingMoneyURL(item),
+    currentlyOpenForDistributing: item.gsx$currentlyopenfordistributing.$t,
+    openingForDistributingDontations: item.gsx$openingfordistributingdonations.$t,
+    closingForDistributingDonations: item.gsx$closingfordistributingdonations.$t,
+    accepting: item.gsx$accepting.$t,
+    notAccepting: item.gsx$notaccepting.$t,
+    currentlyOpenForReceiving: item.gsx$currentlyopenforreceiving.$t,
+    openingForReceivingDontations: item.gsx$openingforreceivingdonations.$t,
+    closingForReceivingDonations: item.gsx$closingforreceivingdonations.$t,
+    seekingVolunteers: item.gsx$seekingvolunteers.$t,
+    urgentNeed: item.gsx$urgentneed.$t,
+    notes: item.gsx$notes.$t,
+    mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t
+  }
+}
+
 // start fetching data right away
 const dataPromise = fetch(DATA_URL)
 
@@ -173,27 +221,9 @@ const onMapLoad = async () => {
 
       try {
         // the location schema
-        const rawLocation = {
-          name: item.gsx$nameoforganization.$t,
-          neighborhood: item.gsx$neighborhood.$t,
-          address: item.gsx$addresswithlink.$t,
-          seekingMoney: truthy(item.gsx$seekingmoney.$t),
-          seekingMoneyURL: item.gsx$seekingmoneyurl.$t,
-          currentlyOpenForDistributing: item.gsx$currentlyopenfordistributing.$t,
-          openingForDistributingDontations: item.gsx$openingfordistributingdonations.$t,
-          closingForDistributingDonations: item.gsx$closingfordistributingdonations.$t,
-          accepting: item.gsx$accepting.$t,
-          notAccepting: item.gsx$notaccepting.$t,
-          currentlyOpenForReceiving: item.gsx$currentlyopenforreceiving.$t,
-          openingForReceivingDontations: item.gsx$openingforreceivingdonations.$t,
-          closingForReceivingDonations: item.gsx$closingforreceivingdonations.$t,
-          seekingVolunteers: item.gsx$seekingvolunteers.$t,
-          urgentNeed: item.gsx$urgentneed.$t,
-          notes: item.gsx$notes.$t,
-          mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t
-        }
-        const location = _.pickBy(rawLocation, val => val != '')
-        const status = getStatus(item.gsx$color.$t)
+        const rawLocation = extractRawLocation(item);
+        const location = _.pickBy(rawLocation, val => val != '');
+        const status = getStatus(item.gsx$color.$t);
 
         if (!status) {
           throw new Error("Malformed data for " + location.name + ", could not find status: " + item.gsx$color.$t)
@@ -203,7 +233,8 @@ const onMapLoad = async () => {
         const propertyTransforms = {
           name: (name, _) => `<h2 class='h2'>${name}</h2>`,
           neighborhood: (neighborhood, _) => `<h3 class='h3'>${neighborhood}</h3>`,
-          address: (address, _) => `<address class='p'><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>`,
+          // driving directions in google, consider doing inside mapbox
+          address: addressComponent,
           seekingMoney: (value, location) => needsMoneyComponent(location),
           seekingMoneyURL: (value, _) => ''
         }
@@ -211,13 +242,13 @@ const onMapLoad = async () => {
         // render HTML for marker
         const markerHtml = _.map(location, (value, key) => {
           if (propertyTransforms[key]) return propertyTransforms[key](value, location)
-          else return `<p class='p'><span class='txt-deemphasize'>${camelToTitle(key)}: </span>${value}</p>`
+          else return `<div class='p row'><p class='txt-deemphasize key'>${camelToTitle(key)}</p><p class='value'>${value}</p></div>`
         }).join('')
 
         // create marker
         location.marker = new mapboxgl.Marker({ color: status.accessibleColor })
           .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
-          .setPopup(new mapboxgl.Popup().setMaxWidth('250px').setHTML(`<div class='popup-content'>${markerHtml}</div>`))
+          .setPopup(new mapboxgl.Popup().setMaxWidth('275px').setHTML(`<div class='popup-content'>${markerHtml}</div>`))
           .addTo(map);
 
           location.marker.getElement().className += " status-" + status.name;
