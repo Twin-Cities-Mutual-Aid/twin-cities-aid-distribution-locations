@@ -110,7 +110,13 @@ function closePopups() {
 }
 
 function needsMoneyComponent(location) {
-  return location.seekingMoney ? `<span class="seeking-money location-list--badge">Needs Money <a href="${location.seekingMoneyURL}" target="_blank">DONATE NOW!</a></span>` : ''
+  if (!location.seekingMoney) return ''
+
+  let link = '';
+  if (location.seekingMoneyURL && location.seekingMoneyURL !== '') {
+    link = `<a href="${location.seekingMoneyURL}" target="_blank">DONATE NOW!</a>`;
+  }
+  return `<span class="seeking-money location-list--badge">Needs Money ${link}</span>`;
 }
 
 function addressComponent(address) {
