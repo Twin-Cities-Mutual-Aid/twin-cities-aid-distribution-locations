@@ -1,6 +1,6 @@
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
-const $button = document.getElementById('toggle-button');
+const $locationsButton = document.getElementById('locations-toggle-button');
 const $body = document.body;
 
 
@@ -89,10 +89,10 @@ function camelToTitle(str) {
 // open/close sidebar
 function toggleSidePane() {
   if ($body.classList.contains('list-active')) {
-    $button.innerText = 'Show list of locations'
+    $locationsButton.innerText = 'Show list of locations'
     $body.classList.remove('list-active')
   } else {
-    $button.innerText = 'Hide list of locations'
+    $locationsButton.innerText = 'Hide list of locations'
     $body.classList.add('list-active')
   }
 }
