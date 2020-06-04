@@ -3,6 +3,7 @@ const $sidePane = document.getElementById('side-pane')
 const $button = document.getElementById('toggle-button');
 const $body = document.body;
 
+let translator
 
 // we're using the map color from google sheet to indicate location status,
 // but using a different display color for accessibility. so the original
@@ -104,14 +105,20 @@ function closePopups() {
   })
 }
 
+const getLanguage = () => {
+  const qs = window.location.search.substring(1)
+  const m = /lang=([A-z]+)/i.exec(qs)
+  return (m && m.length > 1) ? m[1] : null
+}
+
 // get the status info for a location using the color as ID
 const getStatus = id => _.find(statusOptions, s => (s.id === id.toLowerCase()))
 
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
   const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important">Urgent Need: ${location.urgentNeed}</p>` : ''
-  const seekingMoney = location.seekingMoney ? `<span class="seekingMoney location-list--badge">Needs Money Donations</span>` : ''
-  const seekingVolunteers = location.seekingVolunteers ? `<span class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>` : ''
+  const seekingMoney = location.seekingMoney ? `<span data-translation-id="seeking_money" class="seekingMoney location-list--badge">Needs Money Donations</span>` : ''
+  const seekingVolunteers = location.seekingVolunteers ? `<span data-translation-id="need_volunteer_support" class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>` : ''
   const $item = document.createElement('div')
   $item.classList.add('location-list--item')
   $item.dataset.id = status.id;
@@ -149,6 +156,7 @@ const createListItem = (location, status, lng, lat) => {
 
 // start fetching data right away
 const dataPromise = fetch(DATA_URL)
+const translationsPromise = fetch(TRANS_URL)
 
 // handle the map load event
 const onMapLoad = async () => {
@@ -257,6 +265,20 @@ const onMapLoad = async () => {
         }
       ],
       statusOptions,
+    })
+
+    // do translation
+    translationsPromise.then(async (resp) => {
+      try {
+        const data = await resp.json()
+        const lang = getLanguage()
+        const parsedData = Translator.ParseGoogleSheetData(data)
+        translator = new Translator(parsedData)
+        if (lang) translator.translate(lang)
+      } catch (e) {
+        console.error('Error translating page', e)
+      }
+
     })
 }
 

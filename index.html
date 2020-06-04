@@ -32,7 +32,8 @@
 	<script>
 		mapboxgl.accessToken = 'pk.eyJ1IjoiamFjb2JyZGFsdG9uIiwiYSI6ImNrYXc2anFjbjIxNGwyeG14dWk0MDVycmIifQ.yILWplracVMB4mv1dWwTtg'
 		const DATA_URL = 'https://spreadsheets.google.com/feeds/list/1CyPozeKhmOuIaVnKDQAUKKsvA9R4F20hEQ3MSGWczP8/1/public/full?alt=json'
-	</script>
+		const TRANS_URL = 'https://spreadsheets.google.com/feeds/list/1m5QPNP6O8nsQsqJcQbwib_obpXRjmbYYGtwKzzg1l38/1/public/full?alt=json'
+  </script>
 
   <link rel="stylesheet" href="./normalize.css">
 	<link rel="stylesheet" href="./styles.css">
@@ -41,10 +42,17 @@
 <body class='flex'>
   <div class="content">
     <div class="title">
-      <h1 class='h1'>Twin Cities Aid Map</h1>
+      <h1 data-translation-id="page_title" class='h1'>Twin Cities Aid Map</h1>
+      <ul class="languages">
+        <li><a data-lang="eng" href="/">English</a></li>
+        <li><a data-lang="spa" href="/?lang=spa">Español</a></li>
+        <li><a data-lang="kar" href="/?lang=kar">Karen</a></li>
+        <li><a data-lang="som" href="/?lang=som">Soomaali</a></li>
+        <li><a data-lang="hmn" href="/?lang=hmn">Hmong</a></li>
+      </ul>
       <p class='p txt-small spaced-lines'>See this data in <a class="txt-white" href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSfnmh9CmtVoBMy2k_-NMhhvF7ursBs2L5IPF9VZ1J-l9P71vjDFw7y6Y6E98d5lNeOAEo7leisP0Y8/pubhtml" target="_blank">Google Sheets</a>. About <a class="txt-white" href="https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations" target="_blank">this project</a>.</p>
       <div class='legend' id="key"></div>
-      <button id="toggle-button" class="location-list-toggle" onClick="toggleSidePane(this)">Show list of locations</button>
+      <button data-translation-id="show_list_button" id="toggle-button" class="location-list-toggle" onClick="toggleSidePane(this)">Show list of locations</button>
       <div class='counter'>
         <script type="text/javascript" src="//counter.websiteout.net/js/7/0/41000/0"></script>
       </div>
@@ -58,6 +66,7 @@
   
   <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
   <script src="./filter.js"></script>
+  <script src="./translator.js"></script>
   <script src="./script.js"></script>
 
 </body>
