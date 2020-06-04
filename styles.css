@@ -86,6 +86,7 @@ a.txt-white:hover {
 
 .p {
   margin: 0px;
+  padding: 0px;
 }
 
 .p:not(:last-child) {
@@ -97,7 +98,8 @@ a.txt-white:hover {
 }
 
 .txt-deemphasize {
-  opacity: .75;
+  opacity: 0.70;
+  font-size: 0.9em;
 }
 
 /* Shared:forms */
@@ -116,11 +118,18 @@ input[type='checkbox'] + label {
   width: 150px;
 }
 
-/* component: title */
-.title {
+.white-and-blue {
   color: white;
   background-color: rgba(0,0,50,.9);
-  padding: 15px;
+}
+
+/* component: title */
+.title {
+  padding: 15px 15px 5px 15px;
+}
+
+.filter-pane {
+  padding: 0px 15px 15px 15px;
 }
 
 /* component:filters */
@@ -217,11 +226,27 @@ input[type='checkbox'] + label {
   cursor: pointer;
   background-color: white;
 }
+
 /* component: map popup */
 .popup-content {
   padding: 15px;
   max-height: 300px;
   overflow: auto;
+}
+
+.popup-content .key {
+  padding: 0px;
+  margin: 0px;
+  border-bottom: 1px solid #ddd;
+}
+
+.popup-content .value {
+  padding: 5px 0 10px 0;
+  margin: 0px;
+}
+
+.popup-content address {
+  padding-bottom: 20px;
 }
 
 /* component: traffic counter */
@@ -285,23 +310,19 @@ input[type='checkbox'] + label {
   .legend--item {
     margin-right: 10px;
   }
-
   .location-list-toggle {
     display: block;
   }
-
   .list-active .location-list {
     display: block;
   }
   .location-list {
     display: none;
   }
-
   .map {
     display: block;
   }
   .list-active .map {
     display: none;
   }
-
 }
