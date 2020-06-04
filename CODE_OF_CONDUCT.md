@@ -1,6 +1,6 @@
 # Code of Conduct
 
-The Twin Cities Aid Map community welcomes participation from everyone. 
+The Twin Cities Mutual Aid Map community welcomes participation from everyone. 
 
 ## Expectations 
 
