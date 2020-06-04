@@ -3,7 +3,11 @@
   checklist to ensure the project meets the needs.
 -->
 
-_Brief description of changes. Reference to related issues if apprioriate._
+### What
+_Brief description of changes._
+
+### Why
+_What problem does this pull requests solve?  Reference related issues if appropriate._
 
 ### Ensure the following interactions work as expected. Please test using a mobile form factor.
 - [ ] Tapping on a marker on the map displays information about the marker in a popup.
