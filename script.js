@@ -166,7 +166,7 @@ const createListItem = (location, status, lng, lat) => {
 // We can remove once they are added to the sheet.
 function extractSeekingMoney(item) {
   try {
-    truthy(item.gsx$seekingmoney.$t);
+    return truthy(item.gsx$seekingmoney.$t);
   } catch (err) {
     console.info("Seeking Money Column does not exist yet.");
     return false;
