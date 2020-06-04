@@ -188,7 +188,7 @@ function addSymbolLayer(els, geoJSON) {
     'layout': {
       'symbol-sort-key': ['get', '_priorityRank'], // locations with urgent need get placement priority
       'icon-image': ['get', '_id'],
-      'icon-size': .6,
+      'icon-size': .8,
       'icon-padding': 0,
       'text-size': 13,
       'text-field': ['get', 'name'],
