@@ -2,7 +2,7 @@
  * Filter adds a filter control to the side panel location list
  */
 class Filter {
-  
+
   constructor(el, options) {
     Object.assign(this, options)
     this.$filters = []
@@ -18,6 +18,11 @@ class Filter {
      * are BOTH unchecked.
      */
     document.getElementById("filter-both").disabled = true
+
+    // Uncheck closed and unknown status locations to make a clearer call to action for new users on the site.
+    document.getElementById("filter-closed").checked = false
+    document.getElementById("filter-unknown").checked = false
+    this.update()
   }
 
   update() {
@@ -38,7 +43,7 @@ class Filter {
 
     this.toggleMapPoints(filterValues);
     this.list.filter(i => {
-        const index = _.findIndex(this.statusOptions, o => { 
+        const index = _.findIndex(this.statusOptions, o => {
           return o.id === i.values().status;
         });
         return filterValues[index]
@@ -58,7 +63,7 @@ class Filter {
   }
 
   renderControls() {
-    
+
     const options = this.sortOptions.map(o => {
       return `<option value="${o.name}" ${o.selected && 'selected'}>${o.label}</option>`
     }).join('')
@@ -69,7 +74,7 @@ class Filter {
     }).join('')
 
     this.$controls.innerHTML = `
-      <div class="select-container">  
+      <div class="select-container">
         <label for="sort-by">Sort by: </label>
         <select name="sort-by" id="sort-by">
           ${options}
