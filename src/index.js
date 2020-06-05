@@ -1,8 +1,27 @@
+// Import Styles
+import 'mapbox-gl/dist/mapbox-gl.css'
+import 'mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
+import './styles/normalize.css'
+import './styles/styles.css'
+import './styles/welcome.css'
+import './styles/translator.css'
+
+// Import Libs
+import mapboxgl from 'mapbox-gl'
+import MapboxGeocoder from 'mapbox-gl-geocoder'
+import moment from 'moment'
+import Config from './config'
+import _ from 'lodash'
+import Filter from './js/filter'
+import Translator from './js/translator'
+import WelcomeModal from './js/welcome'
+
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
 const $locationsButton = document.getElementById('locations-toggle-button');
 const $body = document.body;
 
+mapboxgl.accessToken = Config.accessToken
 
 // we're using the map color from google sheet to indicate location status,
 // but using a different display color for accessibility. so the original
@@ -41,6 +60,57 @@ const statusOptions = [
   },
   unknownStatus
 ]
+
+
+let langs
+// show all langs in dev mode
+if (window.location.search.indexOf('dev') > -1) {
+  langs = ['eng', 'spa', 'kar', 'som', 'hmn', 'amh', 'orm']
+// otherwise only show these
+} else {
+  langs = ['eng', 'spa']
+}
+
+// initialize translator and load translations file
+const translator = new Translator({ enabledLanguages: langs })
+let welcome
+
+// get the translation data and then run the translator
+fetch(Config.translationUrl).then(async (resp) => {
+  try {
+    const data = await resp.json()
+
+    // add translation definitions to translator
+    translator.setTranslations(Translator.ParseGoogleSheetData(data))
+
+    // create the welcome modal
+    welcome = new WelcomeModal({
+      languages: translator.availableLanguages,
+
+      // when language is selected, run translation
+      onLanguageSelect: lang => {
+        translator.language = lang
+        translator.translate()
+      }
+    })
+
+    // show welcome modal if no language is selected
+    if (!translator.language) {
+      welcome.open()
+
+    // otherwise just run translator
+    } else {
+      translator.translate()
+    }
+
+    // when language button is clicked, re-open welcome modal
+    const languageButton = document.getElementById('lang-select-button')
+    languageButton.addEventListener('click', () => welcome.open())
+
+  } catch (e) {
+    console.error('Translation error', e)
+  }
+})
 
 let locations = []
 
@@ -88,13 +158,18 @@ function camelToTitle(str) {
   return result.charAt(0).toUpperCase() + result.slice(1)
 }
 
+function truthy(str) {
+  const normalizedStr = _.toUpper(str);
+  return _.includes(['TRUE', 'YES', 'T', 'Y'], normalizedStr);
+}
+
 // open/close location sidebar
 function toggleSidePane() {
   if ($body.classList.contains('list-active')) {
-    $locationsButton.innerText = 'Show list of locations'
+    $locationsButton.innerText = translator.get('show_list_button', 'Show list of locations')
     $body.classList.remove('list-active')
   } else {
-    $locationsButton.innerText = 'Hide list of locations'
+    $locationsButton.innerText = translator.get('hide_list_button', 'Hide list of locations')
     $body.classList.add('list-active')
   }
 }
@@ -117,6 +192,20 @@ function closePopups() {
   })
 }
 
+function needsMoneyComponent(location) {
+  if (!location.seekingMoney) return ''
+
+  let link = '';
+  if (location.seekingMoneyURL && location.seekingMoneyURL !== '') {
+    link = `<a data-translation-id="seeking_money_link" href="${location.seekingMoneyURL}" target="_blank">DONATE NOW!</a>`;
+  }
+  return `<span  class="seekingMoney seeking-money location-list--badge"><span data-translation-id="seeking_money">Needs Money</span> ${link}</span>`;
+}
+
+function addressComponent(address) {
+  return `<address><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>`;
+}
+
 // get the status info for a location using the color as ID, else default to unknown.
 const getStatus = id => {
   const status = _.find(statusOptions, s => (s.id === id.toLowerCase()))
@@ -125,11 +214,12 @@ const getStatus = id => {
 
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
-  const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important">Urgent Need: ${location.urgentNeed}</p>` : ''
-  const seekingMoney = location.seekingMoney ? `<span class="seekingMoney location-list--badge">Needs Money Donations</span>` : ''
+  const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important"><span data-translation-id="urgent_need">Urgent Need</span>: ${location.urgentNeed}</p>` : ''
+  const seekingMoney = needsMoneyComponent(location);
+
   let seekingVolunteers = ''
   if (location.seekingVolunteers && location.seekingVolunteers.match(/(?:\byes\b)/i)) {
-    seekingVolunteers = `<span class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>`
+    seekingVolunteers = `<span data-translation-id="seeking_volunteers" class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>`
   }
 
   const openTimeDistribution = moment(location.openingForDistributingDontations, ["h:mm A"])
@@ -177,14 +267,60 @@ const createListItem = (location, status, lng, lat) => {
         essential: true,
         zoom: 13
       })
+      console.log('popup', popup)
       popup.addTo(map)
+      if (translator.language) translator.translate()
     }
   })
   return $item
 }
 
+//////////////////////////
+// Protect against columns not yet existing in the spreadsheet.
+// We can remove once they are added to the sheet.
+function extractSeekingMoney(item) {
+  try {
+    return truthy(item.gsx$seekingmoney.$t);
+  } catch (err) {
+    console.info("Seeking Money Column does not exist yet.");
+    return false;
+  }
+}
+
+function extractSeekingMoneyURL(item) {
+  try {
+    return item.gsx$seekingmoneyurl.$t;
+  } catch (err) {
+    console.info("Seeking Money URL Column does not exist yet.");
+    return '';
+  }
+}
+//////////////////////////
+
+function extractRawLocation(item) {
+  return {
+    name: item.gsx$nameoforganization.$t,
+    neighborhood: item.gsx$neighborhood.$t,
+    address: item.gsx$addresswithlink.$t,
+    mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t,
+    seekingMoney: extractSeekingMoney(item),
+    seekingMoneyURL: extractSeekingMoneyURL(item),
+    currentlyOpenForDistributing: item.gsx$currentlyopenfordistributing.$t,
+    openingForDistributingDontations: item.gsx$openingfordistributingdonations.$t,
+    closingForDistributingDonations: item.gsx$closingfordistributingdonations.$t,
+    accepting: item.gsx$accepting.$t,
+    notAccepting: item.gsx$notaccepting.$t,
+    currentlyOpenForReceiving: item.gsx$currentlyopenforreceiving.$t,
+    openingForReceivingDontations: item.gsx$openingforreceivingdonations.$t,
+    closingForReceivingDonations: item.gsx$closingforreceivingdonations.$t,
+    seekingVolunteers: item.gsx$seekingvolunteers.$t,
+    urgentNeed: item.gsx$urgentneed.$t,
+    notes: item.gsx$notes.$t
+  }
+}
+
 // start fetching data right away
-const dataPromise = fetch(DATA_URL)
+const dataPromise = fetch(Config.dataUrl)
 
 // handle the map load event
 const onMapLoad = async () => {
@@ -198,42 +334,25 @@ const onMapLoad = async () => {
     .map(item => {
 
       try {
-        const moneySearchStr = `${item.gsx$accepting.$t}, ${item.gsx$urgentneed.$t}, ${item.gsx$notes.$t}`.toLowerCase()
-        const seekingMoney = moneySearchStr.includes('money') || moneySearchStr.includes('cash') || moneySearchStr.includes('venmo') || moneySearchStr.includes('monetary')
         // the location schema
-        const rawLocation = {
-          name: item.gsx$nameoforganization.$t,
-          neighborhood: item.gsx$neighborhood.$t,
-          address: item.gsx$addresswithlink.$t,
-          mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t,
-          currentlyOpenForDistributing: item.gsx$currentlyopenfordistributing.$t,
-          openingForDistributingDontations: item.gsx$openingfordistributingdonations.$t,
-          closingForDistributingDonations: item.gsx$closingfordistributingdonations.$t,
-          accepting: item.gsx$accepting.$t,
-          notAccepting: item.gsx$notaccepting.$t,
-          currentlyOpenForReceiving: item.gsx$currentlyopenforreceiving.$t,
-          openingForReceivingDontations: item.gsx$openingforreceivingdonations.$t,
-          closingForReceivingDonations: item.gsx$closingforreceivingdonations.$t,
-          seekingVolunteers: item.gsx$seekingvolunteers.$t,
-          seekingMoney: seekingMoney,
-          urgentNeed: item.gsx$urgentneed.$t,
-          notes: item.gsx$notes.$t
-        }
-        const location = _.pickBy(rawLocation, val => val != '')
-        const status = getStatus(item.gsx$color.$t)
+        const rawLocation = extractRawLocation(item);
+        const location = _.pickBy(rawLocation, val => val != '');
+        const status = getStatus(item.gsx$color.$t);
 
         // transform location properties into HTML
         const propertyTransforms = {
-          name: (name) => `<h2 class='h2'>${name}</h2>`,
-          neighborhood: (neighborhood) => `<h3 class='h3'>${neighborhood}</h3>`,
-          address: (address) => `<address><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>`, // driving directions in google, consider doing inside mapbox
-          mostRecentlyUpdatedAt: (datetime) => `<div class='updated-at' title='${datetime}'>Last updated ${moment(datetime, 'H:m M/D').fromNow()}</div>`
+          name: (name, _) => `<h2 class='h2'>${name}</h2>`,
+          neighborhood: (neighborhood, _) => `<h3 class='h3'>${neighborhood}</h3>`,
+          address: addressComponent, // driving directions in google, consider doing inside mapbox
+          seekingMoney: (value, location) => needsMoneyComponent(location),
+          seekingMoneyURL: (value, _) => '',
+          mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> ${moment(datetime, 'H:m M/D').fromNow()}</div>`
         }
 
         // render HTML for marker
         const markerHtml = _.map(location, (value, key) => {
-          if (propertyTransforms[key]) return propertyTransforms[key](value)
-          else return `<div class='p row'><p class='txt-deemphasize key'>${camelToTitle(key)}</p><p class='value'>${value}</p></div>`
+          if (propertyTransforms[key]) return propertyTransforms[key](value, location)
+          else return `<div class='p row'><p data-translation-id="${_.snakeCase(key)}"class='txt-deemphasize key'>${camelToTitle(key)}</p><p class='value'>${value}</p></div>`
         }).join('')
 
         // create marker
@@ -243,6 +362,10 @@ const onMapLoad = async () => {
           .addTo(map);
 
           location.marker.getElement().className += " status-" + status.name;
+
+          // run translation when popup opens
+          const popup = location.marker.getPopup()
+          popup.on('open', () => translator.translate(popup.getElement()))
 
           // add to the side panel
           $locationList.appendChild(createListItem(location, status, item.gsx$longitude.$, item.gsx$latitude.$))
@@ -290,11 +413,32 @@ const onMapLoad = async () => {
         }
       ],
       statusOptions,
+      onAfterUpdate: () => translator.translate()
     })
+
+    // making sure to run translations after
+    // everything else is loaded
+    translator.translate()
 }
 
 // load map
 map.on('load', onMapLoad)
+
+// add sidebar-toggle-button handler
+$locationsButton.addEventListener("click", function(){
+  toggleSidePane()
+});
+
+// add help-toggle-button handler
+const helpInfoOpenButton = document.getElementById('help-info-toggle-button')
+helpInfoOpenButton.addEventListener("click", function(){
+  toggleHelpInfo()
+});
+
+const helpInfoCloseButton = document.getElementById('help-info-close-button')
+helpInfoCloseButton.addEventListener("click", function(){
+  toggleHelpInfo()
+});
 
 // render key
 const key = document.getElementById('key')

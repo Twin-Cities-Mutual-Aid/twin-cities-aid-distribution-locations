@@ -32,17 +32,52 @@ extract the sheet ID out of the url to plug into the DATA_URL const.
 ## About the application
 This started as a very lightweight, single page html file, and we've tried very hard to keep things as simple as possible.
 
+### Setup
+
+1. Install node at the version specified in the [`.node_version`](.node_version) file. If you use a version manager like nodenv or nvm, this should be detected automatically.
+2. Install dependencies with npm
+    ```
+    npm install
+    ```
+3. Start building!
+
 ### Run locally
 
 To run a development server that will auto-reload on save, run this command from the project directory:
 
-`
+```
 npm run dev
-`
+```
 
 A server will run on http://localhost:8080
 
-Alternately, you can run `npx http-server`, or install https://www.npmjs.com/package/http-server and run `http-server` (defaulting to port 8080).
+## Adding things
+
+### Adding A Dependency
+
+1. Add your dependency with `npm install --save <dep>`
+2. Use your dependency with `import <whatever> from '<dep>'`
+3. Run `npm run snowpack install` to vendor the dependency
+
+### Adding Stylesheets
+
+#### From a dependency
+
+1. Import the sheet from the dist folder like `import '<dep>/dist/stylesheet.css`
+2. That's it.
+
+#### From a new Source file
+
+1. Create a stylesheet in `src/styles`
+2. Import the sheet either in the index or from whatever js file the styles apply to.
+
+### Adding an Image
+
+Images go in `public/images` and will be served under `<url>/images/image_name.whatever`
+
+### Any other static file
+
+If you need to add some other kind of static file, it should go somewhere in the public folder.
 
 ### Maki Icons
 https://labs.mapbox.com/maki-icons/
