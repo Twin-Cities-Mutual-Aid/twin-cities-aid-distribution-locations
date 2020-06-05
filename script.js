@@ -6,7 +6,14 @@ const $body = document.body;
 
 // we're using the map color from google sheet to indicate location status,
 // but using a different display color for accessibility. so the original
-// color is treated ad an ID
+// color is treated as an ID
+const unknownStatus =   {
+  id: '#aaaaaa',
+  name: 'unknown',
+  label: 'status unknown',
+  accessibleColor: '#ffffbf'
+}
+
 const statusOptions = [
   {
     id: '#fc03df',
@@ -32,12 +39,7 @@ const statusOptions = [
     label: 'currently closed',
     accessibleColor: '#d7191c'
   },
-  {
-    id: '#aaaaaa',
-    name: 'unknown',
-    label: 'status unknown',
-    accessibleColor: '#ffffbf'
-  }
+  unknownStatus
 ]
 
 let locations = []
@@ -115,8 +117,11 @@ function closePopups() {
   })
 }
 
-// get the status info for a location using the color as ID
-const getStatus = id => _.find(statusOptions, s => (s.id === id.toLowerCase()))
+// get the status info for a location using the color as ID, else default to unknown.
+const getStatus = id => {
+  const status = _.find(statusOptions, s => (s.id === id.toLowerCase()))
+  return status || unknownStatus
+}
 
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
@@ -196,10 +201,6 @@ const onMapLoad = async () => {
         }
         const location = _.pickBy(rawLocation, val => val != '')
         const status = getStatus(item.gsx$color.$t)
-
-        if (!status) {
-          throw new Error("Malformed data for " + location.name + ", could not find status: " + item.gsx$color.$t)
-        }
 
         // transform location properties into HTML
         const propertyTransforms = {
