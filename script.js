@@ -40,28 +40,31 @@ const statusOptions = [
 ]
 
 
-// allow dev mode for previewing languages
 let langs
+// show all langs in dev mode
 if (window.location.search.indexOf('dev') > -1) {
   langs = ['eng', 'spa', 'kar', 'som', 'hmn', 'amh', 'orm']
+// otherwise only show these
 } else {
   langs = ['eng', 'spa']
 }
 
 // initialize translator and load translations file
-const translator = new Translator({
-  enabledLanguages: langs
-})
-let welcome;
+const translator = new Translator({ enabledLanguages: langs })
+let welcome
+
+// get the translation data and then run the translator
 fetch(TRANSLATION_URL).then(async (resp) => {
   try {
     const data = await resp.json()
 
     // add translation definitions to translator
     translator.setTranslations(Translator.ParseGoogleSheetData(data))
+
+    // create the welcome modal
     welcome = new WelcomeModal({
-      // get list of languages
       languages: translator.availableLanguages,
+
       // when language is selected, run translation
       onLanguageSelect: lang => {
         translator.language = lang
@@ -72,16 +75,15 @@ fetch(TRANSLATION_URL).then(async (resp) => {
     // show welcome modal if no language is selected
     if (!translator.language) {
       welcome.open()
+
     // otherwise just run translator
     } else {
       translator.translate()
     }
 
+    // when language button is clicked, re-open welcome modal
     const languageButton = document.getElementById('lang-select-button')
-    languageButton.addEventListener('click', evt => {
-      evt.preventDefault()
-      welcome.open()
-    })
+    languageButton.addEventListener('click', () => welcome.open())
 
   } catch (e) {
     console.error('Translation error', e)

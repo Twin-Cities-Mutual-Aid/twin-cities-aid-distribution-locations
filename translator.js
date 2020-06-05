@@ -1,5 +1,5 @@
 /**
- * A super simple language translation tool.
+ * Simple frontend i18n tool
  * Expects translation data to be in this format: 
  * 
  * {
@@ -11,9 +11,13 @@
  *      'hmn': 'Nyob zoo!'
  * }
  * 
+ * Configuration options (passed to the constructor)
+ * 
+ * {
+ *   enabledLanguages: ['eng', 'spa']
+ * }
+ * 
  */
-
-
 class Translator {
   constructor(options) {
     this.enabledLanguages = options.enabledLanguages || false
@@ -22,6 +26,9 @@ class Translator {
     this.detectLanguage()
   }
 
+  /**
+   * Set the translation definitions and available languages
+   */
   setTranslations(translations) {
     this.translations = translations
 
@@ -30,6 +37,8 @@ class Translator {
 
     // set available languages based on langNames
     if (langNames) {
+
+      // iterate through the language codes
       Object.keys(langNames).forEach(k => {
         if (!this.languageIsEnabled(k)) return
         this._languages.push({
@@ -40,35 +49,44 @@ class Translator {
     }
   }
 
+  /**
+   * Check if this language was enabled in configuration
+   */
   languageIsEnabled(lang) {
     if (!this.enabledLanguages.length) return true
     return (this.enabledLanguages.indexOf(lang) > -1)
   }
 
   /**
-   * Simple string format validation
-   * @param {string} lang 
+   * Simple string validation for the language code
    */
   validateLanguageKey(lang) {
-    return (lang && lang.length && lang.length === 3)
+    return (typeof lang === 'string' && lang.length && lang.length === 3)
   }
 
+  /**
+   * get a map of enabled langauge codes => native language names
+   */
   get availableLanguages() {
     return this._languages
   }
 
+  /**
+   * Set current language if given one is valid
+   */
   set language(lang) {
     if (!this.validateLanguageKey(lang)) {
       // console.error('Attempting to use invalid language: '+lang)
       return
     }
     window.localStorage.setItem(Translator.LOCAL_STORAGE_KEY, lang)
-
   }
 
+  /**
+   * Get current language
+   */
   get language() {
     const lang = window.localStorage.getItem(Translator.LOCAL_STORAGE_KEY)
-    if (this.validateLanguageKey(lang)) return lang
   }
 
   /**
@@ -83,16 +101,19 @@ class Translator {
     if (m && m.length > 1) {
       lang = m[1]
 
-      // otherwise, check local storage 
-    } else if (window.localStorage.getItem(Translator.LOCAL_STORAGE_KEY)) {
+    // otherwise, check local storage 
+    } else {
       lang = window.localStorage.getItem(Translator.LOCAL_STORAGE_KEY)
     }
 
+    // this will validate the language in the setter
+    // before saving
     this.language = lang
   }
 
   /**
-   * Replace the translatable elements on the page with translated terms (if available)
+   * Find elements with the `data-translation-id` attribute and replace
+   * with translated term if one is available in current language
    */
   translate() {
     if (!this.language) {
@@ -101,7 +122,6 @@ class Translator {
     }
 
     this.setFlagIcons()
-
 
     this.els = document.querySelectorAll(`[data-translation-id]`)
 
@@ -123,7 +143,9 @@ class Translator {
   }
 
   /**
-   * Get a translation for a given term id
+   * Get a translated term for the given id and current language.
+   * Fallback is used if no translation is found.
+   * If fallback is falsy, then just use English translation
    */
   get(id, fallback) {
 
@@ -148,21 +170,16 @@ class Translator {
     return term
   }
 
-  attachSelect(el) {
-    const html = this.renderSelect()
-
-  }
-
+  /**
+   * Find all images with the `data-translation-flag` and set
+   * `src` and `alt` based on the current language
+   */
   setFlagIcons() {
-    const els = document.querySelectorAll('[data-translation-flag]')
+    const els = document.querySelectorAll('img[data-translation-flag]')
     Array.prototype.slice.call(els).forEach(el => {
       el.src = `/images/lang-${this.language}.png`
       el.alt = this.get('lang_name')
     })
-  }
-
-  updateSelect(el) {
-
   }
 }
 

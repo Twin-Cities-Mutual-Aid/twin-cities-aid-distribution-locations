@@ -1,5 +1,6 @@
-
-
+/**
+ * WelcomeModal is a modal window that allows users to choose their preferred language
+ */
 class WelcomeModal {
   constructor(options) {
     this.languages = options.languages
@@ -10,6 +11,7 @@ class WelcomeModal {
     this.el.innerHTML = this.render(this.languages)
     this.langButtons = this.el.querySelectorAll('.welcome-lang-button')
 
+    // add event listeners to each button
     Array.prototype.slice.call(this.langButtons).forEach(b => {
       b.addEventListener('click', evt => {
         evt.preventDefault()
@@ -20,6 +22,7 @@ class WelcomeModal {
     })
   }
 
+  // render the modal html
   render(languages) {
 
     const buttons = languages.map(l => `<button class="welcome-lang-button" value="${l.name}"><img class="lang-flag" alt="${l.label}" src="/images/lang-${l.name}.png">${l.label}</button>`).join('')
