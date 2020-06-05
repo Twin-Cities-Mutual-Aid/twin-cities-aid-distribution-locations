@@ -53,30 +53,6 @@ const map = new mapboxgl.Map({
 
 map.setPadding({ top: 300, bottom: 20, left: 20, right: 20 })
 
-map.addControl(
-  new MapboxGeocoder({
-    accessToken: mapboxgl.accessToken,
-    mapboxgl: mapboxgl,
-    trackProximity: true,
-    proximity: true,
-    collapsed: true,
-    clearAndBlurOnEsc: true,
-    clearOnBlur: true,
-    marker: false,
-    flyTo: {}
-  }), 'bottom-right'
-)
-
-// Add geolocate control to the map.
-map.addControl(
-  new mapboxgl.GeolocateControl({
-    positionOptions: {
-      enableHighAccuracy: true
-    },
-    trackUserLocation: true
-  }), 'bottom-right'
-)
-
 // Add zoom and rotate controls 
 map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 
