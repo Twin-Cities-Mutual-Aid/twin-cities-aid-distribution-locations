@@ -30,19 +30,26 @@
 .modal-languages {
   display: flex;
   flex-direction: column;
+  margin: auto;
 }
-.language-button {
+.welcome-lang-button {
   cursor: pointer;
-  margin: 1em;
-  padding: .75em 0;
+  margin: 0.5em;
+  padding: .5em 0;
   font-size: 120%;
   font-weight: bold;
   border: none;
   color: white;
   background-color: royalblue;
 }
+.welcome-lang-button .lang-flag {
+  margin-right: .5em;
+  border: 2px solid white
+}
 
 /** Larger screens */
 @media only screen and (min-width: 640px) {
-
+ .modal-languages {
+   max-width: 720px;
+ } 
 }

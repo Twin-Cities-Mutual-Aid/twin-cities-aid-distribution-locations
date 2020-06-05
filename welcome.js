@@ -8,7 +8,7 @@ class WelcomeModal {
     this.el = document.createElement('div')
     this.el.className = 'modal-wrap'
     this.el.innerHTML = this.render(this.languages)
-    this.langButtons = this.el.querySelectorAll('.language-button')
+    this.langButtons = this.el.querySelectorAll('.welcome-lang-button')
 
     Array.prototype.slice.call(this.langButtons).forEach(b => {
       b.addEventListener('click', evt => {
@@ -22,7 +22,7 @@ class WelcomeModal {
 
   render(languages) {
 
-    const buttons = languages.map(l => `<button class="language-button" value="${l.name}"><img class="lang-flag" alt="${l.label}" src="/images/lang-${l.name}.png">${l.label}</button>`).join('')
+    const buttons = languages.map(l => `<button class="welcome-lang-button" value="${l.name}"><img class="lang-flag" alt="${l.label}" src="/images/lang-${l.name}.png">${l.label}</button>`).join('')
 
     return `
       <div class="modal">

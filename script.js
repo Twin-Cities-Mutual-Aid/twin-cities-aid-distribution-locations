@@ -40,9 +40,17 @@ const statusOptions = [
 ]
 
 
+// allow dev mode for previewing languages
+let langs
+if (window.location.search.indexOf('dev') > -1) {
+  langs = ['eng', 'spa', 'kar', 'som', 'hmn', 'amh', 'orm']
+} else {
+  langs = ['eng', 'spa']
+}
+
 // initialize translator and load translations file
 const translator = new Translator({
-  enabledLanguages: ['eng', 'spa']
+  enabledLanguages: langs
 })
 let welcome;
 fetch(TRANSLATION_URL).then(async (resp) => {

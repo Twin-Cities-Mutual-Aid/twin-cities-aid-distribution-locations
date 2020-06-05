@@ -126,15 +126,26 @@ class Translator {
    * Get a translation for a given term id
    */
   get(id, fallback) {
-    if (!this.language) {
-      console.error('Language is not set')
-      return fallback
+
+    // if this term doesn't exist, return fallback
+    // (even if its empty)
+    if (!this.translations[id]) return fallback
+
+    // if fallback isn't provided, use english translation
+    if (!fallback) {
+      fallback = this.translations[id]['eng']
     }
-    if (!this.translations[id]) {
-      console.error('Invalid translation id: ' + id)
-      return fallback
-    }
-    return this.translations[id][this.language]
+
+    // if language isn't set return fallback
+    if (!this.language) return fallback
+
+    const term = this.translations[id][this.language]
+
+    // if term and language exist, but result is empty
+    // return fallback
+    if (!term) return fallback
+
+    return term
   }
 
   attachSelect(el) {
