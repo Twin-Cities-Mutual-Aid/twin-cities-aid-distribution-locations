@@ -90,6 +90,7 @@ class Translator {
     // i was getting "null" as a string value when empty (???)
     // which is truthy so this makes sure that doesn't get returned
     if (this.validateLanguageKey(lang)) return lang
+    return 'eng'
   }
 
   /**

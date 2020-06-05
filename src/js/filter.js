@@ -13,7 +13,7 @@ class Filter {
     this.$el = el
     this.$controls = document.getElementById('filter-controls')
     this.renderControls(this.$controls)
-    this.list = new List(this.$el.id, {
+    this.list = new List(this.$el.id, { // eslint-disable-line no-undef
       valueNames: this.sortOptions.map(o => o.name)
     })
     /** Default filter-both checkbox to be disabled. only

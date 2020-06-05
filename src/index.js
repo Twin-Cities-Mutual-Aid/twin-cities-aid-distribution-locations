@@ -213,7 +213,7 @@ const getStatus = id => {
 }
 
 // create an item for the side pane using a location
-const createListItem = (location, status, lng, lat) => {
+const createListItem = (location, status) => {
   const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important"><span data-translation-id="urgent_need">Urgent Need</span>: ${location.urgentNeed}</p>` : ''
   const seekingMoney = needsMoneyComponent(location);
 
@@ -238,7 +238,7 @@ const createListItem = (location, status, lng, lat) => {
       </div>
     </div>
     `
-  $item.addEventListener('click', (evt) => {
+  $item.addEventListener('click', () => {
     const popup = location.marker.getPopup()
     if (popup.isOpen()) {
       popup.remove()
@@ -324,12 +324,12 @@ const onMapLoad = async () => {
 
         // transform location properties into HTML
         const propertyTransforms = {
-          name: (name, _) => `<h2 class='h2'>${name}</h2>`,
-          neighborhood: (neighborhood, _) => `<h3 class='h3'>${neighborhood}</h3>`,
+          name: (name) => `<h2 class='h2'>${name}</h2>`,
+          neighborhood: (neighborhood) => `<h3 class='h3'>${neighborhood}</h3>`,
           address: addressComponent, // driving directions in google, consider doing inside mapbox
-          seekingMoney: (value, location) => needsMoneyComponent(location),
-          seekingMoneyURL: (value, _) => '',
-          mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> ${moment(datetime, 'H:m M/D').fromNow()}</div>`
+          seekingMoney: (_, location) => needsMoneyComponent(location),
+          seekingMoneyURL: () => '',
+          mostRecentlyUpdatedAt: (datetime) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> ${moment(datetime, 'H:m M/D').fromNow()}</div>`
         }
 
         // render HTML for marker
@@ -361,7 +361,7 @@ const onMapLoad = async () => {
     }).value()
 
     // add nav
-    const filter = new Filter($sidePane, {
+    new Filter($sidePane, {
       sortOptions: [
         {
           name: 'urgentNeed',

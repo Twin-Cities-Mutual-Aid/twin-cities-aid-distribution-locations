@@ -1,0 +1,5 @@
+lint:
+  image: node:14-alpine
+  script:
+    - npm install
+    - npm run lint
