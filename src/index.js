@@ -63,10 +63,10 @@ const statusOptions = [
 let langs
 // show all langs in dev mode
 if (window.location.search.indexOf('dev') > -1) {
-  langs = ['eng', 'spa', 'kar', 'som', 'hmn', 'amh', 'orm']
+  langs = ['eng', 'spa', 'kar', 'som', 'hmn', 'amh', 'orm', 'vie']
 // otherwise only show these
 } else {
-  langs = ['eng', 'spa']
+  langs = ['eng', 'spa', 'vie']
 }
 
 // initialize translator and load translations file
