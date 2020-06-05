@@ -143,7 +143,7 @@ const createListItem = (location, status, lng, lat) => {
   const openTimeReceivingLessOne = moment(location.openingForReceivingDontations, ["h:mm A"]).subtract(1, 'hours')
   let openingSoonForReceiving = ''
   if (moment().isBetween(openTimeReceivingLessOne, openTimeReceiving)) {
-    openingSoonForReceiving = `<pclass="opening-soon">Opening soon! ${openTimeReceiving.format("LT")} for receiving</p>`
+    openingSoonForReceiving = `<p class="opening-soon">Opening soon! ${openTimeReceiving.format("LT")} for receiving</p>`
   }
 
   const $item = document.createElement('div')
