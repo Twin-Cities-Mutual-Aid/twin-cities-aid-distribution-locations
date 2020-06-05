@@ -158,6 +158,11 @@ function camelToTitle(str) {
   return result.charAt(0).toUpperCase() + result.slice(1)
 }
 
+function truthy(str) {
+  const normalizedStr = _.toUpper(str);
+  return _.includes(['TRUE', 'YES', 'T', 'Y'], normalizedStr);
+}
+
 // open/close location sidebar
 function toggleSidePane() {
   if ($body.classList.contains('list-active')) {
@@ -187,6 +192,20 @@ function closePopups() {
   })
 }
 
+function needsMoneyComponent(location) {
+  if (!location.seekingMoney) return ''
+
+  let link = '';
+  if (location.seekingMoneyURL && location.seekingMoneyURL !== '') {
+    link = `<a data-translation-id="seeking_money_link" href="${location.seekingMoneyURL}" target="_blank">DONATE NOW!</a>`;
+  }
+  return `<span  class="seekingMoney seeking-money location-list--badge"><span data-translation-id="seeking_money">Needs Money</span> ${link}</span>`;
+}
+
+function addressComponent(address) {
+  return `<address><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>`;
+}
+
 // get the status info for a location using the color as ID, else default to unknown.
 const getStatus = id => {
   const status = _.find(statusOptions, s => (s.id === id.toLowerCase()))
@@ -196,7 +215,8 @@ const getStatus = id => {
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
   const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important"><span data-translation-id="urgent_need">Urgent Need</span>: ${location.urgentNeed}</p>` : ''
-  const seekingMoney = location.seekingMoney ? `<span data-translation-id="seeking_money" class="seekingMoney location-list--badge">Needs Money Donations</span>` : ''
+  const seekingMoney = needsMoneyComponent(location);
+
   let seekingVolunteers = ''
   if (location.seekingVolunteers && location.seekingVolunteers.match(/(?:\byes\b)/i)) {
     seekingVolunteers = `<span data-translation-id="seeking_volunteers" class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>`
@@ -238,6 +258,50 @@ const createListItem = (location, status, lng, lat) => {
   return $item
 }
 
+//////////////////////////
+// Protect against columns not yet existing in the spreadsheet.
+// We can remove once they are added to the sheet.
+function extractSeekingMoney(item) {
+  try {
+    return truthy(item.gsx$seekingmoney.$t);
+  } catch (err) {
+    console.info("Seeking Money Column does not exist yet.");
+    return false;
+  }
+}
+
+function extractSeekingMoneyURL(item) {
+  try {
+    return item.gsx$seekingmoneyurl.$t;
+  } catch (err) {
+    console.info("Seeking Money URL Column does not exist yet.");
+    return '';
+  }
+}
+//////////////////////////
+
+function extractRawLocation(item) {
+  return {
+    name: item.gsx$nameoforganization.$t,
+    neighborhood: item.gsx$neighborhood.$t,
+    address: item.gsx$addresswithlink.$t,
+    mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t,
+    seekingMoney: extractSeekingMoney(item),
+    seekingMoneyURL: extractSeekingMoneyURL(item),
+    currentlyOpenForDistributing: item.gsx$currentlyopenfordistributing.$t,
+    openingForDistributingDontations: item.gsx$openingfordistributingdonations.$t,
+    closingForDistributingDonations: item.gsx$closingfordistributingdonations.$t,
+    accepting: item.gsx$accepting.$t,
+    notAccepting: item.gsx$notaccepting.$t,
+    currentlyOpenForReceiving: item.gsx$currentlyopenforreceiving.$t,
+    openingForReceivingDontations: item.gsx$openingforreceivingdonations.$t,
+    closingForReceivingDonations: item.gsx$closingforreceivingdonations.$t,
+    seekingVolunteers: item.gsx$seekingvolunteers.$t,
+    urgentNeed: item.gsx$urgentneed.$t,
+    notes: item.gsx$notes.$t
+  }
+}
+
 // start fetching data right away
 const dataPromise = fetch(Config.dataUrl)
 
@@ -253,41 +317,24 @@ const onMapLoad = async () => {
     .map(item => {
 
       try {
-        const moneySearchStr = `${item.gsx$accepting.$t}, ${item.gsx$urgentneed.$t}, ${item.gsx$notes.$t}`.toLowerCase()
-        const seekingMoney = moneySearchStr.includes('money') || moneySearchStr.includes('cash') || moneySearchStr.includes('venmo') || moneySearchStr.includes('monetary')
         // the location schema
-        const rawLocation = {
-          name: item.gsx$nameoforganization.$t,
-          neighborhood: item.gsx$neighborhood.$t,
-          address: item.gsx$addresswithlink.$t,
-          mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t,
-          currentlyOpenForDistributing: item.gsx$currentlyopenfordistributing.$t,
-          openingForDistributingDontations: item.gsx$openingfordistributingdonations.$t,
-          closingForDistributingDonations: item.gsx$closingfordistributingdonations.$t,
-          accepting: item.gsx$accepting.$t,
-          notAccepting: item.gsx$notaccepting.$t,
-          currentlyOpenForReceiving: item.gsx$currentlyopenforreceiving.$t,
-          openingForReceivingDontations: item.gsx$openingforreceivingdonations.$t,
-          closingForReceivingDonations: item.gsx$closingforreceivingdonations.$t,
-          seekingVolunteers: item.gsx$seekingvolunteers.$t,
-          seekingMoney: seekingMoney,
-          urgentNeed: item.gsx$urgentneed.$t,
-          notes: item.gsx$notes.$t
-        }
-        const location = _.pickBy(rawLocation, val => val != '')
-        const status = getStatus(item.gsx$color.$t)
+        const rawLocation = extractRawLocation(item);
+        const location = _.pickBy(rawLocation, val => val != '');
+        const status = getStatus(item.gsx$color.$t);
 
         // transform location properties into HTML
         const propertyTransforms = {
-          name: (name) => `<h2 class='h2'>${name}</h2>`,
-          neighborhood: (neighborhood) => `<h3 class='h3'>${neighborhood}</h3>`,
-          address: (address) => `<address><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>`, // driving directions in google, consider doing inside mapbox
-          mostRecentlyUpdatedAt: (datetime) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> ${moment(datetime, 'H:m M/D').fromNow()}</div>`
+          name: (name, _) => `<h2 class='h2'>${name}</h2>`,
+          neighborhood: (neighborhood, _) => `<h3 class='h3'>${neighborhood}</h3>`,
+          address: addressComponent, // driving directions in google, consider doing inside mapbox
+          seekingMoney: (value, location) => needsMoneyComponent(location),
+          seekingMoneyURL: (value, _) => '',
+          mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> ${moment(datetime, 'H:m M/D').fromNow()}</div>`
         }
 
         // render HTML for marker
         const markerHtml = _.map(location, (value, key) => {
-          if (propertyTransforms[key]) return propertyTransforms[key](value)
+          if (propertyTransforms[key]) return propertyTransforms[key](value, location)
           else return `<div class='p row'><p data-translation-id="${_.snakeCase(key)}"class='txt-deemphasize key'>${camelToTitle(key)}</p><p class='value'>${value}</p></div>`
         }).join('')
 
