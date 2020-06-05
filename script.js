@@ -173,7 +173,7 @@ const getStatus = id => _.find(statusOptions, s => (s.id === id.toLowerCase()))
 const createListItem = (location, status, lng, lat) => {
   const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important"><span data-translation-id="urgent_need">Urgent Need</span>: ${location.urgentNeed}</p>` : ''
   const seekingMoney = location.seekingMoney ? `<span data-translation-id="seeking_money" class="seekingMoney location-list--badge">Needs Money Donations</span>` : ''
-  const seekingVolunteers = location.seekingVolunteers ? `<span data-translation-id="need_volunteer_support" class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>` : ''
+  const seekingVolunteers = location.seekingVolunteers ? `<span data-translation-id="seeking_volunteers" class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>` : ''
   const $item = document.createElement('div')
   $item.classList.add('location-list--item')
   $item.dataset.id = status.id;
