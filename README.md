@@ -40,6 +40,9 @@ To get started, you have to install the dependencies (mainly snowpack)
 npm install
 ```
 
+### Environment Labels
+In order to run locally you will need to retrieve the `.env` file from here.........location pending
+
 ### Run locally
 
 To run a development server that will auto-reload on save, run this command from the project directory:
