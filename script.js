@@ -262,7 +262,7 @@ const onMapLoad = async () => {
           name: (name) => `<h2 class='h2'>${name}</h2>`,
           neighborhood: (neighborhood) => `<h3 class='h3'>${neighborhood}</h3>`,
           address: (address) => `<address><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>`, // driving directions in google, consider doing inside mapbox
-          mostRecentlyUpdatedAt: (datetime) => `<div class='updated-at' title='${datetime}'>Last updated ${moment(datetime, 'H:m M/D').fromNow()}</div>`
+          mostRecentlyUpdatedAt: (datetime) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> ${moment(datetime, 'H:m M/D').fromNow()}</div>`
         }
 
         // render HTML for marker
