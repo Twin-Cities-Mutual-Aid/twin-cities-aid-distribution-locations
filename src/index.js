@@ -244,7 +244,7 @@ const createListItem = (location, status, lng, lat) => {
       popup.remove()
     } else {
       closePopups()
-      toggleSidePane($locationsButton)
+      toggleSidePane()
       map.jumpTo({
         center: popup.getLngLat(),
         essential: true,
