@@ -3,7 +3,7 @@
 class WelcomeModal {
   constructor(options) {
     this.languages = options.languages
-    this.onLanguageSelect = options.onLanguageSelect || (() => {})
+    this.onLanguageSelect = options.onLanguageSelect || (() => { })
 
     this.el = document.createElement('div')
     this.el.className = 'modal-wrap'
@@ -22,7 +22,7 @@ class WelcomeModal {
 
   render(languages) {
 
-    const buttons = languages.map(l => `<button class="language-button" value="${l.name}">${l.label}</button>`).join('')
+    const buttons = languages.map(l => `<button class="language-button" value="${l.name}"><img class="lang-flag" alt="${l.label}" src="/images/lang-${l.name}.png">${l.label}</button>`).join('')
 
     return `
       <div class="modal">

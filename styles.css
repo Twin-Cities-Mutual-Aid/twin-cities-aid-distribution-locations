@@ -97,19 +97,6 @@ a.txt-white:hover {
   margin-bottom: 5px;
 }
 
-ul.languages {
-  list-style: none;
-  padding: 0;
-}
-
-ul.languages > li {
-  display: inline-block;
-  padding-right: .5em;
-}
-ul.languages a {
-  color: #fff
-}
-
 .p {
   margin: 0px;
   padding: 0px;

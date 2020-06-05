@@ -38,6 +38,7 @@
   <link rel="stylesheet" href="./normalize.css">
   <link rel="stylesheet" href="./styles.css">
   <link rel="stylesheet" href="./welcome.css">
+  <link rel="stylesheet" href="./translator.css">
 
 </head>
 
@@ -48,12 +49,7 @@
     </div>
     <div class="filter-pane white-and-blue">
       <div class='legend' id="key"></div>
-      <div class="select-container">
-        <label for=""><span data-translation-id="language">Language</span>: </label>
-        <select disabled name="language-select" id="language-select">
-          <option value="eng" selected><span data-translation-id="lang_name">English</span></option>
-        </select>
-      </div>
+
       <button data-translation-id="show_list_button" id="locations-toggle-button" class="location-list-toggle toggle-button" onClick="toggleSidePane(this)" aria-label="Toggle list of locations">Show list of locations</button>
       <button data-translation-id="help_info" id="help-info-toggle-button" class="toggle-button" onClick="toggleHelpInfo(this)" aria-label="Toggle help info section">Help/info</button>
       <div class='counter'>
@@ -72,7 +68,16 @@
     <p class='p txt-small bold'><span data-translation-id="project_data">See this data in</span> <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSfnmh9CmtVoBMy2k_-NMhhvF7ursBs2L5IPF9VZ1J-l9P71vjDFw7y6Y6E98d5lNeOAEo7leisP0Y8/pubhtml" target="_blank">Google Sheets</a>.</p>
     <p class='p txt-small bold'><span data-translation-id="project_learn">Learn about this project on</span> <a href="https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/blob/master/README.md" target="_blank">GitHub</a>.</p>
   </div>
-  <div class='map' id="map"></div>
+  <div class='map' id="map">
+    <button class="lang-select-button" id="lang-select-button">
+      <span class="lang-select-label" data-translation-id="language">Language</span>
+      <span class="lang-current">
+        <img data-translation-flag class="lang-flag lang-flag-current" alt="English" src="/images/lang-eng.png">
+        <span class="lang-name" data-translation-id="lang_name">English</span>
+      </span>
+    </button>
+  </div>
+
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
   <script src="./filter.js"></script>
