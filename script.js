@@ -6,7 +6,14 @@ const $body = document.body;
 
 // we're using the map color from google sheet to indicate location status,
 // but using a different display color for accessibility. so the original
-// color is treated ad an ID
+// color is treated as an ID
+const unknownStatus =   {
+  id: '#aaaaaa',
+  name: 'unknown',
+  label: 'status unknown',
+  accessibleColor: '#ffffbf'
+}
+
 const statusOptions = [
   {
     id: '#fc03df',
@@ -32,12 +39,7 @@ const statusOptions = [
     label: 'currently closed',
     accessibleColor: '#d7191c'
   },
-  {
-    id: '#aaaaaa',
-    name: 'unknown',
-    label: 'status unknown',
-    accessibleColor: '#ffffbf'
-  }
+  unknownStatus
 ]
 
 let locations = []
@@ -134,15 +136,21 @@ function addressComponent(address) {
   return `<address><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>`;
 }
 
-// get the status info for a location using the color as ID
-const getStatus = id => _.find(statusOptions, s => (s.id === id.toLowerCase()))
+// get the status info for a location using the color as ID, else default to unknown.
+const getStatus = id => {
+  const status = _.find(statusOptions, s => (s.id === id.toLowerCase()))
+  return status || unknownStatus
+}
 
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
   const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important">Urgent Need: ${location.urgentNeed}</p>` : ''
   const seekingMoney = needsMoneyComponent(location);
-  const seekingVolunteers = location.seekingVolunteers ? `<span class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>` : ''
 
+  let seekingVolunteers = ''
+  if (location.seekingVolunteers && location.seekingVolunteers.match(/(?:\byes\b)/i)) {
+    seekingVolunteers = `<span class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>`
+  }
   const $item = document.createElement('div')
   $item.classList.add('location-list--item')
   $item.dataset.id = status.id;
@@ -205,6 +213,7 @@ function extractRawLocation(item) {
     name: item.gsx$nameoforganization.$t,
     neighborhood: item.gsx$neighborhood.$t,
     address: item.gsx$addresswithlink.$t,
+    mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t,
     seekingMoney: extractSeekingMoney(item),
     seekingMoneyURL: extractSeekingMoneyURL(item),
     currentlyOpenForDistributing: item.gsx$currentlyopenfordistributing.$t,
@@ -217,8 +226,7 @@ function extractRawLocation(item) {
     closingForReceivingDonations: item.gsx$closingforreceivingdonations.$t,
     seekingVolunteers: item.gsx$seekingvolunteers.$t,
     urgentNeed: item.gsx$urgentneed.$t,
-    notes: item.gsx$notes.$t,
-    mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t
+    notes: item.gsx$notes.$t
   }
 }
 
@@ -242,18 +250,14 @@ const onMapLoad = async () => {
         const location = _.pickBy(rawLocation, val => val != '');
         const status = getStatus(item.gsx$color.$t);
 
-        if (!status) {
-          throw new Error("Malformed data for " + location.name + ", could not find status: " + item.gsx$color.$t)
-        }
-
         // transform location properties into HTML
         const propertyTransforms = {
           name: (name, _) => `<h2 class='h2'>${name}</h2>`,
           neighborhood: (neighborhood, _) => `<h3 class='h3'>${neighborhood}</h3>`,
-          // driving directions in google, consider doing inside mapbox
-          address: addressComponent,
+          address: addressComponent, // driving directions in google, consider doing inside mapbox
           seekingMoney: (value, location) => needsMoneyComponent(location),
-          seekingMoneyURL: (value, _) => ''
+          seekingMoneyURL: (value, _) => '',
+          mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'>Last updated ${moment(datetime, 'H:m M/D').fromNow()}</div>`
         }
 
         // render HTML for marker
