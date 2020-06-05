@@ -77,7 +77,7 @@ map.addControl(
   }), 'bottom-right'
 )
 
-// Add zoom and rotate controls 
+// Add zoom and rotate controls
 map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 
 // convert case
@@ -180,6 +180,7 @@ const onMapLoad = async () => {
           name: item.gsx$nameoforganization.$t,
           neighborhood: item.gsx$neighborhood.$t,
           address: item.gsx$addresswithlink.$t,
+          mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t,
           currentlyOpenForDistributing: item.gsx$currentlyopenfordistributing.$t,
           openingForDistributingDontations: item.gsx$openingfordistributingdonations.$t,
           closingForDistributingDonations: item.gsx$closingfordistributingdonations.$t,
@@ -191,8 +192,7 @@ const onMapLoad = async () => {
           seekingVolunteers: item.gsx$seekingvolunteers.$t,
           seekingMoney: seekingMoney,
           urgentNeed: item.gsx$urgentneed.$t,
-          notes: item.gsx$notes.$t,
-          mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t
+          notes: item.gsx$notes.$t
         }
         const location = _.pickBy(rawLocation, val => val != '')
         const status = getStatus(item.gsx$color.$t)
@@ -205,7 +205,8 @@ const onMapLoad = async () => {
         const propertyTransforms = {
           name: (name) => `<h2 class='h2'>${name}</h2>`,
           neighborhood: (neighborhood) => `<h3 class='h3'>${neighborhood}</h3>`,
-          address: (address) => `<address><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>` // driving directions in google, consider doing inside mapbox
+          address: (address) => `<address><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>`, // driving directions in google, consider doing inside mapbox
+          mostRecentlyUpdatedAt: (datetime) => `<div class='p row'><p class='txt-deemphasize key'>Last Updated</p><p class='value' title='${datetime}'>${moment(datetime, 'H:m M/D').fromNow()}</p></div>`
         }
 
         // render HTML for marker
