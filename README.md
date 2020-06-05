@@ -41,6 +41,9 @@ This started as a very lightweight, single page html file, and we've tried very 
     ```
 3. Start building!
 
+### Environment Labels
+In order to run locally you will need to retrieve the `.env` file from someone in the Open Twin Cities slack `#tc-aid-dev` channel.
+
 ### Run locally
 
 To run a development server that will auto-reload on save, run this command from the project directory:

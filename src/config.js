@@ -1,5 +1,17 @@
+const { SNOWPACK_PUBLIC_MAPBOXGL_ACCESS_TOKEN, SNOWPACK_PUBLIC_DATA_URL, SNOWPACK_PUBLIC_TRANSLATION_URL} = import.meta.env
+
+/**
+ * Utilize this function to notify developer of required environment variables when developing
+ */
+function ensure(variable_name, variable){
+  if(!variable && import.meta.env.MODE === 'development'){
+    console.error(`${variable_name} must be defined in your environment. See https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations#environment-labels for details`)
+  }
+  return variable
+}
+
 export default {
-  dataUrl: 'https://spreadsheets.google.com/feeds/list/1CyPozeKhmOuIaVnKDQAUKKsvA9R4F20hEQ3MSGWczP8/1/public/full?alt=json',
-  accessToken: 'pk.eyJ1IjoiamFjb2JyZGFsdG9uIiwiYSI6ImNrYXc2anFjbjIxNGwyeG14dWk0MDVycmIifQ.yILWplracVMB4mv1dWwTtg',
-  translationUrl: 'https://spreadsheets.google.com/feeds/list/1m5QPNP6O8nsQsqJcQbwib_obpXRjmbYYGtwKzzg1l38/1/public/full?alt=json'
+  dataUrl: ensure("SNOWPACK_PUBLIC_DATA_URL", SNOWPACK_PUBLIC_DATA_URL),
+  accessToken: ensure("SNOWPACK_PUBLIC_MAPBOXGL_ACCESS_TOKEN", SNOWPACK_PUBLIC_MAPBOXGL_ACCESS_TOKEN),
+  translationUrl: ensure("SNOWPACK_PUBLIC_TRANSLATION_URL", SNOWPACK_PUBLIC_TRANSLATION_URL),
 }
