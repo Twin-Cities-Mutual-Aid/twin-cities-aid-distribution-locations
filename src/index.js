@@ -231,7 +231,7 @@ const createListItem = (location, status, lng, lat) => {
         <h2 class='h2'>
           <span class="name">${location.name}</span>
         </h2>
-        <h3 class="h3 neighborhood">${location.neighborhood}</h3>
+        <h3 class="h3 neighborhood">${location.neighborhood || ''}</h3>
         ${urgentNeed}
         ${seekingVolunteers}
         ${seekingMoney}
