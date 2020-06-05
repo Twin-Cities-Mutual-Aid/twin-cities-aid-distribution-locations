@@ -3,8 +3,6 @@
     "list.js/dist/list.min.js": "./list.js/dist/list.min.js",
     "lodash": "./lodash.js",
     "mapbox-gl": "./mapbox-gl.js",
-    "mapbox-gl-geocoder": "./mapbox-gl-geocoder.js",
-    "mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css": "./mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css",
     "mapbox-gl/dist/mapbox-gl.css": "./mapbox-gl/dist/mapbox-gl.css",
     "moment": "./moment.js"
   }
