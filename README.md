@@ -41,7 +41,7 @@ npm install
 ```
 
 ### Environment Labels
-In order to run locally you will need to retrieve the `.env` file from here.........location pending
+In order to run locally you will need to retrieve the `.env` file from someone in the Open Twin Cities slack `#tc-aid-dev` channel.
 
 ### Run locally
 
