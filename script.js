@@ -123,7 +123,7 @@ function closePopups() {
 function needsMoneyComponent(location) {
   if (!location.seekingMoney) return ''
   const link = `<a href="${location.seekingMoneyURL}" target="_blank">DONATE NOW!</a>`
-  return `<span class="seeking-money location-list--badge">Needs Money ${link}</span>`
+  return `<span class="seekingMoney seeking-money location-list--badge">Needs Money ${link}</span>`
 }
 
 function addressComponent(address) {
