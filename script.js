@@ -122,7 +122,10 @@ const getStatus = id => _.find(statusOptions, s => (s.id === id.toLowerCase()))
 const createListItem = (location, status, lng, lat) => {
   const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important">Urgent Need: ${location.urgentNeed}</p>` : ''
   const seekingMoney = location.seekingMoney ? `<span class="seekingMoney location-list--badge">Needs Money Donations</span>` : ''
-  const seekingVolunteers = location.seekingVolunteers ? `<span class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>` : ''
+  let seekingVolunteers = ''
+  if (location.seekingVolunteers && location.seekingVolunteers.match(/(?:\byes\b)/i)) {
+    seekingVolunteers = `<span class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>`
+  }
   const $item = document.createElement('div')
   $item.classList.add('location-list--item')
   $item.dataset.id = status.id;
