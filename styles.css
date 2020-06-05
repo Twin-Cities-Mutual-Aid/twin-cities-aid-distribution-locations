@@ -88,7 +88,7 @@ a.txt-white:hover {
 
 .h3 {
   font:bold 12px/1.2 Arial, Helvetica, sans-serif;
-  color: rgba(0,0,0,.5);
+  color: rgba(0,0,0,.8);
   text-transform: uppercase;
   margin: 0;
 }
@@ -288,7 +288,13 @@ input[type='checkbox'] + label {
 }
 
 .popup-content address {
+  padding-bottom: 5px;
+  font-style: normal;
+}
+
+.popup-content .updated-at {
   padding-bottom: 20px;
+  font-style: italic;
 }
 
 /* component: traffic counter */
