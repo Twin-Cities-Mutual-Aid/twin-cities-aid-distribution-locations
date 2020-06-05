@@ -34,11 +34,12 @@ This started as a very lightweight, single page html file, and we've tried very 
 
 ### Setup
 
-To get started, you have to install the dependencies (mainly snowpack)
-
-```
-npm install
-```
+1. Install node at the version specified in the [`.node_version`](.node_version) file. If you use a version manager like nodenv or nvm, this should be detected automatically.
+2. Install dependencies with npm
+    ```
+    npm install
+    ```
+3. Start building!
 
 ### Environment Labels
 In order to run locally you will need to retrieve the `.env` file from someone in the Open Twin Cities slack `#tc-aid-dev` channel.
