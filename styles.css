@@ -26,13 +26,26 @@ a.txt-white:hover {
   color: royalblue
 }
 
-.map {
+.map,
+.help-info {
   left: 0;
   top: 0;
   right: 0;
   bottom: 0;
   height: 100%;
   width: 100%;
+}
+
+.help-info:target {
+  display: block;
+}
+
+.help-info:not(:target) {
+  display: none;
+}
+
+.help-info:target + .map {
+  display: none;
 }
 
 .content {
@@ -102,8 +115,32 @@ a.txt-white:hover {
   font-size: 0.9em;
 }
 
-.spaced-lines {
-  line-height: 1.7rem;
+.bold {
+  font-weight: 600;
+}
+
+.padded {
+  padding: 15px;
+}
+
+/* shared: buttons */
+.toggle-button {
+  padding: 5px 10px;
+  border: none;
+  color: black;
+  display: inline-block;
+  background-color: rgba(255,255,255,.75);
+  border-radius: 3px;
+  margin-right: 0.67em;
+}
+
+.toggle-button:hover {
+  cursor: pointer;
+  background-color: white;
+}
+
+.toggle-button:last-child {
+  margin-right: 0;
 }
 
 /* Shared:forms */
@@ -218,17 +255,18 @@ input[type='checkbox'] + label {
 
 /* component: location list toggle */
 .location-list-toggle {
-  padding: 5px 10px;
-  border: none;
-  color: black;
-  background-color: rgba(255,255,255,.75);
-  border-radius: 3px;
   display: none;
 }
 
-.location-list-toggle:hover {
+/* component: help info close button */
+.help-info-close-button {
+  display: inline;
+  float: right;
+  margin-top: 10px;
   cursor: pointer;
-  background-color: white;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 5px 10px;
 }
 
 /* component: map popup */
@@ -282,7 +320,7 @@ input[type='checkbox'] + label {
   min-width: 30px !important;
   height: 30px !important;
 }
-.mapboxgl-ctrl-geocoder--icon-search { 
+.mapboxgl-ctrl-geocoder--icon-search {
   fill: black;
   left: 4px !important;
   top: 4px !important;
@@ -315,7 +353,7 @@ input[type='checkbox'] + label {
     margin-right: 10px;
   }
   .location-list-toggle {
-    display: block;
+    display: inline-block;
   }
   .list-active .location-list {
     display: block;
@@ -328,5 +366,11 @@ input[type='checkbox'] + label {
   }
   .list-active .map {
     display: none;
+  }
+  .h1 {
+    margin: 0;
+  }
+  .help-info-close-button {
+    margin-top: 0;
   }
 }
