@@ -3,7 +3,6 @@ const $sidePane = document.getElementById('side-pane')
 const $locationsButton = document.getElementById('locations-toggle-button');
 const $body = document.body;
 
-
 // we're using the map color from google sheet to indicate location status,
 // but using a different display color for accessibility. so the original
 // color is treated as an ID
@@ -41,6 +40,57 @@ const statusOptions = [
   },
   unknownStatus
 ]
+
+
+let langs
+// show all langs in dev mode
+if (window.location.search.indexOf('dev') > -1) {
+  langs = ['eng', 'spa', 'kar', 'som', 'hmn', 'amh', 'orm']
+// otherwise only show these
+} else {
+  langs = ['eng', 'spa']
+}
+
+// initialize translator and load translations file
+const translator = new Translator({ enabledLanguages: langs })
+let welcome
+
+// get the translation data and then run the translator
+fetch(TRANSLATION_URL).then(async (resp) => {
+  try {
+    const data = await resp.json()
+
+    // add translation definitions to translator
+    translator.setTranslations(Translator.ParseGoogleSheetData(data))
+
+    // create the welcome modal
+    welcome = new WelcomeModal({
+      languages: translator.availableLanguages,
+
+      // when language is selected, run translation
+      onLanguageSelect: lang => {
+        translator.language = lang
+        translator.translate()
+      }
+    })
+
+    // show welcome modal if no language is selected
+    if (!translator.language) {
+      welcome.open()
+
+    // otherwise just run translator
+    } else {
+      translator.translate()
+    }
+
+    // when language button is clicked, re-open welcome modal
+    const languageButton = document.getElementById('lang-select-button')
+    languageButton.addEventListener('click', () => welcome.open())
+
+  } catch (e) {
+    console.error('Translation error', e)
+  }
+})
 
 let locations = []
 
@@ -96,10 +146,10 @@ function truthy(str) {
 // open/close location sidebar
 function toggleSidePane() {
   if ($body.classList.contains('list-active')) {
-    $locationsButton.innerText = 'Show list of locations'
+    $locationsButton.innerText = translator.get('show_list_button', 'Show list of locations')
     $body.classList.remove('list-active')
   } else {
-    $locationsButton.innerText = 'Hide list of locations'
+    $locationsButton.innerText = translator.get('hide_list_button', 'Hide list of locations')
     $body.classList.add('list-active')
   }
 }
@@ -127,9 +177,9 @@ function needsMoneyComponent(location) {
 
   let link = '';
   if (location.seekingMoneyURL && location.seekingMoneyURL !== '') {
-    link = `<a href="${location.seekingMoneyURL}" target="_blank">DONATE NOW!</a>`;
+    link = `<a data-translation-id="seeking_money_link" href="${location.seekingMoneyURL}" target="_blank">DONATE NOW!</a>`;
   }
-  return `<span class="seekingMoney seeking-money location-list--badge">Needs Money ${link}</span>`;
+  return `<span  class="seekingMoney seeking-money location-list--badge"><span data-translation-id="seeking_money">Needs Money</span> ${link}</span>`;
 }
 
 function addressComponent(address) {
@@ -144,12 +194,12 @@ const getStatus = id => {
 
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
-  const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important">Urgent Need: ${location.urgentNeed}</p>` : ''
+  const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important"><span data-translation-id="urgent_need">Urgent Need</span>: ${location.urgentNeed}</p>` : ''
   const seekingMoney = needsMoneyComponent(location);
 
   let seekingVolunteers = ''
   if (location.seekingVolunteers && location.seekingVolunteers.match(/(?:\byes\b)/i)) {
-    seekingVolunteers = `<span class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>`
+    seekingVolunteers = `<span data-translation-id="seeking_volunteers" class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>`
   }
   const $item = document.createElement('div')
   $item.classList.add('location-list--item')
@@ -180,7 +230,9 @@ const createListItem = (location, status, lng, lat) => {
         essential: true,
         zoom: 13
       })
+      console.log('popup', popup)
       popup.addTo(map)
+      if (translator.language) translator.translate()
     }
   })
   return $item
@@ -257,13 +309,13 @@ const onMapLoad = async () => {
           address: addressComponent, // driving directions in google, consider doing inside mapbox
           seekingMoney: (value, location) => needsMoneyComponent(location),
           seekingMoneyURL: (value, _) => '',
-          mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'>Last updated ${moment(datetime, 'H:m M/D').fromNow()}</div>`
+          mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> ${moment(datetime, 'H:m M/D').fromNow()}</div>`
         }
 
         // render HTML for marker
         const markerHtml = _.map(location, (value, key) => {
           if (propertyTransforms[key]) return propertyTransforms[key](value, location)
-          else return `<div class='p row'><p class='txt-deemphasize key'>${camelToTitle(key)}</p><p class='value'>${value}</p></div>`
+          else return `<div class='p row'><p data-translation-id="${_.snakeCase(key)}"class='txt-deemphasize key'>${camelToTitle(key)}</p><p class='value'>${value}</p></div>`
         }).join('')
 
         // create marker
@@ -273,6 +325,10 @@ const onMapLoad = async () => {
           .addTo(map);
 
           location.marker.getElement().className += " status-" + status.name;
+
+          // run translation when popup opens
+          const popup = location.marker.getPopup()
+          popup.on('open', () => translator.translate(popup.getElement()))
 
           // add to the side panel
           $locationList.appendChild(createListItem(location, status, item.gsx$longitude.$, item.gsx$latitude.$))
@@ -320,7 +376,12 @@ const onMapLoad = async () => {
         }
       ],
       statusOptions,
+      onAfterUpdate: () => translator.translate()
     })
+
+    // making sure to run translations after
+    // everything else is loaded
+    translator.translate()
 }
 
 // load map
