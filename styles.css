@@ -288,7 +288,12 @@ input[type='checkbox'] + label {
 }
 
 .popup-content address {
+  padding-bottom: 5px;
+}
+
+.popup-content .updated-at {
   padding-bottom: 20px;
+  font-style: italic;
 }
 
 /* component: traffic counter */
