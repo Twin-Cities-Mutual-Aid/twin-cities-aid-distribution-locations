@@ -26,8 +26,9 @@ class WelcomeModal {
 
     return `
       <div class="modal">
-        <h1 class="welcome-message">Welcome!</h1>
-        <p>Please select a language:</p>
+        <h1 class="welcome-message" data-translation-id="welcome">Welcome!</h1>
+        <p data-translation-id="welcome_blurb">Twin Cities Mutual Aid is an up to date resource on mutual aid sites in the Twin Cities.</p>
+        <p class="bold"><span data-translation-id="lang_select">Please select a language</span>:</p>
         <div class="modal-languages">
           ${buttons}
         </div>
