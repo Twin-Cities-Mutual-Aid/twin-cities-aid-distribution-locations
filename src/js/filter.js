@@ -6,6 +6,7 @@ import _ from 'lodash'
 class Filter {
 
   constructor(el, options) {
+    this.onAfterUpdate = () => {}
     Object.assign(this, options)
     this.$filters = []
 
@@ -51,6 +52,8 @@ class Filter {
         return filterValues[index]
       })
     this.list.sort(sortSettings.name, sortSettings.sort)
+
+    this.onAfterUpdate()
   }
 
   toggleMapPoints(filterValues) {
@@ -67,17 +70,17 @@ class Filter {
   renderControls() {
 
     const options = this.sortOptions.map(o => {
-      return `<option value="${o.name}" ${o.selected && 'selected'}>${o.label}</option>`
+      return `<option data-translation-id="sort_by_${_.snakeCase(o.name)}" value="${o.name}" ${o.selected && 'selected'}>${o.label}</option>`
     }).join('')
 
 
     const filters = this.statusOptions.map(s => {
-      return `<li class='filter-item'><input class="filter" type="checkbox" id="filter-${s.name}" value="${s.name}" checked><span class="legend--item--swatch" style="background-color: ${s.accessibleColor}"></span><label for="filter-${s.name}">${s.label}</label></li>`
+      return `<li class='filter-item'><input class="filter" type="checkbox" id="filter-${s.name}" value="${s.name}" checked><span class="legend--item--swatch" style="background-color: ${s.accessibleColor}"></span><label data-translation-id="filter_by_${_.snakeCase(s.name)}" for="filter-${s.name}">${s.label}</label></li>`
     }).join('')
 
     this.$controls.innerHTML = `
-      <div class="select-container">
-        <label for="sort-by">Sort by: </label>
+      <div class="select-container">  
+        <label for="sort-by"><span data-translation-id="sort_by">Sort by</span>: </label>
         <select name="sort-by" id="sort-by">
           ${options}
         </select>

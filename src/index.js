@@ -1,15 +1,20 @@
-import mapboxgl from 'mapbox-gl'
-import MapboxGeocoder from 'mapbox-gl-geocoder'
-import moment from 'moment'
-import Config from './config.js'
-import _ from 'lodash'
-import Filter from './js/filter.js'
-
 // Import Styles
 import 'mapbox-gl/dist/mapbox-gl.css'
 import 'mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
 import './styles/normalize.css'
 import './styles/styles.css'
+import './styles/welcome.css'
+import './styles/translator.css'
+
+// Import Libs
+import mapboxgl from 'mapbox-gl'
+import MapboxGeocoder from 'mapbox-gl-geocoder'
+import moment from 'moment'
+import Config from './config'
+import _ from 'lodash'
+import Filter from './js/filter'
+import Translator from './js/translator'
+import WelcomeModal from './js/welcome'
 
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
@@ -55,6 +60,57 @@ const statusOptions = [
   },
   unknownStatus
 ]
+
+
+let langs
+// show all langs in dev mode
+if (window.location.search.indexOf('dev') > -1) {
+  langs = ['eng', 'spa', 'kar', 'som', 'hmn', 'amh', 'orm']
+// otherwise only show these
+} else {
+  langs = ['eng', 'spa']
+}
+
+// initialize translator and load translations file
+const translator = new Translator({ enabledLanguages: langs })
+let welcome
+
+// get the translation data and then run the translator
+fetch(Config.translationUrl).then(async (resp) => {
+  try {
+    const data = await resp.json()
+
+    // add translation definitions to translator
+    translator.setTranslations(Translator.ParseGoogleSheetData(data))
+
+    // create the welcome modal
+    welcome = new WelcomeModal({
+      languages: translator.availableLanguages,
+
+      // when language is selected, run translation
+      onLanguageSelect: lang => {
+        translator.language = lang
+        translator.translate()
+      }
+    })
+
+    // show welcome modal if no language is selected
+    if (!translator.language) {
+      welcome.open()
+
+    // otherwise just run translator
+    } else {
+      translator.translate()
+    }
+
+    // when language button is clicked, re-open welcome modal
+    const languageButton = document.getElementById('lang-select-button')
+    languageButton.addEventListener('click', () => welcome.open())
+
+  } catch (e) {
+    console.error('Translation error', e)
+  }
+})
 
 let locations = []
 
@@ -105,10 +161,10 @@ function camelToTitle(str) {
 // open/close location sidebar
 function toggleSidePane() {
   if ($body.classList.contains('list-active')) {
-    $locationsButton.innerText = 'Show list of locations'
+    $locationsButton.innerText = translator.get('show_list_button', 'Show list of locations')
     $body.classList.remove('list-active')
   } else {
-    $locationsButton.innerText = 'Hide list of locations'
+    $locationsButton.innerText = translator.get('hide_list_button', 'Hide list of locations')
     $body.classList.add('list-active')
   }
 }
@@ -139,11 +195,11 @@ const getStatus = id => {
 
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
-  const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important">Urgent Need: ${location.urgentNeed}</p>` : ''
-  const seekingMoney = location.seekingMoney ? `<span class="seekingMoney location-list--badge">Needs Money Donations</span>` : ''
+  const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important"><span data-translation-id="urgent_need">Urgent Need</span>: ${location.urgentNeed}</p>` : ''
+  const seekingMoney = location.seekingMoney ? `<span data-translation-id="seeking_money" class="seekingMoney location-list--badge">Needs Money Donations</span>` : ''
   let seekingVolunteers = ''
   if (location.seekingVolunteers && location.seekingVolunteers.match(/(?:\byes\b)/i)) {
-    seekingVolunteers = `<span class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>`
+    seekingVolunteers = `<span data-translation-id="seeking_volunteers" class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>`
   }
   const $item = document.createElement('div')
   $item.classList.add('location-list--item')
@@ -174,7 +230,9 @@ const createListItem = (location, status, lng, lat) => {
         essential: true,
         zoom: 13
       })
+      console.log('popup', popup)
       popup.addTo(map)
+      if (translator.language) translator.translate()
     }
   })
   return $item
@@ -224,13 +282,13 @@ const onMapLoad = async () => {
           name: (name) => `<h2 class='h2'>${name}</h2>`,
           neighborhood: (neighborhood) => `<h3 class='h3'>${neighborhood}</h3>`,
           address: (address) => `<address><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>`, // driving directions in google, consider doing inside mapbox
-          mostRecentlyUpdatedAt: (datetime) => `<div class='updated-at' title='${datetime}'>Last updated ${moment(datetime, 'H:m M/D').fromNow()}</div>`
+          mostRecentlyUpdatedAt: (datetime) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> ${moment(datetime, 'H:m M/D').fromNow()}</div>`
         }
 
         // render HTML for marker
         const markerHtml = _.map(location, (value, key) => {
           if (propertyTransforms[key]) return propertyTransforms[key](value)
-          else return `<div class='p row'><p class='txt-deemphasize key'>${camelToTitle(key)}</p><p class='value'>${value}</p></div>`
+          else return `<div class='p row'><p data-translation-id="${_.snakeCase(key)}"class='txt-deemphasize key'>${camelToTitle(key)}</p><p class='value'>${value}</p></div>`
         }).join('')
 
         // create marker
@@ -240,6 +298,10 @@ const onMapLoad = async () => {
           .addTo(map);
 
           location.marker.getElement().className += " status-" + status.name;
+
+          // run translation when popup opens
+          const popup = location.marker.getPopup()
+          popup.on('open', () => translator.translate(popup.getElement()))
 
           // add to the side panel
           $locationList.appendChild(createListItem(location, status, item.gsx$longitude.$, item.gsx$latitude.$))
@@ -287,14 +349,19 @@ const onMapLoad = async () => {
         }
       ],
       statusOptions,
+      onAfterUpdate: () => translator.translate()
     })
+
+    // making sure to run translations after
+    // everything else is loaded
+    translator.translate()
 }
 
 // load map
 map.on('load', onMapLoad)
 
 // add sidebar-toggle-button handler
-sidebarToggleButton.addEventListener("click", function(){
+$locationsButton.addEventListener("click", function(){
   toggleSidePane()
 });
 
