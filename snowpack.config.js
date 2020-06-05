@@ -1,5 +1,5 @@
 module.exports = {
-  plugins: ["@snowpack/plugin-babel", "@snowpack/plugin-webpack"],
+  plugins: ["@snowpack/plugin-babel", "@snowpack/plugin-webpack", "@snowpack/plugin-dotenv"],
   install: [
     "list.js/dist/list.min.js"
   ],
