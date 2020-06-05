@@ -4,6 +4,9 @@
 
 .modal-wrap {
   position: fixed;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
   left: 0;
   top: 0;
   right: 0;
@@ -17,15 +20,12 @@
 }
 
 .modal {
-  width: 100%;
-  height: 100%;
-  padding: 2vw;
+  height: auto;
+  border-radius: 3px;
+  max-width: 600px;
+  padding: 20px;
   background-color: #fff;
   text-align: center;
-}
-
-.welcome-message {
-  color:rgba(0,0,50,.9);;
 }
 
 .modal-languages {
@@ -35,6 +35,7 @@
 }
 .welcome-lang-button {
   cursor: pointer;
+  border-radius: 3px;
   margin: 0.5em;
   padding: .5em 0;
   font-size: 120%;
