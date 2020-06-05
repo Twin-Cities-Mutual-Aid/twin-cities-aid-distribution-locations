@@ -4,6 +4,7 @@
 class Filter {
 
   constructor(el, options) {
+    this.onAfterUpdate = () => {}
     Object.assign(this, options)
     this.$filters = []
 
@@ -49,6 +50,8 @@ class Filter {
         return filterValues[index]
       })
     this.list.sort(sortSettings.name, sortSettings.sort)
+
+    this.onAfterUpdate()
   }
 
   toggleMapPoints(filterValues) {

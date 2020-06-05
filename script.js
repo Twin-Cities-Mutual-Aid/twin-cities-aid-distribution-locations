@@ -171,7 +171,7 @@ const getStatus = id => _.find(statusOptions, s => (s.id === id.toLowerCase()))
 
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
-  const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important">Urgent Need: ${location.urgentNeed}</p>` : ''
+  const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important"><span data-translation-id="urgent_need">Urgent Need</span>: ${location.urgentNeed}</p>` : ''
   const seekingMoney = location.seekingMoney ? `<span data-translation-id="seeking_money" class="seekingMoney location-list--badge">Needs Money Donations</span>` : ''
   const seekingVolunteers = location.seekingVolunteers ? `<span data-translation-id="need_volunteer_support" class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>` : ''
   const $item = document.createElement('div')
@@ -203,7 +203,9 @@ const createListItem = (location, status, lng, lat) => {
         essential: true,
         zoom: 13
       })
+      console.log('popup', popup)
       popup.addTo(map)
+      if (translator.language) translator.translate()
     }
   })
   return $item
@@ -262,7 +264,7 @@ const onMapLoad = async () => {
         // render HTML for marker
         const markerHtml = _.map(location, (value, key) => {
           if (propertyTransforms[key]) return propertyTransforms[key](value)
-          else return `<div class='p row'><p class='txt-deemphasize key'>${camelToTitle(key)}</p><p class='value'>${value}</p></div>`
+          else return `<div class='p row'><p data-translation-id="${_.snakeCase(key)}"class='txt-deemphasize key'>${camelToTitle(key)}</p><p class='value'>${value}</p></div>`
         }).join('')
 
         // create marker
@@ -272,6 +274,10 @@ const onMapLoad = async () => {
           .addTo(map);
 
           location.marker.getElement().className += " status-" + status.name;
+
+          // run translation when popup opens
+          const popup = location.marker.getPopup()
+          popup.on('open', () => translator.translate(popup.getElement()))
 
           // add to the side panel
           $locationList.appendChild(createListItem(location, status, item.gsx$longitude.$, item.gsx$latitude.$))
@@ -319,13 +325,12 @@ const onMapLoad = async () => {
         }
       ],
       statusOptions,
+      onAfterUpdate: () => translator.translate()
     })
 
     // making sure to run translations after
     // everything else is loaded
-    if (translator.language) {
-      translator.translate()
-    }
+    translator.translate()
 }
 
 // load map

@@ -87,6 +87,9 @@ class Translator {
    */
   get language() {
     const lang = window.localStorage.getItem(Translator.LOCAL_STORAGE_KEY)
+    // i was getting "null" as a string value when empty (???)
+    // which is truthy so this makes sure that doesn't get returned
+    if (this.validateLanguageKey(lang)) return lang
   }
 
   /**
@@ -115,15 +118,14 @@ class Translator {
    * Find elements with the `data-translation-id` attribute and replace
    * with translated term if one is available in current language
    */
-  translate() {
-    if (!this.language) {
-      console.error('Attempting to translate without selected language')
-      return
-    }
+  translate(el) {
+    if (!this.language) return
+
+    if (!el) el = document
 
     this.setFlagIcons()
 
-    this.els = document.querySelectorAll(`[data-translation-id]`)
+    this.els = el.querySelectorAll(`[data-translation-id]`)
 
     // convert NodeList to Array so we can use forEach
     const els = Array.prototype.slice.call(this.els)
