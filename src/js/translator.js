@@ -232,3 +232,5 @@ Translator.ParseGoogleSheetData = function (data) {
 
   return map
 }
+
+export default Translator
