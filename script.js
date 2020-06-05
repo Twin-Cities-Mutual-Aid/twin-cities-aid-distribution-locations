@@ -131,6 +131,21 @@ const createListItem = (location, status, lng, lat) => {
   if (location.seekingVolunteers && location.seekingVolunteers.match(/(?:\byes\b)/i)) {
     seekingVolunteers = `<span class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>`
   }
+
+  const openTimeDistribution = moment(location.openingForDistributingDontations, ["h:mm A"])
+  const openTimeDistributionLessOne = moment(location.openingForDistributingDontations, ["h:mm A"]).subtract(1, 'hours')
+  let openingSoonForDistribution = ''
+  if (moment().isBetween(openTimeDistributionLessOne, openTimeDistribution)) {
+    openingSoonForDistribution = `<p class="opening-soon">Opening soon! ${openTimeDistribution.format("LT")} for distributing</p>`
+  }
+
+  const openTimeReceiving = moment(location.openingForReceivingDontations, ["h:mm A"])
+  const openTimeReceivingLessOne = moment(location.openingForReceivingDontations, ["h:mm A"]).subtract(1, 'hours')
+  let openingSoonForReceiving = ''
+  if (moment().isBetween(openTimeReceivingLessOne, openTimeReceiving)) {
+    openingSoonForReceiving = `<pclass="opening-soon">Opening soon! ${openTimeReceiving.format("LT")} for receiving</p>`
+  }
+
   const $item = document.createElement('div')
   $item.classList.add('location-list--item')
   $item.dataset.id = status.id;
@@ -142,6 +157,8 @@ const createListItem = (location, status, lng, lat) => {
           <span class="name">${location.name}</span>
         </h2>
         <h3 class="h3 neighborhood">${location.neighborhood}</h3>
+        ${openingSoonForDistribution}
+        ${openingSoonForReceiving}
         ${urgentNeed}
         ${seekingVolunteers}
         ${seekingMoney}
