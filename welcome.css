@@ -1,0 +1,57 @@
+/*
+ * Welcome modal styles. Note that styles in this file is mobile-first
+ */
+
+.modal-wrap {
+  position: fixed;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  padding: 15px;
+
+  background-color: rgba(0,0,0,0.5)
+}
+
+.modal {
+  height: auto;
+  border-radius: 3px;
+  max-width: 600px;
+  padding: 20px;
+  background-color: #fff;
+  text-align: center;
+}
+
+.modal-languages {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+.welcome-lang-button {
+  cursor: pointer;
+  border-radius: 3px;
+  margin: 0.5em;
+  padding: .5em 0;
+  font-size: 120%;
+  font-weight: bold;
+  border: none;
+  color: white;
+  background-color: royalblue;
+}
+.welcome-lang-button .lang-flag {
+  margin-right: .5em;
+  border: 2px solid white
+}
+
+/** Larger screens */
+@media only screen and (min-width: 640px) {
+ .modal-languages {
+   max-width: 720px;
+ } 
+}
