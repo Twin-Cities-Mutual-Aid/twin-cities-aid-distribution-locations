@@ -47,3 +47,5 @@ class WelcomeModal {
     this.el.remove()
   }
 }
+
+export default WelcomeModal

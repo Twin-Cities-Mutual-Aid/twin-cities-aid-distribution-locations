@@ -1,7 +1,27 @@
+// Import Styles
+import 'mapbox-gl/dist/mapbox-gl.css'
+import 'mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
+import './styles/normalize.css'
+import './styles/styles.css'
+import './styles/welcome.css'
+import './styles/translator.css'
+
+// Import Libs
+import mapboxgl from 'mapbox-gl'
+import MapboxGeocoder from 'mapbox-gl-geocoder'
+import moment from 'moment'
+import Config from './config'
+import _ from 'lodash'
+import Filter from './js/filter'
+import Translator from './js/translator'
+import WelcomeModal from './js/welcome'
+
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
 const $locationsButton = document.getElementById('locations-toggle-button');
 const $body = document.body;
+
+mapboxgl.accessToken = Config.accessToken
 
 // we're using the map color from google sheet to indicate location status,
 // but using a different display color for accessibility. so the original
@@ -56,7 +76,7 @@ const translator = new Translator({ enabledLanguages: langs })
 let welcome
 
 // get the translation data and then run the translator
-fetch(TRANSLATION_URL).then(async (resp) => {
+fetch(Config.translationUrl).then(async (resp) => {
   try {
     const data = await resp.json()
 
@@ -283,7 +303,7 @@ function extractRawLocation(item) {
 }
 
 // start fetching data right away
-const dataPromise = fetch(DATA_URL)
+const dataPromise = fetch(Config.dataUrl)
 
 // handle the map load event
 const onMapLoad = async () => {
@@ -386,6 +406,22 @@ const onMapLoad = async () => {
 
 // load map
 map.on('load', onMapLoad)
+
+// add sidebar-toggle-button handler
+$locationsButton.addEventListener("click", function(){
+  toggleSidePane()
+});
+
+// add help-toggle-button handler
+const helpInfoOpenButton = document.getElementById('help-info-toggle-button')
+helpInfoOpenButton.addEventListener("click", function(){
+  toggleHelpInfo()
+});
+
+const helpInfoCloseButton = document.getElementById('help-info-close-button')
+helpInfoCloseButton.addEventListener("click", function(){
+  toggleHelpInfo()
+});
 
 // render key
 const key = document.getElementById('key')

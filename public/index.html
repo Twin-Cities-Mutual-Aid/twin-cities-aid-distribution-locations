@@ -20,27 +20,6 @@
   <meta property="twitter:title" content="Twin Cities Aid Distribution Locations">
   <meta property="twitter:description" content="A map to coordinate aid and care in the Twin Cities.">
   <meta property="twitter:image" content="https://twin-cities-mutual-aid.org/images/aid2.png">
-
-  <!-- MAPBOX -->
-  <script src="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js"></script>
-  <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css" rel="stylesheet" />
-  <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
-  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css" type="text/css" />
-  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
-
-	<!-- CONFIG -->
-	<script>
-		mapboxgl.accessToken = 'pk.eyJ1IjoiamFjb2JyZGFsdG9uIiwiYSI6ImNrYXc2anFjbjIxNGwyeG14dWk0MDVycmIifQ.yILWplracVMB4mv1dWwTtg'
-		const DATA_URL = 'https://spreadsheets.google.com/feeds/list/1CyPozeKhmOuIaVnKDQAUKKsvA9R4F20hEQ3MSGWczP8/1/public/full?alt=json'
-		const TRANSLATION_URL = 'https://spreadsheets.google.com/feeds/list/1m5QPNP6O8nsQsqJcQbwib_obpXRjmbYYGtwKzzg1l38/1/public/full?alt=json'
-  </script>
-
-  <link rel="stylesheet" href="./normalize.css">
-  <link rel="stylesheet" href="./styles.css">
-  <link rel="stylesheet" href="./welcome.css">
-  <link rel="stylesheet" href="./translator.css">
-
 </head>
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-9313001-2"></script>
@@ -59,9 +38,8 @@
     </div>
     <div class="filter-pane white-and-blue">
       <div class='legend' id="key"></div>
-
-      <button data-translation-id="show_list_button" id="locations-toggle-button" class="location-list-toggle toggle-button" onClick="toggleSidePane(this)" aria-label="Toggle list of locations">Show list of locations</button>
-      <button data-translation-id="help_info" id="help-info-toggle-button" class="toggle-button" onClick="toggleHelpInfo(this)" aria-label="Toggle help info section">Help/info</button>
+      <button data-translation-id="show_list_button" id="locations-toggle-button" class="location-list-toggle toggle-button" aria-label="Toggle list of locations">Show list of locations</button>
+      <button data-translation-id="help_info" id="help-info-toggle-button" class="toggle-button" aria-label="Toggle help info section">Help/info</button>
       <div class='counter'>
         <script type="text/javascript" src="//counter.websiteout.net/js/7/0/41000/0"></script>
       </div>
@@ -72,7 +50,7 @@
     </div>
   </div>
   <div id="help-info" class='help-info padded spaced-lines'>
-    <button class='help-info-close-button' onClick="toggleHelpInfo(this)" aria-label="Close help info section">X <span data-translation-id="close">Close</span></button>
+    <button id='help-info-close-button' class='help-info-close-button' aria-label="Close help info section">X <span data-translation-id="close">Close</span></button>
     <p class='p txt-small'><span data-translation-id="project_description">Twin Cities Aid Map is run by volunteers</span>.</p><br />
     <p class='p txt-small bold'><span data-translation-id="project_feedback">Have feedback?</span> <a href="mailto:support@tcmap.org" data-translation-id="project_contact">Email Us</a>.</p>
     <p class='p txt-small bold'><span data-translation-id="project_data">See this data in</span> <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSfnmh9CmtVoBMy2k_-NMhhvF7ursBs2L5IPF9VZ1J-l9P71vjDFw7y6Y6E98d5lNeOAEo7leisP0Y8/pubhtml" target="_blank">Google Sheets</a>.</p>
@@ -88,12 +66,8 @@
     </button>
   </div>
 
-
-  <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
-  <script src="./filter.js"></script>
-  <script src="./translator.js"></script>
-  <script src="./welcome.js"></script>
-  <script src="./script.js"></script>
+  <script src="/js/list.min.js"></script>
+  <script type="module" src="/_dist_/index.js"></script>
 
 </body>
 </html>
