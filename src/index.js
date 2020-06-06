@@ -23,6 +23,9 @@ if(import.meta.env.MODE === 'production'){
   });
 }
 
+//just for testing, will remove this before merging
+TrackJS.track('Testing TrackJS!');
+
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
 const $locationsButton = document.getElementById('locations-toggle-button');
