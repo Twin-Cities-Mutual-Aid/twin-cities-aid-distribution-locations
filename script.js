@@ -42,7 +42,7 @@ const statusOptions = [
     label: 'status unknown',
     accessibleColor: '#ffffbf',
     count: 0
-  },
+  }
 ]
 
 let locations = []
