@@ -12,32 +12,37 @@ const statusOptions = [
     id: '#fc03df',
     name: 'recieving',
     label: 'open for receiving donations',
-    accessibleColor: '#2c7bb6'
+    accessibleColor: '#2c7bb6',
+    count: 0
   },
   {
     id: '#03bafc',
     name: 'distributing',
     label: 'open for distributing donations',
-    accessibleColor: '#abd9e9'
+    accessibleColor: '#abd9e9',
+    count: 0
   },
   {
     id: '#9f48ea',
     name: 'both',
     label: 'open for both',
-    accessibleColor: '#fdae61'
+    accessibleColor: '#fdae61',
+    count: 0
   },
   {
     id: '#c70000',
     name: 'closed',
     label: 'currently closed',
-    accessibleColor: '#d7191c'
+    accessibleColor: '#d7191c',
+    count: 0
   },
   {
     id: '#aaaaaa',
     name: 'unknown',
     label: 'status unknown',
-    accessibleColor: '#ffffbf'
-  }
+    accessibleColor: '#ffffbf',
+    count: 0
+  },
 ]
 
 let locations = []
@@ -126,6 +131,11 @@ const createListItem = (location, status, lng, lat) => {
   const $item = document.createElement('div')
   $item.classList.add('location-list--item')
   $item.dataset.id = status.id;
+
+  // Increments number of total 
+  // locations that fit this status.
+  status.count++ 
+
   $item.innerHTML = `
     <div class="flex">
       <span title="${status.id}" class="status location-list--indicator" style="background-color: ${status.accessibleColor};">${status.id}</span>
