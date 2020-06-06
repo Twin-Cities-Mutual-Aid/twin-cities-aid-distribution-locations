@@ -151,9 +151,11 @@ function truthy(str) {
 function toggleSidePane() {
   if ($body.classList.contains('list-active')) {
     $locationsButton.innerText = translator.get('show_list_button', 'Show list of locations')
+    $locationsButton.setAttribute('data-translation-id', 'show_list_button')
     $body.classList.remove('list-active')
   } else {
     $locationsButton.innerText = translator.get('hide_list_button', 'Hide list of locations')
+    $locationsButton.setAttribute('data-translation-id', 'hide_list_button')
     $body.classList.add('list-active')
   }
 }
