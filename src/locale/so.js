@@ -1,7 +1,7 @@
 //! moment.js locale configuration
 //! locale : Somali [so]
 
-import moment from 'moment/dist/moment'
+import moment from 'moment/min/moment-with-locales'
 
 export default moment.defineLocale('so', {
     relativeTime: {

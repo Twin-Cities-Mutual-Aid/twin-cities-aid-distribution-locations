@@ -7,7 +7,7 @@ import './styles/translator.css'
 
 // Import Libs
 import mapboxgl from 'mapbox-gl'
-import moment from 'moment/dist/moment'
+import moment from 'moment/min/moment-with-locales'
 import Config from './config'
 import _ from 'lodash'
 import Filter from './js/filter'
@@ -15,8 +15,6 @@ import Translator from './js/translator'
 import WelcomeModal from './js/welcome'
 
 // locales
-import 'moment/dist/locale/es'
-import 'moment/dist/locale/vi'
 import './locale/am'
 import './locale/om'
 import './locale/so'

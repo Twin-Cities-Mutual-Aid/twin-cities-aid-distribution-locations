@@ -1,7 +1,7 @@
 //! moment.js locale configuration
 //! locale : Oromo [om]
 
-import moment from 'moment/dist/moment'
+import moment from 'moment/min/moment-with-locales'
 
 export default moment.defineLocale('om', {
     relativeTime: {
