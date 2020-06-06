@@ -66,7 +66,7 @@ if (window.location.search.indexOf('dev') > -1) {
   langs = ['eng', 'spa', 'kar', 'som', 'hmn', 'amh', 'orm', 'vie']
 // otherwise only show these
 } else {
-  langs = ['eng', 'spa', 'vie']
+  langs = ['eng', 'spa', 'som', 'amh', 'orm', 'vie']
 }
 
 // initialize translator and load translations file
