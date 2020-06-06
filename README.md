@@ -1,4 +1,4 @@
-# Twin Cities Aid Distribution Locations
+# Twin Cities Mutual Aid Map
 A webapp to coordinate aid and care in the Twin Cities. https://twin-cities-mutual-aid.org/
 
 ## About the project
