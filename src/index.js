@@ -281,6 +281,20 @@ function extractSeekingMoneyURL(item) {
 }
 //////////////////////////
 
+///////////
+// returns a range of hours if opening or closing is provided
+// e.g. "7:00 AM to 5:00 PM"
+// else returns just the opening hours texy
+// e.g "not today", or "never"
+///////////
+function getHours(openingHours, closingHours) {
+  if (openingHours && closingHours) {
+    return openingHours + ' to ' + closingHours
+  } else {
+    return openingHours
+  }
+}
+
 function extractRawLocation(item) {
   return {
     name: item.gsx$nameoforganization.$t,
@@ -290,13 +304,11 @@ function extractRawLocation(item) {
     seekingMoney: extractSeekingMoney(item),
     seekingMoneyURL: extractSeekingMoneyURL(item),
     currentlyOpenForDistributing: item.gsx$currentlyopenfordistributing.$t,
-    openingForDistributingDontations: item.gsx$openingfordistributingdonations.$t,
-    closingForDistributingDonations: item.gsx$closingfordistributingdonations.$t,
+    distributionHours: getHours(item.gsx$openingfordistributingdonations.$t, item.gsx$closingfordistributingdonations.$t),
     accepting: item.gsx$accepting.$t,
     notAccepting: item.gsx$notaccepting.$t,
     currentlyOpenForReceiving: item.gsx$currentlyopenforreceiving.$t,
-    openingForReceivingDontations: item.gsx$openingforreceivingdonations.$t,
-    closingForReceivingDonations: item.gsx$closingforreceivingdonations.$t,
+    receivingHours: getHours(item.gsx$openingforreceivingdonations.$t, item.gsx$closingforreceivingdonations.$t),
     seekingVolunteers: item.gsx$seekingvolunteers.$t,
     urgentNeed: item.gsx$urgentneed.$t,
     notes: item.gsx$notes.$t
