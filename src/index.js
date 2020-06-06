@@ -284,7 +284,7 @@ function extractSeekingMoneyURL(item) {
 ///////////
 // returns a range of hours if opening or closing is provided
 // e.g. "7:00 AM to 5:00 PM"
-// else returns just the opening hours texy
+// else returns just the opening hours text
 // e.g "not today", or "never"
 ///////////
 function getHours(openingHours, closingHours) {
