@@ -13,6 +13,16 @@ import _ from 'lodash'
 import Filter from './js/filter'
 import Translator from './js/translator'
 import WelcomeModal from './js/welcome'
+import { TrackJS } from 'trackjs';
+
+//Add TrackJS Agent
+if(import.meta.env.MODE === 'production'){
+  TrackJS.install({
+    token: Config.trackJSToken
+    // for more configuration options, see https://docs.trackjs.com
+  });
+}
+
 
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
