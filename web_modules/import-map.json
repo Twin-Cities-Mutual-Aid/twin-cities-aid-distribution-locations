@@ -4,6 +4,7 @@
     "lodash": "./lodash.js",
     "mapbox-gl": "./mapbox-gl.js",
     "mapbox-gl/dist/mapbox-gl.css": "./mapbox-gl/dist/mapbox-gl.css",
-    "moment": "./moment.js"
+    "moment": "./moment.js",
+    "trackjs": "./trackjs.js"
   }
 }
