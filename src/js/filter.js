@@ -22,8 +22,7 @@ class Filter {
      */
     document.getElementById("filter-both").disabled = true
 
-    // Uncheck closed and unknown status locations to make a clearer call to action for new users on the site.
-    document.getElementById("filter-closed").checked = false
+    // Uncheck unknown status locations to make a clearer call to action for new users on the site.
     document.getElementById("filter-unknown").checked = false
     this.update()
   }
