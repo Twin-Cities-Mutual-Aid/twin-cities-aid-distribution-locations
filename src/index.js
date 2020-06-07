@@ -219,10 +219,6 @@ const getStatus = id => {
   return status || unknownStatus
 }
 
-// Not all the fields being searched on should be visible but need
-// to be on the DOM in order for listjs to pick them up for search
-const hiddenSearchFields = ['address', 'accepting', 'notAccepting', 'notes']
-
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
   const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important"><span data-translation-id="urgent_need">Urgent Need</span>: ${location.urgentNeed}</p>` : ''
@@ -247,8 +243,6 @@ const createListItem = (location, status, lng, lat) => {
     openingSoonForReceiving = `<p class="opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${openTimeReceiving.format("LT")} <span data-translation-id="for_receiving">for receiving</span></p>`
   }
 
- const hiddenSearch = hiddenSearchFields.map(field => `<p class="${field}" >${location[field] || ''}</p>`).join('')
-
   const $item = document.createElement('div')
   $item.classList.add('location-list--item')
   $item.dataset.id = status.id;
@@ -270,7 +264,6 @@ const createListItem = (location, status, lng, lat) => {
         ${urgentNeed}
         ${seekingVolunteers}
         ${seekingMoney}
-        ${hiddenSearch}
       </div>
     </div>
     `
@@ -418,7 +411,7 @@ const onMapLoad = async () => {
     }).value()
 
     // add nav
-    new Filter($sidePane, {
+    const filter = new Filter($sidePane, {
       sortOptions: [
         {
           name: 'urgentNeed',
@@ -453,22 +446,6 @@ const onMapLoad = async () => {
         }
       ],
       statusOptions,
-      searchOptions: {
-        fuzzySearch: {
-          // https://listjs.com/docs/fuzzysearch/
-          location: 0,
-          distance: 999999, // we don't care where the matched word is
-          threshold: 0.4,
-          multiSearch: true
-        },
-        searchOn: [
-          'name',
-          'neighborhood', 
-          'urgentNeed',
-          ...hiddenSearchFields
-        ],
-      },
-      locations,
       onAfterUpdate: () => translator.translate()
     })
 
