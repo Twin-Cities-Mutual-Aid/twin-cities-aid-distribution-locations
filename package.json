@@ -1,6 +1,6 @@
 {
   "name": "twin-cities-aid-distribution-locations",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A webapp to coordinate aid and care in the Twin Cities.",
   "main": "index.html",
   "scripts": {

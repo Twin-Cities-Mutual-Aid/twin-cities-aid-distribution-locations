@@ -7,7 +7,7 @@ import './styles/translator.css'
 
 // Import Libs
 import mapboxgl from 'mapbox-gl'
-import moment from 'moment'
+import moment from 'moment/dist/moment'
 import Config from './config'
 import _ from 'lodash'
 import Filter from './js/filter'
@@ -23,6 +23,13 @@ if(import.meta.env.MODE === 'production'){
   });
 }
 
+
+// locales
+import 'moment/dist/locale/es'
+import 'moment/dist/locale/vi'
+import './locale/am'
+import './locale/om'
+import './locale/so'
 
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
@@ -83,10 +90,20 @@ if (window.location.search.indexOf('dev') > -1) {
 } else {
   langs = ['eng', 'spa', 'som', 'amh', 'orm', 'vie']
 }
+// moment.js uses ISO 639-1
+const locales = {
+  'eng': 'en',
+  'spa': 'es',
+  'vie': 'vi',
+  'som': 'so',
+  'amh': 'am',
+  'orm': 'om'
+}
 
 // initialize translator and load translations file
 const translator = new Translator({ enabledLanguages: langs })
 let welcome
+let activePopup
 
 // get the translation data and then run the translator
 fetch(Config.translationUrl).then(async (resp) => {
@@ -103,6 +120,8 @@ fetch(Config.translationUrl).then(async (resp) => {
       // when language is selected, run translation
       onLanguageSelect: lang => {
         translator.language = lang
+        moment.locale(locales[translator.language] || locales['eng'])
+        activePopup && activePopup.refreshPopup()
         translator.translate()
       }
     })
@@ -113,6 +132,7 @@ fetch(Config.translationUrl).then(async (resp) => {
 
     // otherwise just run translator
     } else {
+      moment.locale(locales[translator.language] || locales['eng'])
       translator.translate()
     }
 
@@ -261,7 +281,6 @@ const createListItem = (location, status, lng, lat) => {
         essential: true,
         zoom: 13
       })
-      console.log('popup', popup)
       popup.addTo(map)
       if (translator.language) translator.translate()
     }
@@ -344,7 +363,7 @@ const onMapLoad = async () => {
         }
 
         // render HTML for marker
-        const markerHtml = _.map(location, (value, key) => {
+        const markerHtml = () => _.map(location, (value, key) => {
           if (propertyTransforms[key]) return propertyTransforms[key](value, location)
           else return `<div class='p row'><p data-translation-id="${_.snakeCase(key)}"class='txt-deemphasize key'>${camelToTitle(key)}</p><p class='value'>${value}</p></div>`
         }).join('')
@@ -352,14 +371,20 @@ const onMapLoad = async () => {
         // create marker
         location.marker = new mapboxgl.Marker({ color: status.accessibleColor })
           .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
-          .setPopup(new mapboxgl.Popup().setMaxWidth('275px').setHTML(`<div class='popup-content'>${markerHtml}</div>`))
+          .setPopup(new mapboxgl.Popup().setMaxWidth('275px'))
           .addTo(map);
 
           location.marker.getElement().className += " status-" + status.name;
+          location.popup = location.marker.getPopup()
+
+          location.popup.refreshPopup = () => {
+            activePopup = location.popup
+            location.popup.setHTML(`<div class='popup-content'>${markerHtml()}</div>`)
+            translator.translate(location.popup.getElement())
+          }
 
           // run translation when popup opens
-          const popup = location.marker.getPopup()
-          popup.on('open', () => translator.translate(popup.getElement()))
+          location.popup.on('open', location.popup.refreshPopup)
 
           // add to the side panel
           $locationList.appendChild(createListItem(location, status, item.gsx$longitude.$, item.gsx$latitude.$))
