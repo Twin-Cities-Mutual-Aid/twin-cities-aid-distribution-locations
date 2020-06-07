@@ -373,7 +373,11 @@ const onMapLoad = async () => {
           address: addressComponent, // driving directions in google, consider doing inside mapbox
           seekingMoney: (value, location) => needsMoneyComponent(location),
           seekingMoneyURL: (value, _) => '',
-          mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> ${moment(datetime, 'H:m M/D').fromNow()}</div>`
+          mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> ${moment(datetime, 'H:m M/D').fromNow()}</div>`,
+          // ignore the following properties
+          // marker and popup should not be rendered
+          marker: () => '',
+          popup: () => '',
         }
 
         // render HTML for marker
