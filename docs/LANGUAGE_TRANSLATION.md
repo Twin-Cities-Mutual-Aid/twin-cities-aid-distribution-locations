@@ -30,7 +30,7 @@ A basic reference for what kind of access is needed for various actions in the t
 | Adding a Language | Yes | Yes | 
 | Enabling a Language | No | Yes |
 
-* assuming the translator is working outside the main spreadsheet
+*assuming the translator is working outside the main spreadsheet
 
 ### The translation spreadsheet
 
