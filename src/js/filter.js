@@ -14,7 +14,8 @@ class Filter {
     this.$controls = document.getElementById('filter-controls')
     this.renderControls(this.$controls)
     this.list = new List(this.$el.id, {
-      valueNames: this.sortOptions.map(o => o.name)
+      valueNames: [...this.sortOptions.map(o => o.name), ...this.searchOptions.searchOn],
+      fuzzySearch: this.searchOptions.fuzzySearch
     })
     /** Default filter-both checkbox to be disabled. only
      * enabled if "receiving" and "distributing" checkboxes
@@ -43,7 +44,7 @@ class Filter {
       document.getElementById("filter-both").disabled = false
     }
 
-    this.toggleMapPoints(filterValues);
+    this.toggleMapPointsForFilter(filterValues);
     this.list.filter(i => {
         const index = _.findIndex(this.statusOptions, o => {
           return o.id === i.values().status;
@@ -55,7 +56,7 @@ class Filter {
     this.onAfterUpdate()
   }
 
-  toggleMapPoints(filterValues) {
+  toggleMapPointsForFilter(filterValues) {
     const $map = document.getElementById("map");
     this.statusOptions.map((status, i) => {
       if (filterValues[i]) {
@@ -66,8 +67,33 @@ class Filter {
     });
   }
 
-  renderControls() {
+  toggleMapPointsForSearch(searchTerm, searchResults) {
+    if(!searchTerm) {
+      this.locations.forEach(location => {
+        const $location = location.marker.getElement()
+        $location.classList.remove('hide-search-result')
+      })
+    } else {
+      this.locations.forEach(location => {
+        const $location = location.marker.getElement()
+        if (searchResults.includes(location.address)) {
+          $location.classList.remove('hide-search-result')
+        } else {
+          $location.classList.add('hide-search-result');
+        }
+      })
+    }
+  }
 
+  search(event) {
+    const searchTerm = event.target.value || ''
+    this.list.fuzzySearch(searchTerm, this.searchOptions.searchOn)
+    const searchResults = this.list.items.filter(item => item.found).map(item => item.values().address);
+    this.toggleMapPointsForSearch(searchTerm, searchResults)
+    this.onAfterUpdate()
+  }
+
+  renderControls() {
     const options = this.sortOptions.map(o => {
       return `<option data-translation-id="sort_by_${_.snakeCase(o.name)}" value="${o.name}" ${o.selected && 'selected'}>${o.label}</option>`
     }).join('')
@@ -84,15 +110,32 @@ class Filter {
           ${options}
         </select>
       </div>
+      <form role="search" class="search-container" action="javascript:void(0);">
+        <div class="search-input-group">
+          <label for="search">
+            <span class="sr-only">Type here to search sites or needs</span>
+          </label>
+          <input type="text" class="search-input" id="search" placeholder="Search sites or needs..."></input>
+        </div>
+        <button id="clear-search-btn">Clear Search</button>
+      </form>
     `
+
+    const debouncedSearch = _.debounce(this.search.bind(this), 300);
 
     const $key = document.getElementById("key");
     $key.innerHTML = `<ul class="filters">${filters}</ul>`;
 
     this.$sort = document.getElementById('sort-by')
-    // // convert node list to array so we can use forEach
+    this.$search = document.getElementById('search')
+    this.$clearSearchBtn = document.getElementById('clear-search-btn');
     this.$filters = Array.prototype.slice.call($key.querySelectorAll('input[type="checkbox"]'))
     this.$sort.addEventListener('change', this.update.bind(this))
+    this.$search.addEventListener('input', debouncedSearch)
+    this.$clearSearchBtn.addEventListener('click', event => {
+      this.$search.value = '';
+      this.search.bind(this)(event);
+    })
     this.$filters.forEach($e => $e.addEventListener('change', this.update.bind(this)))
   }
 }
