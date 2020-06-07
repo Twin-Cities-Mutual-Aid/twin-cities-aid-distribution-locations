@@ -63,6 +63,8 @@ If you want to preview languages that have been created but not enabled, add `?d
 
 https://twin-cities-mutual-aid.org/?dev
 
+---
+
 ## Maintaining Translations
 
 ### Translating existing terms
@@ -91,7 +93,7 @@ Adding a language involves a few steps:
 
 #### Adding a column to the spreadsheet
 
-A checklist for adding a new column to the checklist
+Checklist:
 
  - [ ] The language header should contain a 3-letter code like `som` (a list of these can be [found here](https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes)) 
 
@@ -129,6 +131,7 @@ A checklist for enabling a language:
  - [ ] 3-letter code is added to the array for dev/preview mode
  - [ ] 3-letter code is added to the array for production mode
 
+---
 
 ## Technical Details
 
