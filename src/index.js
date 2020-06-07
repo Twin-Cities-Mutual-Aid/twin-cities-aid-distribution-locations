@@ -308,7 +308,7 @@ function extractRawLocation(item) {
     accepting: item.gsx$accepting.$t,
     notAccepting: item.gsx$notaccepting.$t,
     currentlyOpenForReceiving: item.gsx$currentlyopenforreceiving.$t,
-    receivingHours: getHours(item.gsx$openingforreceivingdonations.$t, item.gsx$closingforreceivingdonations.$t),
+    aidReceivingHours: getHours(item.gsx$openingforreceivingdonations.$t, item.gsx$closingforreceivingdonations.$t),
     seekingVolunteers: item.gsx$seekingvolunteers.$t,
     urgentNeed: item.gsx$urgentneed.$t,
     notes: item.gsx$notes.$t
