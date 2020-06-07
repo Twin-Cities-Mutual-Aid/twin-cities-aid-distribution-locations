@@ -2,6 +2,8 @@
 
 > **Note:** development on this project is moving quickly, so parts of this document may be out of date. Feel free to ask questions in the `#tc-aid-translations` channel in Slack.
 
+<!-- TOC -->autoauto- [Language Translation](#language-translation)auto  - [Overview](#overview)auto    - [The translation spreadsheet](#the-translation-spreadsheet)auto    - [Glossary](#glossary)auto    - [Special links](#special-links)auto  - [Maintaining Translations](#maintaining-translations)auto    - [Translating existing terms](#translating-existing-terms)auto    - [Creating a new term](#creating-a-new-term)auto    - [Adding a new language](#adding-a-new-language)auto      - [Adding a column to the spreadsheet](#adding-a-column-to-the-spreadsheet)auto      - [Adding a new flag image](#adding-a-new-flag-image)auto      - [Enabling the language](#enabling-the-language)auto  - [Technical Details](#technical-details)auto    - [`language`](#language)auto    - [`translate([<Element>])`](#translateelement)autoauto<!-- /TOC -->
+
 ## Overview
 
 The site translations work by loading a spreadsheet of translated terms, and replacing the hard-coded English terms on the page with the translated ones. If a translated term is missing in the spreadsheet, the English term will be used. The terms that need to be translated are specified **in the code**, it will **not** automatically find words on the page. 
