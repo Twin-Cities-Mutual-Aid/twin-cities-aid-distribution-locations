@@ -2,6 +2,22 @@
 
 ## Overview
 
+The site translations work by loading a spreadsheet of translated terms, and replacing (English) words on the page with the translated ones. The words that need to be translated are specified **in the code**, it will **not** automatically find words on the page. 
+
+A basic reference for what kind of access is needed for various actions in the translation process. 
+
+| Action | Edit Spreadsheet | Update to code |
+| :-----------------| :-: | :-: |
+| Translating terms | No | No |
+| Adding translated terms | Yes | No |
+| Adding new terms | Yes | Yes | 
+| Adding a Language | Yes | Yes | 
+| Enabling a Language | No | Yes |
+
+
+The spreadsheet used for defining translations is here: https://docs.google.com/spreadsheets/d/1m5QPNP6O8nsQsqJcQbwib_obpXRjmbYYGtwKzzg1l38/edit?pli=1#gid=0. You can request access in the slack channel `#tc-aid-translations`.
+
+Here's the basic format of the spreadsheet:
 
 | id | eng | spa | 
 | :--------- | :-------- |:--------- |
@@ -10,12 +26,14 @@
 | language | Language | Idioma |
 | welcome | Welcome! | ¡Bienvenidos! |
 
- - **Column names are required**
- - **Column names should be a 3-letter code**, [ideally from this standard](https://en.wikipedia.org/wiki/ISO_639-2).
+The first column (e.g. `lang_name`) and first row (e.g. `eng`) are *required* and must be filled out for any added row/column. The rest of the fields can be filled up as new translated terms are available.
 
-```html
-<span data-translation-id="needs_money">Needs Money</span>
-```
+Glossary
+
+ * **Languages:** Pretty self-explanatory (a column in the spreadsheet)
+ * **Terms:** A word or set of words that need to be translated (a row in the spreadsheet). The term is identified by the `id` column
+ * **Translated Terms:** An individual translated term (a cell in the spreadsheet)
+
 
 ## Maintaining Translations
 
@@ -29,7 +47,7 @@
 
 A checklist for adding a new column to the checklist
 
- - [ ] The language header should contain a 3-letter code like `som` (a list of these can be [found here](https://en.wikipedia.org/wiki/ISO_639-2))
+ - [ ] The language header should contain a 3-letter code like `som` (a list of these can be [found here](https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes)) 
 
 #### Adding a new flag image
 
@@ -42,5 +60,19 @@ A checklist for adding new flag images
 
 #### Enabling the language
 
+Languages are currently enabled via a hard-coded list of enabled languages. At time of writing the languages are defined in code like this:
 
-## Technical Detials
+```js
+// show all langs in dev mode
+if (window.location.search.indexOf('dev') > -1) {
+  langs = ['eng', 'spa', 'kar', 'som', 'hmn', 'amh', 'orm', 'vie']
+// otherwise only show these
+} else {
+  langs = ['eng', 'spa', 'som', 'amh', 'orm', 'vie']
+}
+```
+
+
+
+## Technical Details
+
