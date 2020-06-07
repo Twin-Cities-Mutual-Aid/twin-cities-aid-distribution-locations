@@ -28,12 +28,21 @@ Here's the basic format of the spreadsheet:
 
 The first column (e.g. `lang_name`) and first row (e.g. `eng`) are *required* and must be filled out for any added row/column. The rest of the fields can be filled up as new translated terms are available.
 
-Glossary
+### Glossary
 
  * **Languages:** Pretty self-explanatory (a column in the spreadsheet)
  * **Terms:** A word or set of words that need to be translated (a row in the spreadsheet). The term is identified by the `id` column
  * **Translated Terms:** An individual translated term (a cell in the spreadsheet)
 
+### Special links
+
+If you want to link to a specific language (like if you're sending the link to somebody you know speaks Somali) you can add `?lang=XXX` to the end of the URL. Example: 
+
+https://twin-cities-mutual-aid.org/?lang=som
+
+If you want to preview languages that have been created but not enabled, add `?dev to the end of the url:
+
+https://twin-cities-mutual-aid.org/?dev
 
 ## Maintaining Translations
 
@@ -72,7 +81,13 @@ if (window.location.search.indexOf('dev') > -1) {
 }
 ```
 
+Note that there are **two** sets of language codes, one for preview mode and one for the live site.
+
+A checklist for enabling a language:
+
+ - [ ] 3-letter code is added to both arrays (one for production, one for development)
 
 
 ## Technical Details
 
+Keep in mind that development is moving very fast on this project, so this may become outdated pretty quickly.
