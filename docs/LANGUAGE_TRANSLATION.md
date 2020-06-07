@@ -45,7 +45,7 @@ Here's the basic format of the spreadsheet:
 | language | Language | Idioma |
 | welcome | Welcome! | ¡Bienvenidos! |
 
-The first column (e.g. `lang_name`) and first row (e.g. `eng`) are **required** and must be filled out for any added row/column. The rest of the cells can be filled in as new translated terms are available.
+The first column (the `id` column) and first row (e.g. `eng`) are **required** and must be filled out for any added row/column. The rest of the cells can be filled in as new translated terms are available.
 
 ### Glossary
 
