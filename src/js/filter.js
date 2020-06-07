@@ -22,8 +22,7 @@ class Filter {
      */
     document.getElementById("filter-both").disabled = true
 
-    // Uncheck closed and unknown status locations to make a clearer call to action for new users on the site.
-    document.getElementById("filter-closed").checked = false
+    // Uncheck unknown status locations to make a clearer call to action for new users on the site.
     document.getElementById("filter-unknown").checked = false
     this.update()
   }
@@ -75,7 +74,7 @@ class Filter {
 
 
     const filters = this.statusOptions.map(s => {
-      return `<li class='filter-item'><input class="filter" type="checkbox" id="filter-${s.name}" value="${s.name}" checked><span class="legend--item--swatch" style="background-color: ${s.accessibleColor}"></span><label data-translation-id="filter_by_${_.snakeCase(s.name)}" for="filter-${s.name}">${s.label}</label></li>`
+      return `<li class='filter-item'><input class="filter" type="checkbox" id="filter-${s.name}" value="${s.name}" checked><span class="legend--item--swatch" style="background-color: ${s.accessibleColor}"></span><label data-translation-id="filter_by_${_.snakeCase(s.name)}" for="filter-${s.name}">${s.label}</label><label> (${s.count})</label></li>`
     }).join('')
 
     this.$controls.innerHTML = `
