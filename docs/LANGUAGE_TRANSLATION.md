@@ -144,6 +144,7 @@ Some quick notes:
  ```html
  <span data-translation-id="term_name">Default text</span>
  ```
+This will automatically be detected and translated when the `translator.translate()` method is called (see below)
 
  ### Getting a translated term in js code (`get`)
 
