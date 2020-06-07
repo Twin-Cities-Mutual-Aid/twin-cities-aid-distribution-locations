@@ -185,6 +185,37 @@ input[type='checkbox'] + label {
   padding: 2px 0px;
 }
 
+.search-container {
+  display:flex;
+  flex-wrap: wrap;
+  margin: 15px 0;
+}
+
+.search-input {
+  padding: 10px;
+  border: 1px solid grey;
+  height: 30px;
+  width: 100%;
+}
+
+#clear-search-btn {
+  background-color: #B33C22;
+  border-radius: 3px;
+  color: white;
+}
+
+/* similar to bootstraps sr-only class used to hide information intended only for screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
 /* component:legend */
 .legend {
   margin-bottom: 10px;
@@ -330,7 +361,7 @@ input[type='checkbox'] + label {
 }
 
 /* map marker toggles */
-.hide-recieving .status-recieving, .hide-distributing .status-distributing, .hide-both .status-both, .hide-closed .status-closed, .hide-unknown .status-unknown {
+.hide-recieving .status-recieving, .hide-distributing .status-distributing, .hide-both .status-both, .hide-closed .status-closed, .hide-unknown .status-unknown, .hide-search-result {
   display: none;
 }
 
