@@ -2,6 +2,20 @@
 
 > **Note:** development on this project is moving quickly, so parts of this document may be out of date. Feel free to ask questions in the `#tc-aid-translations` channel in Slack.
 
+1. Overview
+   1. The translation spreadsheet
+   2. Glossary
+   3. Special links
+2. Maintaining translations
+   1. Translating existing terms
+   2. Creating a new term
+   3. Adding a new language
+3. Technical details
+   1. Adding a term in markup (`data-translation-id`)
+   2. Getting a translated term in js code (`get`)
+   3. Setting the current language (`language`)
+   4. Running translation substitution (`translate`)
+
 ## Overview
 
 The site translations work by loading a spreadsheet of translated terms, and replacing the hard-coded English terms on the page with the translated ones. If a translated term is missing in the spreadsheet, the English term will be used. The terms that need to be translated are specified **in the code**, it will **not** automatically find words on the page. 
@@ -123,7 +137,7 @@ Some quick notes:
  * The main code for this feature is in `/src/js/translator.js`
  * We are using [`ISO 639-2`](https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes) (3-letter) codes instead of the more common `ISO 639-1` (2-letter) because the former has broader langauge support (for instance: Karen Languages).
 
- ### Adding a term in markup
+ ### Adding a term in markup (`data-translation-id`)
 
  Terms are added in the markup using the `data-translation-id` data attribute. For instance:
 
@@ -131,20 +145,25 @@ Some quick notes:
  <span data-translation-id="term_name">Default text</span>
  ```
 
- ### `get(<string>, [<string>])`
+ ### Getting a translated term in js code (`get`)
 
  This is the method for fetching a translation in js code:
 
- ```js
-const translatedTerm = translator.get('term_name', 'Default text')
- ```
+`get(<string>, [<string>])`
 
 Arguments
 
 1. The name of the term from the `id` column in the spreadsheet
 2. A default string to use if the translated term isn't found
 
-### `language`
+Example:
+
+
+ ```js
+const translatedTerm = translator.get('term_name', 'Default text')
+ ```
+
+### Setting the current language (`language`)
 
 The current language is set and retrieved using the `language` getter/setter:
 
@@ -153,7 +172,9 @@ translator.language = 'vie'
 const currentLanguage = translator.language
 ```
 
-### `translate([<Element>])`
+### Running translation substitution (`translate`)
+
+`translate([<Element>])`
 
 This will perform translation substitution on the given DOM `Element`. If no `Element` is given, `document` will be used.
 
