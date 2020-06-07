@@ -59,7 +59,7 @@ If you want to link to a specific language (say you're sending the link to someb
 
 https://twin-cities-mutual-aid.org/?lang=som
 
-If you want to preview languages that have been created but not enabled, add `?dev to the end of the url:
+If you want to preview languages that have been created but not enabled, add `?dev` to the end of the url:
 
 https://twin-cities-mutual-aid.org/?dev
 
