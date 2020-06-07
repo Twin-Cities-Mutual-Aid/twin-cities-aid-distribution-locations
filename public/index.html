@@ -39,7 +39,10 @@
     <div class="filter-pane white-and-blue">
       <div class='legend' id="key"></div>
       <button data-translation-id="show_list_button" id="locations-toggle-button" class="location-list-toggle toggle-button" aria-label="Toggle list of locations">Show list of locations</button>
-      <button data-translation-id="help_info" id="help-info-toggle-button" class="toggle-button" aria-label="Toggle help info section">Help/info</button>
+      <button data-translation-id="help_info" id="help-info-toggle-button" class="toggle-button" aria-label="Toggle help info section">Help/Info</button>
+      
+      <!-- an href of "javascript:;" prevents the link from logging in the user's history, since they aren't actually going to another site -->
+      <a href="javascript:;" id="help-search-toggle-link" aria-label="Toggle search help section"><img class="question-mark-svg" src="images/questionmark.svg" alt="question mark"> Need Help with Search Examples?</a>
       <div class='counter'>
         <script type="text/javascript" src="//counter.websiteout.net/js/7/0/41000/0"></script>
       </div>
@@ -56,6 +59,18 @@
     <p class='p txt-small bold'><span data-translation-id="project_data">See this data in</span> <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSfnmh9CmtVoBMy2k_-NMhhvF7ursBs2L5IPF9VZ1J-l9P71vjDFw7y6Y6E98d5lNeOAEo7leisP0Y8/pubhtml" target="_blank">Google Sheets</a>.</p>
     <p class='p txt-small bold'><span data-translation-id="project_learn">Learn about this project on</span> <a href="https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/blob/master/README.md" target="_blank">GitHub</a>.</p>
   </div>
+    <div id="help-search" class='help-search padded white-and-blue'>
+    <button id='help-search-close-button' class='help-search-close-button' aria-label="Close help search section">X <span data-translation-id="close">Close</span></button>
+    <h3 class='txt-summary_large_image' data-translation-id="">Search terms and examples:</h3><br />
+     <ul class='help-search-list'>
+      <li class='txt-small search-example' data-translation-id=""><b>Zip Codes</b> - e.g. '55108'</li>
+      <li class='txt-small search-example' data-translation-id=""><b>City Name </b> - e.g. 'St. Paul'</li>
+      <li class='txt-small search-example' data-translation-id=""><b>Items</b>  - e.g. 'food', 'water', or 'toiletries'</li>
+      <li class='txt-small search-example' data-translation-id=""><b>Building Type</b>  - e.g. 'church', 'shelter'</li>
+      <li class='txt-small search-example' data-translation-id=""><b>Language Criteria</b>  - e.g. 'bilingual', or 'spanish'</li>
+      <li class='txt-small search-example' data-translation-id=""><b>Site Needs</b>  - e.g. 'needs volunteers', 'seeking donations'</li>
+    </ul>
+    </div>
   <div class='map' id="map">
     <button class="lang-select-button" id="lang-select-button">
       <span class="lang-select-label" data-translation-id="language">Language</span>
