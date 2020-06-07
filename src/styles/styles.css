@@ -369,7 +369,7 @@ input[type='checkbox'] + label {
 @media only screen and (max-width: 920px) {
   .help-search {
   width: 40%; 
-  height: 40%; 
+  height: 50%; 
 
   /* keep it on the map */
   right: 10%;
@@ -424,9 +424,9 @@ input[type='checkbox'] + label {
   .help-search {
     display:flex;
     flex-direction:column;
-    width: 50%; 
-    height: 45%; 
-    left: 25%;
+    width: 60%; 
+    height: 60%; 
+    left: 20%;
 
     /* keep it on the map */
     top: 34%;
