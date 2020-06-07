@@ -1,5 +1,7 @@
 # Language Translation
 
+> **Note:** development on this project is moving quickly, so parts of this document may be out of date. Feel free to ask questions in the `#tc-aid-translations` channel in Slack.
+
 ## Overview
 
 The site translations work by loading a spreadsheet of translated terms, and replacing the hard-coded English terms on the page with the translated ones. If a translated term is missing in the spreadsheet, the English term will be used. The terms that need to be translated are specified **in the code**, it will **not** automatically find words on the page. 
@@ -27,7 +29,7 @@ Here's the basic format of the spreadsheet:
 | language | Language | Idioma |
 | welcome | Welcome! | ¡Bienvenidos! |
 
-The first column (e.g. `lang_name`) and first row (e.g. `eng`) are *required* and must be filled out for any added row/column. The rest of the fields can be filled up as new translated terms are available.
+The first column (e.g. `lang_name`) and first row (e.g. `eng`) are **required** and must be filled out for any added row/column. The rest of the cells can be filled in as new translated terms are available.
 
 ### Glossary
 
@@ -37,7 +39,7 @@ The first column (e.g. `lang_name`) and first row (e.g. `eng`) are *required* an
 
 ### Special links
 
-If you want to link to a specific language (like if you're sending the link to somebody you know speaks Somali) you can add `?lang=XXX` to the end of the URL. Example: 
+If you want to link to a specific language (say you're sending the link to somebody you know speaks Somali) you can add `?lang=XXX` to the end of the URL. Example: 
 
 https://twin-cities-mutual-aid.org/?lang=som
 
@@ -59,7 +61,7 @@ Checklist:
 
  - [ ] Create a new row in the spreadsheet for the new term
  - [ ] Make sure that there is a **unique** name in the `id` column, `formatted_like_this`
- - [ ] Make sure the term is also added to the correct place in the code, using either the `data-translation-id` attribute or the `translator.get('term_name')` method (see technical details below).
+ - [ ] Make sure the term is also added to the correct place in the code, using either the `data-translation-id` attribute (in markup) or the `get` method (js code). See technical details below for more on this.
 
 ### Adding a new language
 
@@ -78,6 +80,10 @@ A checklist for adding a new column to the checklist
  - [ ] The language header should contain a 3-letter code like `som` (a list of these can be [found here](https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes)) 
 
 #### Adding a new flag image
+
+A good resource for hard-to-find flag images:
+
+https://en.wikipedia.org/wiki/Unrepresented_Nations_and_Peoples_Organization#Members
 
 A checklist for adding new flag images
 
@@ -110,4 +116,46 @@ A checklist for enabling a language:
 
 ## Technical Details
 
-Keep in mind that development is moving very fast on this project, so this may become outdated pretty quickly.
+Some quick notes:
+
+ * The main code for this feature is in `/src/js/translator.js`
+ * We are using [`ISO 639-2`](https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes) (3-letter) codes instead of the more common `ISO 639-1` (2-letter) because the former has broader langauge support (for instance: Karen Languages).
+
+ ### Adding a term in markup
+
+ Terms are added in the markup using the `data-translation-id` data attribute. For instance:
+
+ ```html
+ <span data-translation-id="term_name">Default text</span>
+ ```
+
+ ### `get(<string>, [<string>])`
+
+ This is the method for fetching a translation in js code:
+
+ ```js
+const translatedTerm = translator.get('term_name', 'Default text')
+ ```
+
+Arguments
+
+1. The name of the term from the `id` column in the spreadsheet
+2. A default string to use if the translated term isn't found
+
+### `language`
+
+The current language is set and retrieved using the `language` getter/setter:
+
+```js
+translator.language = 'vie'
+const currentLanguage = translator.language
+```
+
+### `translate([<Element>])`
+
+This will perform translation substitution on the given DOM `Element`. If no `Element` is given, `document` will be used.
+
+```js
+document.body.innerHTML = '<span data-translation-id="term_name">Default text</span>'
+translator.translate()
+```
