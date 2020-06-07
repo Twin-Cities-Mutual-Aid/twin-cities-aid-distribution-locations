@@ -2,11 +2,11 @@
 
 ## Overview
 
-The site translations work by loading a spreadsheet of translated terms, and replacing (English) words on the page with the translated ones. The words that need to be translated are specified **in the code**, it will **not** automatically find words on the page. 
+The site translations work by loading a spreadsheet of translated terms, and replacing the hard-coded English terms on the page with the translated ones. If a translated term is missing in the spreadsheet, the English term will be used. The terms that need to be translated are specified **in the code**, it will **not** automatically find words on the page. 
 
 A basic reference for what kind of access is needed for various actions in the translation process. 
 
-| Action | Edit Spreadsheet | Update to code |
+| Action | Edit Spreadsheet | Update code |
 | :-----------------| :-: | :-: |
 | Translating terms | No | No |
 | Adding translated terms | Yes | No |
@@ -14,6 +14,7 @@ A basic reference for what kind of access is needed for various actions in the t
 | Adding a Language | Yes | Yes | 
 | Enabling a Language | No | Yes |
 
+### The translation spreadsheet
 
 The spreadsheet used for defining translations is here: https://docs.google.com/spreadsheets/d/1m5QPNP6O8nsQsqJcQbwib_obpXRjmbYYGtwKzzg1l38/edit?pli=1#gid=0. You can request access in the slack channel `#tc-aid-translations`.
 
@@ -48,9 +49,27 @@ https://twin-cities-mutual-aid.org/?dev
 
 ### Translating existing terms
 
+This is fairly straightforward, just add the term to the correct place in the spreadsheet :). Checklist:
+
+ - [ ] The translated term is added to the correct column/row of the spreadsheet
+
 ### Creating a new term
 
+Checklist:
+
+ - [ ] Create a new row in the spreadsheet for the new term
+ - [ ] Make sure that there is a **unique** name in the `id` column, `formatted_like_this`
+ - [ ] Make sure the term is also added to the correct place in the code, using either the `data-translation-id` attribute or the `translator.get('term_name')` method (see technical details below).
+
 ### Adding a new language
+
+Adding a language involves a few steps:
+
+| Action | Edit Spreadsheet | Update code |
+| :-----------------| :-: | :-: |
+| 1. Adding a column to the spreadsheet | Yes | No |
+| 2. Adding a new flag image | No | Yes |
+| 3. Enabling the language | No | Yes | 
 
 #### Adding a column to the spreadsheet
 
@@ -85,7 +104,8 @@ Note that there are **two** sets of language codes, one for preview mode and one
 
 A checklist for enabling a language:
 
- - [ ] 3-letter code is added to both arrays (one for production, one for development)
+ - [ ] 3-letter code is added to the array for dev/preview mode
+ - [ ] 3-letter code is added to the array for production mode
 
 
 ## Technical Details
