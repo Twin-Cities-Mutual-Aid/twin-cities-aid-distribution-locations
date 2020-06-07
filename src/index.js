@@ -304,7 +304,7 @@ function extractRawLocation(item) {
     seekingMoney: extractSeekingMoney(item),
     seekingMoneyURL: extractSeekingMoneyURL(item),
     currentlyOpenForDistributing: item.gsx$currentlyopenfordistributing.$t,
-    distributionHours: getHours(item.gsx$openingfordistributingdonations.$t, item.gsx$closingfordistributingdonations.$t),
+    aidDistributionHours: getHours(item.gsx$openingfordistributingdonations.$t, item.gsx$closingfordistributingdonations.$t),
     accepting: item.gsx$accepting.$t,
     notAccepting: item.gsx$notaccepting.$t,
     currentlyOpenForReceiving: item.gsx$currentlyopenforreceiving.$t,
