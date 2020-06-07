@@ -26,6 +26,8 @@
   padding: 20px;
   background-color: #fff;
   text-align: center;
+  max-height: 100%;
+  overflow-y: scroll;
 }
 
 .modal-languages {
