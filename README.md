@@ -12,7 +12,7 @@ This project is unusual because there are two separate, siloed teams working in 
 ## Feature requests & feedback
 We're using [Github Issues](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/issues) to manage tasks, and have a [kanban board](https://github.com/orgs/Twin-Cities-Mutual-Aid/projects/1) set up. If you'd like access to the kanban board reach out in the [OTC slack channel](https://otc-slackin.herokuapp.com/).
 
-If you've got a feature request or feedback to share on the website, feel free to submit an issue on GH issues, or bring it up in slack.
+If you've got a feature request or feedback to share on the website, feel free to [submit an issue](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/issues/new) on GH issues, or bring it up in slack.
 
 ## Data
 
@@ -34,15 +34,37 @@ This started as a very lightweight, single page html file, and we've tried very 
 
 ### Setup
 
-1. Install node at the version specified in the [`.node_version`](.node_version) file. If you use a version manager like nodenv or nvm, this should be detected automatically.
+1. Install node at the version specified in the [`.node_version`](.node_version) file. If you use a version manager like [nodenv](https://github.com/nodenv/nodenv) or [nvm](https://github.com/nvm-sh/nvm), this should be detected automatically.
 2. Install dependencies with npm
     ```
     npm install
     ```
-3. Start building!
+3. Configure [environmental variables](#environmental-variables)
+4. Build and run the application with npm
+    ```
+    npm run dev
+    ```
+5. Start bulding!
 
-### Environment Labels
-In order to run locally you will need to retrieve the `.env` file from someone in the Open Twin Cities slack `#tc-aid-dev` channel.
+
+### Environment Variables
+The application uses [environmental variables](https://en.wikipedia.org/wiki/Environment_variable) to manage configuration between environments. These values are set in a `.env` file in the project root directory. 
+
+To set up a `.env`, copy the `.env.example` file, which lists needed configuration values.
+
+For example, in the Mac OS terminal:
+```bash
+cp .env.example .env
+```
+
+A set variable in the `.env` file will look like this:
+```
+SNOWPACK_PUBLIC_MAPBOXGL_ACCESS_TOKEN=1234
+```
+
+Get the most recent values of the configuration values from the Open Twin Cities slack `#tc-aid-dev` channel. They are pinned in the channel.
+
+If you need to introduce a new environmental variable, please coordinate with developers in the `#tc-aid-dev` channel, add it to the `.env.example` file, and note it in your pull request.
 
 ### Run locally
 
@@ -84,3 +106,8 @@ If you need to add some other kind of static file, it should go somewhere in the
 
 ### Maki Icons
 https://labs.mapbox.com/maki-icons/
+
+
+## Code of Conduct
+
+Contributors to the project are expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md). 
