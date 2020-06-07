@@ -29,6 +29,11 @@ extract the sheet ID out of the url to plug into the DATA_URL const.
   const DATA_URL = 'https://spreadsheets.google.com/feeds/list/1XJhbzcT_AubgnqAJRsbOEbMO3HPTybG3yNcX6i-BgH0/1/public/full?alt=json'
 `
 
+## Additional documentation
+
+ * Information about adding, editing and maintaining languages can be found in [Language Translation](docs/LANGUAGE_TRANSLATION.md)
+
+
 ## About the application
 This started as a very lightweight, single page html file, and we've tried very hard to keep things as simple as possible.
 
