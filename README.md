@@ -102,10 +102,6 @@ Images go in `public/images` and will be served under `<url>/images/image_name.w
 
 If you need to add some other kind of static file, it should go somewhere in the public folder.
 
-### Maki Icons
-https://labs.mapbox.com/maki-icons/
-
-
 ## Code of Conduct
 
 Contributors to the project are expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md). 
