@@ -1,4 +1,6 @@
 {
   "browsers": ["chrome", "firefox"],
-  "src": "./specs/functional/**/*.js"
+  "src": "./specs/functional/**/*.js",
+  "appCommand": "npx servor build",
+  "appInitDelay": 3000
 }
