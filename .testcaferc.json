@@ -1,0 +1,4 @@
+{
+  "browsers": ["chrome", "firefox"],
+  "src": "./specs/functional/**/*.js"
+}
