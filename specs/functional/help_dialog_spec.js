@@ -1,14 +1,9 @@
-import { Selector } from 'testcafe';
+import { Selector } from 'testcafe'
+import { beforeEachTest } from '../helpers'
 
 fixture `Help Window`
   .page `http://localhost:8080/`
-  .beforeEach( async t => {
-    await t
-      // Language must be selected before anything else can be done
-      .click(Selector('.welcome-lang-button').withText('English'))
-      // Help window should not be visible at beginning
-      .expect(Selector('#help-info').visible).notOk();
-  });
+  .beforeEach(beforeEachTest)
 
 test('Opening and closing Help Window', async t => {
   await t
