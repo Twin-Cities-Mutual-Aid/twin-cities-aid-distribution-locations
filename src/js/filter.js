@@ -115,6 +115,9 @@ class Filter {
           <label for="search">
             <span class="sr-only">Type here to search sites or needs</span>
           </label>
+          <div id='search-icon'>
+            <img src='images/search-icon.svg' alt='search icon'></img>
+          </div>
           <input type="text" class="search-input" id="search" placeholder="Search sites or needs..."></input>
         </div>
         <button id="clear-search-btn">Clear Search</button>
@@ -132,15 +135,21 @@ class Filter {
     this.$clearSearchBtn = document.getElementById('clear-search-btn')
     this.$filters = Array.prototype.slice.call($key.querySelectorAll('input[type="checkbox"]'))
     this.$sort.addEventListener('change', this.update.bind(this))
-    this.$search.addEventListener('input', debouncedSearch)
+    this.$search.addEventListener('input', event => {
+      const searchTerm = event.target.value || '';
+      this.$clearSearchBtn.disabled = !searchTerm;
+      debouncedSearch.bind(this)(event);
+    })
     this.$searchForm.addEventListener('keydown', (event) => {
       // disable enter as it clears out search which is not likely a desired action
       if(event.keyCode === 13) event.preventDefault();
     })
     this.$clearSearchBtn.addEventListener('click', event => {
       this.$search.value = '';
+      this.$clearSearchBtn.disabled = true;
       this.search.bind(this)(event)
     })
+    this.$clearSearchBtn.disabled = true;
     this.$filters.forEach($e => $e.addEventListener('change', this.update.bind(this)))
   }
 }
