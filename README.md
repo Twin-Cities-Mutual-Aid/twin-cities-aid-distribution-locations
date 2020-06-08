@@ -38,7 +38,7 @@ extract the sheet ID out of the url to plug into the DATA_URL const.
 This started as a very lightweight, single page html file, and we've tried very hard to keep things as simple as possible.
 
 ### Setup
-1. Install [node](https://nodejs.org/) at the version specified in the [`.node_version`](.node_version) file. If you use a version manager like [nodenv](https://github.com/nodenv/nodenv) or [nvm](https://github.com/nvm-sh/nvm), this should be detected automatically.
+1. Install [node](https://nodejs.org/) at the version specified in the [`.node-version`](.node-version) file. If you use a version manager like [nodenv](https://github.com/nodenv/nodenv) or [nvm](https://github.com/nvm-sh/nvm), this should be detected automatically.
 2. Install dependencies with npm
     ```
     npm install
