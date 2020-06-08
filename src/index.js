@@ -174,15 +174,18 @@ function truthy(str) {
 
 // open/close location sidebar
 function toggleSidePane() {
+  let translationId
   if ($body.classList.contains('list-active')) {
-    $locationsButton.innerText = translator.get('show_list_button', 'Show list of locations')
-    $locationsButton.setAttribute('data-translation-id', 'show_list_button')
+    translationId = 'show_list_button'
     $body.classList.remove('list-active')
   } else {
-    $locationsButton.innerText = translator.get('hide_list_button', 'Hide list of locations')
-    $locationsButton.setAttribute('data-translation-id', 'hide_list_button')
+    translationId = 'hide_list_button'
     $body.classList.add('list-active')
   }
+  const buttonText = translator.get(translationId)
+  $locationsButton.innerText = buttonText
+  $locationsButton.setAttribute('data-translation-id',translationId)
+  $locationsButton.setAttribute('aria-label', buttonText)
 }
 
 // open/close help info
@@ -472,6 +475,7 @@ helpInfoOpenButton.addEventListener("click", function(){
   toggleHelpInfo()
 });
 
+// add help-close-button handler
 const helpInfoCloseButton = document.getElementById('help-info-close-button')
 helpInfoCloseButton.addEventListener("click", function(){
   toggleHelpInfo()
