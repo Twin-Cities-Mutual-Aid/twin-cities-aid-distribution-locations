@@ -110,7 +110,7 @@ class Filter {
           ${options}
         </select>
       </div>
-      <form role="search" class="search-container" action="javascript:void(0);">
+      <form id="search-form" role="search" class="search-container" action="javascript:void(0);">
         <div class="search-input-group">
           <label for="search">
             <span class="sr-only">Type here to search sites or needs</span>
@@ -128,13 +128,18 @@ class Filter {
 
     this.$sort = document.getElementById('sort-by')
     this.$search = document.getElementById('search')
-    this.$clearSearchBtn = document.getElementById('clear-search-btn');
+    this.$searchForm = document.getElementById('search-form')
+    this.$clearSearchBtn = document.getElementById('clear-search-btn')
     this.$filters = Array.prototype.slice.call($key.querySelectorAll('input[type="checkbox"]'))
     this.$sort.addEventListener('change', this.update.bind(this))
     this.$search.addEventListener('input', debouncedSearch)
+    this.$searchForm.addEventListener('keydown', (event) => {
+      // disable enter as it clears out search which is not likely a desired action
+      if(event.keyCode === 13) event.preventDefault();
+    })
     this.$clearSearchBtn.addEventListener('click', event => {
       this.$search.value = '';
-      this.search.bind(this)(event);
+      this.search.bind(this)(event)
     })
     this.$filters.forEach($e => $e.addEventListener('change', this.update.bind(this)))
   }
