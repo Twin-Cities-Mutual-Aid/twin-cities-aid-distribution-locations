@@ -15,7 +15,7 @@ class Filter {
     this.renderControls(this.$controls)
     this.list = new List(this.$el.id, {
       valueNames: [...this.sortOptions.map(o => o.name), ...this.searchOptions.searchOn],
-      search: this.searchOptions.search
+      fuzzySearch: this.searchOptions.fuzzySearch
     })
     /** Default filter-both checkbox to be disabled. only
      * enabled if "receiving" and "distributing" checkboxes
@@ -87,7 +87,7 @@ class Filter {
 
   search(event) {
     const searchTerm = event.target.value || ''
-    this.list.search(searchTerm, this.searchOptions.searchOn)
+    this.list.fuzzySearch(searchTerm, this.searchOptions.searchOn)
     const searchResults = this.list.items.filter(item => item.found).map(item => item.values().address);
     this.toggleMapPointsForSearch(searchTerm, searchResults)
     this.onAfterUpdate()
