@@ -7,7 +7,7 @@
     "dev": "snowpack dev",
     "build": "snowpack build",
     "snowpack": "snowpack",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run build && npm run test:headless",
     "test:functional": "testcafe",
     "test:headless": "testcafe chrome:headless"
   },
