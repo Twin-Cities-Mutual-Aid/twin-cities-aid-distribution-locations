@@ -23,6 +23,19 @@ class Translator {
     this.enabledLanguages = options.enabledLanguages || false
     this._languages = []
     this.translations = {}
+    // moment.js uses ISO 639-1
+    this.locales = {
+      'eng': 'en',
+      'spa': 'es',
+      'som': 'so',
+      'amh': 'am',
+      'orm': 'om',
+      'vie': 'vi',
+      // If no ISO 639-1, use ISO 639-2
+      'dak': 'dak',
+      'kar': 'kar',
+      'hmn': 'hmn'
+    }
     this.detectLanguage()
   }
 
@@ -80,6 +93,8 @@ class Translator {
       return
     }
     window.localStorage.setItem(Translator.LOCAL_STORAGE_KEY, lang)
+    this.locale = this.locales[lang] || this.locales['eng']
+    document.documentElement.lang = this.locale
   }
 
   /**
