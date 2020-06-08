@@ -221,7 +221,7 @@ const getStatus = id => {
 
 // Not all the fields being searched on should be visible but need
 // to be on the DOM in order for listjs to pick them up for search
-const hiddenSearchFields = ['address', 'accepting', 'notAccepting', 'notes']
+const hiddenSearchFields = ['address', 'accepting', 'notAccepting', 'notes', 'seekingVolunteers']
 
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
