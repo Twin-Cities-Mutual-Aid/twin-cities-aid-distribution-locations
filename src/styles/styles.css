@@ -40,12 +40,37 @@ a.txt-white:hover {
   display: block;
 }
 
-.help-info:not(:target) {
+.help-search {
+  z-index: 1;
+  position: fixed;
+  width: 45%; 
+  height: 40%; 
+
+  /* keep it on the map */
+  left: 34%;
+  top: 25%;
+}
+
+.help-info:not(:target),
+.help-search:not(:target) {
   display: none;
 }
 
 .help-info:target + .map {
   display: none;
+}
+
+.help-search-list {
+  display: flex;
+  flex-direction:column;
+  list-style: none;
+  padding: 0;
+  margin: 0px;
+}
+
+#help-search-toggle-link {
+  /* ensures that the link won't wrap */
+  white-space: nowrap;
 }
 
 .content {
@@ -165,6 +190,11 @@ input[type='checkbox'] + label {
   background-color: rgba(0,0,50,.9);
 }
 
+.question-mark-svg {
+  /* match height of small text */
+  height: 13px;
+}
+
 /* component: title */
 .title {
   padding: 15px 15px 5px 15px;
@@ -267,7 +297,8 @@ input[type='checkbox'] + label {
 }
 
 /* component: help info close button */
-.help-info-close-button {
+.help-info-close-button,
+.help-search-close-button {
   display: inline;
   float: right;
   margin-top: 10px;
@@ -335,6 +366,18 @@ input[type='checkbox'] + label {
 }
 
 /* Small screens */
+@media only screen and (max-width: 920px) {
+  .help-search {
+  width: 40%; 
+  height: 50%; 
+
+  /* keep it on the map */
+  right: 10%;
+  top: 25%;
+  }
+
+}
+
 @media only screen and (max-width: 640px) {
   body {
     flex-direction: column;
@@ -367,7 +410,25 @@ input[type='checkbox'] + label {
   .h1 {
     margin: 0;
   }
-  .help-info-close-button {
+  .help-info-close-button,
+  .help-search-close-button {
     margin-top: 0;
   }
+
+  .help-search-close-button {
+    width: 50%;
+    align-self: flex-end;
+
+  }
+
+  .help-search {
+    display:flex;
+    flex-direction:column;
+    width: 60%; 
+    height: 60%; 
+    left: 20%;
+
+    /* keep it on the map */
+    top: 34%;
+    }
 }

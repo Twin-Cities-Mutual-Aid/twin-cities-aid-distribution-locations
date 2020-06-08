@@ -196,6 +196,17 @@ function toggleHelpInfo() {
   }
 }
 
+// open/close help search
+function toggleHelpSearch() {
+  if (window.location.hash === '#help-search') {
+    // this currently leaves a '#' at the end of the URL on close. there's definitely a
+    // better solution out there, but this works even if it's not pretty
+    window.location.hash = ''
+  } else {
+    window.location.hash = '#help-search'
+  }
+}
+
 // close popups for all locations
 function closePopups() {
   locations.forEach(location => {
@@ -475,6 +486,17 @@ helpInfoOpenButton.addEventListener("click", function(){
 const helpInfoCloseButton = document.getElementById('help-info-close-button')
 helpInfoCloseButton.addEventListener("click", function(){
   toggleHelpInfo()
+});
+
+// add help-search-toggle-link handler
+const helpSearchOpenButton = document.getElementById('help-search-toggle-link')
+helpSearchOpenButton.addEventListener("click", function(){
+  toggleHelpSearch()
+});
+
+const helpSearchCloseButton = document.getElementById('help-search-close-button')
+helpSearchCloseButton.addEventListener("click", function(){
+  toggleHelpSearch()
 });
 
 // render key
