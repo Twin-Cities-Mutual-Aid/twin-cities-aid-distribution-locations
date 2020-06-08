@@ -1,4 +1,4 @@
 {
-  "browsers": ["chrome:headless","firefox:headless"],
+  "browsers": ["chrome", "firefox"],
   "src": "./specs/functional/**/*.js"
 }
