@@ -189,36 +189,19 @@ input[type='checkbox'] + label {
   display:flex;
   flex-wrap: wrap;
   margin: 15px 0;
-  position: relative;
-}
-
-#search-icon {
-  position: absolute;
-  top: 2px;
-  left: 4px;
 }
 
 .search-input {
   padding: 10px;
-  border: 1px solid black;
+  border: 1px solid grey;
   height: 30px;
   width: 100%;
-  padding-left: 30px;
 }
 
 #clear-search-btn {
-  margin-left: 5px;
   background-color: #B33C22;
   border-radius: 3px;
   color: white;
-}
-
-#clear-search-btn:disabled {
-  opacity: 40%;
-}
-
-#clear-search-btn:disabled::hover {
-  pointer-events: none;
 }
 
 /* similar to bootstraps sr-only class used to hide information intended only for screen readers */
