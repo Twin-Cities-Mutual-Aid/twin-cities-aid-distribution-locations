@@ -454,13 +454,6 @@ const onMapLoad = async () => {
       ],
       statusOptions,
       searchOptions: {
-        fuzzySearch: {
-          // https://listjs.com/docs/fuzzysearch/
-          location: 0,
-          distance: 999999, // we don't care where the matched word is
-          threshold: 0.4,
-          multiSearch: true
-        },
         searchOn: [
           'name',
           'neighborhood', 
