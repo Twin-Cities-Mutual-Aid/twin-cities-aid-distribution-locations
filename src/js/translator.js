@@ -31,6 +31,7 @@ class Translator {
       'amh': 'am',
       'orm': 'om',
       'vie': 'vi',
+      'oji': 'oj',
       // If no ISO 639-1, use ISO 639-2
       'dak': 'dak',
       'kar': 'kar',

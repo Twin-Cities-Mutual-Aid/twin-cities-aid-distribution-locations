@@ -30,6 +30,7 @@ import 'moment/dist/locale/vi'
 import './locale/am'
 import './locale/om'
 import './locale/so'
+import './locale/oj'
 import './locale/hmn'
 
 const $locationList = document.getElementById('location-list')
@@ -86,10 +87,10 @@ const statusOptions = [
 let langs
 // show all langs in dev mode
 if (window.location.search.indexOf('dev') > -1) {
-  langs = ['eng', 'spa', 'kar', 'som', 'hmn', 'amh', 'orm', 'vie']
+  langs = ['eng', 'spa', 'kar', 'som', 'hmn', 'amh', 'orm', 'vie', 'oji', 'dak']
 // otherwise only show these
 } else {
-  langs = ['eng', 'spa', 'som', 'hmn', 'amh', 'orm', 'vie']
+  langs = ['eng', 'spa', 'som', 'hmn', 'amh', 'orm', 'vie', 'oji']
 }
 
 // initialize translator and load translations file
