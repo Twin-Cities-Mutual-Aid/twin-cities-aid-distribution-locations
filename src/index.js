@@ -30,6 +30,7 @@ import 'moment/dist/locale/vi'
 import './locale/am'
 import './locale/om'
 import './locale/so'
+import './locale/hmn'
 
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
