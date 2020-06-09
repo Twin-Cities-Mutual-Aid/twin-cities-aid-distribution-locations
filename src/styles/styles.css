@@ -205,34 +205,6 @@ input[type='checkbox'] + label {
   width: 100%;
   padding-left: 30px;
 }
-@media (max-width: 1118px) {
-  .search-input-group {
-    width: 50%;
-  }
-}
-
-#clear-search-btn {
-  min-height: 30px;
-  margin-left: 5px;
-  background-color: #B33C22;
-  border-radius: 3px;
-  color: white;
-}
-@media (max-width: 1118px) {
-  #clear-search-btn {
-    width: 40%;
-    padding: 0;
-    margin-left: 5px;
-  }
-}
-
-#clear-search-btn:disabled {
-  opacity: 40%;
-}
-
-#clear-search-btn:disabled::hover {
-  pointer-events: none;
-}
 
 .loading-indicator {
   height: 100vh;  
@@ -273,6 +245,22 @@ input[type='checkbox'] + label {
   100% {
        transform: translate3d(-50%, -50%, 0) rotate(360deg);
   }
+}
+
+
+#clear-search-btn {
+  margin-left: 5px;
+  background-color: #B33C22;
+  border-radius: 3px;
+  color: white;
+}
+
+#clear-search-btn:disabled {
+  opacity: 40%;
+}
+
+#clear-search-btn:disabled::hover {
+  pointer-events: none;
 }
 
 /* similar to bootstraps sr-only class used to hide information intended only for screen readers */
@@ -432,7 +420,7 @@ input[type='checkbox'] + label {
 }
 
 /* map marker toggles */
-.hide-recieving .status-recieving, .hide-distributing .status-distributing, .hide-both .status-both, .hide-closed .status-closed, .hide-unknown .status-unknown, .hide-search-result, .hide-clear-search {
+.hide-recieving .status-recieving, .hide-distributing .status-distributing, .hide-both .status-both, .hide-closed .status-closed, .hide-unknown .status-unknown, .hide-search-result {
   display: none;
 }
 
