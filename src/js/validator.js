@@ -4,7 +4,7 @@
 */
 export default function validate(item, schema, ctx = {}) {
   let valid = true;
-  
+
   for (let key of Object.keys(item)) {
     let type = schema[key];
     let isValid = TYPE_MAP[type];
@@ -68,7 +68,7 @@ function isUrl(url) {
     try {
       new URL(url);
     } catch(_) {
-      return false;j
+      return false;
     }
 
     return true;
@@ -83,7 +83,7 @@ function  isValidColor(color) {
 }
 
 export const LOCATION_SCHEMA = {
-  // these are injectedd values from Google Sheets
+  // these are injected values from Google Sheets
   "id": "nullable",
   "updated": "nullable",
   "category": "nullable",
