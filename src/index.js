@@ -30,6 +30,8 @@ import 'moment/dist/locale/vi'
 import './locale/am'
 import './locale/om'
 import './locale/so'
+import './locale/oj'
+import './locale/hmn'
 
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
@@ -85,19 +87,10 @@ const statusOptions = [
 let langs
 // show all langs in dev mode
 if (window.location.search.indexOf('dev') > -1) {
-  langs = ['eng', 'spa', 'kar', 'som', 'hmn', 'amh', 'orm', 'vie']
+  langs = ['eng', 'spa', 'kar', 'som', 'hmn', 'amh', 'orm', 'vie', 'oji', 'dak']
 // otherwise only show these
 } else {
-  langs = ['eng', 'spa', 'som', 'amh', 'orm', 'vie']
-}
-// moment.js uses ISO 639-1
-const locales = {
-  'eng': 'en',
-  'spa': 'es',
-  'vie': 'vi',
-  'som': 'so',
-  'amh': 'am',
-  'orm': 'om'
+  langs = ['eng', 'spa', 'som', 'hmn', 'amh', 'orm', 'vie', 'oji', 'dak']
 }
 
 // initialize translator and load translations file
@@ -120,7 +113,7 @@ fetch(Config.translationUrl).then(async (resp) => {
       // when language is selected, run translation
       onLanguageSelect: lang => {
         translator.language = lang
-        moment.locale(locales[translator.language] || locales['eng'])
+        moment.locale(translator.locale)
         activePopup && activePopup.refreshPopup()
         translator.translate()
       }
@@ -132,7 +125,7 @@ fetch(Config.translationUrl).then(async (resp) => {
 
     // otherwise just run translator
     } else {
-      moment.locale(locales[translator.language] || locales['eng'])
+      moment.locale(translator.locale)
       translator.translate()
     }
 

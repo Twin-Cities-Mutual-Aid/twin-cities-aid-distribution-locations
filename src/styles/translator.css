@@ -38,6 +38,8 @@
   display: inline-block;
   margin: 0 2px;
   width: 23px;
+  /* hide alt text if image is missing */
+  text-indent: -9999px;
 }
 
 
