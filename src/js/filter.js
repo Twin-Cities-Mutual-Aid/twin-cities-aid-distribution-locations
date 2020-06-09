@@ -28,6 +28,11 @@ class Filter {
     this.update()
   }
 
+  getListResults() {
+    const listResults = document.querySelectorAll('.location-list--item')
+    this.$listResults.innerText = `${listResults.length} results`
+  }
+
   update() {
     const sortSettings = _.find(this.sortOptions, o => (o.name === this.$sort.value))
     let filterValues = this.$filters.map(f => f.checked)
@@ -53,6 +58,7 @@ class Filter {
       })
     this.list.sort(sortSettings.name, sortSettings.sort)
 
+    this.getListResults();
     this.onAfterUpdate()
   }
 
@@ -87,12 +93,20 @@ class Filter {
 
   search(event) {
     const searchTerm = event.target.value || ''
-    !searchTerm ? this.$clearSearchBtn.classList.add('hide-clear-search') : this.$clearSearchBtn.classList.remove('hide-clear-search');
     this.list.search(searchTerm, this.searchOptions.searchOn)
     const searchResults = this.list.items.filter(item => item.found).map(item => item.values().address);
+    if(!searchTerm) {
+      this.$clearSearchBtn.classList.add('hide-clear-search')
+      this.$searchInputGroup.classList.add('search-full-width')
+    } else {
+      this.$clearSearchBtn.classList.remove('hide-clear-search')
+      this.$searchInputGroup.classList.remove('search-full-width')
+    }
+
     this.toggleMapPointsForSearch(searchTerm, searchResults)
     this.$locationList.classList.remove('loading-indicator')
     this.onAfterUpdate()
+    this.getListResults();
   }
 
   renderControls() {
@@ -113,7 +127,7 @@ class Filter {
         </select>
       </div>
       <form id="search-form" role="search" class="search-container" action="javascript:void(0);">
-        <div class="search-input-group">
+        <div class="search-input-group search-full-width">
           <label for="search">
             <span class="sr-only">Type here to search sites or needs</span>
           </label>
@@ -124,6 +138,9 @@ class Filter {
         </div>
         <button id="clear-search-btn" class="hide-clear-search">Clear Search</button>
       </form>
+      <div class="list-meta">
+        <span id="list-results">${this.locations.length} results</span>
+      </div>
     `
 
     const debouncedSearch = _.debounce(this.search.bind(this), 300);
@@ -135,6 +152,8 @@ class Filter {
     this.$sort = document.getElementById('sort-by')
     this.$search = document.getElementById('search')
     this.$searchForm = document.getElementById('search-form')
+    this.$searchInputGroup = document.getElementsByClassName('search-input-group')[0]
+    this.$listResults = document.getElementById('list-results')
     this.$clearSearchBtn = document.getElementById('clear-search-btn')
     this.$filters = Array.prototype.slice.call($key.querySelectorAll('input[type="checkbox"]'))
     this.$sort.addEventListener('change', this.update.bind(this))
@@ -149,6 +168,7 @@ class Filter {
     this.$clearSearchBtn.addEventListener('click', event => {
       this.$search.value = '';
       this.$clearSearchBtn.classList.add('hide-clear-search');
+      this.$searchInputGroup.classList.add('search-full-width')
       this.search.bind(this)(event)
     })
     this.$filters.forEach($e => $e.addEventListener('change', this.update.bind(this)))
