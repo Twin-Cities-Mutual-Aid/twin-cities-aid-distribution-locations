@@ -236,6 +236,11 @@ const createListItem = (location, status, lng, lat) => {
     seekingVolunteers = `<span data-translation-id="seeking_volunteers" class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>`
   }
 
+  let covid19Testing = ''
+  if (location.notes && location.notes.match(/(?:\bcovid-19 testing\b)/i)) {
+    covid19Testing = `<span data-translation-id="covid19-testing" class="covid19-testing location-list--badge">Covid-19 Testing Available</span>`
+  }
+
   const openTimeDistribution = moment(location.openingForDistributingDontations, ["h:mm A"])
   const openTimeDistributionLessOne = moment(location.openingForDistributingDontations, ["h:mm A"]).subtract(1, 'hours')
   let openingSoonForDistribution = ''
@@ -271,6 +276,7 @@ const createListItem = (location, status, lng, lat) => {
         ${urgentNeed}
         ${seekingVolunteers}
         ${seekingMoney}
+        ${covid19Testing}
       </div>
     </div>
     `
