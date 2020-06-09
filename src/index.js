@@ -229,7 +229,7 @@ function isOpeningSoon(openingTimeString) {
   const openTimeLessOne = moment(openingTimeString, ["h:mm A"]).subtract(1, 'hours')
   if (moment().isBetween(openTimeLessOne, openTime)) {
     return true
-  } 
+  }
   return false
 }
 
@@ -245,12 +245,12 @@ const createListItem = (location, status, lng, lat) => {
 
   let openingSoonForDistribution = ''
   if (isOpeningSoon(location.distributionOpenTime)) {
-    openingSoonForDistribution = `<p class="opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${location.distributionOpenTime.format("LT")} <span data-translation-id="for_distribution">for distributing</span></p>`
+    openingSoonForDistribution = `<p class="opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${location.distributionOpenTime} <span data-translation-id="for_distribution">for distributing</span></p>`
   }
 
   let openingSoonForReceiving = ''
   if (isOpeningSoon(location.receivingOpenTime)) {
-    openingSoonForReceiving = `<p class="opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${location.receivingOpenTime.format("LT")} <span data-translation-id="for_receiving">for receiving</span></p>`
+    openingSoonForReceiving = `<p class="opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${location.receivingOpenTime} <span data-translation-id="for_receiving">for receiving</span></p>`
   }
 
   const $item = document.createElement('div')
