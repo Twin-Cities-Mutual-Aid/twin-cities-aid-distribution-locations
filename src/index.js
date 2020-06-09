@@ -248,7 +248,7 @@ const createListItem = (location, status, lng, lat) => {
     openingSoonForReceiving = `<p class="opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${openTimeReceiving.format("LT")} <span data-translation-id="for_receiving">for receiving</span></p>`
   }
 
- const hiddenSearch = hiddenSearchFields.map(field => `<p class="${field}" style="display:none">${location[field] || ''}</p>`).join('')
+ const hiddenSearch = hiddenSearchFields.map(field => `<p class="${field}" >${location[field] || ''}</p>`).join('')
 
   const $item = document.createElement('div')
   $item.classList.add('location-list--item')
