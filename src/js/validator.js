@@ -17,7 +17,7 @@ export default function validate(item, schema, ctx = {}) {
 
     if (typeof isValid === "function") {
       if (!isValid(unwrapValue(item[key]))) {
-        console.error(`Item failed validation at key '${key}' with value ${extractValue(item[key])}, should be type ${type}`, ctx);
+        console.error(`Item failed validation at key '${key}' with value ${unwrapValue(item[key])}, should be type ${type}`, ctx);
         valid = false;
       }
     } else {

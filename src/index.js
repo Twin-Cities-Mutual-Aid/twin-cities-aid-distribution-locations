@@ -358,7 +358,7 @@ const onMapLoad = async () => {
   // filter and transform data from google sheet
   locations = _.chain(data.feed.entry)
     .filter(item => (item.gsx$nameoforganization.$t !== '') && (item.gsx$longitude.$t !== '') && (item.gsx$latitude.$t !== '')) // sanity check for empty rows
-    .filter((item, i) => validate(item, LOCATION_SCHEMA, { sheetRow: i + 1 })) // only items that match schema 
+    .filter((item, i) => validate(item, LOCATION_SCHEMA, { sheetRow: i + 1 })) // only items that validate against schema
     .sortBy(item => item.gsx$nameoforganization.$t)
     .map(item => {
 
