@@ -206,48 +206,6 @@ input[type='checkbox'] + label {
   padding-left: 30px;
 }
 
-.loading-indicator {
-  height: 100vh;  
-  position: relative;
-}
-
-.loading-indicator::before {
-  background-color: white;
-  height: 100%;
-  width: 100%;
-  color: white;
-  content: "";
-  position: absolute;
-  opacity: .6;
-}
-
-.loading-indicator::after {
-  animation: 1s linear infinite spinner;
-  border: solid 3px #eee;
-  border-bottom-color: #EF6565;
-  border-radius: 50%;
-  content: "";
-  height: 40px;
-  left: 50%;
-  opacity: inherit;
-  position: absolute;
-  top: 20%;
-  transform: translate3d(-50%, -50%, 0);
-  transform-origin: center;
-  width: 40px;
-  will-change: transform;
-}
-
-@keyframes spinner {
-  0% {
-      transform: translate3d(-50%, -50%, 0) rotate(0deg);
-  }
-  100% {
-       transform: translate3d(-50%, -50%, 0) rotate(360deg);
-  }
-}
-
-
 #clear-search-btn {
   margin-left: 5px;
   background-color: #B33C22;

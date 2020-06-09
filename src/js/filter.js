@@ -90,7 +90,6 @@ class Filter {
     this.list.search(searchTerm, this.searchOptions.searchOn)
     const searchResults = this.list.items.filter(item => item.found).map(item => item.values().address);
     this.toggleMapPointsForSearch(searchTerm, searchResults)
-    this.$locationList.classList.remove('loading-indicator')
     this.onAfterUpdate()
   }
 
@@ -130,7 +129,6 @@ class Filter {
     const $key = document.getElementById("key");
     $key.innerHTML = `<ul class="filters">${filters}</ul>`;
 
-    this.$locationList = document.getElementById('location-list')
     this.$sort = document.getElementById('sort-by')
     this.$search = document.getElementById('search')
     this.$searchForm = document.getElementById('search-form')
@@ -140,7 +138,6 @@ class Filter {
     this.$search.addEventListener('input', event => {
       const searchTerm = event.target.value || '';
       this.$clearSearchBtn.disabled = !searchTerm;
-      this.$locationList.classList.add('loading-indicator');
       debouncedSearch.bind(this)(event);
     })
     this.$searchForm.addEventListener('keydown', (event) => {
