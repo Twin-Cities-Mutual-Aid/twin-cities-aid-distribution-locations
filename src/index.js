@@ -245,12 +245,12 @@ const createListItem = (location, status, lng, lat) => {
 
   let openingSoonForDistribution = ''
   if (isOpeningSoon(location.distributionOpenTime)) {
-    openingSoonForDistribution = `<p class="opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${distributionOpenTime.format("LT")} <span data-translation-id="for_distribution">for distributing</span></p>`
+    openingSoonForDistribution = `<p class="opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${location.distributionOpenTime.format("LT")} <span data-translation-id="for_distribution">for distributing</span></p>`
   }
 
   let openingSoonForReceiving = ''
-  if (moment().isBetween(location.receivingOpenTime)) {
-    openingSoonForReceiving = `<p class="opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${receivingOpenTime.format("LT")} <span data-translation-id="for_receiving">for receiving</span></p>`
+  if (isOpeningSoon(location.receivingOpenTime)) {
+    openingSoonForReceiving = `<p class="opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${location.receivingOpenTime.format("LT")} <span data-translation-id="for_receiving">for receiving</span></p>`
   }
 
   const $item = document.createElement('div')
