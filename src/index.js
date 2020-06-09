@@ -2,7 +2,6 @@
 import 'mapbox-gl/dist/mapbox-gl.css'
 import './styles/normalize.css'
 import './styles/styles.css'
-import './styles/search.css'
 import './styles/welcome.css'
 import './styles/translator.css'
 
