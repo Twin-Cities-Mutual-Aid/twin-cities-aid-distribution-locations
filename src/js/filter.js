@@ -87,6 +87,7 @@ class Filter {
 
   search(event) {
     const searchTerm = event.target.value || ''
+    !searchTerm ? this.$clearSearchBtn.classList.add('hide-clear-search') : this.$clearSearchBtn.classList.remove('hide-clear-search');
     this.list.search(searchTerm, this.searchOptions.searchOn)
     const searchResults = this.list.items.filter(item => item.found).map(item => item.values().address);
     this.toggleMapPointsForSearch(searchTerm, searchResults)
@@ -121,7 +122,7 @@ class Filter {
           </div>
           <input type="text" class="search-input" id="search" placeholder="Search sites or needs..."></input>
         </div>
-        <button id="clear-search-btn">Clear Search</button>
+        <button id="clear-search-btn" class="hide-clear-search">Clear Search</button>
       </form>
     `
 
@@ -138,8 +139,6 @@ class Filter {
     this.$filters = Array.prototype.slice.call($key.querySelectorAll('input[type="checkbox"]'))
     this.$sort.addEventListener('change', this.update.bind(this))
     this.$search.addEventListener('input', event => {
-      const searchTerm = event.target.value || '';
-      this.$clearSearchBtn.disabled = !searchTerm;
       this.$locationList.classList.add('loading-indicator');
       debouncedSearch.bind(this)(event);
     })
@@ -149,10 +148,9 @@ class Filter {
     })
     this.$clearSearchBtn.addEventListener('click', event => {
       this.$search.value = '';
-      this.$clearSearchBtn.disabled = true;
+      this.$clearSearchBtn.classList.add('hide-clear-search');
       this.search.bind(this)(event)
     })
-    this.$clearSearchBtn.disabled = true;
     this.$filters.forEach($e => $e.addEventListener('change', this.update.bind(this)))
   }
 }
