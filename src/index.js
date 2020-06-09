@@ -219,6 +219,16 @@ const getStatus = id => {
   return status || unknownStatus
 }
 
+// calculates if current time is within  one hour of opening time
+function isOpeningSoon(openingTimeString) {
+  const openTime = moment(openingTimeString, ["h:mm A"])
+  const openTimeLessOne = moment(openingTimeString, ["h:mm A"]).subtract(1, 'hours')
+  if (moment().isBetween(openTimeLessOne, openTime)) {
+    return true
+  }
+  return false
+}
+
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
   const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important"><span data-translation-id="urgent_need">Urgent Need</span>: ${location.urgentNeed}</p>` : ''
@@ -229,18 +239,14 @@ const createListItem = (location, status, lng, lat) => {
     seekingVolunteers = `<span data-translation-id="seeking_volunteers" class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>`
   }
 
-  const openTimeDistribution = moment(location.openingForDistributingDontations, ["h:mm A"])
-  const openTimeDistributionLessOne = moment(location.openingForDistributingDontations, ["h:mm A"]).subtract(1, 'hours')
   let openingSoonForDistribution = ''
-  if (moment().isBetween(openTimeDistributionLessOne, openTimeDistribution)) {
-    openingSoonForDistribution = `<p class="opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${openTimeDistribution.format("LT")} <span data-translation-id="for_distribution">for distributing</span></p>`
+  if (isOpeningSoon(location.distributionOpenTime)) {
+    openingSoonForDistribution = `<p class="opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${location.distributionOpenTime} <span data-translation-id="for_distribution">for distributing</span></p>`
   }
 
-  const openTimeReceiving = moment(location.openingForReceivingDontations, ["h:mm A"])
-  const openTimeReceivingLessOne = moment(location.openingForReceivingDontations, ["h:mm A"]).subtract(1, 'hours')
   let openingSoonForReceiving = ''
-  if (moment().isBetween(openTimeReceivingLessOne, openTimeReceiving)) {
-    openingSoonForReceiving = `<p class="opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${openTimeReceiving.format("LT")} <span data-translation-id="for_receiving">for receiving</span></p>`
+  if (isOpeningSoon(location.receivingOpenTime)) {
+    openingSoonForReceiving = `<p class="opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${location.receivingOpenTime} <span data-translation-id="for_receiving">for receiving</span></p>`
   }
 
   const $item = document.createElement('div')
@@ -332,10 +338,12 @@ function extractRawLocation(item) {
     seekingMoneyURL: extractSeekingMoneyURL(item),
     currentlyOpenForDistributing: item.gsx$currentlyopenfordistributing.$t,
     aidDistributionHours: getHours(item.gsx$openingfordistributingdonations.$t, item.gsx$closingfordistributingdonations.$t),
+    distributionOpenTime: item.gsx$openingfordistributingdonations.$t,
     accepting: item.gsx$accepting.$t,
     notAccepting: item.gsx$notaccepting.$t,
     currentlyOpenForReceiving: item.gsx$currentlyopenforreceiving.$t,
     aidReceivingHours: getHours(item.gsx$openingforreceivingdonations.$t, item.gsx$closingforreceivingdonations.$t),
+    receivingOpenTime: item.gsx$openingforreceivingdonations.$t,
     seekingVolunteers: item.gsx$seekingvolunteers.$t,
     urgentNeed: item.gsx$urgentneed.$t,
     notes: item.gsx$notes.$t
@@ -374,6 +382,9 @@ const onMapLoad = async () => {
           // marker and popup should not be rendered
           marker: () => '',
           popup: () => '',
+          // we dont need to render this becuase we display the hours
+          distributionOpenTime: () => '',
+          receivingOpenTime: () => ''
         }
 
         // render HTML for marker
