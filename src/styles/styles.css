@@ -297,7 +297,7 @@ input[type='checkbox'] + label {
   margin-bottom: 5px;
   margin-right: 5px;
   border-radius: 100px;
-  color: rgba(200,80,40, 1);
+  color: rgba(0, 0, 0, 1);
   background-color: rgba(200,80,40, .25);
 }
 
@@ -321,7 +321,7 @@ input[type='checkbox'] + label {
 }
 
 .location-list--important {
-  color: rgba(200,80,40, 1)
+  color: rgba(0,0,0, 0.8)
 }
 
 /* component: location list toggle */

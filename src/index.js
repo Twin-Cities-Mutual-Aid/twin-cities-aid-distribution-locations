@@ -31,6 +31,8 @@ import 'moment/dist/locale/vi'
 import './locale/am'
 import './locale/om'
 import './locale/so'
+import './locale/oj'
+import './locale/hmn'
 
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
@@ -86,19 +88,10 @@ const statusOptions = [
 let langs
 // show all langs in dev mode
 if (window.location.search.indexOf('dev') > -1) {
-  langs = ['eng', 'spa', 'kar', 'som', 'hmn', 'amh', 'orm', 'vie']
+  langs = ['eng', 'spa', 'kar', 'som', 'hmn', 'amh', 'orm', 'vie', 'oji', 'dak']
 // otherwise only show these
 } else {
-  langs = ['eng', 'spa', 'som', 'amh', 'orm', 'vie']
-}
-// moment.js uses ISO 639-1
-const locales = {
-  'eng': 'en',
-  'spa': 'es',
-  'vie': 'vi',
-  'som': 'so',
-  'amh': 'am',
-  'orm': 'om'
+  langs = ['eng', 'spa', 'som', 'hmn', 'amh', 'orm', 'vie', 'oji', 'dak']
 }
 
 // initialize translator and load translations file
@@ -121,7 +114,7 @@ fetch(Config.translationUrl).then(async (resp) => {
       // when language is selected, run translation
       onLanguageSelect: lang => {
         translator.language = lang
-        moment.locale(locales[translator.language] || locales['eng'])
+        moment.locale(translator.locale)
         activePopup && activePopup.refreshPopup()
         translator.translate()
       }
@@ -133,7 +126,7 @@ fetch(Config.translationUrl).then(async (resp) => {
 
     // otherwise just run translator
     } else {
-      moment.locale(locales[translator.language] || locales['eng'])
+      moment.locale(translator.locale)
       translator.translate()
     }
 
@@ -175,15 +168,18 @@ function truthy(str) {
 
 // open/close location sidebar
 function toggleSidePane() {
+  let translationId
   if ($body.classList.contains('list-active')) {
-    $locationsButton.innerText = translator.get('show_list_button', 'Show list of locations')
-    $locationsButton.setAttribute('data-translation-id', 'show_list_button')
+    translationId = 'show_list_button'
     $body.classList.remove('list-active')
   } else {
-    $locationsButton.innerText = translator.get('hide_list_button', 'Hide list of locations')
-    $locationsButton.setAttribute('data-translation-id', 'hide_list_button')
+    translationId = 'hide_list_button'
     $body.classList.add('list-active')
   }
+  const buttonText = translator.get(translationId)
+  $locationsButton.innerText = buttonText
+  $locationsButton.setAttribute('data-translation-id',translationId)
+  $locationsButton.setAttribute('aria-label', buttonText)
 }
 
 // open/close help info
@@ -489,6 +485,7 @@ helpInfoOpenButton.addEventListener("click", function(){
   toggleHelpInfo()
 });
 
+// add help-close-button handler
 const helpInfoCloseButton = document.getElementById('help-info-close-button')
 helpInfoCloseButton.addEventListener("click", function(){
   toggleHelpInfo()

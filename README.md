@@ -29,16 +29,21 @@ extract the sheet ID out of the url to plug into the DATA_URL const.
   const DATA_URL = 'https://spreadsheets.google.com/feeds/list/1XJhbzcT_AubgnqAJRsbOEbMO3HPTybG3yNcX6i-BgH0/1/public/full?alt=json'
 `
 
+## Additional documentation
+
+ * Information about adding, editing and maintaining languages can be found in [Language Translation](docs/LANGUAGE_TRANSLATION.md)
+
+
 ## About the application
 This started as a very lightweight, single page html file, and we've tried very hard to keep things as simple as possible.
 
 ### Setup
-1. Install [node](https://nodejs.org/) at the version specified in the [`.node_version`](.node_version) file. If you use a version manager like [nodenv](https://github.com/nodenv/nodenv) or [nvm](https://github.com/nvm-sh/nvm), this should be detected automatically.
+1. Install [node](https://nodejs.org/) at the version specified in the [`.node-version`](.node-version) file. If you use a version manager like [nodenv](https://github.com/nodenv/nodenv) or [nvm](https://github.com/nvm-sh/nvm), this should be detected automatically.
 2. Install dependencies with npm
     ```
     npm install
     ```
-3. Configure [environmental variables](#environmental-variables)
+3. Configure [environment variables](#environment-variables)
 4. Build and run the application with npm
     ```
     npm run dev
@@ -60,7 +65,12 @@ A set variable in the `.env` file will look like this:
 SNOWPACK_PUBLIC_MAPBOXGL_ACCESS_TOKEN=1234
 ```
 
-Get the most recent values of the configuration values from the Open Twin Cities slack `#tc-aid-dev` channel. They are pinned in the channel.
+If you're a member of the Twin Cities Mutual Aid organization you can find the default values for the local development `env` file here:
+
+https://github.com/Twin-Cities-Mutual-Aid/secrets/blob/master/.env
+
+
+If not, you can ask for the most recent values of the configuration values from the Open Twin Cities slack `#tc-aid-dev` channel. They are pinned in the channel.
 
 If you need to introduce a new environmental variable, please coordinate with developers in the `#tc-aid-dev` channel, add it to the `.env.example` file, and note it in your pull request.
 
