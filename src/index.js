@@ -231,7 +231,7 @@ const createListItem = (location, status, lng, lat) => {
 
   let seekingVolunteers = ''
   if (location.seekingVolunteers && location.seekingVolunteers.match(/(?:\byes\b)/i)) {
-    seekingVolunteers = `<span data-translation-id="seeking_volunteers" class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>`
+    seekingVolunteers = `<span data-translation-id="seeking_volunteers" class="seekingVolunteersBadge location-list--badge">Needs Volunteer Support</span>`
   }
 
   const openTimeDistribution = moment(location.openingForDistributingDontations, ["h:mm A"])
