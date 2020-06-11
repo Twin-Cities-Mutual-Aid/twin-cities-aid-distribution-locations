@@ -2,6 +2,7 @@
 import 'mapbox-gl/dist/mapbox-gl.css'
 import './styles/normalize.css'
 import './styles/styles.css'
+import './styles/search.css'
 import './styles/welcome.css'
 import './styles/translator.css'
 
@@ -30,6 +31,8 @@ import 'moment/dist/locale/vi'
 import './locale/am'
 import './locale/om'
 import './locale/so'
+import './locale/oj'
+import './locale/hmn'
 
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
@@ -85,19 +88,10 @@ const statusOptions = [
 let langs
 // show all langs in dev mode
 if (window.location.search.indexOf('dev') > -1) {
-  langs = ['eng', 'spa', 'kar', 'som', 'hmn', 'amh', 'orm', 'vie']
+  langs = ['eng', 'spa', 'kar', 'som', 'hmn', 'amh', 'orm', 'vie', 'oji', 'dak']
 // otherwise only show these
 } else {
-  langs = ['eng', 'spa', 'som', 'amh', 'orm', 'vie']
-}
-// moment.js uses ISO 639-1
-const locales = {
-  'eng': 'en',
-  'spa': 'es',
-  'vie': 'vi',
-  'som': 'so',
-  'amh': 'am',
-  'orm': 'om'
+  langs = ['eng', 'spa', 'som', 'hmn', 'amh', 'orm', 'vie', 'oji', 'dak']
 }
 
 // initialize translator and load translations file
@@ -120,7 +114,7 @@ fetch(Config.translationUrl).then(async (resp) => {
       // when language is selected, run translation
       onLanguageSelect: lang => {
         translator.language = lang
-        moment.locale(locales[translator.language] || locales['eng'])
+        moment.locale(translator.locale)
         activePopup && activePopup.refreshPopup()
         translator.translate()
       }
@@ -132,7 +126,7 @@ fetch(Config.translationUrl).then(async (resp) => {
 
     // otherwise just run translator
     } else {
-      moment.locale(locales[translator.language] || locales['eng'])
+      moment.locale(translator.locale)
       translator.translate()
     }
 
@@ -226,6 +220,10 @@ const getStatus = id => {
   return status || unknownStatus
 }
 
+// Not all the fields being searched on should be visible but need
+// to be on the DOM in order for listjs to pick them up for search
+const hiddenSearchFields = ['address', 'accepting', 'notAccepting', 'notes', 'seekingVolunteers']
+
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
   const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important"><span data-translation-id="urgent_need">Urgent Need</span>: ${location.urgentNeed}</p>` : ''
@@ -233,7 +231,7 @@ const createListItem = (location, status, lng, lat) => {
 
   let seekingVolunteers = ''
   if (location.seekingVolunteers && location.seekingVolunteers.match(/(?:\byes\b)/i)) {
-    seekingVolunteers = `<span data-translation-id="seeking_volunteers" class="seekingVolunteers location-list--badge">Needs Volunteer Support</span>`
+    seekingVolunteers = `<span data-translation-id="seeking_volunteers" class="seekingVolunteersBadge location-list--badge">Needs Volunteer Support</span>`
   }
 
   let covid19Testing = ''
@@ -254,6 +252,8 @@ const createListItem = (location, status, lng, lat) => {
   if (moment().isBetween(openTimeReceivingLessOne, openTimeReceiving)) {
     openingSoonForReceiving = `<p class="opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${openTimeReceiving.format("LT")} <span data-translation-id="for_receiving">for receiving</span></p>`
   }
+
+ const hiddenSearch = hiddenSearchFields.map(field => `<p class="${field}" style="display:none">${location[field] || ''}</p>`).join('')
 
   const $item = document.createElement('div')
   $item.classList.add('location-list--item')
@@ -276,7 +276,7 @@ const createListItem = (location, status, lng, lat) => {
         ${urgentNeed}
         ${seekingVolunteers}
         ${seekingMoney}
-        ${covid19Testing}
+        ${hiddenSearch}
       </div>
     </div>
     `
@@ -424,7 +424,7 @@ const onMapLoad = async () => {
     }).value()
 
     // add nav
-    const filter = new Filter($sidePane, {
+    new Filter($sidePane, {
       sortOptions: [
         {
           name: 'urgentNeed',
@@ -459,6 +459,15 @@ const onMapLoad = async () => {
         }
       ],
       statusOptions,
+      searchOptions: {
+        searchOn: [
+          'name',
+          'neighborhood', 
+          'urgentNeed',
+          ...hiddenSearchFields
+        ],
+      },
+      locations,
       onAfterUpdate: () => translator.translate()
     })
 

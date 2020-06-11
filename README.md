@@ -43,7 +43,7 @@ This started as a very lightweight, single page html file, and we've tried very 
     ```
     npm install
     ```
-3. Configure [environmental variables](#environmental-variables)
+3. Configure [environment variables](#environment-variables)
 4. Build and run the application with npm
     ```
     npm run dev
