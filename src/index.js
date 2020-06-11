@@ -235,7 +235,7 @@ const createListItem = (location, status, lng, lat) => {
   }
 
   let covid19Testing = ''
-  if (location.notes && location.notes.match(/(?:\bcovid-19 testing\b)/i)) {
+  if (location.notes && location.notes.match(/(?:\bcovid(-19)? test(ing)?\b)/i)) {
     covid19Testing = `<span data-translation-id="covid19-testing" class="covid19-testing location-list--badge">Covid-19 Testing Available</span>`
   }
 
