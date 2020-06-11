@@ -1,12 +1,13 @@
 {
   "imports": {
+    "dompurify": "./dompurify.js",
     "list.js/dist/list.min.js": "./list.js/dist/list.min.js",
     "lodash": "./lodash.js",
     "mapbox-gl": "./mapbox-gl.js",
     "mapbox-gl/dist/mapbox-gl.css": "./mapbox-gl/dist/mapbox-gl.css",
     "moment/dist/locale/es": "./moment/dist/locale/es.js",
     "moment/dist/locale/vi": "./moment/dist/locale/vi.js",
-    "moment/dist/moment": "./moment/dist/moment.js"
+    "moment/dist/moment": "./moment/dist/moment.js",
     "trackjs": "./trackjs.js"
   }
 }
