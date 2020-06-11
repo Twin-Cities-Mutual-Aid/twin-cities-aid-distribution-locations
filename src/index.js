@@ -277,6 +277,7 @@ const createListItem = (location, status, lng, lat) => {
         ${seekingVolunteers}
         ${seekingMoney}
         ${hiddenSearch}
+        ${covid19Testing}
       </div>
     </div>
     `
