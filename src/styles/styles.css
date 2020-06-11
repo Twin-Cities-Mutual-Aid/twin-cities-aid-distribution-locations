@@ -185,6 +185,69 @@ input[type='checkbox'] + label {
   padding: 2px 0px;
 }
 
+.list-meta {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#list-results {
+  display: block;
+  font-weight: bold;
+}
+
+.loading-indicator {
+  height: 100vh;  
+  position: relative;
+}
+
+.loading-indicator::before {
+  background-color: white;
+  height: 100%;
+  width: 100%;
+  color: white;
+  content: "";
+  position: absolute;
+  opacity: .6;
+}
+
+.loading-indicator::after {
+  animation: 1s linear infinite spinner;
+  border: solid 3px #eee;
+  border-bottom-color: #EF6565;
+  border-radius: 50%;
+  content: "";
+  height: 40px;
+  left: 50%;
+  opacity: inherit;
+  position: absolute;
+  top: 20%;
+  transform: translate3d(-50%, -50%, 0);
+  transform-origin: center;
+  width: 40px;
+  will-change: transform;
+}
+
+@keyframes spinner {
+  0% {
+      transform: translate3d(-50%, -50%, 0) rotate(0deg);
+  }
+  100% {
+       transform: translate3d(-50%, -50%, 0) rotate(360deg);
+  }
+}
+
+/* similar to bootstraps sr-only class used to hide information intended only for screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
 /* component:legend */
 .legend {
   margin-bottom: 10px;
@@ -234,7 +297,7 @@ input[type='checkbox'] + label {
   margin-bottom: 5px;
   margin-right: 5px;
   border-radius: 100px;
-  color: rgba(200,80,40, 1);
+  color: rgba(0, 0, 0, 1);
   background-color: rgba(200,80,40, .25);
 }
 
@@ -258,7 +321,7 @@ input[type='checkbox'] + label {
 }
 
 .location-list--important {
-  color: rgba(200,80,40, 1)
+  color: rgba(0,0,0, 0.8)
 }
 
 /* component: location list toggle */

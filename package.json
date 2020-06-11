@@ -7,7 +7,9 @@
     "dev": "snowpack dev",
     "build": "snowpack build",
     "snowpack": "snowpack",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run build && npm run test:headless",
+    "test:functional": "testcafe",
+    "test:headless": "testcafe chrome:headless"
   },
   "repository": {
     "type": "git",
@@ -25,7 +27,8 @@
     "@snowpack/plugin-dotenv": "^1.1.1",
     "@snowpack/plugin-webpack": "^1.1.0",
     "rollup-plugin-node-polyfills": "^0.2.1",
-    "snowpack": "^2.2.2"
+    "snowpack": "^2.2.2",
+    "testcafe": "^1.8.6"
   },
   "dependencies": {
     "jsonschema": "^1.2.6",

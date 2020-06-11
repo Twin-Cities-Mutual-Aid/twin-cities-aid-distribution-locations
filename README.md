@@ -12,7 +12,7 @@ This project is unusual because there are two separate, siloed teams working in 
 ## Feature requests & feedback
 We're using [Github Issues](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/issues) to manage tasks, and have a [kanban board](https://github.com/orgs/Twin-Cities-Mutual-Aid/projects/1) set up. If you'd like access to the kanban board reach out in the [OTC slack channel](https://otc-slackin.herokuapp.com/).
 
-If you've got a feature request or feedback to share on the website, feel free to submit an issue on GH issues, or bring it up in slack.
+If you've got a feature request or feedback to share on the website, feel free to [submit an issue](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/issues/new) on GH issues, or bring it up in slack.
 
 ## Data
 
@@ -29,20 +29,50 @@ extract the sheet ID out of the url to plug into the DATA_URL const.
   const DATA_URL = 'https://spreadsheets.google.com/feeds/list/1XJhbzcT_AubgnqAJRsbOEbMO3HPTybG3yNcX6i-BgH0/1/public/full?alt=json'
 `
 
+## Additional documentation
+
+ * Information about adding, editing and maintaining languages can be found in [Language Translation](docs/LANGUAGE_TRANSLATION.md)
+
+
 ## About the application
 This started as a very lightweight, single page html file, and we've tried very hard to keep things as simple as possible.
 
 ### Setup
-
-1. Install node at the version specified in the [`.node_version`](.node_version) file. If you use a version manager like nodenv or nvm, this should be detected automatically.
+1. Install [node](https://nodejs.org/) at the version specified in the [`.node-version`](.node-version) file. If you use a version manager like [nodenv](https://github.com/nodenv/nodenv) or [nvm](https://github.com/nvm-sh/nvm), this should be detected automatically.
 2. Install dependencies with npm
     ```
     npm install
     ```
-3. Start building!
+3. Configure [environment variables](#environment-variables)
+4. Build and run the application with npm
+    ```
+    npm run dev
+    ```
+5. Visit the application in your browser at [http://localhost:8080](http://localhost:8080)
+6. Start building!
 
-### Environment Labels
-In order to run locally you will need to retrieve the `.env` file from someone in the Open Twin Cities slack `#tc-aid-dev` channel.
+
+### Environment Variables
+The application uses [environmental variables](https://en.wikipedia.org/wiki/Environment_variable) to manage configuration between environments. These values are set in a `.env` file in the project root directory. 
+
+To set up a `.env`, copy the `.env.example` file, which lists needed configuration values. For example, in the Mac OS terminal:
+```bash
+cp .env.example .env
+```
+
+A set variable in the `.env` file will look like this:
+```
+SNOWPACK_PUBLIC_MAPBOXGL_ACCESS_TOKEN=1234
+```
+
+If you're a member of the Twin Cities Mutual Aid organization you can find the default values for the local development `env` file here:
+
+https://github.com/Twin-Cities-Mutual-Aid/secrets/blob/master/.env
+
+
+If not, you can ask for the most recent values of the configuration values from the Open Twin Cities slack `#tc-aid-dev` channel. They are pinned in the channel.
+
+If you need to introduce a new environmental variable, please coordinate with developers in the `#tc-aid-dev` channel, add it to the `.env.example` file, and note it in your pull request.
 
 ### Run locally
 
@@ -82,5 +112,6 @@ Images go in `public/images` and will be served under `<url>/images/image_name.w
 
 If you need to add some other kind of static file, it should go somewhere in the public folder.
 
-### Maki Icons
-https://labs.mapbox.com/maki-icons/
+## Code of Conduct
+
+Contributors to the project are expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md). 
