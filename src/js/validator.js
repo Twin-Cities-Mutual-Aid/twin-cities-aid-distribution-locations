@@ -214,9 +214,10 @@ export const LOCATION_SCHEMA = {
 export default function validate(item, schema, ctx = {}) {
   let result = v.validate(item, schema);
 
-  if (result && Array.isArray(result.errors) && result.errors.length > 0) {
+  if (result && result.errors && result.errors.length === 0) {
+    return true;
+  } else {
     console.error(`Failed validating item`, ctx, result.errors);
     return false;
   }
-  return true;
 }
