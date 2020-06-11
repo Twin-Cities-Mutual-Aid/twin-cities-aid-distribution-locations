@@ -78,7 +78,7 @@ const statusOptions = [
   {
     id: '#c70000',
     name: 'closed',
-    label: 'currently closed',
+    label: 'not open now',
     accessibleColor: '#d7191c',
     count: 0
   },
