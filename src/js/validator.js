@@ -1,88 +1,208 @@
-const Validator = require('jsonschema').Validator;
+import { Validator } from "jsonschema";
 
 const v = new Validator();
 
-const LOCATION_SCHEMA = {
+export const LOCATION_SCHEMA = {
   "properties": {
     // these are injected values from Google Sheets
     "id": {
-      "type": "string",
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "updated": {
-      "type": "string",
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "category": {
-      "type": "string"
+      "type": "array",
     },
     "title": {
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "content": {
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "link": {
-      "type": "string"
+      "type": "array",
     }, 
     // These are the Google Sheet columns
     "gsx$mostrecentlyupdated": {
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "gsx$nameoforganization": {
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "gsx$neighborhood": {
-      "type": "string",
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "gsx$addresswithlink": {
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "gsx$currentlyopenforreceiving": {
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "gsx$openingforreceivingdonations": {
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "gsx$closingforreceivingdonations": {
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "gsx$currentlyopenfordistributing": {
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "gsx$openingfordistributingdonations": {
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "gsx$closingfordistributingdonations": {
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "gsx$urgentneed": {
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "gsx$accepting": {
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "gsx$notaccepting": {
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "gsx$seekingvolunteers": {
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "gsx$notes": {
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "gsx$latitude": {
-      "type": "string"
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "gsx$longitude": {
-      "type": "string",
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "gsx$color": {
-      "type": "color",
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "gsx$seekingmoney": {
-      "type": "string",
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     },
     "gsx$seekingmoneyurl": {
-      "string": "url",
+      "type": "object",
+      "properties": {
+        "$t": { 
+          "type": "string" 
+        },
+      },
     }
   }
 }
@@ -100,88 +220,3 @@ export default function validate(item, schema, ctx = {}) {
   }
   return true;
 }
-
-// // Extracts value from a Google Sheets row column object
-// function unwrapValue(item) {
-//   if (item && typeof item === "object" && item.$t) {
-//     return item.$t;
-//   }
-
-//   return undefined;
-// }
-
-// // Maps schema types to validation functions
-// const TYPE_MAP = {
-//   "string": isValidString,
-//   "color": isValidColor,
-//   "url": maybe(isUrl),
-//   "nullable": maybe(isValidString),
-// };
-
-// function either(a, b) {
-//   return (item) => {
-//     return a(item) || b(item);
-//   }
-// }
-
-// function maybe(a) {
-//   return either(isEmpty, a);
-// }
-
-// function isValidString(str) {
-//   return str && typeof str === "string";
-// }
-
-// function isEmpty(str) {
-//   return str === "" || str === undefined;
-// }
-
-// function isUrl(url) {
-//   if (url && typeof url === "string") {
-//     try {
-//       new URL(url);
-//     } catch(_) {
-//       return false;
-//     }
-
-//     return true;
-//   }
-
-//   return false;
-// }
-
-// function  isValidColor(color) {
-//   let re = /^#[a-zA-Z0-9]{6}$/;  
-//   return isValidString(color) && re.test(color);
-// }
-
-// const LOCATION_SCHEMA = {
-//   // these are injected values from Google Sheets
-//   "id": "nullable",
-//   "updated": "nullable",
-//   "category": "nullable",
-//   "title": "nullable",
-//   "content": "nullable",
-//   "link": "nullable",
-//   // These are the Google Sheet columns
-//   "gsx$mostrecentlyupdated": "string",
-//   "gsx$nameoforganization": "string",
-//   "gsx$neighborhood": "string",
-//   "gsx$addresswithlink": "nullable",
-//   "gsx$currentlyopenforreceiving": "nullable",
-//   "gsx$openingforreceivingdonations": "nullable" ,
-//   "gsx$closingforreceivingdonations": "nullable",
-//   "gsx$currentlyopenfordistributing": "nullable",
-//   "gsx$openingfordistributingdonations": "nullable",
-//   "gsx$closingfordistributingdonations": "nullable",
-//   "gsx$urgentneed": "nullable",
-//   "gsx$accepting": "nullable",
-//   "gsx$notaccepting": "nullable",
-//   "gsx$seekingvolunteers": "nullable",
-//   "gsx$notes": "nullable",
-//   "gsx$latitude": "string",
-//   "gsx$longitude": "string",
-//   "gsx$color": "color",
-//   "gsx$seekingmoney": "nullable",
-//   "gsx$seekingmoneyurl": "url"
-// }
