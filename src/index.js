@@ -14,6 +14,7 @@ import _ from 'lodash'
 import Filter from './js/filter'
 import Translator from './js/translator'
 import WelcomeModal from './js/welcome'
+import { getQueryParam } from './js/url-helpers';
 import { TrackJS } from 'trackjs';
 import validate, { LOCATION_SCHEMA } from "./js/validator";
 
@@ -78,7 +79,7 @@ const statusOptions = [
   {
     id: '#c70000',
     name: 'closed',
-    label: 'currently closed',
+    label: 'not open now',
     accessibleColor: '#d7191c',
     count: 0
   },
@@ -235,6 +236,11 @@ const createListItem = (location, status, lng, lat) => {
     seekingVolunteers = `<span data-translation-id="seeking_volunteers" class="seekingVolunteersBadge location-list--badge">Needs Volunteer Support</span>`
   }
 
+  let covid19Testing = ''
+  if (location.notes && location.notes.match(/(?:\bcovid[ -]?(19)? testing\b)/i)) {
+    covid19Testing = `<span data-translation-id="covid19-testing" class="covid19-testing location-list--badge">Covid-19 Testing Available</span>`
+  }
+
   const openTimeDistribution = moment(location.openingForDistributingDontations, ["h:mm A"])
   const openTimeDistributionLessOne = moment(location.openingForDistributingDontations, ["h:mm A"]).subtract(1, 'hours')
   let openingSoonForDistribution = ''
@@ -273,6 +279,7 @@ const createListItem = (location, status, lng, lat) => {
         ${seekingVolunteers}
         ${seekingMoney}
         ${hiddenSearch}
+        ${covid19Testing}
       </div>
     </div>
     `
@@ -457,6 +464,7 @@ const onMapLoad = async () => {
       ],
       statusOptions,
       searchOptions: {
+        initialSearch: getQueryParam('search'),
         searchOn: [
           'name',
           'neighborhood', 

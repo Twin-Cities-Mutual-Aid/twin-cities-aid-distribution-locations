@@ -1,4 +1,6 @@
 import _ from 'lodash'
+import { setQueryParam } from './url-helpers';
+import DOMPurify from 'dompurify';
 
 /**
  * Filter adds a filter control to the side panel location list
@@ -26,6 +28,9 @@ class Filter {
     // Uncheck unknown status locations to make a clearer call to action for new users on the site.
     document.getElementById("filter-unknown").checked = false
     this.update()
+    if(this.searchOptions.initialSearch) {
+      this.search(this.searchOptions.initialSearch)
+    }
   }
 
   getListResults() {
@@ -91,8 +96,7 @@ class Filter {
     }
   }
 
-  search(event) {
-    const searchTerm = event.target.value || ''
+  search(searchTerm) {
     this.list.search(searchTerm, this.searchOptions.searchOn)
     const searchResults = this.list.items.filter(item => item.found).map(item => item.values().address);
     if(!searchTerm) {
@@ -107,6 +111,7 @@ class Filter {
     this.$locationList.classList.remove('loading-indicator')
     this.onAfterUpdate()
     this.getListResults();
+    setQueryParam('search', searchTerm);
   }
 
   renderControls() {
@@ -134,7 +139,7 @@ class Filter {
           <div id='search-icon'>
             <img src='images/search-icon.svg' alt='search icon'></img>
           </div>
-          <input type="text" class="search-input" id="search" placeholder="Search sites or needs..."></input>
+          <input type="text" class="search-input" value="${DOMPurify.sanitize(this.searchOptions.initialSearch).replace(/\"/g, '')}" id="search" placeholder="Search sites or needs..."></input>
         </div>
         <button id="clear-search-btn" class="hide-clear-search">Clear Search</button>
       </form>
@@ -159,7 +164,7 @@ class Filter {
     this.$sort.addEventListener('change', this.update.bind(this))
     this.$search.addEventListener('input', event => {
       this.$locationList.classList.add('loading-indicator');
-      debouncedSearch.bind(this)(event);
+      debouncedSearch.bind(this)(event.currentTarget.value);
     })
     this.$searchForm.addEventListener('keydown', (event) => {
       // disable enter as it clears out search which is not likely a desired action
@@ -169,7 +174,7 @@ class Filter {
       this.$search.value = '';
       this.$clearSearchBtn.classList.add('hide-clear-search');
       this.$searchInputGroup.classList.add('search-full-width')
-      this.search.bind(this)(event)
+      this.search.bind(this)(event.currentTarget.value)
     })
     this.$filters.forEach($e => $e.addEventListener('change', this.update.bind(this)))
   }

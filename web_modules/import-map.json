@@ -1,6 +1,7 @@
 {
   "imports": {
     "jsonschema": "./jsonschema.js",
+    "dompurify": "./dompurify.js",
     "list.js/dist/list.min.js": "./list.js/dist/list.min.js",
     "lodash": "./lodash.js",
     "mapbox-gl": "./mapbox-gl.js",
