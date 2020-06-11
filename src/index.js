@@ -14,6 +14,7 @@ import _ from 'lodash'
 import Filter from './js/filter'
 import Translator from './js/translator'
 import WelcomeModal from './js/welcome'
+import { getQueryParam } from './js/url-helpers';
 import { TrackJS } from 'trackjs';
 
 //Add TrackJS Agent
@@ -461,6 +462,7 @@ const onMapLoad = async () => {
       ],
       statusOptions,
       searchOptions: {
+        initialSearch: getQueryParam('search'),
         searchOn: [
           'name',
           'neighborhood', 
