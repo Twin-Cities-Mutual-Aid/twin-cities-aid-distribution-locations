@@ -4,10 +4,6 @@ import { beforeEachTest, getURL } from '../helpers'
 fixture `Search`
   .page `http://localhost:8080/`
   .beforeEach(beforeEachTest)
-  .afterEach(async t => {
-    await t
-      .navigateTo('http://localhost:8080')
-  })
 
 test('Search for term', async t => {
   const listCount = await Selector('.location-list--item').count
@@ -23,7 +19,7 @@ test('Search for term', async t => {
     // New results should not equal the original count
     .expect(Selector('.location-list--item').count).notEql(listCount)
     .expect(Selector('.mapboxgl-marker').filterVisible().count).notEql(listCount)
-    // URL should include search parameters
+    // URL should include search parameter
     .expect(getURL()).contains('?search=test')
 })
 
@@ -40,20 +36,20 @@ test('Clear Search', async t => {
     .expect(Selector('.location-list--item').count).notEql(listCount)
     // Click on the "Clear Search" button
     .click(Selector('#clear-search-btn'))
-    // List count should equals the original listCount
-    .expect(Selector('.location-list--item').count).eql(listCount)
+    // URL should not include the search parameter
+    .expect(getURL()).notContains('?search=test')
+    // Search input should be empty
+    .expect(Selector('#search').value).eql('')
 })
 
 test('Navigate to page with search parameter', async t => {
-  const listCount = await Selector('.location-list--item').count
   const url = await getURL()
 
-  // This will have to change if we switch to drawing the map with canvas
   await t
     // Go to url with search parameter
     .navigateTo(`${url}?search=test`)
     // Wait 1000ms
     .wait(1000)
-    // New results should not equal the original count
-    .expect(Selector('.location-list--item').count).notEql(listCount)
+    // Search box value should be "test"
+    .expect(Selector('#search').value).eql('test')
 })
