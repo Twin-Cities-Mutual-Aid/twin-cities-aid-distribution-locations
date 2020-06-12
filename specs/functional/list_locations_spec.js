@@ -4,6 +4,10 @@ import { beforeEachTest } from '../helpers'
 fixture `List locations`
   .page `http://localhost:8080/`
   .beforeEach(beforeEachTest)
+  .afterEach(async t => {
+    await t
+      .maximizeWindow()
+  })
 
 test('List locations button', async t => {
   await t
