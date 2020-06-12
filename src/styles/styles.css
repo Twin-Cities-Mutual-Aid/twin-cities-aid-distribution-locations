@@ -8,10 +8,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  margin: 0;
-  padding: 0;
   overflow: hidden;
-  font: 15px/1.4 Arial, Helvetica, sans-serif;
 }
 
 a {
@@ -65,45 +62,6 @@ a.txt-white:hover {
 /* shared:layout */
 .flex {
   display: flex;
-}
-
-/* Shared:typography */
-.h1 {
-  font: bold 20px/1.2 Arial, Helvetica, sans-serif;
-  margin-top: 0px;
-}
-
-.h1:not(:last-child) {
-  margin-bottom: 10px;
-}
-
-.h2 {
-  font: bold 15px/1.2 Arial, Helvetica, sans-serif;
-  margin: 0;
-}
-
-.h2:not(:last-child) {
-  margin-bottom: 5px;
-}
-
-.h3 {
-  font:bold 12px/1.2 Arial, Helvetica, sans-serif;
-  color: rgba(0,0,0,.8);
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.h3:not(:last-child) {
-  margin-bottom: 5px;
-}
-
-.p {
-  margin: 0px;
-  padding: 0px;
-}
-
-.p:not(:last-child) {
-  margin-bottom: 10px;
 }
 
 .txt-small {

@@ -1,0 +1,29 @@
+.card {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: start;
+    box-shadow: 0 4px 12px rgba(0,0,0,.075);
+    border: 1px solid transparent;
+    border-radius: 1rem;
+    background-color: white;
+    margin: 1.75rem 0;
+    padding: 2rem;
+    transition: transform .15s ease-in-out, border-color .15s ease-in-out;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-100);
+}
+
+.card:active, .card:focus{
+    border-color: var(--primary-100);
+}
+
+.card-subtitle {
+    color: var(--gray-600); /* against white, color contrast ratio is 5.43 */
+    font-size: 1rem;
+    font-weight: normal;
+    margin: .5rem 0;
+}
