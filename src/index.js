@@ -25,7 +25,6 @@ if(import.meta.env.MODE === 'production'){
   });
 }
 
-
 // locales
 import 'moment/dist/locale/es'
 import 'moment/dist/locale/vi'
@@ -85,60 +84,26 @@ const statusOptions = [
   unknownStatus
 ]
 
-
-let langs
-// show all langs in dev mode
-if (window.location.search.indexOf('dev') > -1) {
-  langs = ['eng', 'spa', 'kar', 'som', 'hmn', 'amh', 'orm', 'vie', 'oji', 'dak']
-// otherwise only show these
-} else {
-  langs = ['eng', 'spa', 'som', 'hmn', 'amh', 'orm', 'vie', 'oji', 'dak']
-}
-
 // initialize translator and load translations file
-const translator = new Translator({ enabledLanguages: langs })
-let welcome
 let activePopup
+const translator = new Translator()
+moment.locale(translator.locale)
 
-// get the translation data and then run the translator
-fetch(Config.translationUrl).then(async (resp) => {
-  try {
-    const data = await resp.json()
-
-    // add translation definitions to translator
-    translator.setTranslations(Translator.ParseGoogleSheetData(data))
-
-    // create the welcome modal
-    welcome = new WelcomeModal({
-      languages: translator.availableLanguages,
-
-      // when language is selected, run translation
-      onLanguageSelect: lang => {
-        translator.language = lang
-        moment.locale(translator.locale)
-        activePopup && activePopup.refreshPopup()
-        translator.translate()
-      }
-    })
-
-    // show welcome modal if no language is selected
-    if (!translator.language) {
-      welcome.open()
-
-    // otherwise just run translator
-    } else {
-      moment.locale(translator.locale)
-      translator.translate()
-    }
-
-    // when language button is clicked, re-open welcome modal
-    const languageButton = document.getElementById('lang-select-button')
-    languageButton.addEventListener('click', () => welcome.open())
-
-  } catch (e) {
-    console.error('Translation error', e)
+const welcome = new WelcomeModal({
+  languages: translator.languages,
+  onLanguageSelect: lang => {
+    translator.language = lang
+    moment.locale(translator.locale)
+    activePopup && activePopup.refreshPopup()
   }
 })
+
+if (translator.prompt) {
+  welcome.open()
+}
+
+// when language button is clicked, re-open welcome modal
+document.getElementById('lang-select-button').addEventListener('click', () => welcome.open())
 
 let locations = []
 
@@ -178,9 +143,11 @@ function toggleSidePane() {
     $body.classList.add('list-active')
   }
   const buttonText = translator.get(translationId)
-  $locationsButton.innerText = buttonText
-  $locationsButton.setAttribute('data-translation-id',translationId)
-  $locationsButton.setAttribute('aria-label', buttonText)
+  if (buttonText) {
+    $locationsButton.innerText = buttonText
+    $locationsButton.setAttribute('data-translation-id', translationId)
+    $locationsButton.setAttribute('aria-label', buttonText)
+  }
 }
 
 // open/close help info
@@ -295,7 +262,6 @@ const createListItem = (location, status, lng, lat) => {
         zoom: 13
       })
       popup.addTo(map)
-      if (translator.language) translator.translate()
     }
   })
   return $item
@@ -473,10 +439,6 @@ const onMapLoad = async () => {
       locations,
       onAfterUpdate: () => translator.translate()
     })
-
-    // making sure to run translations after
-    // everything else is loaded
-    translator.translate()
 }
 
 // load map
