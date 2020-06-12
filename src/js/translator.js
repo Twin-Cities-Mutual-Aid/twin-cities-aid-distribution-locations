@@ -147,6 +147,11 @@ class Translator {
       el.src = `/images/lang-${this.language}.png`
       el.alt = this.get('lang_name')
     })
+
+    gtag('event', 'language_change', {
+      'event_category': 'language',
+      'event_label': this.language
+    })
   }
 }
 

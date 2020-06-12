@@ -112,6 +112,11 @@ class Filter {
     this.onAfterUpdate()
     this.getListResults();
     setQueryParam('search', searchTerm);
+
+    gtag('event', 'search_trigger', {
+      'event_category': 'search',
+      'event_label': searchTerm
+    })
   }
 
   renderControls() {
