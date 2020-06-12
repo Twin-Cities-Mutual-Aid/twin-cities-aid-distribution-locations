@@ -6,6 +6,7 @@ import './styles/welcome.css';
 import './styles/translator.css';
 import './styles/theme.css';
 import './styles/components/cards.css';
+import './styles/components/form-control.css';
 import './styles/components/search.css';
 import './styles/components/typography.css';
 

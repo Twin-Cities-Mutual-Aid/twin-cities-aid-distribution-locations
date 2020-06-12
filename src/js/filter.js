@@ -131,16 +131,12 @@ class Filter {
           <label for="search">
             <span class="sr-only">Type here to search sites or needs</span>
           </label>
-          <div id='search-icon'>
-            <img src='images/search-icon.svg' alt='search icon'></img>
-          </div>
+            <img id='search-icon' src='images/icon_search.svg' alt='search icon'></img>
           <input type="text" class="search-input" id="search" placeholder="Search sites or needs..."></input>
         </div>
         <button id="clear-search-btn" class="hide-clear-search">Clear Search</button>
       </form>
-      <div class="list-meta">
         <span id="list-results">${this.locations.length} results</span>
-      </div>
     `
 
     const debouncedSearch = _.debounce(this.search.bind(this), 300);
