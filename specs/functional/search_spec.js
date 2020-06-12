@@ -30,8 +30,8 @@ test('Clear Search', async t => {
   await t
     // Type "test" into the search input
     .typeText(Selector('#search'), 'test')
-    // Wait 500ms
-    .wait(500)
+    // Wait 1000ms
+    .wait(1000)
     // New results should not equal the original count
     .expect(Selector('.location-list--item').count).notEql(listCount)
     // Click on the "Clear Search" button
