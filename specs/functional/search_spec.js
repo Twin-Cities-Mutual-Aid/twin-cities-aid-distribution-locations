@@ -4,6 +4,10 @@ import { beforeEachTest, getURL } from '../helpers'
 fixture `Search`
   .page `http://localhost:8080/`
   .beforeEach(beforeEachTest)
+  .afterEach(async t => {
+    await t
+      .navigateTo('http://localhost:8080')
+  })
 
 test('Search for term', async t => {
   const listCount = await Selector('.location-list--item').count
