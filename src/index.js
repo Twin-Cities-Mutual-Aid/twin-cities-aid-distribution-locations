@@ -16,6 +16,7 @@ import Translator from './js/translator'
 import WelcomeModal from './js/welcome'
 import { getQueryParam } from './js/url-helpers';
 import { TrackJS } from 'trackjs';
+import 'autotrack/lib/plugins/url-change-tracker';
 
 //Add TrackJS Agent
 if(import.meta.env.MODE === 'production'){

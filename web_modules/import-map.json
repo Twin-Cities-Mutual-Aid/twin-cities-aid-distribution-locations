@@ -1,5 +1,6 @@
 {
   "imports": {
+    "autotrack/lib/plugins/url-change-tracker": "./autotrack/lib/plugins/url-change-tracker.js",
     "dompurify": "./dompurify.js",
     "list.js/dist/list.min.js": "./list.js/dist/list.min.js",
     "lodash": "./lodash.js",
