@@ -2,22 +2,33 @@
 	display: flex;
 	flex-wrap: nowrap;
 	align-items: center;
-	margin: 15px 0;
+	margin: 10px 0;
 	position: relative;
+	width: 100%;
 }
 
 #search-icon {
+	height: 50%;
 	position: absolute;
-	top: px;
-	left: 4px;
+	top: 25%;
+	left: 10px;
+}
+
+.search-input-group {
+	display: flex;
+	width: 100%;
 }
 
 .search-input {
 	padding: 10px;
-	border: 1px solid black;
+	border: .5px solid var(--primary-800);
 	height: 30px;
 	max-width: 100%;
 	padding-left: 30px;
+	border-radius: .25rem;
+	flex: 1;
+	line-height: 2;
+	height: 2rem;
 }
 
 @media (max-width: 1118px) {
@@ -47,6 +58,7 @@
 	.search-full-width {
 		width: 100%;
 	}
+
 	.search-full-width .search-input {
 		width: 100%;
 	}
