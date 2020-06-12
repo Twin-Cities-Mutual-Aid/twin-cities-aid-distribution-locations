@@ -35,7 +35,7 @@ class Filter {
 
   getListResults() {
     const listResults = document.querySelectorAll('.location-list--item')
-    this.$listResults.innerText = `${listResults.length} results`
+    this.$listResults.innerText = `${listResults.length}`
   }
 
   update() {
@@ -144,7 +144,7 @@ class Filter {
         <button id="clear-search-btn" class="hide-clear-search">Clear Search</button>
       </form>
       <div class="list-meta">
-        <span id="list-results">${this.locations.length} results</span>
+        <div class="list-results"><span id="list-results-count">${this.locations.length}</span> <span data-translation-id="list_results">results</span></div>
       </div>
     `
 
@@ -158,7 +158,7 @@ class Filter {
     this.$search = document.getElementById('search')
     this.$searchForm = document.getElementById('search-form')
     this.$searchInputGroup = document.getElementsByClassName('search-input-group')[0]
-    this.$listResults = document.getElementById('list-results')
+    this.$listResults = document.getElementById('list-results-count')
     this.$clearSearchBtn = document.getElementById('clear-search-btn')
     this.$filters = Array.prototype.slice.call($key.querySelectorAll('input[type="checkbox"]'))
     this.$sort.addEventListener('change', this.update.bind(this))
