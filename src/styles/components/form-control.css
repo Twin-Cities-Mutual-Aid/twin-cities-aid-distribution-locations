@@ -1,0 +1,44 @@
+/* Let's  */
+#filter-controls {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: flex-start;
+    justify-content: space-between;}
+
+.select-container {
+    display: flex;
+    align-items: center;
+    flex-flow: column nowrap;
+    align-items: start;
+    margin: 1rem 0;
+}
+
+.select-container select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    outline: 0;
+    border: .5px solid var(--primary-800);
+    background-image: none;
+    position: relative;
+    display: flex;
+    width: min-content;
+    height: 2em;
+    line-height: 2;
+    background: transparent;
+    overflow: hidden;
+    border-radius: .25em;
+    flex: 1;
+    padding: 0 .5em;
+    color: var(--primary-800);
+    cursor: pointer;
+    margin-left: 0;
+}
+
+.select-container label {
+    font-size: 80%;
+    display: flex;
+    align-items: center;
+    padding: .5rem 0;
+}
