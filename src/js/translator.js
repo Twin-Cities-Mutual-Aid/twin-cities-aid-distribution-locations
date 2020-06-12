@@ -109,7 +109,11 @@ class Translator {
       const term = this.get(id)
       // skip if theres no id, or no translation
       if (term && term.length) {
-        el.innerHTML = term
+        if (el.placeholder) {
+          el.placeholder = term
+        } else {
+          el.innerHTML = term
+        }
       }
     })
   }
