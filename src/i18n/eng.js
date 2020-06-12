@@ -1,4 +1,6 @@
+
 export default {
+  // ISO 639-1 or ISO 639-2
   "locale": "en",
   "lang_name": "English",
   "lang_name_in_eng": "English",
@@ -24,6 +26,7 @@ export default {
   "about": "About",
   "this_project": "this project",
   "help_info": "Help/info",
+  "project_team": "Twin Cities Mutual Aid Project",
   "project_description": "Twin Cities Mutual Aid Map is run by volunteers as part of the <a href=\"http://tcmap.org\">Twin Cities Mutual Aid Project</a>",
   "project_learn": "Learn about this project on",
   "project_data": "See this data in",
@@ -50,6 +53,9 @@ export default {
   "urgent_need": "Urgent Need",
   "notes": "Notes",
   "last_updated": "Last updated",
+  "aid_distribution_hours": "Aid Distribution Hours",
+  "aid_receiving_hours": "Aid Receiving Hours",
+  // These variables are for creating a moment.js locale configuration
   "time_future": "in",
   "time_past": "ago",
   "time_seconds": "seconds",
@@ -63,8 +69,6 @@ export default {
   "time_month": "months",
   "time_year": "year",
   "time_years": "years",
-  "aid_distribution_hours": "Aid Distribution Hours",
-  "aid_receiving_hours": "Aid Receiving Hours",
   "moment_future": "in 5 minutes",
   "moment_past": "5 minutes ago",
   "moment_s": "a few seconds",
