@@ -1,159 +1,89 @@
 /**
  * Simple frontend i18n tool
- * Expects translation data to be in this format: 
- * 
- * {
- *   'hello' : {
- *      'eng': 'Hello!',
- *      'spa': 'Hola!',
- *      'kar': '',
- *      'som': 'Salaan!',
- *      'hmn': 'Nyob zoo!'
- * }
- * 
- * Configuration options (passed to the constructor)
- * 
- * {
- *   enabledLanguages: ['eng', 'spa']
- * }
- * 
  */
+
+const DEFAULT_LANGUAGE = 'eng'
+const LOCAL_STORAGE_KEY = 'twam_lang'
+const DATA_ATTRIBUTE = 'data-translation-id'
+
 class Translator {
   constructor(options) {
-    this.enabledLanguages = options.enabledLanguages || false
-    this._languages = []
-    this.translations = {}
-    // moment.js uses ISO 639-1
-    this.locales = {
-      'eng': 'en',
-      'spa': 'es',
-      'som': 'so',
-      'amh': 'am',
-      'orm': 'om',
-      'vie': 'vi',
-      'oji': 'oj',
-      // If no ISO 639-1, use ISO 639-2
-      'dak': 'dak',
-      'kar': 'kar',
-      'hmn': 'hmn'
+    if (!options.languages || !options.languages[DEFAULT_LANGUAGE]) {
+      throw new Error(`default language "${DEFAULT_LANGUAGE}" missing`)
     }
+    this.languages = options.languages
     this.detectLanguage()
-  }
-
-  /**
-   * Set the translation definitions and available languages
-   */
-  setTranslations(translations) {
-    this.translations = translations
-
-    // look for row that includes native language names
-    const langNames = this.translations['lang_name']
-
-    // set available languages based on langNames
-    if (langNames) {
-
-      // iterate through the language codes
-      Object.keys(langNames).forEach(k => {
-        if (!this.languageIsEnabled(k)) return
-        this._languages.push({
-          name: k,
-          label: langNames[k]
-        })
-      })
-    }
-  }
-
-  /**
-   * Check if this language was enabled in configuration
-   */
-  languageIsEnabled(lang) {
-    if (!this.enabledLanguages.length) return true
-    return (this.enabledLanguages.indexOf(lang) > -1)
   }
 
   /**
    * Simple string validation for the language code
    */
-  validateLanguageKey(lang) {
-    return (typeof lang === 'string' && lang.length && lang.length === 3)
+  validateLanguageKey(key) {
+    return !!(
+      typeof key === 'string'
+      && key.length === 3
+      && this.languages[key]
+    )
   }
 
-  /**
-   * get a map of enabled langauge codes => native language names
-   */
-  get availableLanguages() {
-    return this._languages
+  getLocale(key) {
+    const lang = key ? this.languages[key] : this.current
+    return lang.codes['639-1'] || lang.codes['639-2']
   }
 
   /**
    * Set current language if given one is valid
    */
-  set language(lang) {
-    if (!this.validateLanguageKey(lang)) {
-      // console.error('Attempting to use invalid language: '+lang)
-      return
-    }
-    window.localStorage.setItem(Translator.LOCAL_STORAGE_KEY, lang)
-    this.locale = this.locales[lang] || this.locales['eng']
-    document.documentElement.lang = this.locale
-  }
-
-  /**
-   * Get current language
-   */
-  get language() {
-    const lang = window.localStorage.getItem(Translator.LOCAL_STORAGE_KEY)
-    // i was getting "null" as a string value when empty (???)
-    // which is truthy so this makes sure that doesn't get returned
-    if (this.validateLanguageKey(lang)) return lang
+  setLanguage(key) {
+    this.key = this.validateLanguageKey(key) ? key : 'eng'
+    this.current = this.languages[this.key]
+    window.localStorage.setItem(LOCAL_STORAGE_KEY, this.key)
+    document.documentElement.lang = this.getLocale()
   }
 
   /**
    * Detect language from environment
    */
   detectLanguage() {
-    let lang
+    let key
 
     // if language is defined in querystring, use that one
     const qs = window.location.search.substring(1)
     const m = /lang=([A-z]+)/i.exec(qs)
     if (m && m.length > 1) {
-      lang = m[1]
+      key = m[1]
 
     // otherwise, check local storage 
     } else {
-      lang = window.localStorage.getItem(Translator.LOCAL_STORAGE_KEY)
+      key = window.localStorage.getItem(LOCAL_STORAGE_KEY)
     }
 
     // this will validate the language in the setter
     // before saving
-    this.language = lang
+    this.setLanguage(key)
   }
+
+  
 
   /**
    * Find elements with the `data-translation-id` attribute and replace
    * with translated term if one is available in current language
    */
   translate(el) {
-    if (!this.language) return
-
     if (!el) el = document
 
-    this.setFlagIcons()
-
-    this.els = el.querySelectorAll(`[data-translation-id]`)
+    const els = el.querySelectorAll(`[${DATA_ATTRIBUTE}]`)f
 
     // convert NodeList to Array so we can use forEach
-    const els = Array.prototype.slice.call(this.els)
-
     // replace with translation wherever possible
-    els.forEach(el => {
-      const id = el.getAttribute('data-translation-id')
-      // skip if theres no id, or no translation
-      if (!id || !this.translations[id]) return
+    Array.prototype.slice.call(els).forEach(el => {
+      const id = el.getAttribute(DATA_ATTRIBUTE)
+
+      // skip if theres no id
+      if (!id) return
 
       // get translated term and replace
-      const term = this.get(id)
+      const term = this.getTerm(id)
       if (term && term.length) {
         el.innerHTML = term
       }
@@ -165,27 +95,19 @@ class Translator {
    * Fallback is used if no translation is found.
    * If fallback is falsy, then just use English translation
    */
-  get(id, fallback) {
-
-    // if this term doesn't exist, return fallback
-    // (even if its empty)
-    if (!this.translations[id]) return fallback
+  getTerm(id, fallback) {
 
     // if fallback isn't provided, use english translation
-    if (!fallback) {
-      fallback = this.translations[id]['eng']
+    if (!fallback && this.languages['eng']) {
+      fallback = this.languages['eng'].terms[id] || ''
     }
 
     // if language isn't set return fallback
     if (!this.language) return fallback
 
-    const term = this.translations[id][this.language]
+    const term = this.language.terms[id]
 
-    // if term and language exist, but result is empty
-    // return fallback
-    if (!term) return fallback
-
-    return term
+    return term ? term : fallback
   }
 
   /**
@@ -199,54 +121,27 @@ class Translator {
       el.alt = this.get('lang_name')
     })
   }
-}
 
-Translator.LOCAL_STORAGE_KEY = 'twma_lang'
-
-/**
- * Convert data structure recieved from Google to format compatible
- * with our constructor
- */
-Translator.ParseGoogleSheetData = function (data) {
-  const idKey = 'gsx$id'
-  const map = {}
-  let langKeys
-
-  // find the object keys for language translations
-  const extractLangKeys = e => {
-    const keys = []
-    Object.keys(e).forEach(k => {
-      if (k.indexOf('gsx$') > -1 && k !== idKey) {
-        keys.push(k)
-      }
-    })
-    return keys
+  getIcon(key) {
+    const lang = key ? this.langages[key] || this.language
   }
 
-  data.feed.entry.forEach(e => {
-    try {
-      // skip if id is missing
-      if (!e[idKey].$t) return;
-      // fetch language keys if not already available
-      if (!langKeys) langKeys = extractLangKeys(e)
+  defineLocales(moment) {
+    Object.keys(this.languages).forEach((key) => {
 
-      map[e[idKey].$t] = {}
+      const {
+        relativeTime,
+        codes
+      } = this.languages[key]
 
-      langKeys.forEach(k => {
-        // remove google gsx$ prefix
-        const lang = k.split('$')[1]
-        // add translations
-        map[e[idKey].$t][lang] = e[k].$t
-      })
+      if (relativeTime) {
+        const locale = codes['693-1'] || codes['693-2']
+        if (!locale) return
 
-      // in case of error, log to console and skip to next one
-    } catch (e) {
-      console.error(e)
-      return
-    }
-  })
-
-  return map
+        moment.defineLocale(locale, { relativeTime })
+      }
+    })
+  }
 }
 
 export default Translator

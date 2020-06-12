@@ -28,11 +28,18 @@ if(import.meta.env.MODE === 'production'){
 // locales
 import 'moment/dist/locale/es'
 import 'moment/dist/locale/vi'
-import './locale/am'
-import './locale/om'
-import './locale/so'
-import './locale/oj'
-import './locale/hmn'
+
+import amh from './lang/amh.json'
+import dak from './lang/dak.json'
+import hmn from './lang/hmn.json'
+import oji from './lang/oji.json'
+import orm from './lang/orm.json'
+import som from './lang/orm.json'
+import spa from './lang/orm.json'
+import eng from './lang/orm.json'
+import vie from './lang/orm.json'
+
+
 
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
@@ -84,18 +91,21 @@ const statusOptions = [
   unknownStatus
 ]
 
-
-let langs
-// show all langs in dev mode
-if (window.location.search.indexOf('dev') > -1) {
-  langs = ['eng', 'spa', 'kar', 'som', 'hmn', 'amh', 'orm', 'vie', 'oji', 'dak']
-// otherwise only show these
-} else {
-  langs = ['eng', 'spa', 'som', 'hmn', 'amh', 'orm', 'vie', 'oji', 'dak']
-}
-
 // initialize translator and load translations file
-const translator = new Translator({ enabledLanguages: langs })
+const translator = new Translator({
+  languages : {
+    amh,
+    dak,
+    hmn,
+    oji,
+    orm,
+    som,
+    spa,
+    eng,
+    vie,
+  }
+})
+
 let welcome
 let activePopup
 
