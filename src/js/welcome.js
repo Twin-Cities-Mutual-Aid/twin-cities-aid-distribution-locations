@@ -15,8 +15,7 @@ class WelcomeModal {
     Array.prototype.slice.call(this.langButtons).forEach(b => {
       b.addEventListener('click', evt => {
         evt.preventDefault()
-        const lang = b.value
-        this.onLanguageSelect(lang)
+        this.onLanguageSelect(b.value)
         this.close()
       })
     })
@@ -24,8 +23,10 @@ class WelcomeModal {
 
   // render the modal html
   render(languages) {
-
-    const buttons = languages.map(l => `<button class="welcome-lang-button" value="${l.name}"><img class="lang-flag" alt="${l.label}" src="/images/lang-${l.name}.png">${l.label}</button>`).join('')
+    const buttons = Object.keys(languages).map(key => {
+      const { lang_name } = languages[key]
+      return `<button class="welcome-lang-button" value="${key}"><img class="lang-flag" alt="${lang_name}" src="/images/lang-${key}.png">${lang_name}</button>`
+    }).join('')
 
     return `
       <div class="modal">
