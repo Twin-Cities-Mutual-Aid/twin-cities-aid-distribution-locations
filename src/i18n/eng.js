@@ -55,6 +55,9 @@ export default {
   "last_updated": "Last updated",
   "aid_distribution_hours": "Aid Distribution Hours",
   "aid_receiving_hours": "Aid Receiving Hours",
+  "list_results": "results",
+  "search": "Search sites or needs...",
+  "search_clear": "Clear Search",
   // These variables are for creating a moment.js locale configuration
   "time_future": "in",
   "time_past": "ago",

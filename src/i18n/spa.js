@@ -55,6 +55,9 @@ export default {
   "last_updated": "Ultima actualización",
   "aid_distribution_hours": "Horario de distribución de ayuda",
   "aid_receiving_hours": "Horario de recibir ayuda",
+  "list_results": "resultados",
+  "search": "Buscar sitios o necesidad",
+  "search_clear": "Borrar busqueda",
   // These variables are for creating a moment.js locale configuration
   "time_future": "en",
   "time_past": "hace",

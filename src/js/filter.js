@@ -139,9 +139,9 @@ class Filter {
           <div id='search-icon'>
             <img src='images/search-icon.svg' alt='search icon'></img>
           </div>
-          <input type="text" class="search-input" value="${DOMPurify.sanitize(this.searchOptions.initialSearch).replace(/\"/g, '')}" id="search" placeholder="Search sites or needs..."></input>
+          <input type="text" class="search-input" value="${DOMPurify.sanitize(this.searchOptions.initialSearch).replace(/\"/g, '')}" id="search" placeholder="Search sites or needs..." data-translation-id="search"></input>
         </div>
-        <button id="clear-search-btn" class="hide-clear-search">Clear Search</button>
+        <button id="clear-search-btn" class="hide-clear-search" data-translation-id="search_clear">Clear Search</button>
       </form>
       <div class="list-meta">
         <div class="list-results"><span id="list-results-count">${this.locations.length}</span> <span data-translation-id="list_results">results</span></div>
