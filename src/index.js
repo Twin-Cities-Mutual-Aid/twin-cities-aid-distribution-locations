@@ -16,6 +16,7 @@ import Translator from './js/translator'
 import WelcomeModal from './js/welcome'
 import { getQueryParam } from './js/url-helpers';
 import { TrackJS } from 'trackjs';
+import validate, { LOCATION_SCHEMA } from "./js/validator";
 
 //Add TrackJS Agent
 if(import.meta.env.MODE === 'production'){
@@ -182,6 +183,21 @@ function addressComponent(address) {
   return `<address><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>`;
 }
 
+// builds the section within the popup and replaces and URLs with links
+function sectionUrlComponent(value, key) {
+  let urls = extractUrl(value)
+  let sectionHTML = `<p class="p row"><p data-translation-id="${key}" class="txt-deemphasize
+  key">${key.toUpperCase()}</p><p class="value">${value}</p></p>`
+
+  if (urls) {
+    _.forEach(urls, url => {
+      sectionHTML = sectionHTML.replace(url, `<a href="${url}" target="_blank">${url}</a>`)
+    })
+  }
+
+  return sectionHTML
+}
+
 // get the status info for a location using the color as ID, else default to unknown.
 const getStatus = id => {
   const status = _.find(statusOptions, s => (s.id === id.toLowerCase()))
@@ -303,6 +319,16 @@ function getHours(openingHours, closingHours) {
   }
 }
 
+///////////
+// returns a an array of urls as strings if there is a match otherwise null
+// e.g. ['https://google.com']
+///////////
+function extractUrl(item) {
+  // regex source: https://stackoverflow.com/questions/3809401/what-is-a-good-regular-expression-to-match-a-url
+  let url_pattern = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+  return item.match(url_pattern)
+}
+
 function extractRawLocation(item) {
   return {
     name: item.gsx$nameoforganization.$t,
@@ -333,8 +359,9 @@ const onMapLoad = async () => {
 
   // filter and transform data from google sheet
   locations = _.chain(data.feed.entry)
-    .filter(item => (item.gsx$nameoforganization.$t != '') && (item.gsx$longitude.$t != '') && (item.gsx$latitude.$t != '')) // only items with names and lon,lat
-    .sortBy(item => item.gsx$nameoforganization.$t )
+    .filter(item => (item.gsx$nameoforganization.$t !== '') && (item.gsx$longitude.$t !== '') && (item.gsx$latitude.$t !== '')) // sanity check for empty rows
+    .filter((item, i) => validate(item, LOCATION_SCHEMA, { sheetRow: i + 1 })) // only items that validate against schema
+    .sortBy(item => item.gsx$nameoforganization.$t)
     .map(item => {
 
       try {
@@ -350,7 +377,10 @@ const onMapLoad = async () => {
           address: addressComponent, // driving directions in google, consider doing inside mapbox
           seekingMoney: (value, location) => needsMoneyComponent(location),
           seekingMoneyURL: (value, _) => '',
+          seekingVolunteers: (value, _) => sectionUrlComponent(value, 'seeking_volunteers'),
           mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> ${moment(datetime, 'H:m M/D').fromNow()}</div>`,
+          notes: (value, _) => sectionUrlComponent(value,'notes')
+          ,
           // ignore the following properties
           // marker and popup should not be rendered
           marker: () => '',
