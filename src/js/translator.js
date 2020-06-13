@@ -4,15 +4,15 @@
  * Using local translation files located under /src/i18n/*.js
  */
 
-import eng from './../i18n/eng.js'
-import spa from './../i18n/spa.js'
-import som from './../i18n/som.js'
-import hmn from './../i18n/hmn.js'
-import amh from './../i18n/amh.js'
-import orm from './../i18n/orm.js'
-import oji from './../i18n/oji.js'
-import dak from './../i18n/dak.js'
-import vie from './../i18n/vie.js'
+import eng from './../i18n/eng.json'
+import spa from './../i18n/spa.json'
+import som from './../i18n/som.json'
+import hmn from './../i18n/hmn.json'
+import amh from './../i18n/amh.json'
+import orm from './../i18n/orm.json'
+import oji from './../i18n/oji.json'
+import dak from './../i18n/dak.json'
+import vie from './../i18n/vie.json'
 
 class Translator {
   constructor() {
