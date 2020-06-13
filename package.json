@@ -26,7 +26,7 @@
     "@snowpack/plugin-dotenv": "^1.1.1",
     "@snowpack/plugin-webpack": "^1.2.0",
     "rollup-plugin-node-polyfills": "^0.2.1",
-    "snowpack": "^2.2.2",
+    "snowpack": "^2.5.1",
     "testcafe": "^1.8.6"
   },
   "dependencies": {
