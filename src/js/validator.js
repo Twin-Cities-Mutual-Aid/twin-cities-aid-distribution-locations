@@ -1,6 +1,4 @@
-import { Validator } from "jsonschema";
-
-const v = new Validator();
+import jsonschema from "jsonschema";
 
 export const LOCATION_SCHEMA = {
   "properties": {
@@ -212,7 +210,7 @@ export const LOCATION_SCHEMA = {
   a valid schema object, and an optional context paramater
 */
 export default function validate(item, schema, ctx = {}) {
-  let result = v.validate(item, schema);
+  let result = jsonschema.validate(item, schema);
 
   if (result && result.errors && result.errors.length === 0) {
     return true;
