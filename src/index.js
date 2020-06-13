@@ -16,6 +16,7 @@ import Translator from './js/translator'
 import WelcomeModal from './js/welcome'
 import { getQueryParam } from './js/url-helpers';
 import { TrackJS } from 'trackjs';
+import validate, { LOCATION_SCHEMA } from "./js/validator";
 
 //Add TrackJS Agent
 if(import.meta.env.MODE === 'production'){
@@ -392,8 +393,9 @@ const onMapLoad = async () => {
 
   // filter and transform data from google sheet
   locations = _.chain(data.feed.entry)
-    .filter(item => (item.gsx$nameoforganization.$t != '') && (item.gsx$longitude.$t != '') && (item.gsx$latitude.$t != '')) // only items with names and lon,lat
-    .sortBy(item => item.gsx$nameoforganization.$t )
+    .filter(item => (item.gsx$nameoforganization.$t !== '') && (item.gsx$longitude.$t !== '') && (item.gsx$latitude.$t !== '')) // sanity check for empty rows
+    .filter((item, i) => validate(item, LOCATION_SCHEMA, { sheetRow: i + 1 })) // only items that validate against schema
+    .sortBy(item => item.gsx$nameoforganization.$t)
     .map(item => {
 
       try {
