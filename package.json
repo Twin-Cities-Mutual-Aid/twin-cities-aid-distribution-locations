@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "autotrack": "^2.4.1",
+    "jsonschema": "^1.2.6",
     "list.js": "^1.5.0",
     "lodash": "^4.17.15",
     "mapbox-gl": "^1.10.1",

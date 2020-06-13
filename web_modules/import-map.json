@@ -1,6 +1,7 @@
 {
   "imports": {
     "autotrack/lib/plugins/url-change-tracker": "./autotrack/lib/plugins/url-change-tracker.js",
+    "jsonschema": "./jsonschema.js",
     "list.js/dist/list.min.js": "./list.js/dist/list.min.js",
     "lodash": "./lodash.js",
     "mapbox-gl": "./mapbox-gl.js",
