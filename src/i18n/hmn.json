@@ -1,6 +1,5 @@
 
-export default {
-  // ISO 639-1 or ISO 639-2
+{
   "locale": "hmn",
   "lang_name": "Hmoob",
   "lang_name_in_eng": "Hmong",
@@ -55,7 +54,6 @@ export default {
   "last_updated": "Ntxiv lug khu kom tshab",
   "aid_distribution_hours": "Cov sij hawm faib",
   "aid_receiving_hours": "Cov sij hawm txais",
-  // These variables are for creating a moment.js locale configuration
   "time_future": "thaum",
   "time_past": "dhlau",
   "time_seconds": "chib",

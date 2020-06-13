@@ -1,6 +1,5 @@
 
-export default {
-  // ISO 639-1 or ISO 639-2
+{
   "locale": "am",
   "lang_name": "Amharic",
   "lang_name_in_eng": "Amharic",
@@ -55,7 +54,6 @@ export default {
   "last_updated": "በቅርብ የተሰጠ መግለጫ ",
   "aid_distribution_hours": "",
   "aid_receiving_hours": "",
-  // These variables are for creating a moment.js locale configuration
   "time_future": "ውስጥ ",
   "time_past": "በፊት ",
   "time_seconds": "ሴኮንድ ",

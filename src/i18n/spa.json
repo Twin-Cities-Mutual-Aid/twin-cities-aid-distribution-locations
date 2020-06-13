@@ -1,6 +1,5 @@
 
-export default {
-  // ISO 639-1 or ISO 639-2
+{
   "locale": "es",
   "lang_name": "Español",
   "lang_name_in_eng": "Spanish",
@@ -58,7 +57,6 @@ export default {
   "list_results": "resultados",
   "search": "Buscar sitios o necesidad",
   "search_clear": "Borrar busqueda",
-  // These variables are for creating a moment.js locale configuration
   "time_future": "en",
   "time_past": "hace",
   "time_seconds": "segundos",

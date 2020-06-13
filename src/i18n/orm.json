@@ -1,6 +1,5 @@
 
-export default {
-  // ISO 639-1 or ISO 639-2
+{
   "locale": "orm",
   "lang_name": "Oromo",
   "lang_name_in_eng": "Oromo",
@@ -55,7 +54,6 @@ export default {
   "last_updated": "Ibsa dhiyoo kanaa kenname ",
   "aid_distribution_hours": "",
   "aid_receiving_hours": "",
-  // These variables are for creating a moment.js locale configuration
   "time_future": "Keessa",
   "time_past": "Dura ",
   "time_seconds": "Sekondii ",
