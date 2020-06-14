@@ -392,6 +392,10 @@ input[type='checkbox'] + label {
   padding: 0;
 }
 
+.mapboxgl-marker {
+  cursor: pointer
+}
+
 /* map marker toggles */
 .hide-recieving .status-recieving, .hide-distributing .status-distributing, .hide-both .status-both, .hide-closed .status-closed, .hide-unknown .status-unknown {
   display: none;
