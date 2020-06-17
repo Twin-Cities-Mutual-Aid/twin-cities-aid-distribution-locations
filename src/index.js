@@ -101,6 +101,9 @@ const welcome = new WelcomeModal({
 
 if (translator.prompt) {
   welcome.open()
+} else {
+  // Translate welcome modal based on current on previously saved language
+  translator.translate(welcome.el)
 }
 
 // when language button is clicked, re-open welcome modal
