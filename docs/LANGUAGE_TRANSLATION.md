@@ -61,8 +61,8 @@ If there are missing translations for a specific language, add the appropriate `
 
 Checklist:
 
- - [x] Create a new entry in `src/i18n/eng.json` with the corresponding `id` and term
- - [x] Make sure that it is a **unique** `id` (`formatted_like_this`)
+ - [ ] Create a new entry in `src/i18n/eng.json` with the corresponding `id` and term
+ - [ ] Make sure that it is a **unique** `id` (`formatted_like_this`)
  - [ ] Make sure the term is also added to the correct place in the code, using either the `data-translation-id` attribute (in markup) or the `get` method (js code). See technical details below for more on this.
  - [ ] If translations are not provided for every language, tag the pull request with **NEEDS TRANSLATIONS** so that the term can be translated by others.
 
