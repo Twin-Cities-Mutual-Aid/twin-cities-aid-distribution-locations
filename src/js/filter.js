@@ -35,7 +35,7 @@ class Filter {
 
   getListResults() {
     const listResults = document.querySelectorAll('.location-list--item')
-    this.$listResults.innerText = `${listResults.length} results`
+    this.$listResults.innerText = `${listResults.length}`
   }
 
   update() {
@@ -112,6 +112,11 @@ class Filter {
     this.onAfterUpdate()
     this.getListResults();
     setQueryParam('search', searchTerm);
+
+    gtag('event', 'search_trigger', {
+      'event_category': 'search',
+      'event_label': searchTerm
+    })
   }
 
   renderControls() {
@@ -139,12 +144,12 @@ class Filter {
           <div id='search-icon'>
             <img src='images/search-icon.svg' alt='search icon'></img>
           </div>
-          <input type="text" class="search-input" value="${DOMPurify.sanitize(this.searchOptions.initialSearch).replace(/\"/g, '')}" id="search" placeholder="Search sites or needs..."></input>
+          <input type="text" class="search-input" value="${DOMPurify.sanitize(this.searchOptions.initialSearch).replace(/\"/g, '')}" id="search" placeholder="Search sites or needs..." data-translation-id="search"></input>
         </div>
-        <button id="clear-search-btn" class="hide-clear-search">Clear Search</button>
+        <button id="clear-search-btn" class="hide-clear-search" data-translation-id="search_clear">Clear Search</button>
       </form>
       <div class="list-meta">
-        <span id="list-results">${this.locations.length} results</span>
+        <div class="list-results"><span id="list-results-count">${this.locations.length}</span> <span data-translation-id="list_results">results</span></div>
       </div>
     `
 
@@ -158,7 +163,7 @@ class Filter {
     this.$search = document.getElementById('search')
     this.$searchForm = document.getElementById('search-form')
     this.$searchInputGroup = document.getElementsByClassName('search-input-group')[0]
-    this.$listResults = document.getElementById('list-results')
+    this.$listResults = document.getElementById('list-results-count')
     this.$clearSearchBtn = document.getElementById('clear-search-btn')
     this.$filters = Array.prototype.slice.call($key.querySelectorAll('input[type="checkbox"]'))
     this.$sort.addEventListener('change', this.update.bind(this))
