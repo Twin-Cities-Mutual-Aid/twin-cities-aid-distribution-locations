@@ -13,6 +13,7 @@ import orm from './../i18n/orm.json'
 import oji from './../i18n/oji.json'
 import dak from './../i18n/dak.json'
 import vie from './../i18n/vie.json'
+import hin from './../i18n/hin.json'
 
 class Translator {
   constructor() {
@@ -25,7 +26,8 @@ class Translator {
       orm,
       oji,
       dak,
-      vie
+      vie,
+      hin
     }
     this.detectLanguage()
   }
@@ -77,7 +79,7 @@ class Translator {
     if (m && m.length > 1) {
       lang = m[1]
 
-    // otherwise, check local storage 
+    // otherwise, check local storage
     } else {
       lang = window.localStorage.getItem(Translator.LOCAL_STORAGE_KEY)
     }
