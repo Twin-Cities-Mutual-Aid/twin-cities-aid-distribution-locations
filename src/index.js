@@ -34,6 +34,7 @@ import './locale/om'
 import './locale/so'
 import './locale/oj'
 import './locale/hmn'
+import './locale/kar'
 
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
