@@ -1,4 +1,14 @@
 
+@font-face {
+  font-family: "KNU";
+  src: url("./fonts/knu.woff");
+}
+
+html:lang(kar) [data-translation-id], html:lang(kar) [data-translate-font] {
+  font-family: KNU;
+  font-size: 1.2em;
+}
+
 .lang-select-button {
   background: white;
   border-radius: 4px;
