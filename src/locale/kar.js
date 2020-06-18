@@ -3,7 +3,7 @@
 
 import moment from 'moment/dist/moment'
 
-export default moment.defineLocale('so', {
+export default moment.defineLocale('kar', {
     relativeTime: {
       future: '%s vXtylR',
       past: '%s ylRuGHm',
