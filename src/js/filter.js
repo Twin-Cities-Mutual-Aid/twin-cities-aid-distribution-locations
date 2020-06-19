@@ -37,7 +37,7 @@ class Filter {
     this.$listResults.innerText = `${listResults.length}`
   }
 
-  update() {
+  update(event) {
     const sortSettings = _.find(this.sortOptions, o => (o.name === this.$sort.value))
     let filterValues = this.$filters.map(f => f.checked)
     /** if "open for receiving donations" (item 0) or "open for distributing donations" (item 1)
@@ -64,6 +64,21 @@ class Filter {
 
     this.getListResults();
     this.onAfterUpdate()
+
+    // track events for google analytics
+    if(event) {
+      if(event.target.id === 'sort-by') {
+        gtag('event', 'sort_filter', {
+          'event_category': 'select',
+          'event_label': event.target.value
+        })
+      } else {
+        gtag('event', 'search_filter', {
+          'event_category': 'select',
+          'event_label': `${event.target.value}=${event.target.checked}`
+        })
+      }
+    }
   }
 
   toggleMapPointsForFilter(filterValues) {
