@@ -166,7 +166,8 @@ export const LOCATION_SCHEMA = {
       "type": "object",
       "properties": {
         "$t": { 
-          "type": "string" 
+          "type": "string",
+          "format": "latitude"
         },
       },
     },
@@ -174,7 +175,8 @@ export const LOCATION_SCHEMA = {
       "type": "object",
       "properties": {
         "$t": { 
-          "type": "string" 
+          "type": "string",
+          "format": "longitude"
         },
       },
     },
@@ -182,7 +184,8 @@ export const LOCATION_SCHEMA = {
       "type": "object",
       "properties": {
         "$t": { 
-          "type": "string" 
+          "type": "string" ,
+          "format": "hexColor"
         },
       },
     },
@@ -205,12 +208,31 @@ export const LOCATION_SCHEMA = {
   }
 }
 
+let { Validator } = jsonschema;
+
+Validator.prototype.customFormats.hexColor = function(color) {
+  // Does NOT support alpha channel on hex colors
+  let re = /^#[a-zA-Z0-9]{6}$/;  
+  return typeof color === "string" && re.test(color);
+};
+
+Validator.prototype.customFormats.latitude = function(lat) {
+  let num = parseFloat(lat);
+  return !isNaN(num) && typeof num === 'number' && num <= 90 && num >= -90;
+};
+
+Validator.prototype.customFormats.longitude = function(lon) {
+  let num = parseFloat(lon);
+  return !isNaN(num) && typeof num === 'number' && num <= 180 && num >= -180;
+};
+
 /*
   Validates data from Google Sheets given an item,
   a valid schema object, and an optional context paramater
 */
 export default function validate(item, schema, ctx = {}) {
-  let result = jsonschema.validate(item, schema);
+  let v = new Validator();
+  let result = v.validate(item, schema);
 
   if (result && result.errors && result.errors.length === 0) {
     return true;
