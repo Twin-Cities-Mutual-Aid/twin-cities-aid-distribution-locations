@@ -68,14 +68,19 @@ class Filter {
     // track events for google analytics
     if(event) {
       if(event.target.id === 'sort-by') {
-        gtag('event', 'sort_filter', {
+        const options = Array.from(event.target.children);
+        const selected = options.find(o => o.value === event.target.value);
+        gtag('event', 'Sort Filter', {
           'event_category': 'select',
-          'event_label': event.target.value
+          'event_label': selected.innerText
         })
       } else {
-        gtag('event', 'search_filter', {
-          'event_category': 'select',
-          'event_label': `${event.target.value}=${event.target.checked}`
+        const parent = event.target.parentElement;
+        const siblings = Array.from(parent.children);
+        const selected = siblings.find(e => e.nodeName === 'LABEL')
+        gtag('event', 'Search Filter', {
+          'event_category': event.target.checked ? 'Check' : 'Uncheck',
+          'event_label': selected.innerText
         })
       }
     }
