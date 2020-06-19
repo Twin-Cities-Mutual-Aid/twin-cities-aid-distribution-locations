@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import { setQueryParam } from './url-helpers';
-import DOMPurify from 'dompurify';
 
 /**
  * Filter adds a filter control to the side panel location list
@@ -144,7 +143,7 @@ class Filter {
           <div id='search-icon'>
             <img src='images/search-icon.svg' alt='search icon'></img>
           </div>
-          <input type="text" class="search-input" value="${DOMPurify.sanitize(this.searchOptions.initialSearch).replace(/\"/g, '')}" id="search" placeholder="Search sites or needs..." data-translation-id="search"></input>
+          <input type="text" class="search-input" value="${this.searchOptions.initialSearch.replace(/\"/g, '')}" id="search" placeholder="Search sites or needs..." data-translation-id="search"></input>
         </div>
         <button id="clear-search-btn" class="hide-clear-search" data-translation-id="search_clear">Clear Search</button>
       </form>
