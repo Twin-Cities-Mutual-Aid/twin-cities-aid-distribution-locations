@@ -45,11 +45,11 @@ mapboxgl.accessToken = Config.accessToken
 // we're using the map color from google sheet to indicate location status,
 // but using a different display color for accessibility. so the original
 // color is treated as an ID
-const unknownStatus =   {
-  id: '#aaaaaa',
-  name: 'unknown',
-  label: 'status unknown',
-  accessibleColor: '#ffffbf',
+const statusClosed =  {
+  id: '#c70000',
+  name: 'closed',
+  label: 'not open now',
+  accessibleColor: '#d7191c',
   count: 0
 }
 
@@ -75,14 +75,7 @@ const statusOptions = [
     accessibleColor: '#fdae61',
     count: 0
   },
-  {
-    id: '#c70000',
-    name: 'closed',
-    label: 'not open now',
-    accessibleColor: '#d7191c',
-    count: 0
-  },
-  unknownStatus
+  statusClosed
 ]
 
 // initialize translator and load translations file
@@ -201,10 +194,10 @@ function sectionUrlComponent(value, key) {
   return sectionHTML
 }
 
-// get the status info for a location using the color as ID, else default to unknown.
+// get the status info for a location using the color as ID, else default to closed.
 const getStatus = id => {
   const status = _.find(statusOptions, s => (s.id === id.toLowerCase()))
-  return status || unknownStatus
+  return status || statusClosed
 }
 
 // Not all the fields being searched on should be visible but need
@@ -362,6 +355,7 @@ const onMapLoad = async () => {
 
   // filter and transform data from google sheet
   locations = _.chain(data.feed.entry)
+    .filter(item => (item.gsx$color.$t !== '#aaaaaa')) // filter out status unknown
     .filter(item => (item.gsx$nameoforganization.$t !== '') && (item.gsx$longitude.$t !== '') && (item.gsx$latitude.$t !== '')) // sanity check for empty rows
     .filter((item, i) => validate(item, LOCATION_SCHEMA, { sheetRow: i + 1 })) // only items that validate against schema
     .sortBy(item => item.gsx$nameoforganization.$t)
