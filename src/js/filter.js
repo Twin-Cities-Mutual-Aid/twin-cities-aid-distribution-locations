@@ -70,16 +70,17 @@ class Filter {
       if(event.target.id === 'sort-by') {
         const options = Array.from(event.target.children);
         const selected = options.find(o => o.value === event.target.value);
-        gtag('event', 'Sort Filter', {
-          'event_category': 'select',
+        gtag('event', 'select', {
+          'event_category': 'Sort Filter',
           'event_label': selected.innerText
         })
       } else {
         const parent = event.target.parentElement;
         const siblings = Array.from(parent.children);
         const selected = siblings.find(e => e.nodeName === 'LABEL')
-        gtag('event', 'Search Filter', {
-          'event_category': event.target.checked ? 'Check' : 'Uncheck',
+        const eventAction = event.target.checked ? 'Check' : 'Uncheck'
+        gtag('event', eventAction, {
+          'event_category': 'Search Filter',
           'event_label': selected.innerText
         })
       }
