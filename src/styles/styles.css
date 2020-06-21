@@ -439,4 +439,7 @@ input[type='checkbox'] + label {
   .help-info-close-button {
     margin-top: 0;
   }
+  .counter {
+    display: none;
+  }
 }
