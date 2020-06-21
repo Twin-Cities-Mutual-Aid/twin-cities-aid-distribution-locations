@@ -10,7 +10,7 @@ test('Switch language to Spanish', async t => {
   await t
     // Checks that the current selected language is English
     .expect(Selector('.lang-name').innerText).eql('English')
-    .expect(Selector('.title').textContent).contains('Twin Cities Aid Map')
+    .expect(Selector('.title').textContent).contains('Twin Cities Mutual Aid Map')
     .click('#lang-select-button')
     // Language selections should popup
     .expect(Selector('.welcome-message').visible).ok()
