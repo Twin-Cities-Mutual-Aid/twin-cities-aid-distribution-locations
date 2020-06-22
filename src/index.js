@@ -57,7 +57,7 @@ const unknownStatus =   {
 const statusOptions = [
   {
     id: '#fc03df',
-    name: 'recieving',
+    name: 'receiving',
     label: 'open for receiving donations',
     accessibleColor: '#2c7bb6',
     count: 0
