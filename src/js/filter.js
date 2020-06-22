@@ -152,7 +152,7 @@ class Filter {
     this.$controls.innerHTML = `
       <div class="select-container">  
         <label for="sort-by"><span data-translation-id="sort_by">Sort by</span>: </label>
-        <select name="sort-by" id="sort-by">
+        <select name="sort-by" id="sort-by" data-translate-font>
           ${options}
         </select>
       </div>

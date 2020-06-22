@@ -13,6 +13,7 @@ import orm from './../i18n/orm.json'
 import oji from './../i18n/oji.json'
 import dak from './../i18n/dak.json'
 import vie from './../i18n/vie.json'
+import kar from './../i18n/kar.json'
 
 class Translator {
   constructor() {
@@ -25,7 +26,8 @@ class Translator {
       orm,
       oji,
       dak,
-      vie
+      vie,
+      kar
     }
     this.detectLanguage()
   }
