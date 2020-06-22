@@ -72,7 +72,7 @@ class Filter {
         const selected = options.find(o => o.value === event.target.value);
         gtag('event', 'select', {
           'event_category': 'Sort Filter',
-          'event_label': selected.innerText
+          'event_label': `${event.target.value}: ${selected.innerText}`
         })
       } else {
         const parent = event.target.parentElement;
@@ -81,7 +81,7 @@ class Filter {
         const eventAction = event.target.checked ? 'Check' : 'Uncheck'
         gtag('event', eventAction, {
           'event_category': 'Search Filter',
-          'event_label': selected.innerText
+          'event_label': `${event.target.value}: ${selected.innerText}`
         })
       }
     }
