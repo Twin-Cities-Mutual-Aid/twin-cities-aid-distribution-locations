@@ -23,9 +23,6 @@ class Filter {
      * are BOTH unchecked.
      */
     document.getElementById("filter-both").disabled = true
-
-    // Uncheck unknown status locations to make a clearer call to action for new users on the site.
-    document.getElementById("filter-unknown").checked = false
     this.update()
     if(this.searchOptions.initialSearch) {
       this.search(this.searchOptions.initialSearch)
