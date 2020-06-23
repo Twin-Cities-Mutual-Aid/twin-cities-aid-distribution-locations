@@ -399,7 +399,7 @@ input[type='checkbox'] + label {
 }
 
 /* map marker toggles */
-.hide-recieving .status-recieving, .hide-distributing .status-distributing, .hide-both .status-both, .hide-closed .status-closed {
+.hide-receiving .status-receiving, .hide-distributing .status-distributing, .hide-both .status-both, .hide-closed .status-closed {
   display: none;
 }
 

@@ -34,6 +34,7 @@ import './locale/om'
 import './locale/so'
 import './locale/oj'
 import './locale/hmn'
+import './locale/kar'
 
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
@@ -56,7 +57,7 @@ const statusClosed =  {
 const statusOptions = [
   {
     id: '#fc03df',
-    name: 'recieving',
+    name: 'receiving',
     label: 'open for receiving donations',
     accessibleColor: '#2c7bb6',
     count: 0
@@ -377,7 +378,7 @@ const onMapLoad = async () => {
           accepting: (value, _) => sectionUrlComponent(value, 'accepting'),
           notAccepting: (value, _) => sectionUrlComponent(value, 'not_accepting'),
           seekingVolunteers: (value, _) => sectionUrlComponent(value, 'seeking_volunteers'),
-          mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> ${moment(datetime, 'H:m M/D').fromNow()}</div>`,
+          mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> <span data-translate-font>${moment(datetime, 'H:m M/D').fromNow()}</span></div>`,
           urgentNeed: (value, _) => sectionUrlComponent(value,'urgent_need'),
           notes: (value, _) => sectionUrlComponent(value,'notes'),
           // ignore the following properties
