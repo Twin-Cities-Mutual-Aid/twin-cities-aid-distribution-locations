@@ -12,6 +12,8 @@ test('Uncheck "closed" filter', async t => {
   const closedCount = await Selector('.status-closed').count
 
   await t
+    // make sure a couple items load first
+    .expect(Selector('.status-closed').exists).ok()
     // Check that closed points show up on a map initially
     .expect(Selector('.status-closed').getStyleProperty('display')).eql('block')
     .expect(Selector('.mapboxgl-marker').filterVisible().count).eql(listCount)
