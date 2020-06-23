@@ -7,6 +7,8 @@ fixture `Filters`
 
 // Tapping one of the ✅'s in the legend filters items on the map and in the list.
 test('Uncheck "closed" filter', async t => {
+  await t.expect(Selector('.status-closed').exists).ok()
+
   // By default the filter for "closed" is set to true
   const listCount = await Selector('.location-list--item').count
   const closedCount = await Selector('.status-closed').count
