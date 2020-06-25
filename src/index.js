@@ -451,7 +451,7 @@ const onMapLoad = async () => {
           sort: { order: 'desc' }
         },
         {
-          name: 'seekingVolunteers',
+          name: 'seekingVolunteersBadge',
           label: 'Needs volunteers',
           sort: { order: 'desc' }
         }
