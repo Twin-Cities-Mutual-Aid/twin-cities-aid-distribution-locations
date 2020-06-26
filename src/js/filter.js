@@ -149,7 +149,6 @@ class Filter {
 
     this.$searchControl.innerHTML = `
     <form id="search-form" role="search" class="search-container" action="javascript:void(0);">
-    <button id="clear-search-btn" class="hide-clear-search" data-translation-id="search_clear">Clear Search</button>
         <div class="search-input-group search-full-width">
           <label for="search">
             <span class="sr-only">Type here to search sites or needs</span>
@@ -158,7 +157,8 @@ class Filter {
             <img src='images/search-icon.svg' alt='search icon'></img>
           </div>
           <input type="text" class="search-input" value="${this.searchOptions.initialSearch.replace(/\"/g, '')}" id="search" placeholder="Search sites or needs..." data-translation-id="search"></input>
-        </div>
+          </div>
+          <button id="clear-search-btn" class="hide-clear-search" data-translation-id="search_clear">Clear Search</button>
       </form>
       <div class="list-meta">
       <div class="list-results"><span id="list-results-count">${this.locations.length}</span> <span data-translation-id="list_results">results</span></div>
