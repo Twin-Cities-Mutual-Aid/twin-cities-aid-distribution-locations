@@ -195,6 +195,7 @@ input[type='checkbox'] + label {
 .list-results {
   display: block;
   font-weight: bold;
+  padding-right: 10px;
 }
 
 .loading-indicator {
