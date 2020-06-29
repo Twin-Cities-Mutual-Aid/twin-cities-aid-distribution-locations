@@ -34,6 +34,7 @@ import './locale/om'
 import './locale/so'
 import './locale/oj'
 import './locale/hmn'
+import './locale/kar'
 
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
@@ -45,18 +46,18 @@ mapboxgl.accessToken = Config.accessToken
 // we're using the map color from google sheet to indicate location status,
 // but using a different display color for accessibility. so the original
 // color is treated as an ID
-const unknownStatus =   {
-  id: '#aaaaaa',
-  name: 'unknown',
-  label: 'status unknown',
-  accessibleColor: '#ffffbf',
+const statusClosed =  {
+  id: '#c70000',
+  name: 'closed',
+  label: 'not open now',
+  accessibleColor: '#d7191c',
   count: 0
 }
 
 const statusOptions = [
   {
     id: '#fc03df',
-    name: 'recieving',
+    name: 'receiving',
     label: 'open for receiving donations',
     accessibleColor: '#2c7bb6',
     count: 0
@@ -75,14 +76,7 @@ const statusOptions = [
     accessibleColor: '#fdae61',
     count: 0
   },
-  {
-    id: '#c70000',
-    name: 'closed',
-    label: 'not open now',
-    accessibleColor: '#d7191c',
-    count: 0
-  },
-  unknownStatus
+  statusClosed
 ]
 
 // initialize translator and load translations file
@@ -101,6 +95,9 @@ const welcome = new WelcomeModal({
 
 if (translator.prompt) {
   welcome.open()
+} else {
+  // Translate welcome modal based on current on previously saved language
+  translator.translate(welcome.el)
 }
 
 // when language button is clicked, re-open welcome modal
@@ -198,10 +195,10 @@ function sectionUrlComponent(value, key) {
   return sectionHTML
 }
 
-// get the status info for a location using the color as ID, else default to unknown.
+// get the status info for a location using the color as ID, else default to closed.
 const getStatus = id => {
   const status = _.find(statusOptions, s => (s.id === id.toLowerCase()))
-  return status || unknownStatus
+  return status || statusClosed
 }
 
 // Not all the fields being searched on should be visible but need
@@ -359,6 +356,7 @@ const onMapLoad = async () => {
 
   // filter and transform data from google sheet
   locations = _.chain(data.feed.entry)
+    .filter(item => (item.gsx$color.$t !== '#aaaaaa')) // filter out status unknown
     .filter(item => (item.gsx$nameoforganization.$t !== '') && (item.gsx$longitude.$t !== '') && (item.gsx$latitude.$t !== '')) // sanity check for empty rows
     .filter((item, i) => validate(item, LOCATION_SCHEMA, { sheetRow: i + 1 })) // only items that validate against schema
     .sortBy(item => item.gsx$nameoforganization.$t)
@@ -380,7 +378,7 @@ const onMapLoad = async () => {
           accepting: (value, _) => sectionUrlComponent(value, 'accepting'),
           notAccepting: (value, _) => sectionUrlComponent(value, 'not_accepting'),
           seekingVolunteers: (value, _) => sectionUrlComponent(value, 'seeking_volunteers'),
-          mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> ${moment(datetime, 'H:m M/D').fromNow()}</div>`,
+          mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> <span data-translate-font>${moment(datetime, 'H:m M/D').fromNow()}</span></div>`,
           urgentNeed: (value, _) => sectionUrlComponent(value,'urgent_need'),
           notes: (value, _) => sectionUrlComponent(value,'notes'),
           // ignore the following properties
@@ -453,7 +451,7 @@ const onMapLoad = async () => {
           sort: { order: 'desc' }
         },
         {
-          name: 'seekingVolunteers',
+          name: 'seekingVolunteersBadge',
           label: 'Needs volunteers',
           sort: { order: 'desc' }
         }
