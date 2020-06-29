@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if ! command -v curl >/dev/null 2>&1; then echo "No curl detected on PATH. See https://curl.haxx.se/libcurl/ for more inforation."; exit 1; fi
+if ! command -v jq >/dev/null 2>&1; then echo "No jq detected on PATH. See https://stedolan.github.io/jq/ for more information."; exit 1; fi
+if [ -z ${SHEET_ID+x} ]; then echo "SHEET_ID is unset. See https://www.freecodecamp.org/news/cjn-google-sheets-as-json-endpoint/ for more information."; exit 1; fi
+
+
+curl -L "https://spreadsheets.google.com/feeds/cells/$SHEET_ID/1/public/full?alt=json" |
+    jq '[[ .feed.entry[] | .["gs$cell"] | select(.col != "2") ]| sort_by(.col) | group_by(.row)[] | {(.[0].inputValue): .[1].inputValue}] | reduce .[] as $obj ({}; . + $obj)'
