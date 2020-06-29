@@ -8,16 +8,11 @@
 	padding-left: 15px;
 }
 
-#search-controls {
-	background-color: rgba(0,0,50,.9);
-	color: white;
-	padding: 0px 5px 0px 0px;
-}
-
 #search-icon {
 	position: absolute;
-	top: px;
-	left: 13px;
+	top: 0;
+	left: 15px;
+	height: 50%;
 }
 
 .search-input {
@@ -32,24 +27,6 @@
 .search-input:focus {
 	border: round;
 	outline-color: #80bdff;
-}
-
-@media (max-width: 2000px) {
-	.search-input-group {
-		width: 80%;
-	}
-}
-
-@media (max-width: 950px) {
-	.search-input-group {
-		width: 70%;
-	}
-}
-
-@media (max-width:635px) {
-	.search-input-group {
-		width: 80%;
-	}
 }
 
 #clear-search-btn {

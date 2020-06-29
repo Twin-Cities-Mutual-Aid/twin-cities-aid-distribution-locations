@@ -344,13 +344,6 @@ input[type='checkbox'] + label {
   padding: 5px 10px;
 }
 
-/* component: map popup */
-.popup-content {
-  padding: 15px;
-  max-height: 300px;
-  overflow: auto;
-}
-
 .popup-content .key {
   padding: 0px;
   margin: 0px;
@@ -392,9 +385,9 @@ input[type='checkbox'] + label {
   line-height: .9;
 }
 
-.mapboxgl-popup-content {
+/* .mapboxgl-popup-content {
   padding: 0;
-}
+} */
 
 .mapboxgl-marker {
   cursor: pointer
