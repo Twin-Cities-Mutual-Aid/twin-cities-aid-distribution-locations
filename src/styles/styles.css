@@ -2,7 +2,7 @@
   box-sizing: border-box;
 }
 
-/* globally redeclare the rem unit value so that 1rem = 14px, instead of 16px */
+/* globally redeclare the rem unit value so that 1rem = 14px, instead of 16px. This should probably go back to 16px, which is standard in most browsers. I'm redeclaring to quickly utilize the real estate a bit better. */
 html {
   font-size: 14px;
 }
@@ -17,7 +17,7 @@ body {
 }
 
 a {
-  color: royalblue;
+  color: var(--primary-500);
 }
 
 a.txt-white {
@@ -25,7 +25,7 @@ a.txt-white {
 }
 
 a.txt-white:hover {
-  color: royalblue
+  color: var(--primary-500);
 }
 
 .map,
@@ -67,47 +67,6 @@ a.txt-white:hover {
 /* shared:layout */
 .flex {
   display: flex;
-}
-
-/* Shared:typography */
-.h1 {
-  font: bold 20px/1.2 Arial, Helvetica, sans-serif;
-  margin-top: 0px;
-  margin-bottom: 5px;
- 
-}
-
-.h1:not(:last-child) {
-  margin-bottom: 10px;
-}
-
-.h2 {
-  font: bold 15px/1.2 Arial, Helvetica, sans-serif;
-  margin: 0;
-}
-
-.h2:not(:last-child) {
-  margin-bottom: 5px;
-}
-
-.h3 {
-  font:bold 12px/1.2 Arial, Helvetica, sans-serif;
-  color: rgba(0,0,0,.8);
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.h3:not(:last-child) {
-  margin-bottom: 5px;
-}
-
-.p {
-  margin: 0px;
-  padding: 0px;
-}
-
-.p:not(:last-child) {
-  margin-bottom: 10px;
 }
 
 .txt-small {
