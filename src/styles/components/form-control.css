@@ -1,18 +1,19 @@
 /* Let's  */
 #filter-controls {
     display: flex;
-    flex-flow: column wrap;
-    align-items: flex-start;
-    justify-content: space-between;}
+    flex-flow: column nowrap;
+    align-items: flex-end;
+    justify-content: space-between;
+}
 
 .select-container {
     display: flex;
     align-items: center;
-    flex-flow: column nowrap;
+    flex-flow: row nowrap;
     align-items: start;
-    margin-bottom: .5rem;
 }
 
+/* 
 .select-container select {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -34,6 +35,18 @@
     color: var(--gray-800);
     cursor: pointer;
     margin-left: 0;
+} */
+
+.custom-select:focus,
+.custom-select:hover,
+.custom-select:active {
+    border-color: var(--primary-200);
+}
+.custom-select::before {
+    content: 'test';
+    height: 25%;
+    position: absolute;
+    top: 0;
 }
 
 .select-container label {
@@ -41,4 +54,5 @@
     display: flex;
     align-items: center;
     padding: .5rem 0;
+    margin-right: .5rem;
 }

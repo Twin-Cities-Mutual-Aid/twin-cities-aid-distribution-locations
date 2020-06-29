@@ -2,16 +2,16 @@
 	display: flex;
 	flex-wrap: nowrap;
 	align-items: center;
-	margin: 10px 0;
+	padding: 15px;
 	position: relative;
 	width: 100%;
 }
 
-#search-icon {
-	height: 50%;
+.search-icon {
+	height: 1.5rem;
 	position: absolute;
-	top: 25%;
-	left: 10px;
+	top: 33%;
+	left: 20px;
 }
 
 .search-input-group {
@@ -27,8 +27,8 @@
 	padding-left: 30px;
 	border-radius: .25rem;
 	flex: 1;
-	line-height: 2;
-	height: 2rem;
+	line-height: 2.5;
+	height: 2.5rem;
 }
 
 @media (max-width: 1118px) {
