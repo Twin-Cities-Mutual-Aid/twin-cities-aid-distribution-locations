@@ -18,7 +18,9 @@ import _ from 'lodash'
 import Filter from './js/filter'
 import Translator from './js/translator'
 import WelcomeModal from './js/welcome'
+import { getQueryParam } from './js/url-helpers';
 import { TrackJS } from 'trackjs';
+import validate, { LOCATION_SCHEMA } from "./js/validator";
 
 //Add TrackJS Agent
 if(import.meta.env.MODE === 'production'){
@@ -28,7 +30,6 @@ if(import.meta.env.MODE === 'production'){
   });
 }
 
-
 // locales
 import 'moment/dist/locale/es'
 import 'moment/dist/locale/vi'
@@ -37,6 +38,7 @@ import './locale/om'
 import './locale/so'
 import './locale/oj'
 import './locale/hmn'
+import './locale/kar'
 
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
@@ -48,18 +50,18 @@ mapboxgl.accessToken = Config.accessToken
 // we're using the map color from google sheet to indicate location status,
 // but using a different display color for accessibility. so the original
 // color is treated as an ID
-const unknownStatus =   {
-  id: '#aaaaaa',
-  name: 'unknown',
-  label: 'status unknown',
-  accessibleColor: '#ffffbf',
+const statusClosed =  {
+  id: '#c70000',
+  name: 'closed',
+  label: 'not open now',
+  accessibleColor: '#d7191c',
   count: 0
 }
 
 const statusOptions = [
   {
     id: '#fc03df',
-    name: 'recieving',
+    name: 'receiving',
     label: 'open for receiving donations',
     accessibleColor: '#2c7bb6',
     count: 0
@@ -78,70 +80,32 @@ const statusOptions = [
     accessibleColor: '#fdae61',
     count: 0
   },
-  {
-    id: '#c70000',
-    name: 'closed',
-    label: 'currently closed',
-    accessibleColor: '#d7191c',
-    count: 0
-  },
-  unknownStatus
+  statusClosed
 ]
 
-
-let langs
-// show all langs in dev mode
-if (window.location.search.indexOf('dev') > -1) {
-  langs = ['eng', 'spa', 'kar', 'som', 'hmn', 'amh', 'orm', 'vie', 'oji', 'dak']
-// otherwise only show these
-} else {
-  langs = ['eng', 'spa', 'som', 'hmn', 'amh', 'orm', 'vie', 'oji', 'dak']
-}
-
 // initialize translator and load translations file
-const translator = new Translator({ enabledLanguages: langs })
-let welcome
 let activePopup
+const translator = new Translator()
+moment.locale(translator.locale)
 
-// get the translation data and then run the translator
-fetch(Config.translationUrl).then(async (resp) => {
-  try {
-    const data = await resp.json()
-
-    // add translation definitions to translator
-    translator.setTranslations(Translator.ParseGoogleSheetData(data))
-
-    // create the welcome modal
-    welcome = new WelcomeModal({
-      languages: translator.availableLanguages,
-
-      // when language is selected, run translation
-      onLanguageSelect: lang => {
-        translator.language = lang
-        moment.locale(translator.locale)
-        activePopup && activePopup.refreshPopup()
-        translator.translate()
-      }
-    })
-
-    // show welcome modal if no language is selected
-    if (!translator.language) {
-      welcome.open()
-
-    // otherwise just run translator
-    } else {
-      moment.locale(translator.locale)
-      translator.translate()
-    }
-
-    // when language button is clicked, re-open welcome modal
-    const languageButton = document.getElementById('lang-select-button')
-    languageButton.addEventListener('click', () => welcome.open())
-
-  } catch (e) {
-    console.error('Translation error', e)
+const welcome = new WelcomeModal({
+  languages: translator.languages,
+  onLanguageSelect: lang => {
+    translator.language = lang
+    moment.locale(translator.locale)
+    activePopup && activePopup.refreshPopup()
   }
 })
+
+if (translator.prompt) {
+  welcome.open()
+} else {
+  // Translate welcome modal based on current on previously saved language
+  translator.translate(welcome.el)
+}
+
+// when language button is clicked, re-open welcome modal
+document.getElementById('lang-select-button').addEventListener('click', () => welcome.open())
 
 let locations = []
 
@@ -181,9 +145,11 @@ function toggleSidePane() {
     $body.classList.add('list-active')
   }
   const buttonText = translator.get(translationId)
-  $locationsButton.innerText = buttonText
-  $locationsButton.setAttribute('data-translation-id',translationId)
-  $locationsButton.setAttribute('aria-label', buttonText)
+  if (buttonText) {
+    $locationsButton.innerText = buttonText
+    $locationsButton.setAttribute('data-translation-id', translationId)
+    $locationsButton.setAttribute('aria-label', buttonText)
+  }
 }
 
 // open/close help info
@@ -218,10 +184,25 @@ function addressComponent(address) {
   return `<address><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>`;
 }
 
-// get the status info for a location using the color as ID, else default to unknown.
+// builds the section within the popup and replaces and URLs with links
+function sectionUrlComponent(value, key) {
+  let urls = extractUrl(value)
+  let sectionHTML = `<p class="p row"><p data-translation-id="${key}" class="txt-deemphasize
+  key">${key.toUpperCase()}</p><p class="value">${value}</p></p>`
+
+  if (urls) {
+    _.forEach(urls, url => {
+      sectionHTML = sectionHTML.replace(url, `<a href="${url}" target="_blank">${url}</a>`)
+    })
+  }
+
+  return sectionHTML
+}
+
+// get the status info for a location using the color as ID, else default to closed.
 const getStatus = id => {
   const status = _.find(statusOptions, s => (s.id === id.toLowerCase()))
-  return status || unknownStatus
+  return status || statusClosed
 }
 
 // Not all the fields being searched on should be visible but need
@@ -236,6 +217,11 @@ const createListItem = (location, status, lng, lat) => {
   let seekingVolunteers = ''
   if (location.seekingVolunteers && location.seekingVolunteers.match(/(?:\byes\b)/i)) {
     seekingVolunteers = `<span data-translation-id="seeking_volunteers" class="seekingVolunteersBadge location-list--badge">Needs Volunteer Support</span>`
+  }
+
+  let covid19Testing = ''
+  if (location.notes && location.notes.match(/(?:\bcovid[ -]?(19)? testing\b)/i)) {
+    covid19Testing = `<span data-translation-id="covid19-testing" class="covid19-testing location-list--badge">Covid-19 Testing Available</span>`
   }
 
   const openTimeDistribution = moment(location.openingForDistributingDontations, ["h:mm A"])
@@ -270,12 +256,13 @@ const createListItem = (location, status, lng, lat) => {
       </h2>
       </div>
       <h3 class="card-subtitle neighborhood">${location.neighborhood || ''}</h3>
-      ${urgentNeed}
       ${openingSoonForDistribution}
       ${openingSoonForReceiving}
+      ${urgentNeed}
       ${seekingVolunteers}
       ${seekingMoney}
       ${hiddenSearch}
+      ${covid19Testing}
   `
 
   $item.addEventListener('click', (evt) => {
@@ -291,7 +278,6 @@ const createListItem = (location, status, lng, lat) => {
         zoom: 13
       })
       popup.addTo(map)
-      if (translator.language) translator.translate()
     }
   })
   return $item
@@ -333,6 +319,16 @@ function getHours(openingHours, closingHours) {
   }
 }
 
+///////////
+// returns a an array of urls as strings if there is a match otherwise null
+// e.g. ['https://google.com']
+///////////
+function extractUrl(item) {
+  // regex source: https://stackoverflow.com/questions/3809401/what-is-a-good-regular-expression-to-match-a-url
+  let url_pattern = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+  return item.match(url_pattern)
+}
+
 function extractRawLocation(item) {
   return {
     name: item.gsx$nameoforganization.$t,
@@ -363,8 +359,10 @@ const onMapLoad = async () => {
 
   // filter and transform data from google sheet
   locations = _.chain(data.feed.entry)
-    .filter(item => (item.gsx$nameoforganization.$t != '') && (item.gsx$longitude.$t != '') && (item.gsx$latitude.$t != '')) // only items with names and lon,lat
-    .sortBy(item => item.gsx$nameoforganization.$t )
+    .filter(item => (item.gsx$color.$t !== '#aaaaaa')) // filter out status unknown
+    .filter(item => (item.gsx$nameoforganization.$t !== '') && (item.gsx$longitude.$t !== '') && (item.gsx$latitude.$t !== '')) // sanity check for empty rows
+    .filter((item, i) => validate(item, LOCATION_SCHEMA, { sheetRow: i + 1 })) // only items that validate against schema
+    .sortBy(item => item.gsx$nameoforganization.$t)
     .map(item => {
 
       try {
@@ -380,7 +378,12 @@ const onMapLoad = async () => {
           address: addressComponent, // driving directions in google, consider doing inside mapbox
           seekingMoney: (value, location) => needsMoneyComponent(location),
           seekingMoneyURL: (value, _) => '',
-          mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> ${moment(datetime, 'H:m M/D').fromNow()}</div>`,
+          accepting: (value, _) => sectionUrlComponent(value, 'accepting'),
+          notAccepting: (value, _) => sectionUrlComponent(value, 'not_accepting'),
+          seekingVolunteers: (value, _) => sectionUrlComponent(value, 'seeking_volunteers'),
+          mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> <span data-translate-font>${moment(datetime, 'H:m M/D').fromNow()}</span></div>`,
+          urgentNeed: (value, _) => sectionUrlComponent(value,'urgent_need'),
+          notes: (value, _) => sectionUrlComponent(value,'notes'),
           // ignore the following properties
           // marker and popup should not be rendered
           marker: () => '',
@@ -451,13 +454,14 @@ const onMapLoad = async () => {
           sort: { order: 'desc' }
         },
         {
-          name: 'seekingVolunteers',
+          name: 'seekingVolunteersBadge',
           label: 'Needs volunteers',
           sort: { order: 'desc' }
         }
       ],
       statusOptions,
       searchOptions: {
+        initialSearch: getQueryParam('search'),
         searchOn: [
           'name',
           'neighborhood', 
@@ -468,10 +472,6 @@ const onMapLoad = async () => {
       locations,
       onAfterUpdate: () => translator.translate()
     })
-
-    // making sure to run translations after
-    // everything else is loaded
-    translator.translate()
 }
 
 // load map

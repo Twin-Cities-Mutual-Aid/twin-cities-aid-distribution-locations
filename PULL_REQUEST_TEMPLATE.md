@@ -1,6 +1,8 @@
 <!-- 
   Does your pull request introduce changes to the mutual aid web app at? If so, use this
   checklist to ensure the project meets the needs.
+
+  Has text been added that requires translations? If so, add the "Needs Translations" label
 -->
 
 ### What

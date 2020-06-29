@@ -1,4 +1,4 @@
-import { Selector } from 'testcafe'
+import { Selector, ClientFunction } from 'testcafe'
 
 export const beforeEachTest = async t => {
   await t
@@ -7,3 +7,5 @@ export const beforeEachTest = async t => {
     // Help window should not be visible at beginning
     .expect(Selector('#help-info').visible).notOk()
 }
+
+export const getURL = ClientFunction(() => window.location.href)

@@ -69,6 +69,47 @@ a.txt-white:hover {
   display: flex;
 }
 
+/* Shared:typography */
+.h1 {
+  font: bold 20px/1.2 Arial, Helvetica, sans-serif;
+  margin-top: 0px;
+  margin-bottom: 5px;
+ 
+}
+
+.h1:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.h2 {
+  font: bold 15px/1.2 Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+.h2:not(:last-child) {
+  margin-bottom: 5px;
+}
+
+.h3 {
+  font:bold 12px/1.2 Arial, Helvetica, sans-serif;
+  color: rgba(0,0,0,.8);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.h3:not(:last-child) {
+  margin-bottom: 5px;
+}
+
+.p {
+  margin: 0px;
+  padding: 0px;
+}
+
+.p:not(:last-child) {
+  margin-bottom: 10px;
+}
+
 .txt-small {
   font-size: 13px;
 }
@@ -130,7 +171,7 @@ input[type='checkbox'] + label {
 
 /* component: title */
 .title {
-  padding: 15px 15px 5px 15px;
+  padding: 10px 15px 0px 15px;
 }
 
 .filter-pane {
@@ -153,9 +194,10 @@ input[type='checkbox'] + label {
   justify-content: flex-end;
 }
 
-#list-results {
+.list-results {
   display: block;
   font-weight: bold;
+  padding-right: 10px;
 }
 
 .loading-indicator {
@@ -354,8 +396,12 @@ input[type='checkbox'] + label {
   padding: 0;
 }
 
+.mapboxgl-marker {
+  cursor: pointer
+}
+
 /* map marker toggles */
-.hide-recieving .status-recieving, .hide-distributing .status-distributing, .hide-both .status-both, .hide-closed .status-closed, .hide-unknown .status-unknown {
+.hide-receiving .status-receiving, .hide-distributing .status-distributing, .hide-both .status-both, .hide-closed .status-closed {
   display: none;
 }
 
@@ -394,5 +440,8 @@ input[type='checkbox'] + label {
   }
   .help-info-close-button {
     margin-top: 0;
+  }
+  .counter {
+    display: none;
   }
 }

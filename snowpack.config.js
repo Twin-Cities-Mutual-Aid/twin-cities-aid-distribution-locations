@@ -3,7 +3,9 @@ module.exports = {
   install: [
     "list.js/dist/list.min.js"
   ],
-  homepage: "/",
+  buildOptions: {
+    baseUrl: "/"
+  },
   scripts: {
     "build:js,jsx": "@snowpack/plugin-babel",
     "mount:public": "mount public --to /",

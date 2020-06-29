@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { setQueryParam } from './url-helpers';
 
 /**
  * Filter adds a filter control to the side panel location list
@@ -11,6 +12,7 @@ class Filter {
     this.$filters = []
 
     this.$el = el
+    this.$searchControl = document.getElementById('search-controls')
     this.$controls = document.getElementById('filter-controls')
     this.renderControls(this.$controls)
     this.list = new List(this.$el.id, {
@@ -22,18 +24,18 @@ class Filter {
      * are BOTH unchecked.
      */
     document.getElementById("filter-both").disabled = true
-
-    // Uncheck unknown status locations to make a clearer call to action for new users on the site.
-    document.getElementById("filter-unknown").checked = false
     this.update()
+    if(this.searchOptions.initialSearch) {
+      this.search(this.searchOptions.initialSearch)
+    }
   }
 
   getListResults() {
     const listResults = document.querySelectorAll('.location-list--item')
-    this.$listResults.innerText = `${listResults.length} results`
+    this.$listResults.innerText = `${listResults.length}`
   }
 
-  update() {
+  update(event) {
     const sortSettings = _.find(this.sortOptions, o => (o.name === this.$sort.value))
     let filterValues = this.$filters.map(f => f.checked)
     /** if "open for receiving donations" (item 0) or "open for distributing donations" (item 1)
@@ -60,6 +62,27 @@ class Filter {
 
     this.getListResults();
     this.onAfterUpdate()
+
+    // track events for google analytics
+    if(event) {
+      if(event.target.id === 'sort-by') {
+        const options = Array.from(event.target.children);
+        const selected = options.find(o => o.value === event.target.value);
+        gtag('event', 'select', {
+          'event_category': 'Sort Filter',
+          'event_label': `${event.target.value}: ${selected.innerText}`
+        })
+      } else {
+        const parent = event.target.parentElement;
+        const siblings = Array.from(parent.children);
+        const selected = siblings.find(e => e.nodeName === 'LABEL')
+        const eventAction = event.target.checked ? 'Check' : 'Uncheck'
+        gtag('event', eventAction, {
+          'event_category': 'Search Filter',
+          'event_label': `${event.target.value}: ${selected.innerText}`
+        })
+      }
+    }
   }
 
   toggleMapPointsForFilter(filterValues) {
@@ -91,8 +114,7 @@ class Filter {
     }
   }
 
-  search(event) {
-    const searchTerm = event.target.value || ''
+  search(searchTerm) {
     this.list.search(searchTerm, this.searchOptions.searchOn)
     const searchResults = this.list.items.filter(item => item.found).map(item => item.values().address);
     if(!searchTerm) {
@@ -107,6 +129,12 @@ class Filter {
     this.$locationList.classList.remove('loading-indicator')
     this.onAfterUpdate()
     this.getListResults();
+    setQueryParam('search', searchTerm);
+
+    gtag('event', 'search_trigger', {
+      'event_category': 'search',
+      'event_label': searchTerm
+    })
   }
 
   renderControls() {
@@ -119,24 +147,31 @@ class Filter {
       return `<li class='filter-item'><input class="filter" type="checkbox" id="filter-${s.name}" value="${s.name}" checked><span class="legend--item--swatch" style="background-color: ${s.accessibleColor}"></span><label data-translation-id="filter_by_${_.snakeCase(s.name)}" for="filter-${s.name}">${s.label}</label><label> (${s.count})</label></li>`
     }).join('')
 
-    this.$controls.innerHTML = `
-      <div class="select-container">  
-        <label for="sort-by"><span data-translation-id="sort_by">Sort by</span>: </label>
-        <select name="sort-by" id="sort-by">
-          ${options}
-        </select>
-      </div>
-      <form id="search-form" role="search" class="search-container" action="javascript:void(0);">
+    this.$searchControl.innerHTML = `
+    <form id="search-form" role="search" class="search-container" action="javascript:void(0);">
         <div class="search-input-group search-full-width">
           <label for="search">
             <span class="sr-only">Type here to search sites or needs</span>
           </label>
-            <img id='search-icon' src='images/icon_search.svg' alt='search icon'></img>
-          <input type="text" class="search-input" id="search" placeholder="Search sites or needs..."></input>
-        </div>
-        <button id="clear-search-btn" class="hide-clear-search">Clear Search</button>
+          <div id='search-icon'>
+            <img src='images/search-icon.svg' alt='search icon'></img>
+          </div>
+          <input type="text" class="search-input" value="${this.searchOptions.initialSearch.replace(/\"/g, '')}" id="search" placeholder="Search sites or needs..." data-translation-id="search"></input>
+          </div>
+          <button id="clear-search-btn" class="hide-clear-search" data-translation-id="search_clear">Clear Search</button>
       </form>
-        <span id="list-results">${this.locations.length} results</span>
+      <div class="list-meta">
+      <div class="list-results"><span id="list-results-count">${this.locations.length}</span> <span data-translation-id="list_results">results</span></div>
+    </div>
+    `
+
+    this.$controls.innerHTML = `
+      <div class="select-container">
+        <label for="sort-by"><span data-translation-id="sort_by">Sort by</span>: </label>
+        <select name="sort-by" id="sort-by" data-translate-font>
+          ${options}
+        </select>
+      </div>
     `
 
     const debouncedSearch = _.debounce(this.search.bind(this), 300);
@@ -149,13 +184,13 @@ class Filter {
     this.$search = document.getElementById('search')
     this.$searchForm = document.getElementById('search-form')
     this.$searchInputGroup = document.getElementsByClassName('search-input-group')[0]
-    this.$listResults = document.getElementById('list-results')
+    this.$listResults = document.getElementById('list-results-count')
     this.$clearSearchBtn = document.getElementById('clear-search-btn')
     this.$filters = Array.prototype.slice.call($key.querySelectorAll('input[type="checkbox"]'))
     this.$sort.addEventListener('change', this.update.bind(this))
     this.$search.addEventListener('input', event => {
       this.$locationList.classList.add('loading-indicator');
-      debouncedSearch.bind(this)(event);
+      debouncedSearch.bind(this)(event.currentTarget.value);
     })
     this.$searchForm.addEventListener('keydown', (event) => {
       // disable enter as it clears out search which is not likely a desired action
@@ -165,7 +200,7 @@ class Filter {
       this.$search.value = '';
       this.$clearSearchBtn.classList.add('hide-clear-search');
       this.$searchInputGroup.classList.add('search-full-width')
-      this.search.bind(this)(event)
+      this.search.bind(this)(event.currentTarget.value)
     })
     this.$filters.forEach($e => $e.addEventListener('change', this.update.bind(this)))
   }

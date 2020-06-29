@@ -2,12 +2,14 @@
 A webapp to coordinate aid and care in the Twin Cities. https://twin-cities-mutual-aid.org/
 
 ## About the project
-This project is only a few days old, and things are changing very rapidly. We'll do our best to keep this readme up-to-date, but if something doesn't look right, it's probably out of date.
+This project is only a few weeks old, and things are changing very rapidly. We'll do our best to keep this readme up-to-date, but if something doesn't look right, it's probably out of date.
 
-This project is unusual because there are two separate, siloed teams working in tandem:
+This project is unusual because there are two separate teams working in tandem:
 
 * **Website team**: This team (us) is using a channel within the Open Twin Cities slack to communicate. There's a link at the top of the [Open Twin Cities](https://www.opentwincities.org) website to join, if you'd like to help out.
-* **Data team**: The team working on updating the underlying data to ensure the real-time info is up-to-date is partly coordinated via a very large Facebook group called [South Minneapolis Mutual Aid Autonomous Zone Coordination](https://www.facebook.com/groups/southsidemutualaid). We don't have much more information at this time, but will update this when we do.
+* **[Twin Cities Mutual Aid Project](http://www.tcmap.org)**: TCMAP is a collective, all-volunteeer effort that works to coordinate with aid sites and manage the data that feeds the site on a day-to-day basis. Over 100 volunteers have now been involved in the project. Leadership and tech-oriented volunteers from TCMAP coordinate with stakeholders to source designs, product direction, feature requests and feedback that drive development. TCMAP spawned from a large Facebook group called [South Minneapolis Mutual Aid Autonomous Zone Coordination](https://www.facebook.com/groups/southsidemutualaid) that emerged in the wake of the uprisings in Minneapolis in May 2020. 
+
+**Participation is welcome both on the web team and TCMAP sides of this project**. Some developers have engaged through Github and the Open Twin Cities Slack channel alone; others have joined TCMAP to help coordinate efforts, or just to better understand use cases. You can join TCMAP through the [volunteer page on their website](http://www.tcmap.org/volunteer). 
 
 ## Feature requests & feedback
 We're using [Github Issues](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/issues) to manage tasks, and have a [kanban board](https://github.com/orgs/Twin-Cities-Mutual-Aid/projects/1) set up. If you'd like access to the kanban board reach out in the [OTC slack channel](https://otc-slackin.herokuapp.com/).
