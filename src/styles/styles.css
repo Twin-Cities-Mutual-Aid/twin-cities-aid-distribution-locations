@@ -192,12 +192,9 @@ input[type='checkbox'] + label {
 .list-meta {
   display: flex;
   justify-content: flex-end;
-}
-
-.list-results {
-  display: block;
+  padding: 0 15px;
   font-weight: bold;
-  padding-right: 10px;
+
 }
 
 .loading-indicator {
