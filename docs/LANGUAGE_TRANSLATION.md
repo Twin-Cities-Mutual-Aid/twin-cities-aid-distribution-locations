@@ -3,7 +3,7 @@
 > **Note:** development on this project is moving quickly, so parts of this document may be out of date. Feel free to ask questions in the `#tc-aid-translations` channel in Slack.
 
 1. Overview
-   1. The translation JSON
+   1. The translation spreadsheet
    2. Glossary
    3. Special links
 2. Maintaining translations
@@ -18,17 +18,44 @@
 
 ## Overview
 
-The site translations work by loading a JSON file of translated terms, and replacing the hard-coded English terms on the page with the translated ones. If a translated term is missing in the JSON, the English term will be used. The terms that need to be translated are specified **in the code**, it will **not** automatically find words on the page.
+The site translations work by loading a spreadsheet of translated terms, and replacing the hard-coded English terms on the page with the translated ones. If a translated term is missing in the spreadsheet, the English term will be used. The terms that need to be translated are specified **in the code**, it will **not** automatically find words on the page. 
+
+A basic reference for what kind of access is needed for various actions in the translation process. 
+
+| Action | Edit Spreadsheet | Update code |
+| :-----------------| :-: | :-: |
+| Translating terms* | No | No |
+| Adding translated terms | Yes | No |
+| Adding new terms | Yes | Yes | 
+| Adding a Language | Yes | Yes | 
+| Enabling a Language | No | Yes |
+
+*assuming the translator is working outside the main spreadsheet
+
+### The translation spreadsheet
+
+The spreadsheet used for defining translations is here: https://docs.google.com/spreadsheets/d/1m5QPNP6O8nsQsqJcQbwib_obpXRjmbYYGtwKzzg1l38/edit?pli=1#gid=0. You can request access in the slack channel `#tc-aid-translations`.
+
+Here's the basic format of the spreadsheet:
+
+| id | eng | spa | 
+| :--------- | :-------- |:--------- |
+| lang_name | English | Español |
+| lang_name_in_eng | English | Spanish |
+| language | Language | Idioma |
+| welcome | Welcome! | ¡Bienvenidos! |
+
+The first column (the `id` column) and first row (e.g. `eng`) are **required** and must be filled out for any added row/column. The rest of the cells can be filled in as new translated terms are available.
 
 ### Glossary
 
- * **Languages:** Pretty self-explanatory (a JSON file)
- * **Terms:** A word or set of words that need to be translated (an entry in the JSON). The term is identified by the key in the JSON entry.
- * **Translated Terms:** An individual translated term (a value in the JSON)
+ * **Languages:** Pretty self-explanatory (a column in the spreadsheet)
+ * **Terms:** A word or set of words that need to be translated (a row in the spreadsheet). The term is identified by the `id` column
+ * **Translated Terms:** An individual translated term (a cell in the spreadsheet)
 
 ### Special links
 
-If you want to link to a specific language (say you're sending the link to somebody you know speaks Somali) you can add `?lang=XXX` to the end of the URL. Example:
+If you want to link to a specific language (say you're sending the link to somebody you know speaks Somali) you can add `?lang=XXX` to the end of the URL. Example: 
 
 https://twin-cities-mutual-aid.org/?lang=som
 
@@ -42,33 +69,33 @@ https://twin-cities-mutual-aid.org/?dev
 
 ### Translating existing terms
 
-This is fairly straightforward, just add the term to the correct place in the JSON :). Checklist:
+This is fairly straightforward, just add the term to the correct place in the spreadsheet :). Checklist:
 
- - [ ] The translated term is added to the JSON
+ - [ ] The translated term is added to the correct column/row of the spreadsheet
 
 ### Creating a new term
 
 Checklist:
 
- - [ ] Create a new entry in the JSON for the new term
- - [ ] Make sure that there is a **unique** name in the json keys, in snake_case: `formatted_like_this`
+ - [ ] Create a new row in the spreadsheet for the new term
+ - [ ] Make sure that there is a **unique** name in the `id` column, `formatted_like_this`
  - [ ] Make sure the term is also added to the correct place in the code, using either the `data-translation-id` attribute (in markup) or the `get` method (js code). See technical details below for more on this.
 
 ### Adding a new language
 
 Adding a language involves a few steps:
 
-1. Adding a new JSON file
-2. Adding a new flag image
-3. Enabling the language
-4. Extending timestamp locales using Moment.js
+| Action | Edit Spreadsheet | Update code |
+| :-----------------| :-: | :-: |
+| 1. Adding a column to the spreadsheet | Yes | No |
+| 2. Adding a new flag image | No | Yes |
+| 3. Enabling the language | No | Yes | 
 
-#### Adding a new JSON file
+#### Adding a column to the spreadsheet
 
 Checklist:
 
- - [ ] The language filename should contain a 3-letter code like `som` (a list of these can be [found here](https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes))
- - [ ] This file goes into the equivalent of `src/i18n/som.json` for the new 3-letter code
+ - [ ] The language header should contain a 3-letter code like `som` (a list of these can be [found here](https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes)) 
 
 #### Adding a new flag image
 
@@ -81,33 +108,28 @@ A checklist for adding new flag images
  - [ ] The image should be a PNG
  - [ ] The image should be 23px wide
  - [ ] The image name should have the format `lang-XXX.png` where "XXX" is the 3-letter language code
- - [ ] The image should be placed in the `public/images` directory in this repo
+ - [ ] The image should be placed in the `/public/images` directory in this repo
 
 #### Enabling the language
 
-Languages are currently enabled via a hard-coded list of enabled languages. At time of writing the languages are defined in `src/js/translator.js` like this:
+Languages are currently enabled via a hard-coded list of enabled languages. At time of writing the languages are defined in code like this:
 
 ```js
-import som from './../i18n/som.json'
-
-class Translator {
-  constructor() {
-    this.languages = {
-      ...
-      som,
-      ...
-    }
-  }
+// show all langs in dev mode
+if (window.location.search.indexOf('dev') > -1) {
+  langs = ['eng', 'spa', 'kar', 'som', 'hmn', 'amh', 'orm', 'vie']
+// otherwise only show these
+} else {
+  langs = ['eng', 'spa', 'som', 'amh', 'orm', 'vie']
 }
 ```
 
+Note that there are **two** sets of language codes, one for preview mode and one for the live site.
+
 A checklist for enabling a language:
 
- - [ ] 3-letter code is added to the translator
-
-#### Extending timestamp locales using Moment.js
-
-Some languages have an extended translation for better timestamp support using Moment.js in `src/locale`, e.g. `src/locale/so.js`. Moment.js uses the `ISO 639-1` (2-letter) code for its configuration.
+ - [ ] 3-letter code is added to the array for dev/preview mode
+ - [ ] 3-letter code is added to the array for production mode
 
 ---
 
@@ -135,7 +157,7 @@ This will automatically be detected and translated when the `translator.translat
 
 Arguments
 
-1. The name of the term from the entries in the JSON
+1. The name of the term from the `id` column in the spreadsheet
 2. A default string to use if the translated term isn't found
 
 Example:
