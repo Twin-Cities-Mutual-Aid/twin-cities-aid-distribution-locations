@@ -21,7 +21,7 @@
 
 .search-input {
 	padding: 10px;
-	border: .5px solid var(--primary-800);
+	border: 1px solid var(--gray-800);
 	height: 30px;
 	max-width: 100%;
 	padding-left: 30px;

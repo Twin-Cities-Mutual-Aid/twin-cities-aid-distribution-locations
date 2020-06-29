@@ -263,20 +263,19 @@ const createListItem = (location, status, lng, lat) => {
   status.count++
 
   $item.innerHTML = `
-  
+  <div class="card-title">
     <span title="${status.id}" class="status location-list--indicator" style="background-color: ${status.accessibleColor};">${status.id}</span>
       <h2>
         ${location.name}
       </h2>
+      </div>
       <h3 class="card-subtitle neighborhood">${location.neighborhood || ''}</h3>
+      ${urgentNeed}
       ${openingSoonForDistribution}
       ${openingSoonForReceiving}
-      ${urgentNeed}
       ${seekingVolunteers}
       ${seekingMoney}
       ${hiddenSearch}
-  
-  
   `
 
   $item.addEventListener('click', (evt) => {

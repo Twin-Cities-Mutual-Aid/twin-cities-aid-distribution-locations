@@ -2,6 +2,11 @@
   box-sizing: border-box;
 }
 
+/* globally redeclare the rem unit value so that 1rem = 14px, instead of 16px */
+html {
+  font-size: 14px;
+}
+
 body {
   position: absolute;
   top: 0;
@@ -255,8 +260,8 @@ input[type='checkbox'] + label {
   margin-bottom: 5px;
   margin-right: 5px;
   border-radius: 100px;
-  color: rgba(0, 0, 0, 1);
-  background-color: rgba(200,80,40, .25);
+  color: var(--primary-900);
+  background-color: var(--primary-100);
 }
 
 .opening-soon {
@@ -271,7 +276,7 @@ input[type='checkbox'] + label {
   border-radius: 50%;
   width: 16px;
   height: 16px;
-  margin-right: 5px;
+  margin-right: 1rem;
   flex-shrink: 0;
   text-indent: -10000px;
   overflow: hidden;

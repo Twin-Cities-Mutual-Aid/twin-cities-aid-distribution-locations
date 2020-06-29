@@ -14,11 +14,16 @@
 
 .card:hover {
     transform: translateY(-5px);
-    border-color: var(--primary-100);
+    border-color: var(--primary-200);
 }
 
 .card:active, .card:focus{
-    border-color: var(--primary-100);
+    border-color: var(--primary-200);
+}
+
+.card-title {
+    display: flex;
+    align-items: center;
 }
 
 .card-subtitle {
