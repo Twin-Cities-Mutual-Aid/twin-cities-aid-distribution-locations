@@ -112,6 +112,10 @@ a.txt-white:hover {
   font-size: 13px;
 }
 
+.txt-extra-small {
+  font-size: 10px;
+}
+
 .txt-deemphasize {
   opacity: 0.70;
   font-size: 0.9em;
@@ -119,6 +123,10 @@ a.txt-white:hover {
 
 .bold {
   font-weight: 600;
+}
+
+.italic{
+  font-style: italic;
 }
 
 .padded {
