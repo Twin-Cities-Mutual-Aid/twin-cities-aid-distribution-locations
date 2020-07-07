@@ -46,8 +46,8 @@ html:lang(kar) [data-translation-id], html:lang(kar) [data-translate-font] {
 
 .lang-flag {
   display: inline-block;
-  margin: 0 2px;
-  width: 23px;
+  margin: 0;
+  width: 14px;
   /* hide alt text if image is missing */
   text-indent: -9999px;
 }

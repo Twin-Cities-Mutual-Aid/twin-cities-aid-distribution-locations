@@ -25,7 +25,7 @@ class WelcomeModal {
   render(languages) {
     const buttons = Object.keys(languages).map(key => {
       const { lang_name } = languages[key]
-      return `<button class="welcome-lang-button" value="${key}"><img class="lang-flag" alt="${lang_name}" src="/images/lang-${key}.png">${lang_name}</button>`
+      return `<button class="welcome-lang-button" value="${key}">${lang_name}</button>`
     }).join('')
 
     return `

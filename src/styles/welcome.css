@@ -22,7 +22,7 @@
 .modal {
   height: auto;
   border-radius: 3px;
-  max-width: 600px;
+  max-width: 500px;
   padding: 20px;
   background-color: #fff;
   text-align: center;
@@ -48,7 +48,7 @@
 }
 .welcome-lang-button .lang-flag {
   margin-right: .5em;
-  border: 2px solid white
+  border: 2px solid white;
 }
 
 /** Larger screens */

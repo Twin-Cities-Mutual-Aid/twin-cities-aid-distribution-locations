@@ -145,13 +145,6 @@ class Translator {
    */
   setDocumentLanguage() {
     document.documentElement.lang = this.locale
-
-    const els = document.querySelectorAll('img[data-translation-flag]')
-    Array.prototype.slice.call(els).forEach(el => {
-      el.src = `/images/lang-${this.language}.png`
-      el.alt = this.get('lang_name')
-    })
-
     gtag('event', 'language_change', {
       'event_category': 'language',
       'event_label': this.language
