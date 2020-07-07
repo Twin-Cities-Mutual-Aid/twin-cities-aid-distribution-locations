@@ -30,7 +30,7 @@ The spreadsheet used for defining translations is here: https://docs.google.com/
 
 Here's the basic format of the spreadsheet:
 
-| id | eng | spa | 
+| id | eng | spa |
 | :--------- | :-------- |:--------- |
 | lang_name | English | Español |
 | lang_name_in_eng | English | Spanish |
@@ -45,7 +45,7 @@ The translation files are located under [`src/i18n`](https://github.com/Twin-Cit
 
 ### Special links
 
-If you want to link to a specific language (say you're sending the link to somebody you know speaks Somali) you can add `?lang=XXX` to the end of the URL. Example: 
+If you want to link to a specific language (say you're sending the link to somebody you know speaks Somali) you can add `?lang=XXX` to the end of the URL. Example:
 
 https://twin-cities-mutual-aid.org/?lang=som
 
@@ -80,6 +80,13 @@ Adding a language involves a few steps:
 To add a new language, you should first create a copy of [`eng.json`](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/blob/master/src/i18n/eng.json) and change the filename to the 3-letter [`ISO 639-2`](https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes) code.
 
 From there you can translate each term on the right side to the corresponding language.
+
+If the language translator contributed their translations using a dedicated Google Sheet for the language, you can use `bin/google-sheet-with-translation-to-json` to generate the initial JSON file. For example, for the [Hindi Translation](https://docs.google.com/spreadsheets/d/1gI9Sdbxbl2jy08rjmJn3MTDeuHM4YzeRcihSaWUANbA/edit), we followed [a tutorial](https://www.freecodecamp.org/news/cjn-google-sheets-as-json-endpoint/) to configure the sheet, then the following:
+
+    export SHEET_ID=1gI9Sdbxbl2jy08rjmJn3MTDeuHM4YzeRcihSaWUANbA # The identifier from the URL for Google Sheet
+    ./bin/google-sheet-with-translation-to-json > src/i18n/hin.json
+
+Be sure to add a field for "locale", instead of "id".
 
 #### Adding a new flag image
 
