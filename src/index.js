@@ -335,16 +335,16 @@ function extractRawLocation(item) {
     neighborhood: item.gsx$neighborhood.$t,
     address: item.gsx$addresswithlink.$t,
     mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t,
-    seekingMoney: extractSeekingMoney(item),
-    seekingMoneyURL: extractSeekingMoneyURL(item),
     currentlyOpenForDistributing: item.gsx$currentlyopenfordistributing.$t,
     aidDistributionHours: getHours(item.gsx$openingfordistributingdonations.$t, item.gsx$closingfordistributingdonations.$t),
-    accepting: item.gsx$accepting.$t,
-    notAccepting: item.gsx$notaccepting.$t,
     currentlyOpenForReceiving: item.gsx$currentlyopenforreceiving.$t,
     aidReceivingHours: getHours(item.gsx$openingforreceivingdonations.$t, item.gsx$closingforreceivingdonations.$t),
-    seekingVolunteers: item.gsx$seekingvolunteers.$t,
     urgentNeed: item.gsx$urgentneed.$t,
+    seekingMoney: extractSeekingMoney(item),
+    seekingMoneyURL: extractSeekingMoneyURL(item),
+    accepting: item.gsx$accepting.$t,
+    notAccepting: item.gsx$notaccepting.$t,
+    seekingVolunteers: item.gsx$seekingvolunteers.$t,
     notes: item.gsx$notes.$t
   }
 }

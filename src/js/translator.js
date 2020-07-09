@@ -13,6 +13,7 @@ import orm from './../i18n/orm.json'
 import oji from './../i18n/oji.json'
 import dak from './../i18n/dak.json'
 import vie from './../i18n/vie.json'
+import hin from './../i18n/hin.json'
 import kar from './../i18n/kar.json'
 
 class Translator {
@@ -27,6 +28,7 @@ class Translator {
       oji,
       dak,
       vie,
+      hin,
       kar
     }
     this.detectLanguage()
@@ -79,7 +81,7 @@ class Translator {
     if (m && m.length > 1) {
       lang = m[1]
 
-    // otherwise, check local storage 
+    // otherwise, check local storage
     } else {
       lang = window.localStorage.getItem(Translator.LOCAL_STORAGE_KEY)
     }
@@ -143,13 +145,6 @@ class Translator {
    */
   setDocumentLanguage() {
     document.documentElement.lang = this.locale
-
-    const els = document.querySelectorAll('img[data-translation-flag]')
-    Array.prototype.slice.call(els).forEach(el => {
-      el.src = `/images/lang-${this.language}.png`
-      el.alt = this.get('lang_name')
-    })
-
     gtag('event', 'language_change', {
       'event_category': 'language',
       'event_label': this.language
