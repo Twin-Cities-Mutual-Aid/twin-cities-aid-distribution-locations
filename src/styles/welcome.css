@@ -15,7 +15,6 @@
   height: 100vh;
   z-index: 9999;
   padding: 15px;
-
   background-color: rgba(0,0,0,0.5)
 }
 
@@ -46,9 +45,14 @@
   color: white;
   background-color: royalblue;
 }
-.welcome-lang-button .lang-flag {
+.lang-flag-white {
+  display: inline-block;
+  margin: 0;
+  width: 16px;
+  vertical-align: -4%;
+}
+.welcome-lang-button .lang-flag-white {
   margin-right: .5em;
-  border: 2px solid white;
 }
 
 /** Larger screens */

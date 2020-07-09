@@ -24,7 +24,7 @@ html:lang(kar) [data-translation-id], html:lang(kar) [data-translate-font] {
 
 .lang-select-label {
   display: none;
-}
+  }
 
 .lang-current {
   cursor: pointer;
@@ -46,8 +46,9 @@ html:lang(kar) [data-translation-id], html:lang(kar) [data-translate-font] {
 
 .lang-flag {
   display: inline-block;
-  margin: 0;
-  width: 14px;
+  vertical-align: middle;
+  margin: 0 2px;
+  width: 16px;
   /* hide alt text if image is missing */
   text-indent: -9999px;
 }
@@ -60,5 +61,6 @@ html:lang(kar) [data-translation-id], html:lang(kar) [data-translate-font] {
   } */
   .lang-name {
     display: inline;
+    vertical-align: middle;
   }
 }
