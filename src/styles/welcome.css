@@ -45,13 +45,13 @@
   color: white;
   background-color: royalblue;
 }
-.lang-flag-white {
+.lang-globe-white {
   display: inline-block;
   margin: 0;
   width: 16px;
   vertical-align: -4%;
 }
-.welcome-lang-button .lang-flag-white {
+.welcome-lang-button .lang-globe-white {
   margin-right: .5em;
 }
 
