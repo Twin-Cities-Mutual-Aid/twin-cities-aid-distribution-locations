@@ -24,7 +24,7 @@ html:lang(kar) [data-translation-id], html:lang(kar) [data-translate-font] {
 
 .lang-select-label {
   display: none;
-  }
+}
 
 .lang-current {
   cursor: pointer;
