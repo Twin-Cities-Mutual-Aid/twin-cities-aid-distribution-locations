@@ -355,7 +355,7 @@ input[type='checkbox'] + label {
 .popup-content {
   padding: 15px;
   max-height: 300px;
-  overflow: auto;
+  overflow: scroll;
 }
 
 .popup-content .key {

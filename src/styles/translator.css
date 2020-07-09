@@ -44,10 +44,11 @@ html:lang(kar) [data-translation-id], html:lang(kar) [data-translate-font] {
   display: none;
 }
 
-.lang-flag {
+.lang-globe {
   display: inline-block;
+  vertical-align: middle;
   margin: 0 2px;
-  width: 23px;
+  width: 16px;
   /* hide alt text if image is missing */
   text-indent: -9999px;
 }
@@ -60,5 +61,6 @@ html:lang(kar) [data-translation-id], html:lang(kar) [data-translate-font] {
   } */
   .lang-name {
     display: inline;
+    vertical-align: middle;
   }
 }
