@@ -34,6 +34,16 @@
       'domains': ['twin-cities-mutual-aid.org', 'map.tcmap.org']
     } 
   });
+
+  // Capture outbound link events for analytics using gtag.js framework 
+  // https://support.google.com/analytics/answer/7478520?hl=en
+  const captureOutboundLink = function(url, linkClass) {
+    gtag('event', 'click', {
+      'event_category': linkClass + ' link',
+      'event_label': url,
+      'transport_type': 'beacon'
+    });
+  }
 </script>
 
 <body class='flex'>

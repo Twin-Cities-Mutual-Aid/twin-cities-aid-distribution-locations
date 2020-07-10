@@ -171,13 +171,14 @@ function needsMoneyComponent(location) {
 
   let link = '';
   if (location.seekingMoneyURL && location.seekingMoneyURL !== '') {
-    link = `<a data-translation-id="seeking_money_link" href="${location.seekingMoneyURL}" target="_blank">DONATE NOW!</a>`;
+    link = `<a data-translation-id="seeking_money_link" href="${location.seekingMoneyURL}" target="_blank" onclick="captureOutboundLink('${location.seekingMoneyURL}', 'donation')">DONATE NOW!</a>`;
   }
   return `<span  class="seekingMoney seeking-money location-list--badge"><span data-translation-id="seeking_money">Needs Money</span> ${link}</span>`;
 }
 
 function addressComponent(address) {
-  return `<address><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>`;
+  const googleMapDirections = `https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}`
+  return `<address><a href="${googleMapDirections}" target="_blank" onclick="captureOutboundLink('${googleMapDirections}', 'directions')">${address}</a></address>`;
 }
 
 // builds the section within the popup and replaces and URLs with links
@@ -188,7 +189,7 @@ function sectionUrlComponent(value, key) {
 
   if (urls) {
     _.forEach(urls, url => {
-      sectionHTML = sectionHTML.replace(url, `<a href="${url}" target="_blank">${url}</a>`)
+      sectionHTML = sectionHTML.replace(url, `<a href="${url}" target="_blank" onclick="captureOutboundLink('${url}', '${key}')">${url}</a>`)
     })
   }
 
