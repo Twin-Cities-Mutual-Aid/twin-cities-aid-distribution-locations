@@ -281,8 +281,6 @@ const createListItem = (location, status, lng, lat) => {
   return $item
 }
 
-
-
 //////////////////////////
 // Protect against columns not yet existing in the spreadsheet.
 // We can remove once they are added to the sheet.
