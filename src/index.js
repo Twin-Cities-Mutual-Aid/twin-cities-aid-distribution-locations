@@ -189,7 +189,9 @@ function sectionUrlComponent(value, key) {
 
   if (urls) {
     _.forEach(urls, url => {
-      sectionHTML = sectionHTML.replace(url, `<a href="${url}" target="_blank" onclick="captureOutboundLink('${url}', '${key}')">${url}</a>`)
+      let target_url = url;
+      if (!(/http/i.test(url))) target_url = 'http://' + url;
+      sectionHTML = sectionHTML.replace(url, `<a href="${target_url}" target="_blank" onclick="captureOutboundLink('${target_url}', '${key}')">${url}</a>`)
     })
   }
 
@@ -322,8 +324,8 @@ function getHours(openingHours, closingHours) {
 // e.g. ['https://google.com']
 ///////////
 function extractUrl(item) {
-  // regex source: https://stackoverflow.com/questions/3809401/what-is-a-good-regular-expression-to-match-a-url
-  let url_pattern = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+  //regex source: https://stackoverflow.com/questions/6927719/url-regex-does-not-work-in-javascript
+  let url_pattern = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/gi;
   return item.match(url_pattern)
 }
 
