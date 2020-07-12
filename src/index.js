@@ -215,7 +215,7 @@ const createListItem = (location, status, lng, lat) => {
 
   let seekingVolunteers = ''
   if (location.seekingVolunteers && location.seekingVolunteers.match(/(?:\byes\b)/i)) {
-    seekingVolunteers = `<span data-translation-id="seeking_volunteers" class="seekingVolunteersBadge location-list--badge">Needs Volunteer Support</span>`
+    seekingVolunteers = `<span data-translation-id="seeking_volunteers_badge" class="seekingVolunteersBadge location-list--badge">Needs Volunteer Support</span>`
   }
 
   let covid19Testing = ''
