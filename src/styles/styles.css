@@ -351,6 +351,10 @@ input[type='checkbox'] + label {
   text-indent: -9999px;
 }
 
+.refresh-text {
+  display: none;
+}
+
 /* component: help info close button */
 .help-info-close-button {
   display: inline;
