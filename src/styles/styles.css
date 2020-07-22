@@ -184,6 +184,15 @@ input[type='checkbox'] + label {
   padding: 0px 15px 5px 15px;
 }
 
+.filter-pane:before {
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;  
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
 /* component:filters */
 .filters {
   list-style: none;
