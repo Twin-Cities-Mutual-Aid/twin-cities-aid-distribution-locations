@@ -403,7 +403,7 @@ const onMapLoad = async () => {
         // create marker
         location.marker = new mapboxgl.Marker({ color: status.accessibleColor })
           .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
-          .setPopup(new mapboxgl.Popup().setMaxWidth('275px'))
+          .setPopup(new mapboxgl.Popup().setMaxWidth('600px'))
           .addTo(map);
 
           location.marker.getElement().className += " status-" + status.name;
