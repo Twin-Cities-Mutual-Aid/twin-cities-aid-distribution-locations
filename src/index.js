@@ -119,6 +119,16 @@ map.setPadding({ top: 300, bottom: 20, left: 20, right: 20 })
 // Add zoom and rotate controls
 map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 
+map.addControl(
+  new mapboxgl.GeolocateControl(
+    {
+      positionOptions: {
+        enableHighAccuracy: true
+      },
+      trackUserLocation: false
+    }), 'bottom-right'
+);
+
 // convert case
 function camelToTitle(str) {
   const result = str.replace(/([A-Z])/g,' $1')
