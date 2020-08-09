@@ -204,7 +204,10 @@ function sectionUrlComponent(value, key) {
   if (urls) {
     _.forEach(urls, url => {
       let target_url = url;
-      if (!(/http/i.test(url))) target_url = 'http://' + url;
+      if (!(/[a-z]/i.test(url))) target_url = 'tel:' + url.replace(/[^\d()-.]/g, '')
+      else if (/[\w.%+-]@[\w.]+/.test(url)) target_url = 'mailto:' + url
+      else if (!(/http/i.test(url))) target_url = 'http://' + url
+
       sectionHTML = sectionHTML.replace(url, `<a href="${target_url}" target="_blank" onclick="captureOutboundLink('${target_url}', '${key}')">${url}</a>`)
     })
   }
@@ -338,8 +341,24 @@ function getHours(openingHours, closingHours) {
 // e.g. ['https://google.com']
 ///////////
 function extractUrl(item) {
-  //regex source: https://stackoverflow.com/questions/6927719/url-regex-does-not-work-in-javascript
-  let url_pattern = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/gi;
+  // web URL regex source: https://stackoverflow.com/questions/6927719/url-regex-does-not-work-in-javascript
+  const host_pattern = /(?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)/
+  const path_pattern = /(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+/
+  const end_pattern = /(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’])/
+  const web_pattern = host_pattern.source + path_pattern.source + end_pattern.source
+  const phone_pattern = /(?:\d[^\sa-z]*){9,10}\d/
+  // email regexp adapted from https://www.regular-expressions.info/email.html
+  const email_pattern = /[\w.%+-]+@[\w.]+\.[a-z]{2,}/
+  const url_pattern = new RegExp(
+    /\b/.source // all URLs start after a word boundary
+    + '('
+    + web_pattern
+    + '|' + phone_pattern.source
+    + '|' + email_pattern.source
+    + ')',
+    'gi' // find all occurrences, case-insensitive
+  )
+
   return item.match(url_pattern)
 }
 
