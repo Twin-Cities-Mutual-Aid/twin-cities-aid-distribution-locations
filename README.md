@@ -71,8 +71,7 @@ If you're a member of the Twin Cities Mutual Aid organization you can find the d
 
 https://github.com/Twin-Cities-Mutual-Aid/secrets/blob/master/.env
 
-
-If not, you can ask for the most recent values of the configuration values from the Open Twin Cities slack `#tc-aid-dev` channel. They are pinned in the channel.
+If not, you can ask for the most recent values of the configuration values from the Open Twin Cities slack `#tc-aid-dev` channel.
 
 If you need to introduce a new environmental variable, please coordinate with developers in the `#tc-aid-dev` channel, add it to the `.env.example` file, and note it in your pull request.
 
