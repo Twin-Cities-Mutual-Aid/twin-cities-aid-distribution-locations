@@ -123,6 +123,16 @@ map.setPadding({ top: 300, bottom: 20, left: 20, right: 20 })
 // Add zoom and rotate controls
 map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 
+map.addControl(
+  new mapboxgl.GeolocateControl(
+    {
+      positionOptions: {
+        enableHighAccuracy: true
+      },
+      trackUserLocation: true
+    }), 'bottom-right'
+);
+
 // convert case
 function camelToTitle(str) {
   const result = str.replace(/([A-Z])/g,' $1')
@@ -151,6 +161,10 @@ function toggleSidePane() {
     $locationsButton.setAttribute('aria-label', buttonText)
   }
 }
+//refresh page data
+function refreshPage() {
+  location.reload();
+}
 
 // open/close help info
 function toggleHelpInfo() {
@@ -175,13 +189,14 @@ function needsMoneyComponent(location) {
 
   let link = '';
   if (location.seekingMoneyURL && location.seekingMoneyURL !== '') {
-    link = `<a data-translation-id="seeking_money_link" href="${location.seekingMoneyURL}" target="_blank">DONATE NOW!</a>`;
+    link = `<a data-translation-id="seeking_money_link" href="${location.seekingMoneyURL}" target="_blank" onclick="captureOutboundLink('${location.seekingMoneyURL}', 'donation')">DONATE NOW!</a>`;
   }
   return `<span  class="seekingMoney seeking-money location-list--badge"><span data-translation-id="seeking_money">Needs Money</span> ${link}</span>`;
 }
 
 function addressComponent(address) {
-  return `<address><a href="https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}" target="_blank">${address}</a></address>`;
+  const googleMapDirections = `https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}`
+  return `<address><a href="${googleMapDirections}" target="_blank" onclick="captureOutboundLink('${googleMapDirections}', 'directions')">${address}</a></address>`;
 }
 
 // builds the section within the popup and replaces and URLs with links
@@ -192,7 +207,12 @@ function sectionUrlComponent(value, key) {
 
   if (urls) {
     _.forEach(urls, url => {
-      sectionHTML = sectionHTML.replace(url, `<a href="${url}" target="_blank">${url}</a>`)
+      let target_url = url;
+      if (!(/[a-z]/i.test(url))) target_url = 'tel:' + url.replace(/[^\d()-.]/g, '')
+      else if (/[\w.%+-]@[\w.]+/.test(url)) target_url = 'mailto:' + url
+      else if (!(/http/i.test(url))) target_url = 'http://' + url
+
+      sectionHTML = sectionHTML.replace(url, `<a href="${target_url}" target="_blank" onclick="captureOutboundLink('${target_url}', '${key}')">${url}</a>`)
     })
   }
 
@@ -216,7 +236,7 @@ const createListItem = (location, status, lng, lat) => {
 
   let seekingVolunteers = ''
   if (location.seekingVolunteers && location.seekingVolunteers.match(/(?:\byes\b)/i)) {
-    seekingVolunteers = `<span data-translation-id="seeking_volunteers" class="seekingVolunteersBadge location-list--badge">Needs Volunteer Support</span>`
+    seekingVolunteers = `<span data-translation-id="seeking_volunteers_badge" class="seekingVolunteersBadge location-list--badge">Needs Volunteer Support</span>`
   }
 
   let covid19Testing = ''
@@ -324,8 +344,24 @@ function getHours(openingHours, closingHours) {
 // e.g. ['https://google.com']
 ///////////
 function extractUrl(item) {
-  // regex source: https://stackoverflow.com/questions/3809401/what-is-a-good-regular-expression-to-match-a-url
-  let url_pattern = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+  // web URL regex source: https://stackoverflow.com/questions/6927719/url-regex-does-not-work-in-javascript
+  const host_pattern = /(?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)/
+  const path_pattern = /(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+/
+  const end_pattern = /(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’])/
+  const web_pattern = host_pattern.source + path_pattern.source + end_pattern.source
+  const phone_pattern = /(?:\d[^\sa-z]*){9,10}\d/
+  // email regexp adapted from https://www.regular-expressions.info/email.html
+  const email_pattern = /[\w.%+-]+@[\w.]+\.[a-z]{2,}/
+  const url_pattern = new RegExp(
+    /\b/.source // all URLs start after a word boundary
+    + '('
+    + web_pattern
+    + '|' + phone_pattern.source
+    + '|' + email_pattern.source
+    + ')',
+    'gi' // find all occurrences, case-insensitive
+  )
+
   return item.match(url_pattern)
 }
 
@@ -380,7 +416,7 @@ const onMapLoad = async () => {
           seekingMoneyURL: (value, _) => '',
           accepting: (value, _) => sectionUrlComponent(value, 'accepting'),
           notAccepting: (value, _) => sectionUrlComponent(value, 'not_accepting'),
-          seekingVolunteers: (value, _) => sectionUrlComponent(value, 'seeking_volunteers'),
+          seekingVolunteers: (value, _) => sectionUrlComponent(value, 'seeking_volunteers_badge'),
           mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> <span data-translate-font>${moment(datetime, 'H:m M/D').fromNow()}</span></div>`,
           urgentNeed: (value, _) => sectionUrlComponent(value,'urgent_need'),
           notes: (value, _) => sectionUrlComponent(value,'notes'),
@@ -493,6 +529,12 @@ const helpInfoCloseButton = document.getElementById('help-info-close-button')
 helpInfoCloseButton.addEventListener("click", function(){
   toggleHelpInfo()
 });
+
+//add refresh page handler
+const refreshPageButton = document.getElementById('refresh-page-button')
+refreshPageButton.addEventListener("click", function() {
+  refreshPage()
+})
 
 // render key
 const key = document.getElementById('key')

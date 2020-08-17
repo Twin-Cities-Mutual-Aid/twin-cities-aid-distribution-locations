@@ -29,7 +29,7 @@ a.txt-white:hover {
 }
 
 .map,
-.help-info {
+.help-info, .refresh-page-button {
   left: 0;
   top: 0;
   right: 0;
@@ -294,6 +294,21 @@ input[type='checkbox'] + label {
 
 /* component: location list toggle */
 .location-list-toggle {
+  display: none;
+}
+
+/*component: refresh page button*/
+
+.refresh-image {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 0px;
+  width: 13px;
+  /* hide alt text if image is missing */
+  text-indent: -9999px;
+}
+
+.refresh-text {
   display: none;
 }
 
