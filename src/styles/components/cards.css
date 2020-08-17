@@ -38,7 +38,7 @@
 
 .mapboxgl-popup-content {
     display: flex;
-    flex-flow: column nowrap;
+    flex-flow: column wrap;
     align-items: start;
     box-shadow: 0 4px 12px rgba(0,0,0,.095);
     border: 1px solid transparent;
@@ -55,4 +55,14 @@
     max-height: 300px;
     overflow: auto;
     padding: 0;
+}
+.popup-content h2, .popup-content h3  {
+    white-space: pre-line;
+}
+
+.popup-content h3 {
+    color: var(--gray-700);
+    border-top: 1px solid var(--gray-200);
+    padding: .5rem 0;
+    margin-top: .5rem;
 }
