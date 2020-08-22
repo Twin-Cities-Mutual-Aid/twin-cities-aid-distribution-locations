@@ -198,8 +198,17 @@ function addressComponent(address) {
 // builds the section within the popup and replaces and URLs with links
 function sectionUrlComponent(value, key) {
   let urls = extractUrl(value)
-  let sectionHTML = `<p class="p row"><p data-translation-id="${key}" class="txt-deemphasize
-  key">${key.toUpperCase()}</p><p class="value">${value}</p></p>`
+  let parsedText = parseLineBreaks(value)
+  let sectionHTML = `
+    <p class="p row">
+      <p data-translation-id="${key}" class="txt-deemphasize key">
+        ${key.toUpperCase()}
+      </p>
+      <p class="value">
+        ${parsedText}
+      </p>
+    </p>
+  `
 
   if (urls) {
     _.forEach(urls, url => {
@@ -341,6 +350,10 @@ function extractUrl(item) {
   //regex source: https://stackoverflow.com/questions/6927719/url-regex-does-not-work-in-javascript
   let url_pattern = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/gi;
   return item.match(url_pattern)
+}
+
+function parseLineBreaks(value) {
+  return value.replace('\n', '<br /><br />');
 }
 
 function extractRawLocation(item) {
