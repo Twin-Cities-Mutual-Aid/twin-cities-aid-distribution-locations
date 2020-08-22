@@ -153,12 +153,11 @@ class Filter {
           <label for="search">
             <span class="sr-only">Type here to search sites or needs</span>
           </label>
-          <div id='search-icon'>
-            <img src='images/search-icon.svg' alt='search icon'></img>
-          </div>
+          <img class="search-icon" src='images/icon_search.svg' alt='search icon'/>
+          
           <input type="text" class="search-input" value="${this.searchOptions.initialSearch.replace(/\"/g, '')}" id="search" placeholder="Search sites or needs..." data-translation-id="search"></input>
-          </div>
-          <button id="clear-search-btn" class="hide-clear-search" data-translation-id="search_clear">Clear Search</button>
+          <img id="clear-search-btn" class="hide-clear-search" data-translation-id="search_clear" src='images/icon_clear_search.svg' alt='clear search button'/>
+        </div>
       </form>
       <div class="list-meta">
       <div class="list-results"><span id="list-results-count">${this.locations.length}</span> <span data-translation-id="list_results">results</span></div>
@@ -168,7 +167,7 @@ class Filter {
     this.$controls.innerHTML = `
       <div class="select-container">
         <label for="sort-by"><span data-translation-id="sort_by">Sort by</span>: </label>
-        <select name="sort-by" id="sort-by" data-translate-font>
+        <select class="custom-select" name="sort-by" id="sort-by" data-translate-font>
           ${options}
         </select>
       </div>

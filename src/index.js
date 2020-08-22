@@ -1,10 +1,14 @@
 // Import Styles
-import 'mapbox-gl/dist/mapbox-gl.css'
-import './styles/normalize.css'
-import './styles/styles.css'
-import './styles/search.css'
-import './styles/welcome.css'
-import './styles/translator.css'
+import 'mapbox-gl/dist/mapbox-gl.css';
+import './styles/normalize.css';
+import './styles/styles.css';
+import './styles/welcome.css';
+import './styles/translator.css';
+import './styles/theme.css';
+import './styles/components/cards.css';
+import './styles/components/form-control.css';
+import './styles/components/search.css';
+import './styles/components/typography.css';
 
 // Import Libs
 import mapboxgl from 'mapbox-gl'
@@ -257,7 +261,8 @@ const createListItem = (location, status, lng, lat) => {
  const hiddenSearch = hiddenSearchFields.map(field => `<p class="${field}" style="display:none">${location[field] || ''}</p>`).join('')
 
   const $item = document.createElement('div')
-  $item.classList.add('location-list--item')
+  $item.classList.add('card');
+  $item.classList.add('location-list--item');
   $item.dataset.id = status.id;
 
   // Increments the total count 
@@ -265,23 +270,22 @@ const createListItem = (location, status, lng, lat) => {
   status.count++
 
   $item.innerHTML = `
-    <div class="flex">
-      <span title="${status.id}" class="status location-list--indicator" style="background-color: ${status.accessibleColor};">${status.id}</span>
-      <div>
-        <h2 class='h2'>
-          <span class="name">${location.name}</span>
-        </h2>
-        <h3 class="h3 neighborhood">${location.neighborhood || ''}</h3>
-        ${openingSoonForDistribution}
-        ${openingSoonForReceiving}
-        ${urgentNeed}
-        ${seekingVolunteers}
-        ${seekingMoney}
-        ${hiddenSearch}
-        ${covid19Testing}
+  <div class="card-title">
+    <span title="${status.id}" class="status location-list--indicator" style="background-color: ${status.accessibleColor};">${status.id}</span>
+      <h2>
+        ${location.name}
+      </h2>
       </div>
-    </div>
-    `
+      <h3 class="card-subtitle neighborhood">${location.neighborhood || ''}</h3>
+      ${openingSoonForDistribution}
+      ${openingSoonForReceiving}
+      ${urgentNeed}
+      ${seekingVolunteers}
+      ${seekingMoney}
+      ${hiddenSearch}
+      ${covid19Testing}
+  `
+
   $item.addEventListener('click', (evt) => {
     const popup = location.marker.getPopup()
     if (popup.isOpen()) {
@@ -406,7 +410,7 @@ const onMapLoad = async () => {
 
         // transform location properties into HTML
         const propertyTransforms = {
-          name: (name, _) => `<h2 class='h2'>${name}</h2>`,
+          name: (name, _) => `<h2>${name}</h2>`,
           neighborhood: (neighborhood, _) => `<h3 class='h3'>${neighborhood}</h3>`,
           address: addressComponent, // driving directions in google, consider doing inside mapbox
           seekingMoney: (value, location) => needsMoneyComponent(location),
