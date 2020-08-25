@@ -198,8 +198,17 @@ function addressComponent(address) {
 // builds the section within the popup and replaces and URLs with links
 function sectionUrlComponent(value, key) {
   let urls = extractUrl(value)
-  let sectionHTML = `<p class="p row"><p data-translation-id="${key}" class="txt-deemphasize
-  key">${key.toUpperCase()}</p><p class="value">${value}</p></p>`
+  let parsedText = parseLineBreaks(value)
+  let sectionHTML = `
+    <p class="p row">
+      <p data-translation-id="${key}" class="txt-deemphasize key">
+        ${key.toUpperCase()}
+      </p>
+      <p class="value">
+        ${parsedText}
+      </p>
+    </p>
+  `
 
   if (urls) {
     _.forEach(urls, url => {
@@ -360,6 +369,10 @@ function extractUrl(item) {
   )
 
   return item.match(url_pattern)
+}
+
+function parseLineBreaks(value) {
+  return value.replace('\n', '<br /><br />');
 }
 
 function extractRawLocation(item) {
