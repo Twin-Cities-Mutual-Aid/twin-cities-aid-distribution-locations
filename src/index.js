@@ -374,7 +374,7 @@ function extractUrls(item) {
 }
 
 function parseLineBreaks(value) {
-  return value.replace('\n', '<br /><br />');
+  return replaceAll(value, '\n', '<br />');
 }
 
 function extractRawLocation(item) {
