@@ -32,27 +32,12 @@
 	height: 2.5rem;
 }
 
-/* @media (max-width: 1118px) {
-	.search-input-group {
-		width: 60%;
-	}
-} */
-
 #clear-search-btn {
 	height: 1.5rem;
 	position: absolute;
 	top: 32%;
 	right: 15px;
 }
-
-/* @media (max-width: 1118px) {
-	#clear-search-btn {
-		width: 40%;
-		padding: 0;
-		margin-left: 5px;
-		flex-grow: 1;
-	}
-} */
 
 @media(max-width: 1118px) {
 	.search-full-width {
