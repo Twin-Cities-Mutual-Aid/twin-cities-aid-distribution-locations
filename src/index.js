@@ -22,6 +22,7 @@ import WelcomeModal from './js/welcome'
 import { getQueryParam } from './js/url-helpers';
 import { TrackJS } from 'trackjs';
 import validate, { LOCATION_SCHEMA } from "./js/validator";
+import replaceAll from 'string.prototype.replaceall'
 
 //Add TrackJS Agent
 if(import.meta.env.MODE === 'production'){
@@ -202,27 +203,29 @@ function addressComponent(address) {
 
 // builds the section within the popup and replaces and URLs with links
 function sectionUrlComponent(value, key) {
-  let urls = extractUrl(value)
-  let sectionHTML = `<p class="p row"><p data-translation-id="${key}" class="txt-deemphasize
-  key">${key.toUpperCase()}</p><p class="value">${value}</p></p>`
+  let urls = extractUrls(value)
+  let parsedText = parseLineBreaks(value)
+  let sectionHTML = `
+    <p class="p row">
+      <p data-translation-id="${key}" class="txt-deemphasize key">
+        ${key.toUpperCase()}
+      </p>
+      <p class="value">
+        ${parsedText}
+      </p>
+    </p>
+  `
 
   if (urls) {
     const distinctUrls = [...new Set(urls)];
-    console.log(distinctUrls);
     _.forEach(distinctUrls, url => {
       let target_url = url;
-      console.log(target_url);
       if (!(/[a-z]/i.test(url))) target_url = 'tel:' + url.replace(/[^\d()-.]/g, '')
       else if (/[\w.%+-]@[\w.]+/.test(url)) target_url = 'mailto:' + url
       else if (!(/http/i.test(url))) target_url = 'http://' + url
-      console.log(target_url);
 
-      console.log(sectionHTML);
-      const urlRegEx = /${url}
-      sectionHTML = sectionHTML.replace(url, `<a href=${target_url} target="_blank" onclick="captureOutboundLink('${target_url}', '${key}')">${url}</a>`)
-      console.log(sectionHTML);
-      
-    })
+      sectionHTML = replaceAll(sectionHTML, url, `<a href="${target_url}" target="_blank" onclick="captureOutboundLink('${target_url}', '${key}')">${url}</a>`);
+    });
   }
 
   return sectionHTML
@@ -364,7 +367,7 @@ function getHours(openingHours, closingHours) {
 // returns a an array of urls as strings if there is a match otherwise null
 // e.g. ['https://google.com']
 ///////////
-function extractUrl(item) {
+function extractUrls(item) {
   // web URL regex source: https://stackoverflow.com/questions/6927719/url-regex-does-not-work-in-javascript
   const host_pattern = /(?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)/
   const path_pattern = /(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+/
@@ -384,6 +387,10 @@ function extractUrl(item) {
   )
 
   return item.match(url_pattern)
+}
+
+function parseLineBreaks(value) {
+  return replaceAll(value, '\n', '<br />');
 }
 
 function extractRawLocation(item) {
