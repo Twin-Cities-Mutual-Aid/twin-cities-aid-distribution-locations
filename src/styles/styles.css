@@ -246,52 +246,8 @@ input[type='checkbox'] + label {
   overflow: auto;
   background: var(--gray-50);
 }
-/* 
-.location-list--item {
-  background-color: rgba(187, 200, 0, 0.1);
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 3px;
-  transition: all .25s;
-} */
 
-/* .location-list--item:hover {
-  cursor: pointer;
-  background-color: rgba(187, 200, 0, 0.2);
-} */
 
-.location-list--badge {
-  display: inline-block;
-  font-size: 12px;
-  padding: 5px 10px;
-  margin-bottom: 5px;
-  margin-right: 5px;
-  border-radius: 100px;
-  color: var(--primary-900);
-  background-color: var(--primary-100);
-}
-
-.opening-soon {
-  font:bold 12px/1.2 Arial, Helvetica, sans-serif;
-  text-transform: uppercase;
-  margin: 0 0 5px 0;
-  color: #269C26;
-}
-
-.location-list--indicator {
-  display: block;
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
-  margin-right: 1rem;
-  flex-shrink: 0;
-  text-indent: -10000px;
-  overflow: hidden;
-}
-
-.location-list--important {
-  color: rgba(0,0,0, 0.8)
-}
 
 /* component: location list toggle */
 .location-list-toggle {
@@ -360,8 +316,8 @@ input[type='checkbox'] + label {
 }
 
 .mapboxgl-popup-close-button {
-  font-size: 30px;
-  padding: 5px 10px;
+  font-size: 25px;
+  padding: 4px 8px;
   line-height: .9;
 }
 

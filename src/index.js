@@ -5,10 +5,11 @@ import './styles/styles.css';
 import './styles/welcome.css';
 import './styles/translator.css';
 import './styles/theme.css';
-import './styles/components/cards.css';
+import './styles/components/location-card.css';
+import './styles/components/map-popup.css';
 import './styles/components/form-control.css';
 import './styles/components/search.css';
-import './styles/components/typography.css';
+import './styles/typography.css';
 
 // Import Libs
 import mapboxgl from 'mapbox-gl'
@@ -191,7 +192,7 @@ function needsMoneyComponent(location) {
   if (location.seekingMoneyURL && location.seekingMoneyURL !== '') {
     link = `<a data-translation-id="seeking_money_link" href="${location.seekingMoneyURL}" target="_blank" onclick="captureOutboundLink('${location.seekingMoneyURL}', 'donation')">DONATE NOW!</a>`;
   }
-  return `<span  class="seekingMoney seeking-money location-list--badge"><span data-translation-id="seeking_money">Needs Money</span> ${link}</span>`;
+  return `<span class="seekingMoney seeking-money card-badge"><span data-translation-id="seeking_money">Needs Money</span> ${link}</span>`;
 }
 
 function addressComponent(address) {
@@ -206,13 +207,21 @@ function sectionUrlComponent(value, key) {
   key">${key.toUpperCase()}</p><p class="value">${value}</p></p>`
 
   if (urls) {
-    _.forEach(urls, url => {
+    const distinctUrls = [...new Set(urls)];
+    console.log(distinctUrls);
+    _.forEach(distinctUrls, url => {
       let target_url = url;
+      console.log(target_url);
       if (!(/[a-z]/i.test(url))) target_url = 'tel:' + url.replace(/[^\d()-.]/g, '')
       else if (/[\w.%+-]@[\w.]+/.test(url)) target_url = 'mailto:' + url
       else if (!(/http/i.test(url))) target_url = 'http://' + url
+      console.log(target_url);
 
-      sectionHTML = sectionHTML.replace(url, `<a href="${target_url}" target="_blank" onclick="captureOutboundLink('${target_url}', '${key}')">${url}</a>`)
+      console.log(sectionHTML);
+      const urlRegEx = /${url}
+      sectionHTML = sectionHTML.replace(url, `<a href=${target_url} target="_blank" onclick="captureOutboundLink('${target_url}', '${key}')">${url}</a>`)
+      console.log(sectionHTML);
+      
     })
   }
 
@@ -231,31 +240,33 @@ const hiddenSearchFields = ['address', 'accepting', 'notAccepting', 'notes', 'se
 
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
-  const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important"><span data-translation-id="urgent_need">Urgent Need</span>: ${location.urgentNeed}</p>` : ''
+  const neighborhood = location.neighborhood ? `<h3 class="card-subtitle neighborhood">${location.neighborhood}</h3>` : '';
+
+  const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p card-urgent-need"><span data-translation-id="urgent_need">Urgent Need</span>: ${location.urgentNeed}</p>` : ''
   const seekingMoney = needsMoneyComponent(location);
 
   let seekingVolunteers = ''
   if (location.seekingVolunteers && location.seekingVolunteers.match(/(?:\byes\b)/i)) {
-    seekingVolunteers = `<span data-translation-id="seeking_volunteers_badge" class="seekingVolunteersBadge location-list--badge">Needs Volunteer Support</span>`
+    seekingVolunteers = `<span data-translation-id="seeking_volunteers_badge" class="seekingVolunteersBadge card-badge">Needs Volunteer Support</span>`
   }
 
   let covid19Testing = ''
   if (location.notes && location.notes.match(/(?:\bcovid[ -]?(19)? testing\b)/i)) {
-    covid19Testing = `<span data-translation-id="covid19-testing" class="covid19-testing location-list--badge">Covid-19 Testing Available</span>`
+    covid19Testing = `<span data-translation-id="covid19-testing" class="covid19-testing card-badge">Covid-19 Testing Available</span>`
   }
 
   const openTimeDistribution = moment(location.openingForDistributingDontations, ["h:mm A"])
   const openTimeDistributionLessOne = moment(location.openingForDistributingDontations, ["h:mm A"]).subtract(1, 'hours')
   let openingSoonForDistribution = ''
   if (moment().isBetween(openTimeDistributionLessOne, openTimeDistribution)) {
-    openingSoonForDistribution = `<p class="opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${openTimeDistribution.format("LT")} <span data-translation-id="for_distribution">for distributing</span></p>`
+    openingSoonForDistribution = `<p class="card-opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${openTimeDistribution.format("LT")} <span data-translation-id="for_distribution">for distributing</span></p>`
   }
 
   const openTimeReceiving = moment(location.openingForReceivingDontations, ["h:mm A"])
   const openTimeReceivingLessOne = moment(location.openingForReceivingDontations, ["h:mm A"]).subtract(1, 'hours')
   let openingSoonForReceiving = ''
   if (moment().isBetween(openTimeReceivingLessOne, openTimeReceiving)) {
-    openingSoonForReceiving = `<p class="opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${openTimeReceiving.format("LT")} <span data-translation-id="for_receiving">for receiving</span></p>`
+    openingSoonForReceiving = `<p class="card-opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${openTimeReceiving.format("LT")} <span data-translation-id="for_receiving">for receiving</span></p>`
   }
 
  const hiddenSearch = hiddenSearchFields.map(field => `<p class="${field}" style="display:none">${location[field] || ''}</p>`).join('')
@@ -270,21 +281,30 @@ const createListItem = (location, status, lng, lat) => {
   status.count++
 
   $item.innerHTML = `
-  <div class="card-title">
-    <span title="${status.id}" class="status location-list--indicator" style="background-color: ${status.accessibleColor};">${status.id}</span>
-      <h2>
-        ${location.name}
-      </h2>
+    <div class="card-content">
+      <div class="card-title">
+        <span title="${status.id}" class="status" style="display:none">
+          ${status.id}
+        </span>
+        <span title="${status.id}" class="card-status-indicator" style="background-color: ${status.accessibleColor};" />    
+        <h2>
+          ${location.name}
+        </h2>
       </div>
-      <h3 class="card-subtitle neighborhood">${location.neighborhood || ''}</h3>
-      ${openingSoonForDistribution}
-      ${openingSoonForReceiving}
-      ${urgentNeed}
-      ${seekingVolunteers}
-      ${seekingMoney}
-      ${hiddenSearch}
-      ${covid19Testing}
+      ${neighborhood}
+      <div class="card-badge-group">
+        ${openingSoonForDistribution}
+        ${openingSoonForReceiving}
+        ${urgentNeed}
+        ${seekingVolunteers}
+        ${seekingMoney}
+        ${hiddenSearch}
+        ${covid19Testing}
+      </div>
+    </div>
+    <div class="card-status-border" style="background-color: ${status.accessibleColor};"></div>
   `
+ 
 
   $item.addEventListener('click', (evt) => {
     const popup = location.marker.getPopup()
