@@ -286,10 +286,8 @@ const createListItem = (location, status, lng, lat) => {
   $item.innerHTML = `
     <div class="card-content">
       <div class="card-title">
-        <span title="${status.id}" class="status" style="display:none">
-          ${status.id}
-        </span>
-        <span title="${status.id}" class="card-status-indicator" style="background-color: ${status.accessibleColor};" />    
+        <span title="${status.id}" class="status" style="display:none;">${status.id}</span>
+        <span title="${status.id}" class="card-status-indicator" style="background-color: ${status.accessibleColor};" ></span>
         <h2>
           ${location.name}
         </h2>
@@ -307,8 +305,8 @@ const createListItem = (location, status, lng, lat) => {
     </div>
     <div class="card-status-border" style="background-color: ${status.accessibleColor};"></div>
   `
- 
 
+  
   $item.addEventListener('click', (evt) => {
     const popup = location.marker.getPopup()
     if (popup.isOpen()) {
