@@ -49,7 +49,6 @@ test('Click location in list', async t => {
   
   // If list is empty, we can't test the rest
   const listItems = await Selector('.location-list--item').count
-  expect(listItems > 0)
   if (listItems == 0) {
     console.log('The list is empty')
     return
