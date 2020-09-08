@@ -2,20 +2,22 @@
   box-sizing: border-box;
 }
 
+/* globally redeclare the rem unit value so that 1rem = 14px, instead of 16px. This should probably go back to 16px, which is standard in most browsers. I'm redeclaring to quickly utilize the real estate a bit better. */
+html {
+  font-size: 14px;
+}
+
 body {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  margin: 0;
-  padding: 0;
   overflow: hidden;
-  font: 15px/1.4 Arial, Helvetica, sans-serif;
 }
 
 a {
-  color: royalblue;
+  color: var(--primary-500);
 }
 
 a.txt-white {
@@ -23,7 +25,7 @@ a.txt-white {
 }
 
 a.txt-white:hover {
-  color: royalblue
+  color: var(--primary-500);
 }
 
 .map,
@@ -65,47 +67,6 @@ a.txt-white:hover {
 /* shared:layout */
 .flex {
   display: flex;
-}
-
-/* Shared:typography */
-.h1 {
-  font: bold 20px/1.2 Arial, Helvetica, sans-serif;
-  margin-top: 0px;
-  margin-bottom: 5px;
- 
-}
-
-.h1:not(:last-child) {
-  margin-bottom: 10px;
-}
-
-.h2 {
-  font: bold 15px/1.2 Arial, Helvetica, sans-serif;
-  margin: 0;
-}
-
-.h2:not(:last-child) {
-  margin-bottom: 5px;
-}
-
-.h3 {
-  font:bold 12px/1.2 Arial, Helvetica, sans-serif;
-  color: rgba(0,0,0,.8);
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.h3:not(:last-child) {
-  margin-bottom: 5px;
-}
-
-.p {
-  margin: 0px;
-  padding: 0px;
-}
-
-.p:not(:last-child) {
-  margin-bottom: 10px;
 }
 
 .txt-small {
@@ -198,12 +159,9 @@ input[type='checkbox'] + label {
 .list-meta {
   display: flex;
   justify-content: flex-end;
-}
-
-.list-results {
-  display: block;
+  padding: 0 8px 0 0;
   font-weight: bold;
-  padding-right: 10px;
+  background: var(--gray-50);
 }
 
 .loading-indicator {
@@ -281,59 +239,15 @@ input[type='checkbox'] + label {
 
 /* component: location list */
 .location-list {
-  padding: 15px;
+  padding: 8px;
   max-width: 100%;
   max-height: 100%;
   flex-grow: 1;
   overflow: auto;
+  background: var(--gray-50);
 }
 
-.location-list--item {
-  background-color: rgba(187, 200, 0, 0.1);
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 3px;
-  transition: all .25s;
-}
 
-.location-list--item:hover {
-  cursor: pointer;
-  background-color: rgba(187, 200, 0, 0.2);
-}
-
-.location-list--badge {
-  display: inline-block;
-  font-size: 12px;
-  padding: 5px 10px;
-  margin-bottom: 5px;
-  margin-right: 5px;
-  border-radius: 100px;
-  color: rgba(0, 0, 0, 1);
-  background-color: rgba(200,80,40, .25);
-}
-
-.opening-soon {
-  font:bold 12px/1.2 Arial, Helvetica, sans-serif;
-  text-transform: uppercase;
-  margin: 0 0 5px 0;
-  color: #269C26;
-}
-
-.location-list--indicator {
-  display: block;
-  border-radius: 3px;
-  width: 16px;
-  height: 16px;
-  border: 2px solid  rgba(0, 0, 0, .1);
-  margin-right: 5px;
-  flex-shrink: 0;
-  text-indent: -10000px;
-  overflow: hidden;
-}
-
-.location-list--important {
-  color: rgba(0,0,0, 0.8)
-}
 
 /* component: location list toggle */
 .location-list-toggle {
@@ -364,13 +278,6 @@ input[type='checkbox'] + label {
   font-weight: 600;
   font-size: 13px;
   padding: 5px 10px;
-}
-
-/* component: map popup */
-.popup-content {
-  padding: 15px;
-  max-height: 300px;
-  overflow: scroll;
 }
 
 .popup-content .key {
@@ -409,13 +316,9 @@ input[type='checkbox'] + label {
 }
 
 .mapboxgl-popup-close-button {
-  font-size: 30px;
-  padding: 5px 10px;
+  font-size: 25px;
+  padding: 4px 8px;
   line-height: .9;
-}
-
-.mapboxgl-popup-content {
-  padding: 0;
 }
 
 .mapboxgl-marker {

@@ -1,0 +1,33 @@
+#filter-controls {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.select-container {
+    display: flex;
+    align-items: center;
+    flex-flow: row nowrap;
+    align-items: start;
+    margin: 0 10px 3px 0;
+}
+
+.custom-select:focus,
+.custom-select:hover,
+.custom-select:active {
+    border-color: var(--primary-200);
+}
+.custom-select::before {
+    content: 'test';
+    height: 25%;
+    position: absolute;
+    top: 0;
+}
+
+.select-container label {
+    font-size: 80%;
+    display: flex;
+    align-items: center;
+    padding: .5rem 0;
+} 

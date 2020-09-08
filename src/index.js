@@ -1,10 +1,15 @@
 // Import Styles
-import 'mapbox-gl/dist/mapbox-gl.css'
-import './styles/normalize.css'
-import './styles/styles.css'
-import './styles/search.css'
-import './styles/welcome.css'
-import './styles/translator.css'
+import 'mapbox-gl/dist/mapbox-gl.css';
+import './styles/normalize.css';
+import './styles/styles.css';
+import './styles/welcome.css';
+import './styles/translator.css';
+import './styles/theme.css';
+import './styles/components/location-card.css';
+import './styles/components/map-popup.css';
+import './styles/components/form-control.css';
+import './styles/components/search.css';
+import './styles/typography.css';
 
 // Import Libs
 import mapboxgl from 'mapbox-gl'
@@ -188,7 +193,7 @@ function needsMoneyComponent(location) {
   if (location.seekingMoneyURL && location.seekingMoneyURL !== '') {
     link = `<a data-translation-id="seeking_money_link" href="${location.seekingMoneyURL}" target="_blank" onclick="captureOutboundLink('${location.seekingMoneyURL}', 'donation')">DONATE NOW!</a>`;
   }
-  return `<span  class="seekingMoney seeking-money location-list--badge"><span data-translation-id="seeking_money">Needs Money</span> ${link}</span>`;
+  return `<span class="seekingMoney seeking-money card-badge"><span data-translation-id="seeking_money">Needs Money</span> ${link}</span>`;
 }
 
 function addressComponent(address) {
@@ -220,7 +225,7 @@ function sectionUrlComponent(value, key) {
       else if (!(/http/i.test(url))) target_url = 'http://' + url
 
       sectionHTML = replaceAll(sectionHTML, url, `<a href="${target_url}" target="_blank" onclick="captureOutboundLink('${target_url}', '${key}')">${url}</a>`);
-    })
+    });
   }
 
   return sectionHTML
@@ -238,37 +243,40 @@ const hiddenSearchFields = ['address', 'accepting', 'notAccepting', 'notes', 'se
 
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
-  const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p location-list--important"><span data-translation-id="urgent_need">Urgent Need</span>: ${location.urgentNeed}</p>` : ''
+  const neighborhood = location.neighborhood ? `<h3 class="card-subtitle neighborhood">${location.neighborhood}</h3>` : '';
+
+  const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p card-urgent-need"><span data-translation-id="urgent_need">Urgent Need</span>: ${location.urgentNeed}</p>` : ''
   const seekingMoney = needsMoneyComponent(location);
 
   let seekingVolunteers = ''
   if (location.seekingVolunteers && location.seekingVolunteers.match(/(?:\byes\b)/i)) {
-    seekingVolunteers = `<span data-translation-id="seeking_volunteers_badge" class="seekingVolunteersBadge location-list--badge">Needs Volunteer Support</span>`
+    seekingVolunteers = `<span data-translation-id="seeking_volunteers_badge" class="seekingVolunteersBadge card-badge">Needs Volunteer Support</span>`
   }
 
   let covid19Testing = ''
   if (location.notes && location.notes.match(/(?:\bcovid[ -]?(19)? testing\b)/i)) {
-    covid19Testing = `<span data-translation-id="covid19-testing" class="covid19-testing location-list--badge">Covid-19 Testing Available</span>`
+    covid19Testing = `<span data-translation-id="covid19-testing" class="covid19-testing card-badge">Covid-19 Testing Available</span>`
   }
 
   const openTimeDistribution = moment(location.openingForDistributingDontations, ["h:mm A"])
   const openTimeDistributionLessOne = moment(location.openingForDistributingDontations, ["h:mm A"]).subtract(1, 'hours')
   let openingSoonForDistribution = ''
   if (moment().isBetween(openTimeDistributionLessOne, openTimeDistribution)) {
-    openingSoonForDistribution = `<p class="opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${openTimeDistribution.format("LT")} <span data-translation-id="for_distribution">for distributing</span></p>`
+    openingSoonForDistribution = `<p class="card-opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${openTimeDistribution.format("LT")} <span data-translation-id="for_distribution">for distributing</span></p>`
   }
 
   const openTimeReceiving = moment(location.openingForReceivingDontations, ["h:mm A"])
   const openTimeReceivingLessOne = moment(location.openingForReceivingDontations, ["h:mm A"]).subtract(1, 'hours')
   let openingSoonForReceiving = ''
   if (moment().isBetween(openTimeReceivingLessOne, openTimeReceiving)) {
-    openingSoonForReceiving = `<p class="opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${openTimeReceiving.format("LT")} <span data-translation-id="for_receiving">for receiving</span></p>`
+    openingSoonForReceiving = `<p class="card-opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${openTimeReceiving.format("LT")} <span data-translation-id="for_receiving">for receiving</span></p>`
   }
 
  const hiddenSearch = hiddenSearchFields.map(field => `<p class="${field}" style="display:none">${location[field] || ''}</p>`).join('')
 
   const $item = document.createElement('div')
-  $item.classList.add('location-list--item')
+  $item.classList.add('card');
+  $item.classList.add('location-list--item');
   $item.dataset.id = status.id;
 
   // Increments the total count 
@@ -276,13 +284,16 @@ const createListItem = (location, status, lng, lat) => {
   status.count++
 
   $item.innerHTML = `
-    <div class="flex">
-      <span title="${status.id}" class="status location-list--indicator" style="background-color: ${status.accessibleColor};">${status.id}</span>
-      <div>
-        <h2 class='h2'>
-          <span class="name">${location.name}</span>
+    <div class="card-content">
+      <div class="card-title">
+        <span title="${status.id}" class="status" style="display:none;">${status.id}</span>
+        <span title="${status.id}" class="card-status-indicator" style="background-color: ${status.accessibleColor};" ></span>
+        <h2 class="name">
+          ${location.name}
         </h2>
-        <h3 class="h3 neighborhood">${location.neighborhood || ''}</h3>
+      </div>
+      ${neighborhood}
+      <div class="card-badge-group">
         ${openingSoonForDistribution}
         ${openingSoonForReceiving}
         ${urgentNeed}
@@ -292,7 +303,10 @@ const createListItem = (location, status, lng, lat) => {
         ${covid19Testing}
       </div>
     </div>
-    `
+    <div class="card-status-border" style="background-color: ${status.accessibleColor};"></div>
+  `
+
+  
   $item.addEventListener('click', (evt) => {
     const popup = location.marker.getPopup()
     if (popup.isOpen()) {
@@ -421,7 +435,7 @@ const onMapLoad = async () => {
 
         // transform location properties into HTML
         const propertyTransforms = {
-          name: (name, _) => `<h2 class='h2'>${name}</h2>`,
+          name: (name, _) => `<h2>${name}</h2>`,
           neighborhood: (neighborhood, _) => `<h3 class='h3'>${neighborhood}</h3>`,
           address: addressComponent, // driving directions in google, consider doing inside mapbox
           seekingMoney: (value, location) => needsMoneyComponent(location),
