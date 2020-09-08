@@ -288,7 +288,7 @@ const createListItem = (location, status, lng, lat) => {
       <div class="card-title">
         <span title="${status.id}" class="status" style="display:none;">${status.id}</span>
         <span title="${status.id}" class="card-status-indicator" style="background-color: ${status.accessibleColor};" ></span>
-        <h2>
+        <h2 class="name">
           ${location.name}
         </h2>
       </div>
