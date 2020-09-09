@@ -10,7 +10,6 @@
     padding: 1rem 1.25rem;
     transition: transform .15s ease-in-out, border-color .15s ease-in-out;
     cursor: pointer;
-    z-index: 9999;
 }
 
 .popup-content {
@@ -18,13 +17,10 @@
     width: 100%;
     overflow: scroll;
     padding: 0;
-    z-index: 9999;
 }
 
 .popup-content h2, .popup-content h3  {
     white-space: pre-line;
-    z-index: 9999;
-
 }
 
 .popup-content h2 {
@@ -32,8 +28,6 @@
     border-bottom: 1px solid var(--gray-200);
     margin-bottom: .5rem;
     padding: 0 1.5rem .5rem 0;
-    z-index: 9999;
-
 }
 
 .popup-content h3 {

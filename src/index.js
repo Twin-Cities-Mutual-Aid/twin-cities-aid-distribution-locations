@@ -47,8 +47,6 @@ const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
 const $locationsButton = document.getElementById('locations-toggle-button');
 const $body = document.body;
-const key = document.getElementById('key');
-const legendOverlay = document.getElementById("legend-overlay");
 
 mapboxgl.accessToken = Config.accessToken
 
@@ -564,5 +562,3 @@ const refreshPageButton = document.getElementById('refresh-page-button')
 refreshPageButton.addEventListener("click", function() {
   refreshPage()
 })
-
-// render key
