@@ -9,6 +9,7 @@ import './styles/components/location-card.css';
 import './styles/components/map-popup.css';
 import './styles/components/form-control.css';
 import './styles/components/search.css';
+import './styles/components/filter.css';
 import './styles/typography.css';
 
 // Import Libs
@@ -46,6 +47,8 @@ const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
 const $locationsButton = document.getElementById('locations-toggle-button');
 const $body = document.body;
+const key = document.getElementById('key');
+const legendOverlay = document.getElementById("legend-overlay");
 
 mapboxgl.accessToken = Config.accessToken
 
@@ -563,10 +566,3 @@ refreshPageButton.addEventListener("click", function() {
 })
 
 // render key
-const key = document.getElementById('key')
-statusOptions.forEach(s => {
-  const el = document.createElement('div');
-  el.classList = ['legend--item'];
-  el.innerHTML = `<span class="legend--item--swatch" style="background-color: ${s.accessibleColor}"></span>${s.label}`
-  key.append(el)
-})
