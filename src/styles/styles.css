@@ -64,6 +64,10 @@ a.txt-white:hover {
   flex-shrink: 0;
 }
 
+.header {
+  background: var(--primary-blue);
+}
+
 /* shared:layout */
 .flex {
   display: flex;

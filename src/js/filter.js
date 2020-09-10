@@ -16,7 +16,6 @@ class Filter {
     this.$controls = document.getElementById("filter-controls")
     this.$legendOverlay = document.getElementById("legend-overlay")
     this.$toggleLegendButton = document.getElementById("toggle-legend-button")
-    this.$key = document.getElementById("key")
     this.renderControls(this.$controls)
     this.list = new List(this.$el.id, {
       valueNames: [...this.sortOptions.map(o => o.name), ...this.searchOptions.searchOn],
@@ -178,7 +177,8 @@ class Filter {
 
     const debouncedSearch = _.debounce(this.search.bind(this), 300);
 
-    this.$key.innerHTML = `<ul class="filters">${filters}</ul>`;
+    const $key = document.getElementById("key");
+    $key.innerHTML = `<ul class="filters">${filters}</ul>`;
 
     this.$locationList = document.getElementById('location-list')
     this.$sort = document.getElementById('sort-by')
@@ -187,7 +187,7 @@ class Filter {
     this.$searchInputGroup = document.getElementsByClassName('search-input-group')[0]
     this.$listResults = document.getElementById('list-results-count')
     this.$clearSearchBtn = document.getElementById('clear-search-btn')
-    this.$filters = Array.prototype.slice.call(this.$key.querySelectorAll('input[type="checkbox"]'))
+    this.$filters = Array.prototype.slice.call($key.querySelectorAll('input[type="checkbox"]'))
     this.$sort.addEventListener('change', this.update.bind(this))
     this.$search.addEventListener('input', event => {
       this.$locationList.classList.add('loading-indicator');
@@ -214,6 +214,12 @@ class Filter {
 
   }
 
+  createLegendOverlayItem(option) {
+    const item = document.createElement('div');
+    item.innerHTML = `<button class="legend-overlay-item" style="background-color: ${option.accessibleColor}">${option.name}</button>`
+    this.$legendOverlay.append(item);
+  }
+
   toggleFilters() {
     this.$toggleLegendButton.classList.toggle("open");
     const panel = document.getElementById("legend-container");
@@ -222,20 +228,6 @@ class Filter {
     } else {
       panel.style.maxHeight = panel.scrollHeight + "px";
     }
-    if (this.$legendOverlay.style.maxWidth) {
-      this.$legendOverlay.style.maxWidth = null;
-    } else {
-      this.$legendOverlay.style.maxWidth = panel.scrollWidth + "px";
-    }
-  }
-
-  createLegendOverlayItem(option) {
-    const item = document.createElement('div');
-    item.innerHTML = `<button class="legend-overlay-item" style="background-color: ${option.accessibleColor}">${option.name}</button>`
-    this.$legendOverlay.append(item);
-  }
-
-  toggleLegendOverlay() {
     if (this.$legendOverlay.style.maxWidth) {
       this.$legendOverlay.style.maxWidth = null;
     } else {
