@@ -58,6 +58,7 @@ const statusClosed =  {
   name: 'closed',
   label: 'not open now',
   accessibleColor: '#d7191c',
+  textColor: '#FFFFFF',
   count: 0
 }
 
@@ -67,6 +68,7 @@ const statusOptions = [
     name: 'receiving',
     label: 'open for receiving donations',
     accessibleColor: '#2c7bb6',
+    textColor: '#FFFFFF',
     count: 0
   },
   {
@@ -74,6 +76,7 @@ const statusOptions = [
     name: 'distributing',
     label: 'open for distributing donations',
     accessibleColor: '#abd9e9',
+    textColor: '#000000',
     count: 0
   },
   {
@@ -81,6 +84,7 @@ const statusOptions = [
     name: 'both',
     label: 'open for both',
     accessibleColor: '#fdae61',
+    textColor: '#000000',
     count: 0
   },
   statusClosed

@@ -216,7 +216,7 @@ class Filter {
 
   createLegendOverlayItem(option) {
     const item = document.createElement('div');
-    item.innerHTML = `<button class="legend-overlay-item" style="background-color: ${option.accessibleColor}">${option.name}</button>`
+    item.innerHTML = `<button class="legend-overlay-item" style="background-color: ${option.accessibleColor}; color: ${option.textColor}" data-translation-id="${option.name}">${option.name}</button>`
     this.$legendOverlay.append(item);
   }
 
