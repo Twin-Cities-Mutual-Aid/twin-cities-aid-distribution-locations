@@ -207,7 +207,7 @@ input[type='checkbox'] + label {
 
 /* component: location list */
 .location-list {
-  padding: 8px;
+  padding: 4px 8px 8px 8px;
   max-width: 100%;
   max-height: 100%;
   flex-grow: 1;
