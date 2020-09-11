@@ -3,6 +3,10 @@
 	padding: 0px 15px;
 }
 
+.filter-dropdown-title {
+	display: none;
+}
+
 .filters {
 	list-style: none;
 	padding: 0;
@@ -50,6 +54,7 @@
 	}
 
 	.filter-dropdown-title {
+		display: flex;
 	}
 
 	#toggle-legend-button {
