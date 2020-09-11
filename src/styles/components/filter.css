@@ -32,19 +32,37 @@
 
 	.filter-pane {
 		display: flex;
+		flex-flow: column nowrap;
+		padding: 0 0 0 15px;
+		margin: 10px 15px;
+		background: rgba(360, 360, 360, 10%);
+		border-radius: 0.5rem;
+	}
+
+	.filter-dropdown {
+		display: flex;
 		flex-flow: row nowrap;
-		padding: 0;
-		background: var(--primary-blue);
+		justify-content: space-between;
+		align-items: center;
+		height: 45px;
+		cursor: pointer;
+		/* border-bottom: var(--primary-blue) solid 1px; */
+	}
+
+	.filter-dropdown-title {
 	}
 
 	#toggle-legend-button {
-		padding: 25px 15px;
-		height: 50px;
-		cursor: pointer;
+		/* padding: 20px 15px; */
+		/* height: 40px;
+		width: 40px;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer; */
 	}
 
 	.legend-container {
-		padding-top: 20px;
+		/* padding-bottom: 15px; */
 		overflow: hidden;
 		max-height: 0;
 		transition: max-height 0.3s ease-in-out;
@@ -52,14 +70,21 @@
 
 	.legend {
 		flex-flow: row nowrap;
+		padding-bottom: 13px;
+		/* padding-bottom: 5px; */
 	}
 
 	.arrow-icon {
 		display: flex;
-		background-color: var(--primary-blue);
-		height: 2em;
-		width: 3.5em;
+		/* background-color: var(--primary-blue); */
+		/* height: 2em; */
+		/* width: 3.5em; */
 		border-radius: 4px;
+		/* padding: 20px 15px; */
+		height: 40px;
+		width: 40px;
+		align-items: center;
+		justify-content: center;
 	}
 
 	.left-bar {

@@ -209,8 +209,11 @@ class Filter {
       this.createLegendOverlayItem(statusOption);
     })
 
-    this.$toggleLegendButton.addEventListener("click", 
-      event => this.toggleFilters());
+    const $filterDropdown = document.getElementById("filter-dropdown");
+    $filterDropdown.addEventListener("click", 
+    event => this.toggleFilters());
+    // this.$toggleLegendButton.addEventListener("click", 
+    //   event => this.toggleFilters());
 
   }
 

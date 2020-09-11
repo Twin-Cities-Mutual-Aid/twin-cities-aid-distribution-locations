@@ -140,14 +140,23 @@ input[type='checkbox'] + label {
   background-color: var(--primary-blue);
 }
 
+.menu {
+  /* margin-right: 5%; */
+  display: none;
+}
+
 /* component: title */
 .title {
-  padding: 10px 15px 0px 15px;
+  display: flex;
+  justify-content: space-between;
+  flex-flow: row nowrap;
+  padding: 10px 15px 10px 15px;
 }
 
 .action-group {
   padding: 5px 15px 0px 0px;
-  background-color: var(--primary-blue);
+  /* background-color: var(--primary-blue); */
+  /* display: none; */
 }
 
 .loading-indicator {
@@ -308,7 +317,9 @@ input[type='checkbox'] + label {
   }
 
   .action-group {
-    padding: 5px 15px 0px 0px;
+    margin: 0px 15px;
+    padding: 0;
+    /* background-color: rgba(360, 360, 360, 5%); */
   }
 
   .location-list-toggle {
