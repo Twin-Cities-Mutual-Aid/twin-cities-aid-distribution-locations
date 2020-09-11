@@ -33,11 +33,18 @@
 	.filter-pane {
 		display: flex;
 		flex-flow: row nowrap;
-		padding: 0 0px 0 12px;
+		padding: 0;
 		background: var(--primary-blue);
 	}
 
+	#toggle-legend-button {
+		padding: 15px 15px;
+		height: 35px;
+		cursor: pointer;
+	}
+
 	.legend-container {
+		padding-top: 10px;
 		overflow: hidden;
 		max-height: 0;
 		transition: max-height 0.4s ease-in-out;
@@ -48,20 +55,18 @@
 	}
 
 	.arrow-icon {
+		display: flex;
 		background-color: var(--primary-blue);
 		height: 1em;
-		width: 1em;
-		margin: 5px 5px;
-		position: relative;
-		cursor: pointer;
+		width: 3.5em;
 		border-radius: 4px;
 	}
 
 	.left-bar {
-		position: absolute;
+		position: relative;
 		background-color: transparent;
 		top: 0;
-		left: 0;
+		left: 2px;
 		width: 8px;
 		height: 2px;
 		display: block;
@@ -83,10 +88,10 @@
 	}
 
 	.right-bar {
-		position: absolute;
+		/* position: absolute; */
 		background-color: transparent;
 		top: 0px;
-		left: 6px;
+		left: 4px;
 		width: 8px;
 		height: 2px;
 		display: block;
