@@ -70,7 +70,7 @@
 		/* padding-bottom: 15px; */
 		overflow: hidden;
 		max-height: 0;
-		transition: max-height 0.3s ease;
+		transition: max-height 0.3s; 
 	}
 
 	.legend {
@@ -165,7 +165,7 @@
 		bottom: 40px;
 		left: 0px;
 		max-width: 0;
-		transition: max-width 0.3s ease;
+		transition: max-width 0.3s;
 		overflow: hidden;
 	}
 
