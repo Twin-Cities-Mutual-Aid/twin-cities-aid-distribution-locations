@@ -22,6 +22,7 @@
   "filter_by_both": "abierto para ambos",
   "filter_by_closed": "actualmente cerrado",
   "filter_by_unknown": "estado desconocido",
+  "filter": "",
   "receiving": "recibando",
   "distributing": "distribuyendo",
   "both": "ambos",
