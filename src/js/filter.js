@@ -212,8 +212,6 @@ class Filter {
     const $filterDropdown = document.getElementById("filter-dropdown");
     $filterDropdown.addEventListener("click", 
     event => this.toggleFilters());
-    // this.$toggleLegendButton.addEventListener("click", 
-    //   event => this.toggleFilters());
 
   }
 
@@ -225,16 +223,16 @@ class Filter {
 
   toggleFilters() {
     this.$toggleLegendButton.classList.toggle("open");
-    const panel = document.getElementById("legend-container");
-    if (panel.style.maxHeight) {
-      panel.style.maxHeight = null;
+    const legendContainer = document.getElementById("legend-container");
+    if (legendContainer.style.maxHeight) {
+      legendContainer.style.maxHeight = null;
     } else {
-      panel.style.maxHeight = panel.scrollHeight + "px";
+      legendContainer.style.maxHeight = legendContainer.scrollHeight + "px";
     }
     if (this.$legendOverlay.style.maxWidth) {
       this.$legendOverlay.style.maxWidth = null;
     } else {
-      this.$legendOverlay.style.maxWidth = panel.scrollWidth + "px";
+      this.$legendOverlay.style.maxWidth = this.$legendOverlay.scrollWidth + "px";
     }
   }
   
