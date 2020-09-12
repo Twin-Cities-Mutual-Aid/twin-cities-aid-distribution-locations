@@ -56,15 +56,6 @@
 		display: flex;
 	}
 
-	#toggle-legend-button {
-		/* padding: 20px 15px; */
-		/* height: 40px;
-		width: 40px;
-		align-items: center;
-		justify-content: center;
-		cursor: pointer; */
-	}
-
 	.legend-container {
 		overflow: hidden;
 		max-height: 0;

@@ -154,10 +154,7 @@ input[type='checkbox'] + label {
 }
 
 .action-group {
-  /* padding: 5px 15px 0px 0px; */
   margin: 5px 15px;
-  /* background-color: var(--primary-blue); */
-  /* display: none; */
 }
 
 .loading-indicator {
@@ -320,7 +317,6 @@ input[type='checkbox'] + label {
   .action-group {
     margin: 0px 15px;
     padding: 0;
-    /* background-color: rgba(360, 360, 360, 5%); */
   }
 
   .location-list-toggle {
