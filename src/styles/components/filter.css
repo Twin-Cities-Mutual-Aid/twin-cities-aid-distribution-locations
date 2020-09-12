@@ -50,7 +50,6 @@
 		align-items: center;
 		height: 45px;
 		cursor: pointer;
-		/* border-bottom: var(--primary-blue) solid 1px; */
 	}
 
 	.filter-dropdown-title {
@@ -67,25 +66,18 @@
 	}
 
 	.legend-container {
-		/* padding-bottom: 15px; */
 		overflow: hidden;
 		max-height: 0;
-		/* transition: max-height 0.3s;  */
 	}
 
 	.legend {
 		flex-flow: row nowrap;
 		padding-bottom: 13px;
-		/* padding-bottom: 5px; */
 	}
 
 	.arrow-icon {
 		display: flex;
-		/* background-color: var(--primary-blue); */
-		/* height: 2em; */
-		/* width: 3.5em; */
 		border-radius: 4px;
-		/* padding: 20px 15px; */
 		height: 40px;
 		width: 40px;
 		align-items: center;
@@ -118,7 +110,6 @@
 	}
 
 	.right-bar {
-		/* position: absolute; */
 		background-color: transparent;
 		top: 0px;
 		left: 4px;
@@ -165,7 +156,6 @@
 		bottom: 40px;
 		left: 0px;
 		max-width: 0;
-		/* transition: max-width 0.3s; */
 		overflow: hidden;
 	}
 
