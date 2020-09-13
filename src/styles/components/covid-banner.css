@@ -1,0 +1,181 @@
+
+
+
+.covid-banner {
+    display: flex;
+    flex-flow: row nowrap;
+    background:  var(--primary-blue);
+    border-bottom: 2px solid var(--secondary-500);
+    color: white;
+}
+
+.covid-banner-reminder {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.covid-warning-icon {
+    /* hide alt text if image is missing */
+    margin: 1rem;
+}
+
+.covid-19 {
+    margin-right: 5px;
+}
+
+.safety-reminder {
+    display: flex;
+    flex: 25%;
+    align-items: center;
+}
+
+.covid-comply-message {
+    display: flex;
+    flex: 65%;
+    justify-content: center;
+    align-self: center;
+    flex-flow: row wrap;
+    align-items: center;
+}
+
+.covid-icon-container {
+    display: flex;
+    /* flex-flow: row wrap; */
+    flex: 10%;
+    /* align-self: start; */
+    margin: 5px 2px;
+    justify-content: flex-start;
+    /* justify-content: center; */
+}
+
+.covid-icon {
+    font-size: 24px;
+    display: flex;
+    margin-left: 10px;
+    background: var(--secondary-600-semi-transparent);
+    padding: 5px;
+    border-radius: 50%;
+}
+
+.covid-icon-message {
+    display: none;
+}
+
+.learn-more {
+    display: flex;
+    border-radius: 8px;
+    color: var(--secondary-500);
+    align-items: center;
+    cursor: pointer;
+}
+
+.learn-more:hover {
+    color: var(--secondary-300);
+}
+
+.close-covid-banner {
+    display: flex;
+    flex: 3%;
+    justify-content: flex-end;
+    cursor: pointer;
+}
+
+.close-icon {
+    padding: 3px;
+}
+
+@media(max-width: 1000px) {
+    .safety-reminder {
+        display: flex;
+        flex: 25%;
+        flex-flow: row;
+        align-items: center;
+    }
+
+    .safety-reminder-message {
+        display: none;
+    }
+
+    .covid-comply-message {
+        display: none;
+    }
+
+    .covid-icon-container {
+        flex: 25%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .covid-icon-message {
+        display: flex;
+        margin-left: 2px;
+    }
+}
+
+@media(max-width: 640px) {
+    .covid-warning-icon {
+        /* hide alt text if image is missing */
+        margin: 1rem 0.5rem;
+    }
+
+    .safety-reminder {
+        display: flex;
+        flex: 34%;
+        flex-flow: row;
+        align-items: center;
+        width: 20;
+    }
+
+    .safety-reminder-message {
+        display: none;
+    }
+
+    .covid-comply-message {
+        display: none;
+    }
+
+    .covid-icon-container {
+        flex: 22%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .covid-icon-message {
+        display: flex;
+        margin-left: 2px;
+    }
+
+}
+
+@media(max-width: 375px) {
+    .covid-warning-icon {
+        display: none;
+    }
+
+    .safety-reminder {
+        display: none;
+    }
+
+    .safety-reminder-message {
+        display: none;
+    }
+
+    .covid-comply-message {
+        display: none;
+    }
+
+    .covid-icon-container {
+        flex: 22%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* .covid-icon-message {
+        display: flex;
+        margin-left: 2px;
+    } */
+
+}

@@ -9,6 +9,7 @@ import './styles/components/location-card.css';
 import './styles/components/map-popup.css';
 import './styles/components/form-control.css';
 import './styles/components/search.css';
+import './styles/components/covid-banner.css';
 import './styles/typography.css';
 
 // Import Libs
@@ -109,6 +110,8 @@ if (translator.prompt) {
 // when language button is clicked, re-open welcome modal
 document.getElementById('lang-select-button').addEventListener('click', () => welcome.open())
 
+document.getElementById('covid-banner').addEventListener('click', () => closeCovidBanner())
+
 let locations = []
 
 // Alternative base style: 'mapbox://styles/mapbox/light-v10',
@@ -144,6 +147,10 @@ function camelToTitle(str) {
 function truthy(str) {
   const normalizedStr = _.toUpper(str);
   return _.includes(['TRUE', 'YES', 'T', 'Y'], normalizedStr);
+}
+
+function closeCovidBanner() {
+  document.getElementById('covid-banner').style.display = "none"
 }
 
 // open/close location sidebar
