@@ -4,32 +4,34 @@
  * Using local translation files located under /src/i18n/*.js
  */
 
-import eng from './../i18n/eng.json'
-import spa from './../i18n/spa.json'
-import som from './../i18n/som.json'
-import hmn from './../i18n/hmn.json'
 import amh from './../i18n/amh.json'
-import orm from './../i18n/orm.json'
-import oji from './../i18n/oji.json'
 import dak from './../i18n/dak.json'
-import vie from './../i18n/vie.json'
+import eng from './../i18n/eng.json'
 import hin from './../i18n/hin.json'
+import hmn from './../i18n/hmn.json'
 import kar from './../i18n/kar.json'
+import man from './../i18n/man.json'
+import oji from './../i18n/oji.json'
+import orm from './../i18n/orm.json'
+import som from './../i18n/som.json'
+import spa from './../i18n/spa.json'
+import vie from './../i18n/vie.json'
 
 class Translator {
   constructor() {
     this.languages = {
-      eng,
-      spa,
-      som,
-      hmn,
       amh,
-      orm,
-      oji,
       dak,
-      vie,
+      eng,
       hin,
-      kar
+      hmn,
+      kar,
+      man,
+      oji,
+      orm,
+      som,
+      spa,
+      vie
     }
     this.detectLanguage()
   }
