@@ -47,6 +47,44 @@
 </script>
 
 <body class='flex'>
+
+  <div id="covid-banner" class="covid-banner">
+    <div class="covid-banner-reminder">
+      <div class="safety-reminder">
+        <i class="material-icons-round covid-warning-icon" alt="${lang_name}">error</i>
+        <div>
+          <h5 class="covid-19">COVID-19</h5>
+          <h5 class="safety-reminder-message">Safety Reminder</h5>
+        </div>
+      </div>
+
+      <div class="covid-comply-message">
+        <h5>Please comply with social distancing and mask requirements.</h5>
+        <a class="learn-more">
+          <i class="material-icons-round">double_arrow</i>
+          <h5>Learn More</h5>
+        </a>
+      </div>
+
+      <div class="covid-icon-container">
+        <i class="material-icons-round covid-icon" alt="${lang_name}">masks</i>
+        <h6 class="covid-icon-message">Wear Masks</h6>
+      </div>
+      <div class="covid-icon-container">
+        <i class="material-icons-round covid-icon" alt="${lang_name}">6_ft_apart</i>
+        <h6 class="covid-icon-message">Social Distance</h6>
+      </div>
+      <div class="covid-icon-container">
+        <i class="material-icons-round covid-icon" alt="${lang_name}">wash</i>
+        <h6 class="covid-icon-message">Wash Hands</h6>
+      </div>
+    </div>
+    <div id="close-covid-banner-button" class="close-covid-banner">
+      <i class="material-icons-round close-icon">close</i>
+    </div>
+  </div>
+
+  <div class="main-content">
   <div class="content">
     <div class="title white-and-blue">
       <h1 data-translation-id="page_title" class='h1'>Twin Cities Mutual Aid Map</h1>
@@ -58,9 +96,7 @@
       <button data-translation-id="refresh_button" id='refresh-page-button' class='toggle-button' aria-label="refresh page data">
         <img class="refresh-image" alt="${lang_name}" src="/images/refresh.png">
         <span class="refresh-text" data-translation-id="refresh">Refresh</span></button>
-      <div class='counter'>
-        <script type="text/javascript" src="//counter.websiteout.net/js/7/0/41000/0"></script>
-      </div>
+      
     </div>
     <div id="search-controls"></div>
     <div id="side-pane" class="location-list">
@@ -79,6 +115,9 @@
       TCMAP does not assume any responsibility for your use of this website and has no obligation to provide users with financial or other assistance.</span></p>
   </div>
   <div class='map' id="map">
+    <div class='counter'>
+      <script type="text/javascript" src="//counter.websiteout.net/js/7/0/41000/0"></script>
+    </div>
     <button class="lang-select-button" id="lang-select-button">
       <span class="lang-select-label" data-translation-id="language">Language</span>
       <span class="lang-current">
@@ -87,6 +126,7 @@
       </span>
     </button>
   </div>
+</div>
 
   <script src="/js/list.min.js"></script>
   <script type="module" src="/_dist_/index.js"></script>

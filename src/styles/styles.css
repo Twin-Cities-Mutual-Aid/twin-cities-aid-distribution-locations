@@ -16,6 +16,12 @@ body {
   overflow: hidden;
 }
 
+.main-content {
+  display: flex;
+  overflow: hidden;
+  height:100%;
+}
+
 a {
   color: var(--primary-500);
 }
@@ -67,6 +73,7 @@ a.txt-white:hover {
 /* shared:layout */
 .flex {
   display: flex;
+  flex-flow: column nowrap;
 }
 
 .txt-small {
@@ -308,11 +315,13 @@ input[type='checkbox'] + label {
   position: absolute;
   top: 0;
   right: 0;
+  z-index: 9999;
 }
 
 /* Mapbox overrides */
 .mapboxgl-map {
   font: 15px/1.4 Arial, Helvetica, sans-serif;
+  height: 100%;
 }
 
 .mapboxgl-popup-close-button {
@@ -356,6 +365,7 @@ input[type='checkbox'] + label {
   }
   .map {
     display: block;
+    height: 100%;
   }
   .list-active .map {
     display: none;
