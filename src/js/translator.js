@@ -20,18 +20,18 @@ import vie from './../i18n/vie.json'
 class Translator {
   constructor() {
     this.languages = {
-      amh,
-      dak,
       eng,
-      hin,
-      hmn,
-      kar,
-      man,
-      oji,
-      orm,
-      som,
       spa,
-      vie
+      som,
+      hmn,
+      amh,
+      orm,
+      oji,
+      dak,
+      vie,
+      hin,
+      kar,
+      man
     }
     this.detectLanguage()
   }
