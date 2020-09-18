@@ -2,19 +2,25 @@
 
 > **Note:** development on this project is moving quickly, so parts of this document may be out of date. Feel free to ask questions in the `#tc-aid-translations` channel in Slack.
 
-1. [Overview](#Overview)
-   1. [The translation spreadsheet](#the-translation-spreadsheet) (**DEPRECATED**)
-   2. [Translation files](#translation-files)
-   3. [Special links](#special-links)
-2. [Maintaining translations](#maintaining-translations)
-   1. [Translating existing terms](#translating-existing-terms)
-   2. [Creating a new term](#creating-a-new-term)
-   3. [Adding a new language](#adding-a-new-language)
-3. [Technical details](#technical-details)
-   1. [Adding a term in markup (`data-translation-id`)](#adding-a-term-in-markup-data-translation-id)
-   2. [Getting a translated term in js code (`get`)](#getting-a-translated-term-in-js-code-get)
-   3. [Setting the current language (`language`)](#setting-the-current-language-language)
-   4. [Running translation substitution (`translate`)](#running-translation-substitution-translate)
+- [Language Translation](#language-translation)
+  - [Overview](#overview)
+    - [The translation spreadsheet](#the-translation-spreadsheet)
+    - [Translation files](#translation-files)
+    - [Special links](#special-links)
+  - [Maintaining Translations](#maintaining-translations)
+    - [Translating existing terms](#translating-existing-terms)
+    - [Creating a new term](#creating-a-new-term)
+    - [Adding a new language](#adding-a-new-language)
+      - [Create a new translation file](#create-a-new-translation-file)
+      - [Adding a new flag image](#adding-a-new-flag-image)
+      - [Moment.js](#momentjs)
+      - [Enabling the language](#enabling-the-language)
+      - [Add language checklist](#add-language-checklist)
+  - [Technical Details](#technical-details)
+    - [Adding a term in markup (`data-translation-id`)](#adding-a-term-in-markup-data-translation-id)
+    - [Getting a translated term in js code (`get`)](#getting-a-translated-term-in-js-code-get)
+    - [Setting the current language (`language`)](#setting-the-current-language-language)
+    - [Running translation substitution (`translate`)](#running-translation-substitution-translate)
 
 ## Overview
 
@@ -156,7 +162,7 @@ constructor() {
  - [ ] Create a new translation file (`src/i18n/XXX.json`)
  - [ ] Add a new flag image (`public/images/lang-XXX.png`)
  - [ ] `locale` should match existing `moment.js` translation or new `moment.js` locale created (`src/locale/XXX.js`)
- - [ ] Language has been imported in `translation.js`
+ - [ ] Language has been imported in `translator.js`
 
 ---
 
@@ -165,7 +171,7 @@ constructor() {
 Some quick notes:
 
  * The main code for this feature is in `/src/js/translator.js`
- * We are using [`ISO 639-2`](https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes) (3-letter) codes instead of the more common `ISO 639-1` (2-letter) because the former has broader langauge support (for instance: Karen Languages).
+ * We are using [`ISO 639-2`](https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes) (3-letter) codes instead of the more common `ISO 639-1` (2-letter) because the former has broader language support (for instance: Karen Languages).
 
  ### Adding a term in markup (`data-translation-id`)
 
