@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  web:
+    image: tc-aid-dl:latest
+    ports:
+      - "8080:8080"
+    env_file: .env
+    deploy:
+      replicas: 1
+    command: "npm run dev"
