@@ -19,7 +19,7 @@ If you've got a feature request or feedback to share on the website, feel free t
 ## Data
 
 Data is sourced from a google spreadsheet.
-* Example spreadsheet: https://docs.google.com/spreadsheets/d/1ETV6xakGCkp3dmgfpayjEBQii8p_ElMXYuDut3EDZTE/edit#gid=0
+* [Example spreadsheet](https://docs.google.com/spreadsheets/d/1mb6QY8El3o_U9ltL0sxGR-bzyJS4_oJGJOqs9XmGf7o/edit?copiedFromTrash#gid=0)
 * Google Apps Script utility script also available to automatically update a row timestamp and insert latitude and longitude when an address cell is added or updated: https://github.com/mc-funk/community-map-google-scripts/
 
 To test locally with your own copy of the spreadsheet, duplicate the example
