@@ -36,11 +36,13 @@ if(import.meta.env.MODE === 'production'){
 import 'moment/dist/locale/es'
 import 'moment/dist/locale/vi'
 import './locale/am'
-import './locale/om'
-import './locale/so'
-import './locale/oj'
+import './locale/dak'
 import './locale/hmn'
 import './locale/kar'
+import './locale/man'
+import './locale/oj'
+import './locale/om'
+import './locale/so'
 
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
