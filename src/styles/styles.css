@@ -14,6 +14,19 @@ body {
   right: 0;
   bottom: 0;
   overflow: hidden;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.main-content {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  display: flex;
+  flex-flow: row nowrap;
 }
 
 .main-content {
@@ -36,10 +49,11 @@ a.txt-white:hover {
 
 .map,
 .help-info, .refresh-page-button {
-  left: 0;
+  /* position: relative; */
+  /* left: 0;
   top: 0;
   right: 0;
-  bottom: 0;
+  bottom: 0; */
   height: 100%;
   width: 100%;
 }
@@ -70,11 +84,6 @@ a.txt-white:hover {
   flex-shrink: 0;
 }
 
-/* shared:layout */
-.flex {
-  display: flex;
-  flex-flow: column nowrap;
-}
 
 .txt-small {
   font-size: 13px;
@@ -140,7 +149,7 @@ input[type='checkbox'] + label {
 
 .white-and-blue {
   color: white;
-  background-color: rgba(0,0,50,.9);
+  background-color: var(--primary-blue);
 }
 
 /* component: title */
@@ -321,7 +330,10 @@ input[type='checkbox'] + label {
 /* Mapbox overrides */
 .mapboxgl-map {
   font: 15px/1.4 Arial, Helvetica, sans-serif;
+
   height: 100%;
+
+  overflow: visible;
 }
 
 .mapboxgl-popup-close-button {
@@ -339,14 +351,19 @@ input[type='checkbox'] + label {
   display: none;
 }
 
+
+
 /* Small screens */
 @media only screen and (max-width: 640px) {
-  body {
+
+  .main-content {
     flex-direction: column;
   }
+
   .content {
     width: 100%;
   }
+
   .legend {
     display: flex;
     flex-wrap: wrap;
@@ -364,8 +381,11 @@ input[type='checkbox'] + label {
     display: none;
   }
   .map {
-    display: block;
-    height: 100%;
+    /* display: block; */
+    /* height: 100%; */
+
+    display: flex;
+
   }
   .list-active .map {
     display: none;
