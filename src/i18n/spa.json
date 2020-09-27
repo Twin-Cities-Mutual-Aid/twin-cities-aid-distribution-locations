@@ -77,5 +77,11 @@
   "moment_h": "una hora",
   "moment_d": "un dia",
   "moment_M": "un mes",
-  "moment_y": "un año"
+  "moment_y": "un año",
+  "safety_reminder": "Recordatorio de suguridad",
+  "covid_request": "Por favor cumpla con los requisitos de distanciamiento social y máscara facial.",
+  "learn_more": "Aprende más",
+  "wear_masks": "Usar máscara facial",
+  "social_distance": "Distancia social",
+  "wash_hands": "Lavar las manos"
 }
