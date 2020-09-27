@@ -72,6 +72,14 @@
     cursor: pointer;
 }
 
+.learn-more:link {
+    text-decoration: none;
+}
+
+.learn-more:visited {
+    text-decoration: none;
+}
+
 .learn-more:hover {
     color: var(--secondary-300);
 }
