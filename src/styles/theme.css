@@ -29,7 +29,6 @@
     --secondary-400: hsl(var(--secondary), 65%);
     --secondary-500: hsl(var(--secondary), 55%);
     --secondary-600: hsl(var(--secondary), 45%);
-    --secondary-600-semi-transparent: hsla(var(--secondary), 45%, 100%);
     --secondary-700: hsl(var(--secondary), 35%);
     --secondary-800: hsl(var(--secondary), 25%);
     --secondary-900: hsl(var(--secondary), 15%);

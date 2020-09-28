@@ -1,8 +1,7 @@
 .covid-banner {
     display: flex;
     flex-flow: row nowrap;
-    background:  var(--primary-blue);
-    border-bottom: 2px solid var(--secondary-500);
+    background-image: linear-gradient(var(--secondary-500), var(--secondary-600));
     color: white;
 }
 
@@ -21,6 +20,8 @@
 
 .covid-19 {
     margin-right: 5px;
+    color: white;
+    font-weight: bold;
 }
 
 .safety-reminder {
@@ -49,7 +50,8 @@
     font-size: 24px;
     display: flex;
     margin-left: 10px;
-    background: var(--secondary-600-semi-transparent);
+    background: var(--primary-blue);
+    color: white;
     padding: 5px;
     border-radius: 50%;
 }
@@ -61,21 +63,22 @@
 .learn-more {
     display: flex;
     border-radius: 8px;
-    color: var(--secondary-500);
+    font-weight: bold;
+    color: var(--primary-900);
     align-items: center;
     cursor: pointer;
 }
 
-.learn-more:link {
+.learn-more:link, .covid-19:link {
     text-decoration: none;
 }
 
-.learn-more:visited {
+.learn-more:visited, .covid-19:visited {
     text-decoration: none;
 }
 
 .learn-more:hover {
-    color: var(--secondary-300);
+    color: var(--secondary-100);
 }
 
 .close-covid-banner {
@@ -152,7 +155,7 @@
 
 }
 
-@media(max-width: 375px) {
+@media(max-width: 420px) {
     .covid-warning-icon {
         display: none;
     }
@@ -173,6 +176,8 @@
         flex: 22%;
         justify-content: center;
         align-items: center;
+        flex-flow: row wrap;
+
     }
 
 }

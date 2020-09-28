@@ -110,7 +110,7 @@ if (translator.prompt) {
 // when language button is clicked, re-open welcome modal
 document.getElementById('lang-select-button').addEventListener('click', () => welcome.open())
 
-document.getElementById('covid-banner').addEventListener('click', () => closeCovidBanner())
+document.getElementById('close-covid-banner-button').addEventListener('click', () => closeCovidBanner())
 
 let locations = []
 
@@ -150,6 +150,7 @@ function truthy(str) {
 }
 
 function closeCovidBanner() {
+  console.log("closing covid banner")
   document.getElementById('covid-banner').style.display = "none"
 }
 

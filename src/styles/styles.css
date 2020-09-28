@@ -33,7 +33,7 @@ body {
   top: -40px;
   left: 0px;
   color: white;
-  background: var(--secondary-600);
+  background: var(--primary-900);
   -webkit-transition: top 1s ease-out;
   transition: top 1s ease-out;
   z-index: 100;
