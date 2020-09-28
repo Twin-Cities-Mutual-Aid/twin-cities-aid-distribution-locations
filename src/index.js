@@ -150,7 +150,6 @@ function truthy(str) {
 }
 
 function closeCovidBanner() {
-  console.log("closing covid banner")
   document.getElementById('covid-banner').style.display = "none"
 }
 

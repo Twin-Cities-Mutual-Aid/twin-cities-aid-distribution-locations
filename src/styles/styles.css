@@ -49,12 +49,8 @@ body {
   overflow: hidden;
   display: flex;
   flex-flow: row nowrap;
-}
-
-.main-content {
-  display: flex;
-  overflow: hidden;
   height:100%;
+
 }
 
 a {
@@ -347,10 +343,6 @@ input[type='checkbox'] + label {
 /* Mapbox overrides */
 .mapboxgl-map {
   font: 15px/1.4 Arial, Helvetica, sans-serif;
-
-  height: 100%;
-
-  overflow: visible;
 }
 
 .mapboxgl-popup-close-button {
@@ -367,8 +359,6 @@ input[type='checkbox'] + label {
 .hide-receiving .status-receiving, .hide-distributing .status-distributing, .hide-both .status-both, .hide-closed .status-closed {
   display: none;
 }
-
-
 
 /* Small screens */
 @media only screen and (max-width: 640px) {
