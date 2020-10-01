@@ -97,9 +97,11 @@ const ptr = PullToRefresh.init({
   mainElement: "body",
   triggerElement: "#header",
   instructionsPullToRefresh: " ",
-  instructionsReleaseToRefresh: " ",
-  instructionsRefreshing: " ",
-  
+  iconArrow: ' ',
+  iconRefreshing: ' ',
+  instructionsRefreshing: '<h1 style="display: inline-block; "><i class="fas fa-spinner fa-spin"></i></h1>',
+  instructionsReleaseToRefresh: '<h1 style="display: inline-block; "><i class="fas fa-spinner"></i></div>',
+  instructionsPullToRefresh: '<h1 style="display: inline-block;"><i class="fas fa-spinner"></i></h1>',
   onRefresh() {
     window.location.reload();
   }
