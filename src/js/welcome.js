@@ -13,6 +13,7 @@ class WelcomeModal {
 
     // add event listeners to each button
     Array.prototype.slice.call(this.langButtons).forEach(b => {
+      console.log(b)
       b.addEventListener('click', evt => {
         evt.preventDefault()
         this.onLanguageSelect(b.value)
