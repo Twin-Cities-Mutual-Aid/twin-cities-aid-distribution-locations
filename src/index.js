@@ -180,10 +180,6 @@ function toggleSidePane() {
     $locationsButton.setAttribute('aria-label', buttonText)
   }
 }
-//refresh page data
-function refreshPage() {
-  location.reload();
-}
 
 // open/close help info
 function toggleHelpInfo() {
@@ -572,12 +568,6 @@ const helpInfoCloseButton = document.getElementById('help-info-close-button')
 helpInfoCloseButton.addEventListener("click", function(){
   toggleHelpInfo()
 });
-
-//add refresh page handler
-const refreshPageButton = document.getElementById('refresh-page-button')
-refreshPageButton.addEventListener("click", function() {
-  refreshPage()
-})
 
 // render key
 const key = document.getElementById('key')
