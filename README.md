@@ -25,10 +25,10 @@ Data is sourced from a google spreadsheet.
 To test locally with your own copy of the spreadsheet, duplicate the example
 spreadsheet, make your changes, and re-publish it. Then follow the steps
 https://www.freecodecamp.org/news/cjn-google-sheets-as-json-endpoint to
-extract the sheet ID out of the url to plug into the DATA_URL const.
+extract the sheet ID out of the url to plug into the `SNOWPACK_PUBLIC_DATA_URL` const.
 
 `
-  const DATA_URL = 'https://spreadsheets.google.com/feeds/list/1XJhbzcT_AubgnqAJRsbOEbMO3HPTybG3yNcX6i-BgH0/1/public/full?alt=json'
+  SNOWPACK_PUBLIC_DATA_URL = 'https://spreadsheets.google.com/feeds/list/1XJhbzcT_AubgnqAJRsbOEbMO3HPTybG3yNcX6i-BgH0/1/public/full?alt=json'
 `
 
 ## Additional documentation
@@ -37,9 +37,15 @@ extract the sheet ID out of the url to plug into the DATA_URL const.
 
 
 ## About the application
+
 This started as a very lightweight, single page html file, and we've tried very hard to keep things as simple as possible.
 
 ### Setup
+
+Two options currently:
+
+Build Local
+
 1. Install [node](https://nodejs.org/) at the version specified in the [`.node-version`](.node-version) file. If you use a version manager like [nodenv](https://github.com/nodenv/nodenv) or [nvm](https://github.com/nvm-sh/nvm), this should be detected automatically.
 2. Install dependencies with npm
     ```
@@ -50,11 +56,35 @@ This started as a very lightweight, single page html file, and we've tried very 
     ```
     npm run dev
     ```
-5. Visit the application in your browser at [http://localhost:8080](http://localhost:8080)
-6. Start building!
 
+Build Docker
+
+1. install docker (If you are on a Mac or Windows machine, recommend [Docker Desktop](https://docs.docker.com/desktop/) for simplicity)
+2. Configure [environment variables](#environment-variables)
+3. build the image
+    ```
+    docker-build.sh
+    ```
+    * image base: https://hub.docker.com/_/node/
+    * will fail if there is not a tagged image for the current node version specified in [./node-version](./node-version)
+    * optional argument specifies "IMAGE_VERSION" (defaults to "latest" if not supplied)
+4. run the image
+    ```
+    docker-build.sh
+    ```
+    * optional argument specifies "IMAGE_VERSION" (defaults to "latest" if not supplied) should match "IMAGE_VERSION" (default or not) from build step
+5. verify container is running via `docker ps`
+    * if not shown, `docker ps -a` will show stopped containers
+    * currently starts with `npm run dev` so npm steps must complete before the app is ready (~30s give or take)
+6. `docker-compose down` will stop and remove the docker container and network
+
+and ... go
+
+1. Visit the application in your browser at [http://localhost:8080](http://localhost:8080)
+2. Start building!
 
 ### Environment Variables
+
 The application uses [environmental variables](https://en.wikipedia.org/wiki/Environment_variable) to manage configuration between environments. These values are set in a `.env` file in the project root directory. 
 
 To set up a `.env`, copy the `.env.example` file, which lists needed configuration values. For example, in the Mac OS terminal:

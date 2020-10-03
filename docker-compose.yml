@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   web:
-    image: tc-aid-dl:latest
+    image: tc-aid-dl:${IMAGE_VERSION}
     ports:
       - "8080:8080"
     env_file: .env
