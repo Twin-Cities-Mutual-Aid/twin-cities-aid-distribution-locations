@@ -150,7 +150,9 @@ function truthy(str) {
 }
 
 function closeCovidBanner() {
-  document.getElementById('covid-banner').style.display = "none"
+  const covidBanner = document.getElementById('covid-banner')
+  covidBanner.style.display = "none"
+  covidBanner.setAttribute("aria-hidden", true)
 }
 
 // open/close location sidebar
