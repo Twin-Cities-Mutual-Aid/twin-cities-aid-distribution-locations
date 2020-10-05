@@ -70,7 +70,7 @@ Build Docker
     * optional argument specifies "IMAGE_VERSION" (defaults to "latest" if not supplied)
 4. run the image
     ```
-    docker-build.sh
+    docker-run.sh
     ```
     * optional argument specifies "IMAGE_VERSION" (defaults to "latest" if not supplied) should match "IMAGE_VERSION" (default or not) from build step
 5. verify container is running
