@@ -137,10 +137,10 @@
 	.legend-overlay {
 		display: flex;
 		flex-direction: column;
-		background: rgba(360, 360, 360, 0.8);
+		background: rgba(360, 360, 360, 0.7);
 		border-radius: 0 0.9rem 0.9rem 0;
 		font-weight: bold;
-		padding: 5px 0 5px 0;
+		padding: 4px 0;
 		border: none;
 		position: absolute;
 		z-index: 1;
@@ -153,7 +153,7 @@
 	.legend-overlay-item {
 		border-radius: 1.5rem;
 		padding: 8px 0px;
-		margin: 3px 8px 3px 8px;
+		margin: 2px 6px;
 		border: none;
 		color: white;
 		width: 100px;
