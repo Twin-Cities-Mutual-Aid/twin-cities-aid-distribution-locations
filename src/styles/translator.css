@@ -13,7 +13,7 @@ html:lang(kar) [data-translation-id], html:lang(kar) [data-translate-font] {
   background: white;
   border-radius: 4px;
   font-weight: bold;
-  padding: 5px 7px;
+  padding: 5px 7px 7px 5px;
   border: none;
   box-shadow: 0 0 0 2px rgba(0,0,0,.1);
   position: absolute;

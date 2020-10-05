@@ -10,6 +10,7 @@ import './styles/components/map-popup.css';
 import './styles/components/form-control.css';
 import './styles/components/search.css';
 import './styles/components/filter.css';
+import './styles/components/covid-banner.css';
 import './styles/typography.css';
 
 // Import Libs
@@ -37,11 +38,13 @@ if(import.meta.env.MODE === 'production'){
 import 'moment/dist/locale/es'
 import 'moment/dist/locale/vi'
 import './locale/am'
-import './locale/om'
-import './locale/so'
-import './locale/oj'
+import './locale/dak'
 import './locale/hmn'
 import './locale/kar'
+import './locale/man'
+import './locale/oj'
+import './locale/om'
+import './locale/so'
 
 const $locationList = document.getElementById('location-list')
 const $sidePane = document.getElementById('side-pane')
@@ -114,6 +117,8 @@ if (translator.prompt) {
 // when language button is clicked, re-open welcome modal
 document.getElementById('lang-select-button').addEventListener('click', () => welcome.open())
 
+document.getElementById('close-covid-banner-button').addEventListener('click', () => closeCovidBanner())
+
 let locations = []
 
 // Alternative base style: 'mapbox://styles/mapbox/light-v10',
@@ -149,6 +154,12 @@ function camelToTitle(str) {
 function truthy(str) {
   const normalizedStr = _.toUpper(str);
   return _.includes(['TRUE', 'YES', 'T', 'Y'], normalizedStr);
+}
+
+function closeCovidBanner() {
+  const covidBanner = document.getElementById('covid-banner')
+  covidBanner.style.display = "none"
+  covidBanner.setAttribute("aria-hidden", true)
 }
 
 // open/close location sidebar
