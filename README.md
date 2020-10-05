@@ -73,10 +73,29 @@ Build Docker
     docker-build.sh
     ```
     * optional argument specifies "IMAGE_VERSION" (defaults to "latest" if not supplied) should match "IMAGE_VERSION" (default or not) from build step
-5. verify container is running via `docker ps`
-    * if not shown, `docker ps -a` will show stopped containers
+5. verify container is running
+    ```
+    docker ps
+    ```
+    * if not shown, the `-a` option will show stopped containers
+    ```
+    docker ps -a
+    ```
     * currently starts with `npm run dev` so npm steps must complete before the app is ready (~30s give or take)
-6. `docker-compose down` will stop and remove the docker container and network
+6. logs from the container can be viewed with
+    ```
+    docker logs twin-cities-aid-distribution-locations_web_1
+    ```
+
+    * `twin-cities-aid-distribution-locations_web_1` is the default container name used
+    * the logs can be "tailed" (console will continuously show new log statements) using the `-f` option
+    ```
+    docker logs -f twin-cities-aid-distribution-locations_web_1
+    ```
+7. to stop and remove the docker container and network
+    ```
+    docker-compose down
+    ```
 
 and ... go
 
