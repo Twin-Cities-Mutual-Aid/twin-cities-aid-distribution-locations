@@ -78,5 +78,12 @@
   "moment_h": "一个小时",
   "moment_d": "一天",
   "moment_M": "一个月",
-  "moment_y": "一年"
+  "moment_y": "一年",
+  "covid_19": "新冠肺炎",
+  "safety_reminder": "安全提示",
+  "covid_request": "请遵守社交距离和口罩要求",
+  "learn_more": "发现更多",
+  "wear_masks": "请戴口罩",
+  "social_distance": "请保持社交距离",
+  "wash_hands": "清洗手"
 }

@@ -77,5 +77,11 @@
   "moment_h": "we.&H.",
   "moment_d": "weHR",
   "moment_M": "wvg",
-  "moment_y": "weH."
+  "moment_y": "weH.",
+  "safety_reminder": "Safety Reminder",
+  "covid_request": "Please comply with social distancing and mask requirements.",
+  "learn_more": "Learn More",
+  "wear_masks": "Wear Masks",
+  "social_distance": "Social Distance",
+  "wash_hands": "Wash Hands"
 }

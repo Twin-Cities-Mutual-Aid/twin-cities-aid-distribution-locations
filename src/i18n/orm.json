@@ -74,5 +74,11 @@
   "moment_h": "Sa'aatii",
   "moment_d": "Guyyaa",
   "moment_M": "Ji'oota",
-  "moment_y": "Woggaa"
+  "moment_y": "Woggaa",
+  "safety_reminder": "Yaadachiisa Nageenyaa",
+  "covid_request": "Ajaja wal irraa fagachuu fi maasikii eegi.",
+  "learn_more": "Caalatti baruuf",
+  "wear_masks": "Maaskii Keewwadhu",
+  "social_distance": "Qaamaan Fagaachuu",
+  "wash_hands": "Harkoota kee Dhiqadhu"
 }

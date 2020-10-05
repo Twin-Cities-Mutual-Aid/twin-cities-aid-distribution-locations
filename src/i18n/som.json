@@ -74,5 +74,11 @@
   "moment_h": "Saacad",
   "moment_d": "Maalin",
   "moment_M": "Bil",
-  "moment_y": "Sanad"
+  "moment_y": "Sanad",
+  "safety_reminder": "Badbaado Xusuusin",
+  "covid_request": "Fadlan raac kala fogaanshaha bulshada iyo wixii lagama maarmaan u ah maaskaraatada",
+  "learn_more": "Baro Waxbadan",
+  "wear_masks": "Xiro Maaskaraato",
+  "social_distance": "Kala Fogaanshaha Bulshada",
+  "wash_hands": "Gacmo Mayris"
 }

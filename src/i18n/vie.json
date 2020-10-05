@@ -74,5 +74,11 @@
   "moment_h": "",
   "moment_d": "",
   "moment_M": "",
-  "moment_y": ""
+  "moment_y": "",
+  "safety_reminder": "Nhắc Nhở Giữ An Toàn",
+  "covid_request": "Vui lòng tuân thủ giữ khoảng cách khi tiếp xúc và yêu cầu đeo khẩu trang.",
+  "learn_more": "Tìm hiểu thêm",
+  "wear_masks": "Đeo khẩu trang",
+  "social_distance": "Giữ khoảng cách khi tiếp xúc",
+  "wash_hands": "Rửa Tay"
 }
