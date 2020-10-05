@@ -20,6 +20,7 @@
     --primary-700: hsl(var(--primary), 35%);
     --primary-800: hsl(var(--primary), 25%);
     --primary-900: hsl(var(--primary), 15%);
+    --primary-blue: hsl(var(--primary), 10%);
 
     --secondary-50:  hsl(var(--secondary), 98%);
     --secondary-100: hsl(var(--secondary), 95%);

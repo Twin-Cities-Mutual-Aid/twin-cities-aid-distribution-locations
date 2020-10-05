@@ -14,6 +14,43 @@ body {
   right: 0;
   bottom: 0;
   overflow: hidden;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+#skiptocontent a:focus {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  outline-color: transparent;
+  -webkit-transition: top .1s ease-in;
+  transition: top .1s ease-in;
+}
+
+#skiptocontent a {
+  padding: 6px;
+  position: absolute;
+  top: -40px;
+  left: 0px;
+  color: white;
+  background: var(--primary-900);
+  -webkit-transition: top 1s ease-out;
+  transition: top 1s ease-out;
+  z-index: 100;
+}
+
+
+.main-content {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  display: flex;
+  flex-flow: row nowrap;
+  height:100%;
+
 }
 
 a {
@@ -30,10 +67,6 @@ a.txt-white:hover {
 
 .map,
 .help-info, .refresh-page-button {
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
   height: 100%;
   width: 100%;
 }
@@ -64,10 +97,6 @@ a.txt-white:hover {
   flex-shrink: 0;
 }
 
-/* shared:layout */
-.flex {
-  display: flex;
-}
 
 .txt-small {
   font-size: 13px;
@@ -133,7 +162,7 @@ input[type='checkbox'] + label {
 
 .white-and-blue {
   color: white;
-  background-color: rgba(0,0,50,.9);
+  background-color: var(--primary-blue);
 }
 
 /* component: title */
@@ -308,6 +337,7 @@ input[type='checkbox'] + label {
   position: absolute;
   top: 0;
   right: 0;
+  z-index: 9999;
 }
 
 /* Mapbox overrides */
@@ -332,12 +362,15 @@ input[type='checkbox'] + label {
 
 /* Small screens */
 @media only screen and (max-width: 640px) {
-  body {
+
+  .main-content {
     flex-direction: column;
   }
+
   .content {
     width: 100%;
   }
+
   .legend {
     display: flex;
     flex-wrap: wrap;
@@ -355,7 +388,7 @@ input[type='checkbox'] + label {
     display: none;
   }
   .map {
-    display: block;
+    display: flex;
   }
   .list-active .map {
     display: none;

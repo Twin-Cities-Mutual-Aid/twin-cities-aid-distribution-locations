@@ -74,5 +74,11 @@
   "moment_h": "አንድ ሰዓት",
   "moment_d": "አንድ ቀን",
   "moment_M": "አንድ ወር",
-  "moment_y": "አንድ ዓመት"
+  "moment_y": "አንድ ዓመት",
+  "safety_reminder": "የደህንነት ማሳሰቢያ",
+  "covid_request": "እባክዎን የማህበራዊ ርቀትን እና የጭምብል መመሪያን ያክብሩ",
+  "learn_more": "የበለጠ ለመረዳት",
+  "wear_masks": "ጭምብል ያድርጉ",
+  "social_distance": "አካላዊ ርቀት",
+  "wash_hands": "እጆችዎን ይታጠቡ "
 }

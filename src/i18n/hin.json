@@ -62,5 +62,11 @@
   "time_years": "वर्षों",
   "lang_select": "कृपया एक भाषा चुनें",
   "page_title": "ट्विन सिटीज एड मैप",
-  "show_list_button": "स्थानों की सूची दिखाएं"
+  "show_list_button": "स्थानों की सूची दिखाएं",
+  "safety_reminder": "Safety Reminder",
+  "covid_request": "Please comply with social distancing and mask requirements.",
+  "learn_more": "Learn More",
+  "wear_masks": "Wear Masks",
+  "social_distance": "Social Distance",
+  "wash_hands": "Wash Hands"
 }
