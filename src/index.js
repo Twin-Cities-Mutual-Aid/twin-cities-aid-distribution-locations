@@ -9,6 +9,7 @@ import './styles/components/location-card.css';
 import './styles/components/map-popup.css';
 import './styles/components/form-control.css';
 import './styles/components/search.css';
+import './styles/components/filter.css';
 import './styles/components/covid-banner.css';
 import './styles/typography.css';
 
@@ -60,6 +61,7 @@ const statusClosed =  {
   name: 'closed',
   label: 'not open now',
   accessibleColor: '#d7191c',
+  textColor: '#FFFFFF',
   count: 0
 }
 
@@ -69,6 +71,7 @@ const statusOptions = [
     name: 'receiving',
     label: 'open for receiving donations',
     accessibleColor: '#2c7bb6',
+    textColor: '#FFFFFF',
     count: 0
   },
   {
@@ -76,6 +79,7 @@ const statusOptions = [
     name: 'distributing',
     label: 'open for distributing donations',
     accessibleColor: '#abd9e9',
+    textColor: '#000000',
     count: 0
   },
   {
@@ -83,6 +87,7 @@ const statusOptions = [
     name: 'both',
     label: 'open for both',
     accessibleColor: '#fdae61',
+    textColor: '#000000',
     count: 0
   },
   statusClosed
@@ -571,13 +576,4 @@ helpInfoCloseButton.addEventListener("click", function(){
 const refreshPageButton = document.getElementById('refresh-page-button')
 refreshPageButton.addEventListener("click", function() {
   refreshPage()
-})
-
-// render key
-const key = document.getElementById('key')
-statusOptions.forEach(s => {
-  const el = document.createElement('div');
-  el.classList = ['legend--item'];
-  el.innerHTML = `<span class="legend--item--swatch" style="background-color: ${s.accessibleColor}"></span>${s.label}`
-  key.append(el)
 })

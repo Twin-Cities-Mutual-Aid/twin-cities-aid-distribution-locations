@@ -8,6 +8,10 @@
 	background: var(--gray-50);
 }
 
+#search-controls {
+	background: var(--gray-50);
+}
+
 .search-icon {
 	height: 1.5rem;
 	position: absolute;
@@ -39,6 +43,15 @@
 	right: 15px;
 }
 
+.list-meta {
+	display: flex;
+	justify-content: flex-end;
+	padding: 0 8px 4px 0;
+	font-weight: bold;
+	font-size: 0.9rem;
+	background: var(--gray-50);
+}
+
 @media(max-width: 1118px) {
 	.search-full-width {
 		width: 100%;
@@ -47,6 +60,16 @@
 	.search-full-width .search-input {
 		width: 100%;
 	}
+
+}
+
+/* Small screens */
+@media only screen and (max-width: 640px) {
+
+	.list-meta {
+		font-size: 0.7rem;
+	}
+
 }
 
 #clear-search-btn:disabled {

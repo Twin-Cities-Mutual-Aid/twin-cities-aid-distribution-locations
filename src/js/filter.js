@@ -12,8 +12,10 @@ class Filter {
     this.$filters = []
 
     this.$el = el
-    this.$searchControl = document.getElementById('search-controls')
-    this.$controls = document.getElementById('filter-controls')
+    this.$searchControl = document.getElementById("search-controls")
+    this.$controls = document.getElementById("filter-controls")
+    this.$legendOverlay = document.getElementById("legend-overlay")
+    this.$toggleLegendButton = document.getElementById("toggle-legend-button")
     this.renderControls(this.$controls)
     this.list = new List(this.$el.id, {
       valueNames: [...this.sortOptions.map(o => o.name), ...this.searchOptions.searchOn],
@@ -202,7 +204,38 @@ class Filter {
       this.search.bind(this)(event.currentTarget.value)
     })
     this.$filters.forEach($e => $e.addEventListener('change', this.update.bind(this)))
+
+    this.statusOptions.forEach(statusOption => {
+      this.createLegendOverlayItem(statusOption);
+    })
+
+    const $filterDropdown = document.getElementById("filter-dropdown");
+    $filterDropdown.addEventListener("click", 
+    event => this.toggleFilters());
+
   }
+
+  createLegendOverlayItem(option) {
+    const item = document.createElement('div');
+    item.innerHTML = `<button class="legend-overlay-item" style="background-color: ${option.accessibleColor}; color: ${option.textColor}" data-translation-id="${option.name}">${option.name}</button>`
+    this.$legendOverlay.append(item);
+  }
+
+  toggleFilters() {
+    this.$toggleLegendButton.classList.toggle("open");
+    const legendContainer = document.getElementById("legend-container");
+    if (legendContainer.style.maxHeight) {
+      legendContainer.style.maxHeight = null;
+    } else {
+      legendContainer.style.maxHeight = legendContainer.scrollHeight + "px";
+    }
+    if (this.$legendOverlay.style.maxWidth) {
+      this.$legendOverlay.style.maxWidth = null;
+    } else {
+      this.$legendOverlay.style.maxWidth = this.$legendOverlay.scrollWidth + "px";
+    }
+  }
+  
 }
 
 export default Filter

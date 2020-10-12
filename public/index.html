@@ -94,17 +94,41 @@
 
   <div class="main-content" id="main-content">
   <div class="content">
-    <div class="title white-and-blue">
-      <h1 data-translation-id="page_title" class='h1'>Twin Cities Mutual Aid Map</h1>
-    </div>
-    <div class="filter-pane white-and-blue">
-      <div class='legend' id="key"></div>
-      <button data-translation-id="show_list_button" id="locations-toggle-button" class="location-list-toggle toggle-button" aria-label="Show list of locations">Show list of locations</button>
-      <button data-translation-id="help_info" id="help-info-toggle-button" class="toggle-button" aria-label="Toggle help info section">Help/info</button>
-      <button data-translation-id="refresh_button" id='refresh-page-button' class='toggle-button' aria-label="refresh page data">
-        <img class="refresh-image" alt="${lang_name}" src="/images/refresh.png">
-        <span class="refresh-text" data-translation-id="refresh">Refresh</span></button>
+    <div class="header">
+      <div class="title white-and-blue">
+        <h2 data-translation-id="page_title" class='h1'>Twin Cities Mutual Aid Map</h2>
+        <img class="menu" src='images/icon_menu.svg' alt='menu icon'/>
+      </div>
       
+      <div id="filter-pane" class="filter-pane white-and-blue">
+        <div id="filter-dropdown" class="filter-dropdown">
+          <h4 class="filter-dropdown-title" data-translation-id="filter">Filter</h4>
+          <a id="toggle-legend-button" class="arrow-icon open">
+            <span class="left-bar"></span>
+            <span class="right-bar"></span>
+          </a>
+        </div>
+        <div class="legend-container" id="legend-container" style="max-height: 500px;">
+          <div class="legend" id="key"></div>
+        </div>
+      </div>
+      <div class="action-group">
+          <button data-translation-id="show_list_button" id="locations-toggle-button" class="location-list-toggle toggle-button" aria-label="Show list of locations">
+            Show list of locations
+          </button>
+          <button data-translation-id="help_info" id="help-info-toggle-button" class="toggle-button" aria-label="Toggle help info section">
+            Help/Info
+          </button>
+          <button data-translation-id="refresh_button" id='refresh-page-button' class='toggle-button' aria-label="refresh page data">
+            <img class="refresh-image" alt="${lang_name}" src="/images/refresh.png">
+            <span class="refresh-text" data-translation-id="refresh">
+              Refresh
+            </span>
+          </button>
+          <div class='counter'>
+            <script type="text/javascript" src="//counter.websiteout.net/js/7/0/41000/0" ></script>
+          </div>
+        </div>
     </div>
     <div id="search-controls"></div>
     <div id="side-pane" class="location-list">
@@ -133,6 +157,7 @@
         <span class="lang-name" data-translation-id="lang_name">English</span>
       </span>
     </button>
+    <div class="legend-overlay" id="legend-overlay" />
   </div>
   </div>
 

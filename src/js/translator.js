@@ -158,3 +158,5 @@ Translator.LOCAL_STORAGE_KEY = 'twma_lang'
 Translator.DEFAULT_LANGUAGE = 'eng'
 
 export default Translator
+
+// TODO: Replace "filter", "receiving", "distributing", "both", "closed" in oji.json, dak.json, hin.json
