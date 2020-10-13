@@ -6,6 +6,7 @@
   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
   <link rel="icon" href="favicon.ico">
   <script src="https://kit.fontawesome.com/5438b173e4.js" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
 
   <!-- META TAGS -->
   <meta property="og:image" content="https://twin-cities-mutual-aid.org/images/aid2.png">
@@ -45,9 +46,54 @@
       'transport_type': 'beacon'
     });
   }
+  
 </script>
 
+
 <body class='flex'>
+    <div id="skiptocontent">
+      <a href="#main-content">
+        skip to main content
+      </a>
+    </div>
+
+    <div id="covid-banner" class="covid-banner">
+      <div class="covid-banner-reminder">
+        <div class="safety-reminder">
+          <i class="material-icons-round covid-warning-icon" alt="warning icon">error</i>
+          <div>
+            <a data-translation-id="covid_19" class="covid-19" href="https://www.health.state.mn.us/diseases/coronavirus/index.html">COVID-19</a>
+            <p data-translation-id="safety_reminder" class="safety-reminder-message">Safety Reminder</p>
+          </div>
+        </div>
+
+        <div class="covid-comply-message">
+          <p data-translation-id="covid_request">Please comply with social distancing and mask requirements.</p>
+          <a class="learn-more" href="https://www.health.state.mn.us/diseases/coronavirus/index.html">
+            <i class="material-icons-round" alt="double arrow icon">double_arrow</i>
+            <p data-translation-id="learn_more">Learn More</p>
+          </a>
+        </div>
+
+        <div class="covid-icon-container">
+          <i class="material-icons-round covid-icon" alt="mask icon">masks</i>
+          <h5 data-translation-id="wear_masks" class="covid-icon-message">Wear Masks</h5>
+        </div>
+        <div class="covid-icon-container">
+          <i class="material-icons-round covid-icon" alt="social distance icon">6_ft_apart</i>
+          <h5 data-translation-id="social_distance" class="covid-icon-message">Social Distance</h5>
+        </div>
+        <div class="covid-icon-container">
+          <i class="material-icons-round covid-icon" alt="wash hands icon">wash</i>
+          <h5 data-translation-id="wash_hands" class="covid-icon-message">Wash Hands</h5>
+        </div>
+      </div>
+      <div id="close-covid-banner-button" class="close-covid-banner">
+        <i class="material-icons-round close-icon" alt="close covid banner">close</i>
+      </div>
+    </div>
+
+  <div class="main-content" id="main-content">
   <div class="content">
     <div id="header">
     <div class="title white-and-blue">
@@ -57,9 +103,6 @@
       <div class='legend' id="key"></div>
       <button data-translation-id="show_list_button" id="locations-toggle-button" class="location-list-toggle toggle-button" aria-label="Show list of locations">Show list of locations</button>
       <button data-translation-id="help_info" id="help-info-toggle-button" class="toggle-button" aria-label="Toggle help info section">Help/info</button>
-      <div class='counter'>
-        <script type="text/javascript" src="//counter.websiteout.net/js/7/0/41000/0"></script>
-      </div>
     </div>
     <div id="search-controls"></div>
     </div>
@@ -72,13 +115,16 @@
     <button id='help-info-close-button' class='help-info-close-button' aria-label="Close help info section">X <span data-translation-id="close">Close</span></button>
     <p class='p txt-small'><span data-translation-id="project_description">Twin Cities Aid Map is run by volunteers</span>.</p><br />
     <p class='p txt-small bold'><span data-translation-id="project_feedback">Have feedback?</span> <a href="mailto:support@tcmap.org" data-translation-id="project_contact">Email Us</a>.</p>
-    <p class='p txt-small bold'><span data-translation-id="project_data">See this data in</span> <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSfnmh9CmtVoBMy2k_-NMhhvF7ursBs2L5IPF9VZ1J-l9P71vjDFw7y6Y6E98d5lNeOAEo7leisP0Y8/pubhtml" target="_blank">Google Sheets</a>.</p>
+    <p class='p txt-small bold'><span data-translation-id="project_data">See this data in</span> <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSfnmh9CmtVoBMy2k_-NMhhvF7ursBs2L5IPF9VZ1J-l9P71vjDFw7y6Y6E98d5lNeOAEo7leisP0Y8/pubhtml" target="_blank" onclick="captureOutboundLink('https://docs.google.com/spreadsheets/d/e/2PACX-1vSfnmh9CmtVoBMy2k_-NMhhvF7ursBs2L5IPF9VZ1J-l9P71vjDFw7y6Y6E98d5lNeOAEo7leisP0Y8/pubhtml', 'google sheets')">Google Sheets</a>.</p>
     <p class='p txt-small bold'><span data-translation-id="project_learn">Learn about this project on</span> <a href="https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/blob/master/README.md" target="_blank">GitHub</a>.</p>
     <p class='p txt-extra-small italic'><span data-translation-id="disclaimer">TCMAP aggregates, compiles, and logs information on our maps solely through the work of volunteers. We cannot guarantee the complete accuracy of this information, 
       including usernames or accounts provided for direct donations. Your use of this website is completely voluntary, and you assume any and all risks and liabilities, financial or otherwise, with providing goods, services, or funds to any distribution site listed on our map. 
       TCMAP does not assume any responsibility for your use of this website and has no obligation to provide users with financial or other assistance.</span></p>
   </div>
   <div class='map' id="map">
+    <div class='counter'>
+      <script type="text/javascript" src="//counter.websiteout.net/js/7/0/41000/0"></script>
+    </div>
     <button class="lang-select-button" id="lang-select-button">
       <span class="lang-select-label" data-translation-id="language">Language</span>
       <span class="lang-current">
@@ -87,6 +133,8 @@
       </span>
     </button>
   </div>
+  </div>
+
 
   <script src="/js/list.min.js"></script>
   <script type="module" src="/_dist_/index.js"></script>

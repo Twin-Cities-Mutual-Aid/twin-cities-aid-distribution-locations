@@ -74,5 +74,11 @@
   "moment_h": "1 teev",
   "moment_d": "1 nub",
   "moment_M": "1 hli",
-  "moment_y": "1 xyoo"
+  "moment_y": "1 xyoo",
+  "safety_reminder": "Safety Reminder",
+  "covid_request": "Please comply with social distancing and mask requirements.",
+  "learn_more": "Learn More",
+  "wear_masks": "Wear Masks",
+  "social_distance": "Social Distance",
+  "wash_hands": "Wash Hands"
 }
