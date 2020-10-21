@@ -24,6 +24,7 @@ import { getQueryParam } from './js/url-helpers';
 import { TrackJS } from 'trackjs';
 import validate, { LOCATION_SCHEMA } from "./js/validator";
 import replaceAll from 'string.prototype.replaceall'
+import PullToRefresh from 'pulltorefreshjs'
 
 //Add TrackJS Agent
 if(import.meta.env.MODE === 'production'){
@@ -92,6 +93,20 @@ const statusOptions = [
 let activePopup
 const translator = new Translator()
 moment.locale(translator.locale)
+
+const ptr = PullToRefresh.init({
+  mainElement: "body",
+  triggerElement: "#header",
+  instructionsPullToRefresh: " ",
+  iconArrow: " ",
+  iconRefreshing: " ",
+  instructionsRefreshing: '<h1><i class="fas fa-spinner fa-spin"></i></h1>',
+  instructionsReleaseToRefresh: '<h1><i class="fas fa-spinner"></i></div>',
+  instructionsPullToRefresh: '<h1><i class="fas fa-spinner"></i></h1>',
+  onRefresh() {
+    window.location.reload();
+  }
+});
 
 const welcome = new WelcomeModal({
   languages: translator.languages,
@@ -173,10 +188,6 @@ function toggleSidePane() {
     $locationsButton.setAttribute('data-translation-id', translationId)
     $locationsButton.setAttribute('aria-label', buttonText)
   }
-}
-//refresh page data
-function refreshPage() {
-  location.reload();
 }
 
 // open/close help info
@@ -566,12 +577,6 @@ const helpInfoCloseButton = document.getElementById('help-info-close-button')
 helpInfoCloseButton.addEventListener("click", function(){
   toggleHelpInfo()
 });
-
-//add refresh page handler
-const refreshPageButton = document.getElementById('refresh-page-button')
-refreshPageButton.addEventListener("click", function() {
-  refreshPage()
-})
 
 // render key
 const key = document.getElementById('key')
