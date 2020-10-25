@@ -139,7 +139,7 @@ var Airtable = require('airtable');
 var base = new Airtable({ apiKey: airtableApiKey }).base(airtableBaseName);
 function loadSites() {
 
-    base('Twin Cities Aid Distribution Locations')
+    base('mutual_aid_locations')
         .select({sort: [{field: "org_name", direction: "asc"}]})
         .eachPage(function page(records, fetchNextPage) {
 
