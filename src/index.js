@@ -51,6 +51,8 @@ const $locationsButton = document.getElementById('locations-toggle-button');
 const $body = document.body;
 
 mapboxgl.accessToken = Config.accessToken
+const airtableApiKey = Config.airtableApiKey
+const airtableBaseName = Config.airtableBaseName
 
 // we're using the map color from google sheet to indicate location status,
 // but using a different display color for accessibility. so the original
@@ -115,6 +117,27 @@ document.getElementById('lang-select-button').addEventListener('click', () => we
 document.getElementById('close-covid-banner-button').addEventListener('click', () => closeCovidBanner())
 
 let locations = []
+let sitesList = []
+
+
+var Airtable = require('airtable');
+var base = new Airtable({ apiKey: airtableApiKey }).base(airtableBaseName);
+function loadSites() {
+
+    base('Twin Cities Aid Distribution Locations')
+        .select({sort: [{field: "org_name", direction: "asc"}]})
+        .eachPage(function page(records, fetchNextPage) {
+
+          sitesList = sitesList.concat(records)
+          fetchNextPage();
+
+        }, function done(error) {
+          console.log(error); // TODO - proper error handling
+        }
+    );
+};
+
+loadSites();
 
 // Alternative base style: 'mapbox://styles/mapbox/light-v10',
 // See also: https://docs.mapbox.com/mapbox-gl-js/example/setstyle/
@@ -244,7 +267,8 @@ function sectionUrlComponent(value, key) {
 
 // get the status info for a location using the color as ID, else default to closed.
 const getStatus = id => {
-  const status = _.find(statusOptions, s => (s.id === id.toLowerCase()))
+  // const status = _.find(statusOptions, s => (s.id === id.toLowerCase()))
+  const status = _.find(statusOptions, s => (s.id === id))
   return status || statusClosed
 }
 
@@ -303,7 +327,7 @@ const createListItem = (location, status, lng, lat) => {
           ${location.name}
         </h2>
       </div>
-      ${neighborhood}
+      ${neighborhood ? neighborhood : ' '}
       <div class="card-badge-group">
         ${openingSoonForDistribution}
         ${openingSoonForReceiving}
@@ -335,28 +359,6 @@ const createListItem = (location, status, lng, lat) => {
   })
   return $item
 }
-
-//////////////////////////
-// Protect against columns not yet existing in the spreadsheet.
-// We can remove once they are added to the sheet.
-function extractSeekingMoney(item) {
-  try {
-    return truthy(item.gsx$seekingmoney.$t);
-  } catch (err) {
-    console.info("Seeking Money Column does not exist yet.");
-    return false;
-  }
-}
-
-function extractSeekingMoneyURL(item) {
-  try {
-    return item.gsx$seekingmoneyurl.$t;
-  } catch (err) {
-    console.info("Seeking Money URL Column does not exist yet.");
-    return '';
-  }
-}
-//////////////////////////
 
 ///////////
 // returns a range of hours if opening or closing is provided
@@ -404,45 +406,43 @@ function parseLineBreaks(value) {
 
 function extractRawLocation(item) {
   return {
-    name: item.gsx$nameoforganization.$t,
-    neighborhood: item.gsx$neighborhood.$t,
-    address: item.gsx$addresswithlink.$t,
-    mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t,
-    currentlyOpenForDistributing: item.gsx$currentlyopenfordistributing.$t,
-    aidDistributionHours: getHours(item.gsx$openingfordistributingdonations.$t, item.gsx$closingfordistributingdonations.$t),
-    currentlyOpenForReceiving: item.gsx$currentlyopenforreceiving.$t,
-    aidReceivingHours: getHours(item.gsx$openingforreceivingdonations.$t, item.gsx$closingforreceivingdonations.$t),
-    urgentNeed: item.gsx$urgentneed.$t,
-    seekingMoney: extractSeekingMoney(item),
-    seekingMoneyURL: extractSeekingMoneyURL(item),
-    accepting: item.gsx$accepting.$t,
-    notAccepting: item.gsx$notaccepting.$t,
-    seekingVolunteers: item.gsx$seekingvolunteers.$t,
-    notes: item.gsx$notes.$t
+    name: item.fields.org_name,
+    neighborhood: item.fields.neighborhood_name,
+    address: item.fields.address,
+    mostRecentlyUpdatedAt: item.fields.last_updated,
+    currentlyOpenForDistributing: item.fields.currently_open_for_distributing,
+    aidDistributionHours: getHours(item.fields.opening_for_distributing_donations, item.fields.closing_for_distributing_donations),
+    currentlyOpenForReceiving: item.fields.currently_open_for_receiving,
+    aidReceivingHours: getHours(item.fields.opening_for_receiving_donations, item.fields.closing_for_receiving_donations),
+    urgentNeed: item.fields.urgent_need,
+    seekingMoney: item.fields.seeking_money,
+    seekingMoneyURL: item.fields.seeking_money_url,
+    accepting: item.fields.accepting,
+    notAccepting: item.fields.not_accepting,
+    seekingVolunteers: item.fields.seeking_volunteers,
+    notes: item.fields.notes
   }
 }
 
 // start fetching data right away
-const dataPromise = fetch(Config.dataUrl)
+// const dataPromise = fetch(Config.dataUrl)
 
 // handle the map load event
 const onMapLoad = async () => {
-  const resp = await dataPromise
-  const data = await resp.json()
+  // const resp = await dataPromise
+  // const data = await resp.json()
+  console.log(sitesList)
 
-  // filter and transform data from google sheet
-  locations = _.chain(data.feed.entry)
-    .filter(item => (item.gsx$color.$t !== '#aaaaaa')) // filter out status unknown
-    .filter(item => (item.gsx$nameoforganization.$t !== '') && (item.gsx$longitude.$t !== '') && (item.gsx$latitude.$t !== '')) // sanity check for empty rows
-    .filter((item, i) => validate(item, LOCATION_SCHEMA, { sheetRow: i + 1 })) // only items that validate against schema
-    .sortBy(item => item.gsx$nameoforganization.$t)
+  locations = _.chain(sitesList)
+    .filter(item => (item.fields.org_name !== '') && (item.fields.longitude !== undefined) && (item.fields.latitude !== undefined) && (item.fields.color !== undefined)) // sanity check for empty rows
+    // .filter((item, i) => validate(item, LOCATION_SCHEMA, { sheetRow: i + 1 })) TODO: Is this filtering needed?
     .map(item => {
 
       try {
         // the location schema
         const rawLocation = extractRawLocation(item);
         const location = _.pickBy(rawLocation, val => val != '');
-        const status = getStatus(item.gsx$color.$t);
+        const status = getStatus(item.fields.color);
 
         // transform location properties into HTML
         const propertyTransforms = {
@@ -465,13 +465,18 @@ const onMapLoad = async () => {
 
         // render HTML for marker
         const markerHtml = () => _.map(location, (value, key) => {
-          if (propertyTransforms[key]) return propertyTransforms[key](value, location)
-          else return `<div class='p row'><p data-translation-id="${_.snakeCase(key)}"class='txt-deemphasize key'>${camelToTitle(key)}</p><p class='value'>${value}</p></div>`
+          if (value == undefined) {
+            return ''
+          } else if (propertyTransforms[key]) {
+            return propertyTransforms[key](value, location)
+          } else {
+            return `<div class='p row'><p data-translation-id="${_.snakeCase(key)}"class='txt-deemphasize key'>${camelToTitle(key)}</p><p class='value'>${value}</p></div>`
+          }
         }).join('')
 
         // create marker
         location.marker = new mapboxgl.Marker({ color: status.accessibleColor })
-          .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
+          .setLngLat([ item.fields.longitude, item.fields.latitude ])
           .setPopup(new mapboxgl.Popup().setMaxWidth('275px'))
           .addTo(map);
 
@@ -488,7 +493,7 @@ const onMapLoad = async () => {
           location.popup.on('open', location.popup.refreshPopup)
 
           // add to the side panel
-          $locationList.appendChild(createListItem(location, status, item.gsx$longitude.$, item.gsx$latitude.$))
+          $locationList.appendChild(createListItem(location, status, item.fields.longitude, item.fields.latitude))
 
           return location
         } catch (e) {

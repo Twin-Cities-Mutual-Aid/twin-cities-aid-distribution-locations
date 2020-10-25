@@ -30,6 +30,8 @@
     "testcafe": "^1.8.6"
   },
   "dependencies": {
+    "airtable": "^0.10.0",
+    "airtable-json": "^1.2.9",
     "jsonschema": "^1.2.6",
     "list.js": "^1.5.0",
     "lodash": "^4.17.19",
