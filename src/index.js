@@ -135,8 +135,8 @@ let locations = []
 let sitesList = []
 
 
-var Airtable = require('airtable');
-var base = new Airtable({ apiKey: airtableApiKey }).base(airtableBaseName);
+const Airtable = require('airtable');
+const base = new Airtable({ apiKey: airtableApiKey }).base(airtableBaseName);
 function loadSites() {
 
     base('mutual_aid_locations')
