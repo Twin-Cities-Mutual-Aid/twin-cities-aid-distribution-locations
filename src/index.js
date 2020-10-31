@@ -503,12 +503,12 @@ const onMapLoad = async () => {
         if (location.voting === "TRUE") {
           if(status.name === "closed") {
 
-            location.marker = new mapboxgl.Marker(getVotingLocationMarker("voting-marker-closed"), {anchor: "top"})
+            location.marker = new mapboxgl.Marker(getVotingLocationMarker("voting-marker-closed"))
               .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
               .setPopup(new mapboxgl.Popup().setMaxWidth('275px'))
               .addTo(map);
           } else {
-            location.marker = new mapboxgl.Marker(getVotingLocationMarker("voting-marker-open"), {anchor: "top"})
+            location.marker = new mapboxgl.Marker(getVotingLocationMarker("voting-marker-open"))
               .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
               .setPopup(new mapboxgl.Popup().setMaxWidth('275px'))
               .addTo(map);

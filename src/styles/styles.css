@@ -344,19 +344,14 @@ input[type='checkbox'] + label {
   background-size: 40px 40px;
   width: 40px;
   height: 40px;
-  background-image: url(/images/voting-open.gif);
-  
 }
 
 .voting-marker-open {
-  background-image: url(/images/voting-open.gif);
+  background-image: url(/images/voting-open-marker.gif);
 }
 
 .voting-marker-closed {
-  background-size: 40px 40px;
-  width: 40px;
-  height: 40px;
-  background-image: url(/images/voting-closed.png);
+  background-image: url(/images/voting-closed-marker.png);
   
 }
 
