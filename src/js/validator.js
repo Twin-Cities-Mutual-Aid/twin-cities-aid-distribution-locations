@@ -204,6 +204,14 @@ export const LOCATION_SCHEMA = {
           "type": "string" 
         },
       },
+    },
+    "gsx$voting": {
+      "type": "object",
+      "properties": {
+        "$t": {
+          "type": "string"
+        }
+      }
     }
   }
 }
