@@ -1,0 +1,105 @@
+.vote-banner {
+    display: flex;
+    flex-flow: row nowrap;
+    background-image: linear-gradient(30deg, #712e24, #d86d02,#ebb209,#34a1c5,#1b4b70);
+    color: white;
+    font-weight: bold;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.vote-covid-banner-reminder {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.vote-safety-reminder {
+    display: flex;
+    flex: 25%;
+    align-items: center;
+}
+
+.gotv-message-container {
+    display: flex;
+    flex-flow: column wrap;
+    flex: 50%;
+    justify-content: center;
+    align-self: center;
+    align-items: center;
+}
+
+.gotv-message {
+    display: flex;
+    flex: 50%;
+    justify-content: center;
+    align-self: center;
+    flex-flow: row wrap;
+    align-items: center;
+}
+
+.polling-place {
+    display: flex;
+    border-radius: 8px;
+    font-weight: bold;
+    color: var(--primary-900);
+    align-items: center;
+    cursor: pointer;
+}
+
+.polling-place:link {
+    text-decoration: none;
+}
+
+.polling-place:visited {
+    text-decoration: none;
+}
+
+.polling-place:hover {
+    color: white;
+}
+
+.voting-countdown {
+    padding-right: 10px;
+    color: white;
+}
+
+.vote-covid-icon-container {
+    display: flex;
+    flex: 10%;
+    margin: 5px 2px;
+    justify-content: flex-start;
+}
+
+@media(max-width: 1000px) {
+    .vote-safety-reminder {
+        display: none;
+    }
+
+    .vote-covid-icon-container {
+        flex: 1%;
+        justify-content: center;
+        align-items: center;
+        display: none;
+    }
+
+}
+
+@media(max-width: 640px) {
+    .vote-covid-icon-container {
+        display: none;
+    }
+}
+
+@media(max-width: 420px) {
+    .find-polling-place {
+        display: none;
+    }
+
+    .vote-covid-icon-container {
+        display: none;
+    }
+
+}
