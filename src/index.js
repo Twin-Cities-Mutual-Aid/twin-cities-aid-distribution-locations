@@ -10,7 +10,6 @@ import './styles/components/map-popup.css';
 import './styles/components/form-control.css';
 import './styles/components/search.css';
 import './styles/components/covid-banner.css';
-import './styles/components/vote-banner.css';
 import './styles/typography.css';
 
 // Import Libs
@@ -219,14 +218,6 @@ function needsMoneyComponent(location) {
   return `<span class="seekingMoney seeking-money card-badge"><span data-translation-id="seeking_money">Needs Money</span> ${link}</span>`;
 }
 
-function votingAvailableComponent(location) {
-  if (location.voting === "TRUE") {
-    return `<span data-translation-id="vote_here" class="votingAvailable card-badge">Vote Here</span>`
-  } else {
-    return ''
-  }
-}
-
 function addressComponent(address) {
   const googleMapDirections = `https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}`
   return `<address><a href="${googleMapDirections}" target="_blank" onclick="captureOutboundLink('${googleMapDirections}', 'directions')">${address}</a></address>`;
@@ -284,8 +275,6 @@ const createListItem = (location, status, lng, lat) => {
     seekingVolunteers = `<span data-translation-id="seeking_volunteers_badge" class="seekingVolunteersBadge card-badge">Needs Volunteer Support</span>`
   }
 
-  const voting = votingAvailableComponent(location)
-  
   let covid19Testing = ''
   if (location.notes && location.notes.match(/(?:\bcovid[ -]?(19)? testing\b)/i)) {
     covid19Testing = `<span data-translation-id="covid19-testing" class="covid19-testing card-badge">Covid-19 Testing Available</span>`
@@ -332,7 +321,6 @@ const createListItem = (location, status, lng, lat) => {
         ${urgentNeed}
         ${seekingVolunteers}
         ${seekingMoney}
-        ${voting}
         ${hiddenSearch}
         ${covid19Testing}
       </div>
@@ -441,16 +429,8 @@ function extractRawLocation(item) {
     accepting: item.gsx$accepting.$t,
     notAccepting: item.gsx$notaccepting.$t,
     seekingVolunteers: item.gsx$seekingvolunteers.$t,
-    voting: item.gsx$voting.$t,
     notes: item.gsx$notes.$t
   }
-}
-
-function getVotingLocationMarker(className) {
-  let marker = document.createElement('div');
-  marker.classList.add("voting-marker");
-  marker.classList.add(className);
-  return marker
 }
 
 // start fetching data right away
@@ -485,7 +465,6 @@ const onMapLoad = async () => {
           accepting: (value, _) => sectionUrlComponent(value, 'accepting'),
           notAccepting: (value, _) => sectionUrlComponent(value, 'not_accepting'),
           seekingVolunteers: (value, _) => sectionUrlComponent(value, 'seeking_volunteers_badge'),
-          voting: (_, location) => votingAvailableComponent(location),
           mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> <span data-translate-font>${moment(datetime, 'H:m M/D').fromNow()}</span></div>`,
           urgentNeed: (value, _) => sectionUrlComponent(value,'urgent_need'),
           notes: (value, _) => sectionUrlComponent(value,'notes'),
@@ -501,46 +480,32 @@ const onMapLoad = async () => {
           else return `<div class='p row'><p data-translation-id="${_.snakeCase(key)}"class='txt-deemphasize key'>${camelToTitle(key)}</p><p class='value'>${value}</p></div>`
         }).join('')
 
-        if (location.voting === "TRUE") {
-          if(status.name === "closed") {
-
-            location.marker = new mapboxgl.Marker(getVotingLocationMarker("voting-marker-closed"))
-              .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
-              .setPopup(new mapboxgl.Popup().setMaxWidth('275px'))
-              .addTo(map);
-          } else {
-            location.marker = new mapboxgl.Marker(getVotingLocationMarker("voting-marker-open"))
-              .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
-              .setPopup(new mapboxgl.Popup().setMaxWidth('275px'))
-              .addTo(map);
-          }
-        } else {
-          location.marker = new mapboxgl.Marker({ color: status.accessibleColor})
+        // create marker
+        location.marker = new mapboxgl.Marker({ color: status.accessibleColor })
           .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
           .setPopup(new mapboxgl.Popup().setMaxWidth('275px'))
           .addTo(map);
+
+          location.marker.getElement().className += " status-" + status.name;
+          location.popup = location.marker.getPopup()
+
+          location.popup.refreshPopup = () => {
+            activePopup = location.popup
+            location.popup.setHTML(`<div class='popup-content'>${markerHtml()}</div>`)
+            translator.translate(location.popup.getElement())
+          }
+
+          // run translation when popup opens
+          location.popup.on('open', location.popup.refreshPopup)
+
+          // add to the side panel
+          $locationList.appendChild(createListItem(location, status, item.gsx$longitude.$, item.gsx$latitude.$))
+
+          return location
+        } catch (e) {
+          console.error(e)
+          return
         }
-
-        location.marker.getElement().className += " status-" + status.name;
-        location.popup = location.marker.getPopup()
-
-        location.popup.refreshPopup = () => {
-          activePopup = location.popup
-          location.popup.setHTML(`<div class='popup-content'>${markerHtml()}</div>`)
-          translator.translate(location.popup.getElement())
-        }
-
-        // run translation when popup opens
-        location.popup.on('open', location.popup.refreshPopup)
-
-        // add to the side panel
-        $locationList.appendChild(createListItem(location, status, item.gsx$longitude.$, item.gsx$latitude.$))
-
-        return location
-      } catch (e) {
-        console.error(e)
-        return
-      }
     }).value()
 
     // add nav
@@ -576,11 +541,6 @@ const onMapLoad = async () => {
           name: 'seekingVolunteersBadge',
           label: 'Needs volunteers',
           sort: { order: 'desc' }
-        },
-        {
-          name: 'votingAvailable',
-          label: 'Voting available',
-          sort: { order: 'desc' }
         }
       ],
       statusOptions,
@@ -590,7 +550,6 @@ const onMapLoad = async () => {
           'name',
           'neighborhood', 
           'urgentNeed',
-          'votingAvailable',
           ...hiddenSearchFields
         ],
       },

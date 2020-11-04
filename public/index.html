@@ -93,39 +93,6 @@
       </div>
     </div>
 
-    <div id="vote-banner" class="vote-banner">
-      <div class="vote-covid-banner-reminder">
-        <div class="vote-safety-reminder">
-          <i class="material-icons-round covid-warning-icon" alt="warning icon">error</i>
-          <div>
-            <a data-translation-id="covid_19" class="covid-19" href="https://www.health.state.mn.us/diseases/coronavirus/index.html">COVID-19</a>
-            <p data-translation-id="safety_reminder" class="safety-reminder-message">Safety Reminder</p>
-          </div>
-        </div>
-
-        <div class="gotv-message-container">
-          <div class="gotv-message">
-            <h1 data-translation-id="vote">VOTE!</h1>
-            <a class="polling-place" href="https://tcmap.org/voting/" onclick="captureOutboundLink('https://tcmap.org/voting/', 'voting resources')">
-              <i class="material-icons-round" alt="double arrow icon">double_arrow</i>
-              <h4 class="find-polling-place" data-translation-id="get_help_voting">Get help voting</h4>
-            </a>
-          </div>
-          <p id="voting-countdown" class="voting-countdown"></p>
-        </div>
-
-        <div class="vote-covid-icon-container">
-          <i class="material-icons-round covid-icon" alt="mask icon">masks</i>
-        </div>
-        <div class="vote-covid-icon-container">
-          <i class="material-icons-round covid-icon" alt="social distance icon">6_ft_apart</i>
-        </div>
-        <div class="vote-covid-icon-container">
-          <i class="material-icons-round covid-icon" alt="wash hands icon">wash</i>
-        </div>
-      </div>
-    </div>
-
   <div class="main-content" id="main-content">
   <div class="content">
     <div id="header">
@@ -171,42 +138,6 @@
 
   <script src="/js/list.min.js"></script>
   <script type="module" src="/_dist_/index.js"></script>
-
-  <script>
-    // Set the date we're counting down to
-    var countDownDate = new Date("Nov 3, 2020 20:00:00").getTime();
-
-    // Update the count down every 1 second
-    var x = setInterval(function() {
-
-      // Get today's date and time
-      var now = new Date().getTime();
-
-      // Find the distance between now and the count down date
-      var distance = countDownDate - now;
-
-      // Time calculations for days, hours, minutes and seconds
-      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      // Display the result in the element with id="voting-countdown"
-      document.getElementById("voting-countdown").innerHTML = days + "d " + hours + "h "
-      + minutes + "m " + seconds + "s ";
-
-      // If the count down is finished, write some text
-      if (distance > 0) {
-        document.getElementById("covid-banner").style.display = "none"
-      }
-
-      if (distance < 0) {
-        clearInterval(x);
-        document.getElementById("vote-banner").style.display = "none"
-        document.getElementById("covid-banner").style.display = "visible"
-      }
-    }, 1000);
-</script>
 
 </body>
 </html>
