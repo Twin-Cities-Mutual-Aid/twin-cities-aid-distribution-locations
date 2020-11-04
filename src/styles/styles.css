@@ -340,25 +340,6 @@ input[type='checkbox'] + label {
   cursor: pointer
 }
 
-.voting-marker {
-  background-size: 40px 40px;
-  width: 40px;
-  height: 40px;
-}
-
-.voting-marker-open {
-  background-image: url(/images/voting-open-marker.gif);
-}
-
-.voting-marker-closed {
-  background-image: url(/images/voting-closed-marker.png);
-  
-}
-
-.closed-voting-marker {
-  background-image: url(/public/images/aid.png);
-}
-
 /* map marker toggles */
 .hide-receiving .status-receiving, .hide-distributing .status-distributing, .hide-both .status-both, .hide-closed .status-closed {
   display: none;
