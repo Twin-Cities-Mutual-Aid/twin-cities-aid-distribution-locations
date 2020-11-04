@@ -10,7 +10,6 @@ import './styles/components/map-popup.css';
 import './styles/components/form-control.css';
 import './styles/components/search.css';
 import './styles/components/covid-banner.css';
-import './styles/components/vote-banner.css';
 import './styles/typography.css';
 
 // Import Libs
