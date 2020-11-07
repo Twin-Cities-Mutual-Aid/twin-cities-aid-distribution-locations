@@ -1,4 +1,5 @@
 *.DS_Store
+*.swp
 .build
 build
 node_modules
