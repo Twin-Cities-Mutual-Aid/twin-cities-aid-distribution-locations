@@ -1,0 +1,24 @@
+diff --git a/node_modules/airtable/build/airtable.browser.js b/node_modules/airtable/build/airtable.browser.js
+index 097638c..caede58 100644
+--- a/node_modules/airtable/build/airtable.browser.js
++++ b/node_modules/airtable/build/airtable.browser.js
+@@ -327,7 +327,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
+ var node_fetch_1 = __importDefault(require("node-fetch"));
+ module.exports = (
+ // istanbul ignore next
+-typeof window === 'undefined' ? node_fetch_1.default : fetch);
++typeof window === 'undefined' ? node_fetch_1.default : window.bind.fetch(window));
+ 
+ },{"node-fetch":20}],8:[function(require,module,exports){
+ "use strict";
+diff --git a/node_modules/airtable/lib/fetch.js b/node_modules/airtable/lib/fetch.js
+index 1477bf1..0fd60d5 100644
+--- a/node_modules/airtable/lib/fetch.js
++++ b/node_modules/airtable/lib/fetch.js
+@@ -5,5 +5,5 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
+ var node_fetch_1 = __importDefault(require("node-fetch"));
+ module.exports = (
+ // istanbul ignore next
+-typeof window === 'undefined' ? node_fetch_1.default : fetch);
++typeof window === 'undefined' ? node_fetch_1.default : window.fetch.bind(window));
+ //# sourceMappingURL=fetch.js.map
