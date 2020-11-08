@@ -25,6 +25,7 @@ import { TrackJS } from 'trackjs';
 import validate, { LOCATION_SCHEMA } from "./js/validator";
 import replaceAll from 'string.prototype.replaceall'
 import PullToRefresh from 'pulltorefreshjs'
+import Airtable from 'airtable'
 
 //Add TrackJS Agent
 if(import.meta.env.MODE === 'production'){
@@ -52,8 +53,6 @@ const $locationsButton = document.getElementById('locations-toggle-button');
 const $body = document.body;
 
 mapboxgl.accessToken = Config.accessToken
-const airtableApiKey = Config.airtableApiKey
-const airtableBaseName = Config.airtableBaseName
 
 // we're using the map color from google sheet to indicate location status,
 // but using a different display color for accessibility. so the original
@@ -134,25 +133,21 @@ document.getElementById('close-covid-banner-button').addEventListener('click', (
 let locations = []
 let sitesList = []
 
+function loadSites(Config) {
+  const base = new Airtable({ apiKey: Config.airtableApiKey }).base(Config.airtableBaseName)
 
-const Airtable = require('airtable');
-const base = new Airtable({ apiKey: airtableApiKey }).base(airtableBaseName);
-function loadSites() {
-
-    base('mutual_aid_locations')
-        .select({sort: [{field: "org_name", direction: "asc"}]})
-        .eachPage(function page(records, fetchNextPage) {
-
-          sitesList = sitesList.concat(records)
-          fetchNextPage();
-
-        }, function done(error) {
-          console.log(error); // TODO - proper error handling
-        }
-    );
-};
-
-loadSites();
+  base('mutual_aid_locations')
+    .select({sort: [{field: "org_name", direction: "asc"}]})
+    .all((error, records) => {
+      if (error) {
+        console.log(error)
+      }
+      else {
+        sitesList = sitesList.concat(records)
+      }
+    })
+}
+loadSites(Config)
 
 // Alternative base style: 'mapbox://styles/mapbox/light-v10',
 // See also: https://docs.mapbox.com/mapbox-gl-js/example/setstyle/

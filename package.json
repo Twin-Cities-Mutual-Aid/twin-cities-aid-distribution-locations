@@ -4,6 +4,7 @@
   "description": "A webapp to coordinate aid and care in the Twin Cities.",
   "main": "index.html",
   "scripts": {
+    "postinstall": "patch-package",
     "dev": "snowpack dev",
     "build": "snowpack build",
     "snowpack": "snowpack",
@@ -33,11 +34,13 @@
   "dependencies": {
     "airtable": "^0.10.0",
     "airtable-json": "^1.2.9",
+    "dotenv": "^8.2.0",
     "jsonschema": "^1.2.6",
     "list.js": "^1.5.0",
     "lodash": "^4.17.19",
     "mapbox-gl": "^1.10.1",
     "moment": "^2.26.0",
+    "patch-package": "^6.2.2",
     "string.prototype.replaceall": "^1.0.3",
     "trackjs": "^3.7.4"
   }

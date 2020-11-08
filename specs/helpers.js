@@ -1,4 +1,5 @@
-import { Selector, ClientFunction } from 'testcafe'
+import { Selector, ClientFunction, RequestHook } from 'testcafe'
+import dotenv from 'dotenv'
 
 export const beforeEachTest = async t => {
   await t
@@ -9,3 +10,16 @@ export const beforeEachTest = async t => {
 }
 
 export const getURL = ClientFunction(() => window.location.href)
+
+class airtableBearer extends RequestHook {
+  constructor(env) {
+    super(/api\.airtable\.com/, /api\.airtable\.com/)
+    this.env = dotenv.config({path: '.env-test'}).parsed
+  }
+
+  onRequest(evt) {
+    evt.requestOptions.headers['authorization'] = `Bearer ${this.env.SNOWPACK_PUBLIC_AIRTABLE_API_KEY}`
+  }
+
+}
+export const airtableHook = new airtableBearer()
