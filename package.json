@@ -32,7 +32,7 @@
     "testcafe": "^1.8.6"
   },
   "dependencies": {
-    "airtable": "^0.10.0",
+    "airtable": "^0.10.1",
     "airtable-json": "^1.2.9",
     "dotenv": "^8.2.0",
     "jsonschema": "^1.2.6",
