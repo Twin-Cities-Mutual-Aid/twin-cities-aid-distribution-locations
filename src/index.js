@@ -219,12 +219,9 @@ function needsMoneyComponent(location) {
 }
 
 function noIdNeededComponent(location) {
-  console.log("hello" )
-  console.log(location.noIdNeeded)
   if(location.noIdNeeded === "TRUE") {
     return `<span data-translation-id="no_id_needed" class="noIdNeeded card-badge">No ID Needed</span>`
   } else {
-    console.log("returining none" + location.name)
     return ''
   }
 }
