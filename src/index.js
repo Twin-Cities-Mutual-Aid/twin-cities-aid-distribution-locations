@@ -218,6 +218,17 @@ function needsMoneyComponent(location) {
   return `<span class="seekingMoney seeking-money card-badge"><span data-translation-id="seeking_money">Needs Money</span> ${link}</span>`;
 }
 
+function noIdNeededComponent(location) {
+  console.log("hello" )
+  console.log(location.noIdNeeded)
+  if(location.noIdNeeded === "TRUE") {
+    return `<span data-translation-id="no_id_needed" class="noIdNeeded card-badge">No ID Needed</span>`
+  } else {
+    console.log("returining none" + location.name)
+    return ''
+  }
+}
+
 function addressComponent(address) {
   const googleMapDirections = `https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}`
   return `<address><a href="${googleMapDirections}" target="_blank" onclick="captureOutboundLink('${googleMapDirections}', 'directions')">${address}</a></address>`;
@@ -275,6 +286,8 @@ const createListItem = (location, status, lng, lat) => {
     seekingVolunteers = `<span data-translation-id="seeking_volunteers_badge" class="seekingVolunteersBadge card-badge">Needs Volunteer Support</span>`
   }
 
+  const noIdNeeded = noIdNeededComponent(location)
+
   let covid19Testing = ''
   if (location.notes && location.notes.match(/(?:\bcovid[ -]?(19)? testing\b)/i)) {
     covid19Testing = `<span data-translation-id="covid19-testing" class="covid19-testing card-badge">Covid-19 Testing Available</span>`
@@ -321,6 +334,7 @@ const createListItem = (location, status, lng, lat) => {
         ${urgentNeed}
         ${seekingVolunteers}
         ${seekingMoney}
+        ${noIdNeeded}
         ${hiddenSearch}
         ${covid19Testing}
       </div>
@@ -429,6 +443,7 @@ function extractRawLocation(item) {
     accepting: item.gsx$accepting.$t,
     notAccepting: item.gsx$notaccepting.$t,
     seekingVolunteers: item.gsx$seekingvolunteers.$t,
+    noIdNeeded: item.gsx$noidneeded.$t,
     notes: item.gsx$notes.$t
   }
 }
@@ -465,6 +480,7 @@ const onMapLoad = async () => {
           accepting: (value, _) => sectionUrlComponent(value, 'accepting'),
           notAccepting: (value, _) => sectionUrlComponent(value, 'not_accepting'),
           seekingVolunteers: (value, _) => sectionUrlComponent(value, 'seeking_volunteers_badge'),
+          noIdNeeded: (_, location) => noIdNeededComponent(location),
           mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> <span data-translate-font>${moment(datetime, 'H:m M/D').fromNow()}</span></div>`,
           urgentNeed: (value, _) => sectionUrlComponent(value,'urgent_need'),
           notes: (value, _) => sectionUrlComponent(value,'notes'),
@@ -541,6 +557,11 @@ const onMapLoad = async () => {
           name: 'seekingVolunteersBadge',
           label: 'Needs volunteers',
           sort: { order: 'desc' }
+        },
+        {
+          name: 'noIdNeeded',
+          label: 'No ID needed',
+          sort: { order: 'desc' }
         }
       ],
       statusOptions,
@@ -550,6 +571,7 @@ const onMapLoad = async () => {
           'name',
           'neighborhood', 
           'urgentNeed',
+          'noIdNeeded',
           ...hiddenSearchFields
         ],
       },
