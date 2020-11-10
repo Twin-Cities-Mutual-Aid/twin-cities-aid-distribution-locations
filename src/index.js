@@ -474,10 +474,10 @@ const onMapLoad = async () => {
           address: addressComponent, // driving directions in google, consider doing inside mapbox
           seekingMoney: (value, location) => needsMoneyComponent(location),
           seekingMoneyURL: (value, _) => '',
+          noIdNeeded: (_, location) => noIdNeededComponent(location),
           accepting: (value, _) => sectionUrlComponent(value, 'accepting'),
           notAccepting: (value, _) => sectionUrlComponent(value, 'not_accepting'),
           seekingVolunteers: (value, _) => sectionUrlComponent(value, 'seeking_volunteers_badge'),
-          noIdNeeded: (_, location) => noIdNeededComponent(location),
           mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> <span data-translate-font>${moment(datetime, 'H:m M/D').fromNow()}</span></div>`,
           urgentNeed: (value, _) => sectionUrlComponent(value,'urgent_need'),
           notes: (value, _) => sectionUrlComponent(value,'notes'),
