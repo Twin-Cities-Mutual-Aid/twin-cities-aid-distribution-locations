@@ -204,6 +204,14 @@ export const LOCATION_SCHEMA = {
           "type": "string" 
         },
       },
+    },
+    "gsx$noidneeded": {
+      "type": "object",
+      "properties": {
+        "$t": {
+          "type": "string"
+        }
+      }
     }
   }
 }

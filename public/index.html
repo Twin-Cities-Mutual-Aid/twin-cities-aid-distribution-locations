@@ -5,6 +5,7 @@
   <title>Twin Cities Mutual Aid</title>
   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
   <link rel="icon" href="favicon.ico">
+  <script src="https://kit.fontawesome.com/5438b173e4.js" crossorigin="anonymous"></script>
   <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
 
   <!-- META TAGS -->
@@ -94,6 +95,7 @@
 
   <div class="main-content" id="main-content">
   <div class="content">
+    <div id="header">
     <div class="title white-and-blue">
       <h1 data-translation-id="page_title" class='h1'>Twin Cities Mutual Aid Map</h1>
     </div>
@@ -101,12 +103,9 @@
       <div class='legend' id="key"></div>
       <button data-translation-id="show_list_button" id="locations-toggle-button" class="location-list-toggle toggle-button" aria-label="Show list of locations">Show list of locations</button>
       <button data-translation-id="help_info" id="help-info-toggle-button" class="toggle-button" aria-label="Toggle help info section">Help/info</button>
-      <button data-translation-id="refresh_button" id='refresh-page-button' class='toggle-button' aria-label="refresh page data">
-        <img class="refresh-image" alt="${lang_name}" src="/images/refresh.png">
-        <span class="refresh-text" data-translation-id="refresh">Refresh</span></button>
-      
     </div>
     <div id="search-controls"></div>
+    </div>
     <div id="side-pane" class="location-list">
       <div id="filter-controls"></div>
       <div class="list" id="location-list"></div>
@@ -116,7 +115,7 @@
     <button id='help-info-close-button' class='help-info-close-button' aria-label="Close help info section">X <span data-translation-id="close">Close</span></button>
     <p class='p txt-small'><span data-translation-id="project_description">Twin Cities Aid Map is run by volunteers</span>.</p><br />
     <p class='p txt-small bold'><span data-translation-id="project_feedback">Have feedback?</span> <a href="mailto:support@tcmap.org" data-translation-id="project_contact">Email Us</a>.</p>
-    <p class='p txt-small bold'><span data-translation-id="project_data">See this data in</span> <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSfnmh9CmtVoBMy2k_-NMhhvF7ursBs2L5IPF9VZ1J-l9P71vjDFw7y6Y6E98d5lNeOAEo7leisP0Y8/pubhtml" target="_blank">Google Sheets</a>.</p>
+    <p class='p txt-small bold'><span data-translation-id="project_data">See this data in</span> <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSfnmh9CmtVoBMy2k_-NMhhvF7ursBs2L5IPF9VZ1J-l9P71vjDFw7y6Y6E98d5lNeOAEo7leisP0Y8/pubhtml" target="_blank" onclick="captureOutboundLink('https://docs.google.com/spreadsheets/d/e/2PACX-1vSfnmh9CmtVoBMy2k_-NMhhvF7ursBs2L5IPF9VZ1J-l9P71vjDFw7y6Y6E98d5lNeOAEo7leisP0Y8/pubhtml', 'google sheets')">Google Sheets</a>.</p>
     <p class='p txt-small bold'><span data-translation-id="project_learn">Learn about this project on</span> <a href="https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/blob/master/README.md" target="_blank">GitHub</a>.</p>
     <p class='p txt-extra-small italic'><span data-translation-id="disclaimer">TCMAP aggregates, compiles, and logs information on our maps solely through the work of volunteers. We cannot guarantee the complete accuracy of this information, 
       including usernames or accounts provided for direct donations. Your use of this website is completely voluntary, and you assume any and all risks and liabilities, financial or otherwise, with providing goods, services, or funds to any distribution site listed on our map. 

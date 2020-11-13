@@ -66,7 +66,7 @@ a.txt-white:hover {
 }
 
 .map,
-.help-info, .refresh-page-button {
+.help-info {
   height: 100%;
   width: 100%;
 }
@@ -280,21 +280,6 @@ input[type='checkbox'] + label {
 
 /* component: location list toggle */
 .location-list-toggle {
-  display: none;
-}
-
-/*component: refresh page button*/
-
-.refresh-image {
-  display: inline-block;
-  vertical-align: top;
-  margin: 0 0px;
-  width: 13px;
-  /* hide alt text if image is missing */
-  text-indent: -9999px;
-}
-
-.refresh-text {
   display: none;
 }
 
