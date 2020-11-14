@@ -130,25 +130,6 @@ document.getElementById('lang-select-button').addEventListener('click', () => we
 
 document.getElementById('close-covid-banner-button').addEventListener('click', () => closeCovidBanner())
 
-let locations = []
-let sitesList = []
-
-function loadSites(Config) {
-  const base = new Airtable({ apiKey: Config.airtableApiKey }).base(Config.airtableBaseName)
-
-  base('mutual_aid_locations')
-    .select({sort: [{field: "org_name", direction: "asc"}]})
-    .all((error, records) => {
-      if (error) {
-        console.log(error)
-      }
-      else {
-        sitesList = sitesList.concat(records)
-      }
-    })
-}
-loadSites(Config)
-
 // Alternative base style: 'mapbox://styles/mapbox/light-v10',
 // See also: https://docs.mapbox.com/mapbox-gl-js/example/setstyle/
 const map = new mapboxgl.Map({
@@ -411,151 +392,139 @@ function parseLineBreaks(value) {
 }
 
 function extractRawLocation(item) {
-  return {
-    name: item.fields.org_name,
-    neighborhood: item.fields.neighborhood_name,
-    address: item.fields.address,
-    mostRecentlyUpdatedAt: item.fields.last_updated,
-    currentlyOpenForDistributing: item.fields.currently_open_for_distributing,
-    aidDistributionHours: getHours(item.fields.opening_for_distributing_donations, item.fields.closing_for_distributing_donations),
-    currentlyOpenForReceiving: item.fields.currently_open_for_receiving,
-    aidReceivingHours: getHours(item.fields.opening_for_receiving_donations, item.fields.closing_for_receiving_donations),
-    urgentNeed: item.fields.urgent_need,
-    seekingMoney: item.fields.seeking_money,
-    seekingMoneyURL: item.fields.seeking_money_url,
-    accepting: item.fields.accepting,
-    notAccepting: item.fields.not_accepting,
-    seekingVolunteers: item.fields.seeking_volunteers,
-    notes: item.fields.notes
-  }
+  item.aidDistributionHours = getHours(
+    item.openingForDistributingDonations,
+    item.closingForDistributingDonations
+  )
+
+  item.aidReceivingHours = getHours(
+    item.openingForReceivingDonations,
+    item.closingForReceivingDonations
+  )
+
+  return item
 }
 
-// start fetching data right away
-// const dataPromise = fetch(Config.dataUrl)
+const request = fetch('/.netlify/functions/fetchRemoteRecords/fetchRemoteRecords.js')
 
 // handle the map load event
 const onMapLoad = async () => {
-  // const resp = await dataPromise
-  // const data = await resp.json()
-  console.log(sitesList)
+  const resp = await request
+  const data = await resp.json()
 
-  locations = _.chain(sitesList)
-    .filter(item => (item.fields.org_name !== '') && (item.fields.longitude !== undefined) && (item.fields.latitude !== undefined) && (item.fields.color !== undefined)) // sanity check for empty rows
-    // .filter((item, i) => validate(item, LOCATION_SCHEMA, { sheetRow: i + 1 })) TODO: Is this filtering needed?
-    .map(item => {
+  const locations = _.chain(data).map(item => {
+    try {
+      // the location schema
+      const rawLocation = extractRawLocation(item);
+      const location = _.pickBy(rawLocation, val => val != '');
+      const status = getStatus(item.color);
 
-      try {
-        // the location schema
-        const rawLocation = extractRawLocation(item);
-        const location = _.pickBy(rawLocation, val => val != '');
-        const status = getStatus(item.fields.color);
+      // transform location properties into HTML
+      const propertyTransforms = {
+        name: (name, _) => `<h2>${name}</h2>`,
+        neighborhood: (neighborhood, _) => `<h3 class='h3'>${neighborhood}</h3>`,
+        address: addressComponent, // driving directions in google, consider doing inside mapbox
+        seekingMoney: (value, location) => needsMoneyComponent(location),
+        seekingMoneyURL: (value, _) => '',
+        accepting: (value, _) => sectionUrlComponent(value, 'accepting'),
+        notAccepting: (value, _) => sectionUrlComponent(value, 'not_accepting'),
+        seekingVolunteers: (value, _) => sectionUrlComponent(value, 'seeking_volunteers_badge'),
+        mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> <span data-translate-font>${moment(datetime, 'H:m M/D').fromNow()}</span></div>`,
+        urgentNeed: (value, _) => sectionUrlComponent(value,'urgent_need'),
+        notes: (value, _) => sectionUrlComponent(value,'notes'),
+        // ignore the following properties
+        // marker and popup should not be rendered
+        marker: () => '',
+        popup: () => '',
+      }
 
-        // transform location properties into HTML
-        const propertyTransforms = {
-          name: (name, _) => `<h2>${name}</h2>`,
-          neighborhood: (neighborhood, _) => `<h3 class='h3'>${neighborhood}</h3>`,
-          address: addressComponent, // driving directions in google, consider doing inside mapbox
-          seekingMoney: (value, location) => needsMoneyComponent(location),
-          seekingMoneyURL: (value, _) => '',
-          accepting: (value, _) => sectionUrlComponent(value, 'accepting'),
-          notAccepting: (value, _) => sectionUrlComponent(value, 'not_accepting'),
-          seekingVolunteers: (value, _) => sectionUrlComponent(value, 'seeking_volunteers_badge'),
-          mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> <span data-translate-font>${moment(datetime, 'H:m M/D').fromNow()}</span></div>`,
-          urgentNeed: (value, _) => sectionUrlComponent(value,'urgent_need'),
-          notes: (value, _) => sectionUrlComponent(value,'notes'),
-          // ignore the following properties
-          // marker and popup should not be rendered
-          marker: () => '',
-          popup: () => '',
+      // render HTML for marker
+      const markerHtml = () => _.map(location, (value, key) => {
+        if (value == undefined) {
+          return ''
+        } else if (propertyTransforms[key]) {
+          return propertyTransforms[key](value, location)
+        } else {
+          return `<div class='p row'><p data-translation-id="${_.snakeCase(key)}"class='txt-deemphasize key'>${camelToTitle(key)}</p><p class='value'>${value}</p></div>`
+        }
+      }).join('')
+
+      // create marker
+      location.marker = new mapboxgl.Marker({ color: status.accessibleColor })
+        .setLngLat([ item.longitude, item.latitude ])
+        .setPopup(new mapboxgl.Popup().setMaxWidth('275px'))
+        .addTo(map);
+
+        location.marker.getElement().className += " status-" + status.name;
+        location.popup = location.marker.getPopup()
+
+        location.popup.refreshPopup = () => {
+          activePopup = location.popup
+          location.popup.setHTML(`<div class='popup-content'>${markerHtml()}</div>`)
+          translator.translate(location.popup.getElement())
         }
 
-        // render HTML for marker
-        const markerHtml = () => _.map(location, (value, key) => {
-          if (value == undefined) {
-            return ''
-          } else if (propertyTransforms[key]) {
-            return propertyTransforms[key](value, location)
-          } else {
-            return `<div class='p row'><p data-translation-id="${_.snakeCase(key)}"class='txt-deemphasize key'>${camelToTitle(key)}</p><p class='value'>${value}</p></div>`
-          }
-        }).join('')
+        // run translation when popup opens
+        location.popup.on('open', location.popup.refreshPopup)
 
-        // create marker
-        location.marker = new mapboxgl.Marker({ color: status.accessibleColor })
-          .setLngLat([ item.fields.longitude, item.fields.latitude ])
-          .setPopup(new mapboxgl.Popup().setMaxWidth('275px'))
-          .addTo(map);
+        // add to the side panel
+        $locationList.appendChild(createListItem(location, status, item.longitude, item.latitude))
 
-          location.marker.getElement().className += " status-" + status.name;
-          location.popup = location.marker.getPopup()
+        return location
+      } catch (e) {
+        console.error(e)
+        return
+      }
+  }).value()
 
-          location.popup.refreshPopup = () => {
-            activePopup = location.popup
-            location.popup.setHTML(`<div class='popup-content'>${markerHtml()}</div>`)
-            translator.translate(location.popup.getElement())
-          }
-
-          // run translation when popup opens
-          location.popup.on('open', location.popup.refreshPopup)
-
-          // add to the side panel
-          $locationList.appendChild(createListItem(location, status, item.fields.longitude, item.fields.latitude))
-
-          return location
-        } catch (e) {
-          console.error(e)
-          return
-        }
-    }).value()
-
-    // add nav
-    new Filter($sidePane, {
-      sortOptions: [
-        {
-          name: 'urgentNeed',
-          label: 'Urgent requests first',
-          sort: { order: 'desc' }
-        },
-        {
-          name: 'name',
-          label: 'Alphabetical (name)',
-          sort: { order: 'asc' },
-          selected: true
-        },
-        {
-          name: 'status',
-          label: 'Location status',
-          sort: { order: 'desc' }
-        },
-        {
-          name: 'neighborhood',
-          label: 'Alphabetical (neighborhood)',
-          sort: { order: 'asc' }
-        },
-        {
-          name: 'seekingMoney',
-          label: 'Needs money',
-          sort: { order: 'desc' }
-        },
-        {
-          name: 'seekingVolunteersBadge',
-          label: 'Needs volunteers',
-          sort: { order: 'desc' }
-        }
-      ],
-      statusOptions,
-      searchOptions: {
-        initialSearch: getQueryParam('search'),
-        searchOn: [
-          'name',
-          'neighborhood', 
-          'urgentNeed',
-          ...hiddenSearchFields
-        ],
+  // add nav
+  new Filter($sidePane, {
+    sortOptions: [
+      {
+        name: 'urgentNeed',
+        label: 'Urgent requests first',
+        sort: { order: 'desc' }
       },
-      locations,
-      onAfterUpdate: () => translator.translate()
-    })
+      {
+        name: 'name',
+        label: 'Alphabetical (name)',
+        sort: { order: 'asc' },
+        selected: true
+      },
+      {
+        name: 'status',
+        label: 'Location status',
+        sort: { order: 'desc' }
+      },
+      {
+        name: 'neighborhood',
+        label: 'Alphabetical (neighborhood)',
+        sort: { order: 'asc' }
+      },
+      {
+        name: 'seekingMoney',
+        label: 'Needs money',
+        sort: { order: 'desc' }
+      },
+      {
+        name: 'seekingVolunteersBadge',
+        label: 'Needs volunteers',
+        sort: { order: 'desc' }
+      }
+    ],
+    statusOptions,
+    searchOptions: {
+      initialSearch: getQueryParam('search'),
+      searchOn: [
+        'name',
+        'neighborhood',
+        'urgentNeed',
+        ...hiddenSearchFields
+      ],
+    },
+    locations,
+    onAfterUpdate: () => translator.translate()
+  })
 }
 
 // load map
