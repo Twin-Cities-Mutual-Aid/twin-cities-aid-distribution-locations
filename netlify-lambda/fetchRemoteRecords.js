@@ -1,5 +1,4 @@
 const Airtable = require('airtable')
-const config = require('dotenv').config({path: '.airtable-secrets'}).parsed
 
 // Transform a raw airtable record into a format appropriate for
 // the TCMAP website, eg. hide private fields.
@@ -13,11 +12,11 @@ prepareResult = function(record) {
     latitude: record.fields.latitude,
     mostRecentlyUpdatedAt: record.fields.last_updated,
     currentlyOpenForDistributing: record.fields.currently_open_for_distributing,
-    openingForDistributionDonations: record.fields.opening_for_distributing_donations,
-    closinForDistributionDonations: record.fields.closing_for_distributing_donations,
+    openingForDistributingDonations: record.fields.opening_for_distributing_donations,
+    closingForDistributingDonations: record.fields.closing_for_distributing_donations,
     currentlyOpenForReceiving: record.fields.currently_open_for_receiving,
-    openingForReciecingDonations: record.fields.opening_for_receiving_donations,
-    closingForReceicingDonations:  record.fields.closing_for_receiving_donations,
+    openingForReceivingDonations: record.fields.opening_for_receiving_donations,
+    closingForReceivingDonations:  record.fields.closing_for_receiving_donations,
     urgentNeed: record.fields.urgent_need,
     seekingMoney: record.fields.seeking_money,
     seekingMoneyURL: record.fields.seeking_money_url,
@@ -39,8 +38,8 @@ validateRecord = function(record) {
 }
 
 fetchRecords = async function(query) {
-  const apiKey = config.AIRTABLE_API_KEY
-  const baseName = config.AIRTABLE_BASE_NAME
+  const apiKey = process.env.AIRTABLE_API_KEY
+  const baseName = process.env.AIRTABLE_BASE_NAME
   const base = new Airtable({apiKey}).base(baseName)
 
   return base('mutual_aid_locations')

@@ -25,7 +25,6 @@ import { TrackJS } from 'trackjs';
 import validate, { LOCATION_SCHEMA } from "./js/validator";
 import replaceAll from 'string.prototype.replaceall'
 import PullToRefresh from 'pulltorefreshjs'
-import Airtable from 'airtable'
 
 //Add TrackJS Agent
 if(import.meta.env.MODE === 'production'){
@@ -405,7 +404,7 @@ function extractRawLocation(item) {
   return item
 }
 
-const request = fetch('/.netlify/functions/fetchRemoteRecords/fetchRemoteRecords.js')
+const request = fetch('/.netlify/functions/fetchRemoteRecords')
 
 // handle the map load event
 const onMapLoad = async () => {
