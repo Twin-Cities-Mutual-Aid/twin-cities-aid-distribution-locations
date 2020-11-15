@@ -25,7 +25,6 @@ import { TrackJS } from 'trackjs';
 import validate, { LOCATION_SCHEMA } from "./js/validator";
 import replaceAll from 'string.prototype.replaceall'
 import PullToRefresh from 'pulltorefreshjs'
-import Airtable from 'airtable'
 
 //Add TrackJS Agent
 if(import.meta.env.MODE === 'production'){
