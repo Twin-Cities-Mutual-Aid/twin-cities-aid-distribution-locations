@@ -53,8 +53,6 @@ fetchRecords = async function(query) {
 }
 
 exports.handler = async function(event) {
-  //console.log(event)
-
   // default sorting/filtering, eventually use `event` data to override.
   const field = 'org_name'
   const direction = 'asc'
