@@ -219,8 +219,13 @@ function needsMoneyComponent(location) {
 }
 
 function noIdNeededComponent(location) {
+  console.log(location)
   if(location.noIdNeeded === "TRUE") {
-    return `<span data-translation-id="no_id_needed" class="noIdNeeded card-badge">No ID Needed</span>`
+    if (location.someInfoRequired === "TRUE") {
+      return `<span data-translation-id="some_info_required" class="noIdNeeded card-badge">No ID Needed (some info required)</span>`
+    } else {
+        return `<span data-translation-id="no_id_needed" class="noIdNeeded card-badge">No ID Needed</span>`
+    }
   } else {
     return ''
   }
@@ -425,6 +430,7 @@ function parseLineBreaks(value) {
 }
 
 function extractRawLocation(item) {
+  // console.log(item)
   return {
     name: item.gsx$nameoforganization.$t,
     neighborhood: item.gsx$neighborhood.$t,
@@ -441,6 +447,7 @@ function extractRawLocation(item) {
     notAccepting: item.gsx$notaccepting.$t,
     seekingVolunteers: item.gsx$seekingvolunteers.$t,
     noIdNeeded: item.gsx$noidneeded.$t,
+    someInfoRequired: item.gsx$someinforequiredchecknoidtoo.$t,
     notes: item.gsx$notes.$t
   }
 }

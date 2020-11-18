@@ -212,6 +212,14 @@ export const LOCATION_SCHEMA = {
           "type": "string"
         }
       }
+    },
+    "gsx$someinforequiredchecknoidtoo": {
+      "type": "object",
+      "properties": {
+        "$t": {
+          "type": "string"
+        }
+      }
     }
   }
 }
