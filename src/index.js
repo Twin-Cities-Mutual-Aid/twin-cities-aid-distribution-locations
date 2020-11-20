@@ -404,7 +404,7 @@ function extractRawLocation(item) {
   return item
 }
 
-const request = fetch('/.netlify/functions/fetchRemoteRecords')
+const request = fetch('https://tcmap-api.herokuapp.com/mutual_aid_sites')
 
 // handle the map load event
 const onMapLoad = async () => {
