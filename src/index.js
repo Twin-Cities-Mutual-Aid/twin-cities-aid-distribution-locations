@@ -108,11 +108,21 @@ const ptr = PullToRefresh.init({
   }
 });
 
+/**
+ * set which languages to display
+ * update the language choice when a user selects a new language
+ * Send GA event to track language choice
+ * if there's an active popup, re-display it after the welcome modal closes
+ */
 const welcome = new WelcomeModal({
   languages: translator.languages,
   onLanguageSelect: lang => {
     translator.language = lang
     moment.locale(translator.locale)
+    gtag('event', 'language_change', {
+      'event_category': 'language',
+      'event_label': lang
+    })
     activePopup && activePopup.refreshPopup()
   }
 })
