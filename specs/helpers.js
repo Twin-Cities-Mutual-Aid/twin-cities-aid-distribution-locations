@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 
 export const beforeEachTest = async t => {
   await t
+    .wait(3000)
     // Language must be selected before anything else can be done
     .click(Selector('.welcome-lang-button').withText('English'))
     // Help window should not be visible at beginning

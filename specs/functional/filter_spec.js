@@ -1,10 +1,9 @@
 import { Selector } from 'testcafe'
-import { beforeEachTest, airtableHook } from '../helpers'
+import { beforeEachTest } from '../helpers'
 
 fixture `Filters`
   .page `http://localhost:8080/`
   .beforeEach(beforeEachTest)
-  .requestHooks(airtableHook)
 
 // Tapping one of the ✅'s in the legend filters items on the map and in the list.
 test('Uncheck "closed" filter', async t => {

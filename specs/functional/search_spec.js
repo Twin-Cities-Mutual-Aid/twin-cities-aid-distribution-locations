@@ -1,10 +1,9 @@
 import { Selector } from 'testcafe'
-import { beforeEachTest, getURL, airtableHook } from '../helpers'
+import { beforeEachTest, getURL } from '../helpers'
 
 fixture `Search`
   .page `http://localhost:8080/`
   .beforeEach(beforeEachTest)
-  .requestHooks(airtableHook)
 
 test('Search for term', async t => {
   const listCount = await Selector('.location-list--item').count

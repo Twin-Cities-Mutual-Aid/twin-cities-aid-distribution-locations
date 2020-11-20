@@ -230,12 +230,11 @@ export const LOCATION_SCHEMA = {
       "type": "array",
     }, 
     // These are the Google Sheet columns
-<<<<<<< HEAD
     "last_updated": {
-"type": "string"
+      "type": "string"
     },
     "org_name": {
-"type": "string"
+      "type": "string"
     },
     "neighborhood": {
       "type": "string"

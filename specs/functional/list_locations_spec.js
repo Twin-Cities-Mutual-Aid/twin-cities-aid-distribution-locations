@@ -1,10 +1,9 @@
 import { Selector } from 'testcafe'
-import { beforeEachTest, airtableHook } from '../helpers'
+import { beforeEachTest } from '../helpers'
 
 fixture `List locations`
   .page `http://localhost:8080/`
   .beforeEach(beforeEachTest)
-  .requestHooks(airtableHook)
   .afterEach(async t => {
     await t
       .maximizeWindow()
