@@ -319,8 +319,6 @@ Validator.prototype.customFormats.longitude = function(lon) {
   a valid schema object, and an optional context paramater
 */
 export default function validate(item, schema, ctx = {}) {
-  console.log("item")
-  console.log(item)
   let v = new Validator();
   let result = v.validate(item, schema);
 
