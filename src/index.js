@@ -216,6 +216,19 @@ function needsMoneyComponent(location) {
   return `<span class="seekingMoney seeking-money card-badge"><span data-translation-id="seeking_money">Needs Money</span> ${link}</span>`;
 }
 
+function noIdNeededComponent(location) {
+  console.log(location)
+  if(location.noIdNeeded === "TRUE") {
+    if (location.someInfoRequired === "TRUE") {
+      return `<span data-translation-id="some_info_required" class="noIdNeeded card-badge">No ID Needed (some info required)</span>`
+    } else {
+        return `<span data-translation-id="no_id_needed" class="noIdNeeded card-badge">No ID Needed</span>`
+    }
+  } else {
+    return ''
+  }
+}
+
 function addressComponent(address) {
   const googleMapDirections = `https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}`
   return `<address><a href="${googleMapDirections}" target="_blank" onclick="captureOutboundLink('${googleMapDirections}', 'directions')">${address}</a></address>`;
@@ -274,6 +287,8 @@ const createListItem = (location, status, lng, lat) => {
     seekingVolunteers = `<span data-translation-id="seeking_volunteers_badge" class="seekingVolunteersBadge card-badge">Needs Volunteer Support</span>`
   }
 
+  const noIdNeeded = noIdNeededComponent(location)
+
   let covid19Testing = ''
   if (location.notes && location.notes.match(/(?:\bcovid[ -]?(19)? testing\b)/i)) {
     covid19Testing = `<span data-translation-id="covid19-testing" class="covid19-testing card-badge">Covid-19 Testing Available</span>`
@@ -320,6 +335,7 @@ const createListItem = (location, status, lng, lat) => {
         ${urgentNeed}
         ${seekingVolunteers}
         ${seekingMoney}
+        ${noIdNeeded}
         ${hiddenSearch}
         ${covid19Testing}
       </div>
@@ -509,6 +525,11 @@ const onMapLoad = async () => {
         name: 'seekingVolunteersBadge',
         label: 'Needs volunteers',
         sort: { order: 'desc' }
+      },
+      {
+        name: 'noIdNeeded',
+        label: 'No ID needed',
+        sort: { order: 'desc' }
       }
     ],
     statusOptions,
@@ -518,6 +539,7 @@ const onMapLoad = async () => {
         'name',
         'neighborhood',
         'urgentNeed',
+        'noIdNeeded',
         ...hiddenSearchFields
       ],
     },
