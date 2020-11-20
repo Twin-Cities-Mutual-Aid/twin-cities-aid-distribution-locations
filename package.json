@@ -4,7 +4,6 @@
   "description": "A webapp to coordinate aid and care in the Twin Cities.",
   "main": "index.html",
   "scripts": {
-    "postinstall": "patch-package",
     "dev": "snowpack dev",
     "build": "snowpack build",
     "snowpack": "snowpack",

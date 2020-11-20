@@ -19,7 +19,6 @@ test('Switch language to Spanish and check it is saved after reload', async t =>
     .expect(Selector('.lang-name').innerText).eql('Español')
     .expect(Selector('.title').textContent).contains('Mapa de Ayuda de las Ciudades Gemelas')
   
-  // await t.wait(2000);
   await t.eval(() => location.reload())
   await t.wait(3000)
   await t
