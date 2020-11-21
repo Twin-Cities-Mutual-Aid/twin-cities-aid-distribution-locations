@@ -2,19 +2,32 @@
 A webapp to coordinate aid and care in the Twin Cities. https://twin-cities-mutual-aid.org/
 
 ## About the project
-This project is only a few weeks old, and things are changing very rapidly. We'll do our best to keep this readme up-to-date, but if something doesn't look right, it's probably out of date.
+This project is only a few months old, and things continue to change and develop. We'll do our best to keep this readme up-to-date, but if something doesn't look right, it may be out of date. Feel free to ask about it!
 
 This project is unusual because there are two separate teams working in tandem:
 
 * **Website team**: This team (us) is using a channel within the Open Twin Cities slack to communicate. There's a link at the top of the [Open Twin Cities](https://www.opentwincities.org) website to join, if you'd like to help out.
 * **[Twin Cities Mutual Aid Project](http://www.tcmap.org)**: TCMAP is a collective, all-volunteeer effort that works to coordinate with aid sites and manage the data that feeds the site on a day-to-day basis. Over 100 volunteers have now been involved in the project. Leadership and tech-oriented volunteers from TCMAP coordinate with stakeholders to source designs, product direction, feature requests and feedback that drive development. TCMAP spawned from a large Facebook group called [South Minneapolis Mutual Aid Autonomous Zone Coordination](https://www.facebook.com/groups/southsidemutualaid) that emerged in the wake of the uprisings in Minneapolis in May 2020. 
 
+
 **Participation is welcome both on the web team and TCMAP sides of this project**. Some developers have engaged through Github and the Open Twin Cities Slack channel alone; others have joined TCMAP to help coordinate efforts, or just to better understand use cases. You can join TCMAP through the [volunteer page on their website](http://www.tcmap.org/volunteer). 
 
 ## Feature requests & feedback
-We're using [Github Issues](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/issues) to manage tasks, and have a [kanban board](https://github.com/orgs/Twin-Cities-Mutual-Aid/projects/1) set up. If you'd like access to the kanban board reach out in the [OTC slack channel](https://otc-slackin.herokuapp.com/).
+We're using [Github Issues](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/issues) to manage tasks, and have a [kanban board](https://github.com/orgs/Twin-Cities-Mutual-Aid/projects/1) set up. If you'd like access to the kanban board reach out in the [OTC slack channel](https://otc-slackin.herokuapp.com/). 
 
 If you've got a feature request or feedback to share on the website, feel free to [submit an issue](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/issues/new) on GH issues, or bring it up in slack.
+
+## Contributions
+If you're ready to start contributing:
+1. Reach out to **#tc-aid-dev** channel in the Open Twin Cities Slack or **#dragon-riders** channel in Twin Cities Mutual Aid Project Slack and ask to be added to the **Developers** team for the Twin-Cities-Mutual-Aid Github organization. This will give you access to create branches and push to a clone of the twin-cities-aid-distribution-locations repo and will give you read access to the [secrets](https://github.com/Twin-Cities-Mutual-Aid/secrets) repo for local environment variables.
+2. Clone down the repo - be sure to clone and not fork. Our current CI/CD solution (TravisCI) cannot inject environment variables to forks so any PRs submitted from a fork will have failing tests.
+3. Take a look at the Kanban board, assign yourself to an issue, and pull it into **In Progress**. Issues on the Kanban board tagged with **Ready To Go** or **Good First Issue** are good ones to start with.
+4. Create a branch following the format `issue-<issue#>/<github-username>/<short-description-of-work>`.
+5. Code to your heart's content!
+6. Reach out to either slack channel listed above for any questions.
+7. When you are ready for review, submit a pull request and tag anyone from the **Approvers** team to review.
+8. When your code has been approved, squash & merge the code.
+
 
 ## Data
 
@@ -31,7 +44,7 @@ extract the sheet ID out of the url to plug into the `SNOWPACK_PUBLIC_DATA_URL` 
   SNOWPACK_PUBLIC_DATA_URL = 'https://spreadsheets.google.com/feeds/list/1XJhbzcT_AubgnqAJRsbOEbMO3HPTybG3yNcX6i-BgH0/1/public/full?alt=json'
 `
 
-## Additional documentation
+## Additional Documentation
 
  * Information about adding, editing and maintaining languages can be found in [Language Translation](docs/LANGUAGE_TRANSLATION.md)
 
