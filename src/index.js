@@ -443,11 +443,11 @@ function extractRawLocation(item) {
     urgentNeed: item.gsx$urgentneed.$t,
     seekingMoney: extractSeekingMoney(item),
     seekingMoneyURL: extractSeekingMoneyURL(item),
+    noIdNeeded: item.gsx$noidneeded.$t,
+    someInfoRequired: item.gsx$someinforequiredchecknoidtoo.$t,
     accepting: item.gsx$accepting.$t,
     notAccepting: item.gsx$notaccepting.$t,
     seekingVolunteers: item.gsx$seekingvolunteers.$t,
-    noIdNeeded: item.gsx$noidneeded.$t,
-    someInfoRequired: item.gsx$someinforequiredchecknoidtoo.$t,
     notes: item.gsx$notes.$t
   }
 }
@@ -482,6 +482,7 @@ const onMapLoad = async () => {
           seekingMoney: (value, location) => needsMoneyComponent(location),
           seekingMoneyURL: (value, _) => '',
           noIdNeeded: (_, location) => noIdNeededComponent(location),
+          someInfoRequired: (value, _) => '',
           accepting: (value, _) => sectionUrlComponent(value, 'accepting'),
           notAccepting: (value, _) => sectionUrlComponent(value, 'not_accepting'),
           seekingVolunteers: (value, _) => sectionUrlComponent(value, 'seeking_volunteers_badge'),
