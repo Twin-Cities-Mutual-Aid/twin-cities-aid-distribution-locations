@@ -129,6 +129,8 @@ document.getElementById('lang-select-button').addEventListener('click', () => we
 
 document.getElementById('close-covid-banner-button').addEventListener('click', () => closeCovidBanner())
 
+let locations = []
+
 // Alternative base style: 'mapbox://styles/mapbox/light-v10',
 // See also: https://docs.mapbox.com/mapbox-gl-js/example/setstyle/
 const map = new mapboxgl.Map({
@@ -419,7 +421,7 @@ function extractRawLocation(item) {
   return item
 }
 
-const request = fetch('https://tcmap-api.herokuapp.com/mutual_aid_sites')
+const request = fetch('https://tcmap-api.herokuapp.com/v1/mutual_aid_sites')
 
 // handle the map load event
 const onMapLoad = async () => {
