@@ -428,7 +428,7 @@ const onMapLoad = async () => {
   const resp = await request
   const data = await resp.json()
 
-  const locations = _.chain(data).map(item => {
+  locations = _.chain(data).map(item => {
     try {
       // the location schema
       const rawLocation = extractRawLocation(item);
@@ -437,6 +437,9 @@ const onMapLoad = async () => {
 
       // transform location properties into HTML
       const propertyTransforms = {
+        latitude: (value, _) => '',
+        longitude: (value, _) => '',
+        color: (value, _) => '',
         name: (name, _) => `<h2>${name}</h2>`,
         neighborhood: (neighborhood, _) => `<h3 class='h3'>${neighborhood}</h3>`,
         address: addressComponent, // driving directions in google, consider doing inside mapbox
@@ -445,7 +448,7 @@ const onMapLoad = async () => {
         accepting: (value, _) => sectionUrlComponent(value, 'accepting'),
         notAccepting: (value, _) => sectionUrlComponent(value, 'not_accepting'),
         seekingVolunteers: (value, _) => sectionUrlComponent(value, 'seeking_volunteers_badge'),
-        mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> <span data-translate-font>${moment(datetime, 'H:m M/D').fromNow()}</span></div>`,
+        mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> <span data-translate-font>${moment(datetime, 'YYYY-MM-DDTHH:mm:ss.SSSZ').fromNow()}</span></div>`,
         urgentNeed: (value, _) => sectionUrlComponent(value,'urgent_need'),
         notes: (value, _) => sectionUrlComponent(value,'notes'),
         // ignore the following properties
