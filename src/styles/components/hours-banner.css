@@ -7,7 +7,6 @@
 
 .hours-message {
     display: flex;
-    /* flex: 65%; */
     justify-content: center;
     align-self: center;
     flex-flow: row wrap;
