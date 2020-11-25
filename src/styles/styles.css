@@ -295,13 +295,13 @@ input[type='checkbox'] + label {
 }
 
 .popup-content .key {
-  padding: 0px;
+  padding: 5px 0 0 0;
   margin: 0px;
   border-bottom: 1px solid #ddd;
 }
 
 .popup-content .value {
-  padding: 5px 0 10px 0;
+  padding: 5px 0 5px 0;
   margin: 0px;
 }
 
