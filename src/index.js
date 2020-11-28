@@ -10,6 +10,7 @@ import './styles/components/map-popup.css';
 import './styles/components/form-control.css';
 import './styles/components/search.css';
 import './styles/components/covid-banner.css';
+import './styles/components/hours-banner.css';
 import './styles/typography.css';
 
 // Import Libs
@@ -129,6 +130,8 @@ document.getElementById('lang-select-button').addEventListener('click', () => we
 
 document.getElementById('close-covid-banner-button').addEventListener('click', () => closeCovidBanner())
 
+document.getElementById('close-hours-banner-button').addEventListener('click', () => closeHoursBanner())
+
 let locations = []
 
 // Alternative base style: 'mapbox://styles/mapbox/light-v10',
@@ -170,6 +173,12 @@ function closeCovidBanner() {
   const covidBanner = document.getElementById('covid-banner')
   covidBanner.style.display = "none"
   covidBanner.setAttribute("aria-hidden", true)
+}
+
+function closeHoursBanner() {
+  const hoursBanner = document.getElementById('hours-banner')
+  hoursBanner.style.display = "none"
+  hoursBanner.setAttribute("aria-hidden", true)
 }
 
 // open/close location sidebar
@@ -445,6 +454,8 @@ const onMapLoad = async () => {
         address: addressComponent, // driving directions in google, consider doing inside mapbox
         seekingMoney: (value, location) => needsMoneyComponent(location),
         seekingMoneyURL: (value, _) => '',
+        noIdNeeded: (_, location) => noIdNeededComponent(location),
+        someInfoRequired: (value, _) => '',
         accepting: (value, _) => sectionUrlComponent(value, 'accepting'),
         notAccepting: (value, _) => sectionUrlComponent(value, 'not_accepting'),
         seekingVolunteers: (value, _) => sectionUrlComponent(value, 'seeking_volunteers_badge'),
