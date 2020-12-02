@@ -12,7 +12,6 @@
     - [Creating a new term](#creating-a-new-term)
     - [Adding a new language](#adding-a-new-language)
       - [Create a new translation file](#create-a-new-translation-file)
-      - [Adding a new flag image](#adding-a-new-flag-image)
       - [Moment.js](#momentjs)
       - [Enabling the language](#enabling-the-language)
       - [Add language checklist](#add-language-checklist)
@@ -77,9 +76,8 @@ Checklist:
 Adding a language involves a few steps:
 
 1. Create a new translation `json` file
-2. Add a new flag image
-3. Check for matching [`moment.js`](https://momentjs.com/) translation
-4. Import translation in `translation.js`
+2. Check for matching [`moment.js`](https://momentjs.com/) translation
+3. Import translation in `translation.js`
 
 #### Create a new translation file
 
@@ -94,18 +92,7 @@ If the language translator contributed their translations using a dedicated Goog
 
 Be sure to add a field for "locale", instead of "id".
 
-#### Adding a new flag image
-
-A good resource for hard-to-find flag images:
-
-https://en.wikipedia.org/wiki/Unrepresented_Nations_and_Peoples_Organization#Members
-
-A checklist for adding new flag images
-
- - [ ] The image should be a PNG
- - [ ] The image should be 23px wide
- - [ ] The image name should have the format `lang-XXX.png` where "XXX" is the 3-letter language code
- - [ ] The image should be placed in the `/public/images` directory in this repo
+If the language translator contributed their translation in a Google Sheet with all other translations, you can copy the new translation into a new dedicated spreadsheet and use the above instructions to create the json file. Make sure to copy the ID column, the English column, then the column of the new language translations. This is the only way for the `/bin/google-sheet-with-translation-to-json` to work correctly.
 
 #### Moment.js
 
@@ -160,7 +147,6 @@ constructor() {
 #### Add language checklist
 
  - [ ] Create a new translation file (`src/i18n/XXX.json`)
- - [ ] Add a new flag image (`public/images/lang-XXX.png`)
  - [ ] `locale` should match existing `moment.js` translation or new `moment.js` locale created (`src/locale/XXX.js`)
  - [ ] Language has been imported in `translator.js`
 

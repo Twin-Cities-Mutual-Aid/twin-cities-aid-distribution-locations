@@ -16,6 +16,7 @@ import orm from './../i18n/orm.json'
 import som from './../i18n/som.json'
 import spa from './../i18n/spa.json'
 import vie from './../i18n/vie.json'
+import fra from './../i18n/fra.json'
 
 class Translator {
   constructor() {
@@ -31,7 +32,8 @@ class Translator {
       vie,
       hin,
       kar,
-      man
+      man,
+      fra
     }
     this.detectLanguage()
   }
