@@ -143,14 +143,9 @@ class Translator {
    * Sets language throughout the page
    * - Find and set images with the `data-translation-flag`
    * - Set <html lang="??">
-   * - Send GA event to track language choice
    */
   setDocumentLanguage() {
     document.documentElement.lang = this.locale
-    gtag('event', 'language_change', {
-      'event_category': 'language',
-      'event_label': this.language
-    })
   }
 }
 
