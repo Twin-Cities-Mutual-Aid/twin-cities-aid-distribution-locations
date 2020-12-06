@@ -219,13 +219,20 @@ function needsMoneyComponent(location) {
 }
 
 function noIdNeededComponent(location) {
-  console.log(location)
   if(location.noIdNeeded === "TRUE") {
     if (location.someInfoRequired === "TRUE") {
       return `<span data-translation-id="some_info_required" class="noIdNeeded card-badge">No ID Needed (some info required)</span>`
     } else {
         return `<span data-translation-id="no_id_needed" class="noIdNeeded card-badge">No ID Needed</span>`
     }
+  } else {
+    return ''
+  }
+}
+
+function warmingSiteComponent(location) {
+  if (location.warmingSite === "TRUE") {
+    return `<span data-translation-id="warming_site" class="warmingSite card-badge">Warm Up Here</span>`
   } else {
     return ''
   }
@@ -290,6 +297,8 @@ const createListItem = (location, status, lng, lat) => {
 
   const noIdNeeded = noIdNeededComponent(location)
 
+  const warmingSite = warmingSiteComponent(location)
+
   let covid19Testing = ''
   if (location.notes && location.notes.match(/(?:\bcovid[ -]?(19)? testing\b)/i)) {
     covid19Testing = `<span data-translation-id="covid19-testing" class="covid19-testing card-badge">Covid-19 Testing Available</span>`
@@ -337,6 +346,7 @@ const createListItem = (location, status, lng, lat) => {
         ${seekingVolunteers}
         ${seekingMoney}
         ${noIdNeeded}
+        ${warmingSite}
         ${hiddenSearch}
         ${covid19Testing}
       </div>
@@ -430,7 +440,6 @@ function parseLineBreaks(value) {
 }
 
 function extractRawLocation(item) {
-  // console.log(item)
   return {
     name: item.gsx$nameoforganization.$t,
     neighborhood: item.gsx$neighborhood.$t,
@@ -445,11 +454,18 @@ function extractRawLocation(item) {
     seekingMoneyURL: extractSeekingMoneyURL(item),
     noIdNeeded: item.gsx$noidneeded.$t,
     someInfoRequired: item.gsx$someinforequiredchecknoidtoo.$t,
+    warmingSite: item.gsx$warmingsite.$t,
     accepting: item.gsx$accepting.$t,
     notAccepting: item.gsx$notaccepting.$t,
     seekingVolunteers: item.gsx$seekingvolunteers.$t,
     notes: item.gsx$notes.$t
   }
+}
+
+function getWarmingSiteMarker() {
+  let marker = document.createElement("div")
+  marker.classList.add("warming-site-marker")
+  return marker
 }
 
 // start fetching data right away
@@ -483,6 +499,7 @@ const onMapLoad = async () => {
           seekingMoneyURL: (value, _) => '',
           noIdNeeded: (_, location) => noIdNeededComponent(location),
           someInfoRequired: (value, _) => '',
+          warmingSite: (_, location) => warmingSiteComponent(location), 
           accepting: (value, _) => sectionUrlComponent(value, 'accepting'),
           notAccepting: (value, _) => sectionUrlComponent(value, 'not_accepting'),
           seekingVolunteers: (value, _) => sectionUrlComponent(value, 'seeking_volunteers_badge'),
@@ -502,31 +519,39 @@ const onMapLoad = async () => {
         }).join('')
 
         // create marker
-        location.marker = new mapboxgl.Marker({ color: status.accessibleColor })
+        if (location.warmingSite === "TRUE") {
+          console.log("Warming site")
+          location.marker = new mapboxgl.Marker(getWarmingSiteMarker())
+            .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
+            .setPopup(new mapboxgl.Popup().setMaxWidth('275px'))
+            .addTo(map);
+        } else {
+          location.marker = new mapboxgl.Marker({ color: status.accessibleColor})
           .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
           .setPopup(new mapboxgl.Popup().setMaxWidth('275px'))
           .addTo(map);
-
-          location.marker.getElement().className += " status-" + status.name;
-          location.popup = location.marker.getPopup()
-
-          location.popup.refreshPopup = () => {
-            activePopup = location.popup
-            location.popup.setHTML(`<div class='popup-content'>${markerHtml()}</div>`)
-            translator.translate(location.popup.getElement())
-          }
-
-          // run translation when popup opens
-          location.popup.on('open', location.popup.refreshPopup)
-
-          // add to the side panel
-          $locationList.appendChild(createListItem(location, status, item.gsx$longitude.$, item.gsx$latitude.$))
-
-          return location
-        } catch (e) {
-          console.error(e)
-          return
         }
+
+        location.marker.getElement().className += " status-" + status.name;
+        location.popup = location.marker.getPopup()
+
+        location.popup.refreshPopup = () => {
+          activePopup = location.popup
+          location.popup.setHTML(`<div class='popup-content'>${markerHtml()}</div>`)
+          translator.translate(location.popup.getElement())
+        }
+
+        // run translation when popup opens
+        location.popup.on('open', location.popup.refreshPopup)
+
+        // add to the side panel
+        $locationList.appendChild(createListItem(location, status, item.gsx$longitude.$, item.gsx$latitude.$))
+
+        return location
+      } catch (e) {
+        console.error(e)
+        return
+      }
     }).value()
 
     // add nav
@@ -567,6 +592,11 @@ const onMapLoad = async () => {
           name: 'noIdNeeded',
           label: 'No ID needed',
           sort: { order: 'desc' }
+        },
+        {
+          name: 'warmingSite',
+          label: 'Warming site',
+          sort: { order: 'desc' }
         }
       ],
       statusOptions,
@@ -577,6 +607,7 @@ const onMapLoad = async () => {
           'neighborhood', 
           'urgentNeed',
           'noIdNeeded',
+          'warmingSite',
           ...hiddenSearchFields
         ],
       },

@@ -345,6 +345,15 @@ input[type='checkbox'] + label {
   display: none;
 }
 
+.warming-site-marker {
+  background-size: 40px;
+  width: 40px;
+  height: 35px;
+  background-image: url(/images/heat-flame.png);
+}
+
+
+
 /* Small screens */
 @media only screen and (max-width: 640px) {
 
