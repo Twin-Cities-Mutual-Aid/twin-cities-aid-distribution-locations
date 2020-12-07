@@ -96,9 +96,9 @@ If the language translator contributed their translation in a Google Sheet with 
 
 #### Moment.js
 
-We use [`moment.js`](https://momentjs.com/) to display text based on time computations ("an hour ago", "a few days ago", "in 3 days"). Some languages are already translated and supported by default. For others, we have created a translation file that will work with `moment.js` which can be found under [`src/locale`](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/tree/master/src/locale).
+We use [`moment.js`](https://momentjs.com/) to display text based on time computations ("an hour ago", "a few days ago", "in 3 days"). Some languages are already translated and supported by default. For others, we have created a translation file that will work with `moment.js` which can be found under [`src/locale`](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/tree/master/src/locale). To minimize loading locale translations we don't need, instead of loading in all `moment.js` locales, we only copy the ones we need into the `web_modules/moment/dist` folder.
 
-If the language is already supported by `moment.js`, the `locale` value in the `XXX.json` file should match the one that `moment.js` uses.
+If the language is already supported by `moment.js`, the `locale` value in the `XXX.json` file should match the one that `moment.js` uses. Download the `.js` file that contains the translation from the [`moment.js github`](https://github.com/moment/moment/tree/develop/locale) and place it in the `web_modules/moment/dist` folder.
 
 If `moment.js` does not support the language, you should create a file in the `src/locale` directory with the format `XXX.js` where `XXX` is either a 2-letter [`ISO 639-1`](https://en.wikipedia.org/wiki/ISO_639-1) code if it exists or a 3-letter [`ISO 639-2`](https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes). This `XXX` code should then be added to the `locale` value in the `XXX.json` file.
 
@@ -147,7 +147,7 @@ constructor() {
 #### Add language checklist
 
  - [ ] Create a new translation file (`src/i18n/XXX.json`)
- - [ ] `locale` should match existing `moment.js` translation or new `moment.js` locale created (`src/locale/XXX.js`)
+ - [ ] `locale` should match existing `moment.js` translation and have a copy of the `moment.js` translation in `web_modules/moment/dist`. OR new `moment.js` locale created (`src/locale/XXX.js`)
  - [ ] Language has been imported in `translator.js`
 
 ---

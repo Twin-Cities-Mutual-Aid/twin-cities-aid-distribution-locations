@@ -38,6 +38,7 @@ if(import.meta.env.MODE === 'production'){
 // locales
 import 'moment/dist/locale/es'
 import 'moment/dist/locale/vi'
+import 'moment/dist/locale/fr'
 import './locale/am'
 import './locale/dak'
 import './locale/hmn'
@@ -492,7 +493,7 @@ const onMapLoad = async () => {
         const rawLocation = extractRawLocation(item);
         const location = _.pickBy(rawLocation, val => val != '');
         const status = getStatus(item.gsx$color.$t);
-
+        
         // transform location properties into HTML
         const propertyTransforms = {
           name: (name, _) => `<h2>${name}</h2>`,
