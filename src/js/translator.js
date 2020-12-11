@@ -16,6 +16,7 @@ import orm from './../i18n/orm.json'
 import som from './../i18n/som.json'
 import spa from './../i18n/spa.json'
 import vie from './../i18n/vie.json'
+import fra from './../i18n/fra.json'
 
 class Translator {
   constructor() {
@@ -31,7 +32,8 @@ class Translator {
       vie,
       hin,
       kar,
-      man
+      man,
+      fra
     }
     this.detectLanguage()
   }
@@ -143,14 +145,9 @@ class Translator {
    * Sets language throughout the page
    * - Find and set images with the `data-translation-flag`
    * - Set <html lang="??">
-   * - Send GA event to track language choice
    */
   setDocumentLanguage() {
     document.documentElement.lang = this.locale
-    gtag('event', 'language_change', {
-      'event_category': 'language',
-      'event_label': this.language
-    })
   }
 }
 

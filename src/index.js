@@ -10,6 +10,7 @@ import './styles/components/map-popup.css';
 import './styles/components/form-control.css';
 import './styles/components/search.css';
 import './styles/components/covid-banner.css';
+import './styles/components/hours-banner.css';
 import './styles/typography.css';
 
 // Import Libs
@@ -37,6 +38,7 @@ if(import.meta.env.MODE === 'production'){
 // locales
 import 'moment/dist/locale/es'
 import 'moment/dist/locale/vi'
+import 'moment/dist/locale/fr'
 import './locale/am'
 import './locale/dak'
 import './locale/hmn'
@@ -108,11 +110,21 @@ const ptr = PullToRefresh.init({
   }
 });
 
+/**
+ * set which languages to display
+ * update the language choice when a user selects a new language
+ * Send GA event to track language choice
+ * if there's an active popup, re-display it after the welcome modal closes
+ */
 const welcome = new WelcomeModal({
   languages: translator.languages,
   onLanguageSelect: lang => {
     translator.language = lang
     moment.locale(translator.locale)
+    gtag('event', 'language_change', {
+      'event_category': 'language',
+      'event_label': lang
+    })
     activePopup && activePopup.refreshPopup()
   }
 })
@@ -128,6 +140,8 @@ if (translator.prompt) {
 document.getElementById('lang-select-button').addEventListener('click', () => welcome.open())
 
 document.getElementById('close-covid-banner-button').addEventListener('click', () => closeCovidBanner())
+
+document.getElementById('close-hours-banner-button').addEventListener('click', () => closeHoursBanner())
 
 let locations = []
 
@@ -170,6 +184,12 @@ function closeCovidBanner() {
   const covidBanner = document.getElementById('covid-banner')
   covidBanner.style.display = "none"
   covidBanner.setAttribute("aria-hidden", true)
+}
+
+function closeHoursBanner() {
+  const hoursBanner = document.getElementById('hours-banner')
+  hoursBanner.style.display = "none"
+  hoursBanner.setAttribute("aria-hidden", true)
 }
 
 // open/close location sidebar
@@ -489,7 +509,7 @@ const onMapLoad = async () => {
         const rawLocation = extractRawLocation(item);
         const location = _.pickBy(rawLocation, val => val != '');
         const status = getStatus(item.gsx$color.$t);
-
+        
         // transform location properties into HTML
         const propertyTransforms = {
           name: (name, _) => `<h2>${name}</h2>`,

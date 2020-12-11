@@ -12,7 +12,6 @@
     - [Creating a new term](#creating-a-new-term)
     - [Adding a new language](#adding-a-new-language)
       - [Create a new translation file](#create-a-new-translation-file)
-      - [Adding a new flag image](#adding-a-new-flag-image)
       - [Moment.js](#momentjs)
       - [Enabling the language](#enabling-the-language)
       - [Add language checklist](#add-language-checklist)
@@ -77,9 +76,8 @@ Checklist:
 Adding a language involves a few steps:
 
 1. Create a new translation `json` file
-2. Add a new flag image
-3. Check for matching [`moment.js`](https://momentjs.com/) translation
-4. Import translation in `translation.js`
+2. Check for matching [`moment.js`](https://momentjs.com/) translation
+3. Import translation in `translation.js`
 
 #### Create a new translation file
 
@@ -94,24 +92,13 @@ If the language translator contributed their translations using a dedicated Goog
 
 Be sure to add a field for "locale", instead of "id".
 
-#### Adding a new flag image
-
-A good resource for hard-to-find flag images:
-
-https://en.wikipedia.org/wiki/Unrepresented_Nations_and_Peoples_Organization#Members
-
-A checklist for adding new flag images
-
- - [ ] The image should be a PNG
- - [ ] The image should be 23px wide
- - [ ] The image name should have the format `lang-XXX.png` where "XXX" is the 3-letter language code
- - [ ] The image should be placed in the `/public/images` directory in this repo
+If the language translator contributed their translation in a Google Sheet with all other translations, you can copy the new translation into a new dedicated spreadsheet and use the above instructions to create the json file. Make sure to copy the ID column, the English column, then the column of the new language translations. This is the only way for the `/bin/google-sheet-with-translation-to-json` to work correctly.
 
 #### Moment.js
 
-We use [`moment.js`](https://momentjs.com/) to display text based on time computations ("an hour ago", "a few days ago", "in 3 days"). Some languages are already translated and supported by default. For others, we have created a translation file that will work with `moment.js` which can be found under [`src/locale`](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/tree/master/src/locale).
+We use [`moment.js`](https://momentjs.com/) to display text based on time computations ("an hour ago", "a few days ago", "in 3 days"). Some languages are already translated and supported by default. For others, we have created a translation file that will work with `moment.js` which can be found under [`src/locale`](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/tree/master/src/locale). To minimize loading locale translations we don't need, instead of loading in all `moment.js` locales, we only copy the ones we need into the `web_modules/moment/dist` folder.
 
-If the language is already supported by `moment.js`, the `locale` value in the `XXX.json` file should match the one that `moment.js` uses.
+If the language is already supported by `moment.js`, the `locale` value in the `XXX.json` file should match the one that `moment.js` uses. Download the `.js` file that contains the translation from the [`moment.js github`](https://github.com/moment/moment/tree/develop/locale) and place it in the `web_modules/moment/dist` folder.
 
 If `moment.js` does not support the language, you should create a file in the `src/locale` directory with the format `XXX.js` where `XXX` is either a 2-letter [`ISO 639-1`](https://en.wikipedia.org/wiki/ISO_639-1) code if it exists or a 3-letter [`ISO 639-2`](https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes). This `XXX` code should then be added to the `locale` value in the `XXX.json` file.
 
@@ -160,8 +147,7 @@ constructor() {
 #### Add language checklist
 
  - [ ] Create a new translation file (`src/i18n/XXX.json`)
- - [ ] Add a new flag image (`public/images/lang-XXX.png`)
- - [ ] `locale` should match existing `moment.js` translation or new `moment.js` locale created (`src/locale/XXX.js`)
+ - [ ] `locale` should match existing `moment.js` translation and have a copy of the `moment.js` translation in `web_modules/moment/dist`. OR new `moment.js` locale created (`src/locale/XXX.js`)
  - [ ] Language has been imported in `translator.js`
 
 ---
