@@ -519,18 +519,10 @@ const onMapLoad = async () => {
         }).join('')
 
         // create marker
-        if (location.warmingSite === "TRUE") {
-          console.log("Warming site")
-          location.marker = new mapboxgl.Marker(getWarmingSiteMarker())
-            .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
-            .setPopup(new mapboxgl.Popup().setMaxWidth('275px'))
-            .addTo(map);
-        } else {
-          location.marker = new mapboxgl.Marker({ color: status.accessibleColor})
+        location.marker = new mapboxgl.Marker({ color: status.accessibleColor})
           .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
           .setPopup(new mapboxgl.Popup().setMaxWidth('275px'))
           .addTo(map);
-        }
 
         location.marker.getElement().className += " status-" + status.name;
         location.popup = location.marker.getPopup()
