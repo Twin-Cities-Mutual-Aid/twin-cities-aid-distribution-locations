@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+if [ "$1" = '' ]; then echo "ERROR: pass in tsv filepath"; exit; fi
+if [ "$2" = '' ]; then echo "ERROR: pass in column number of the language in the TSV that you want to use"; exit; fi
+
+# -R means the input is Raw, not json
+# -S means output the fiels of each object with the keys in sorted order
+# --argjson lets you pass in the number from $2 as an actual number, not string, referenced in the filters as $index
+# breakdown of filters:
+# inputs - reads all lines and puts them into a single array, seperated by newlines
+# . / "\t" - for each line, split on tabs
+# select(.[$index] | length > 0) - only include rows where there's a translation in the language you want to use
+# {(.[0]) : .[$index] } - for the tab-seperated array, create a json object with a property name from index 0, and a value at the passed in index
+# reduce .[] as $obj ({}; . + $obj) -  take each json object that has a single property and combine them into one large json object
+jq -RS --argjson index $2 '[inputs | . / "\t" | select(.[$index] | length > 0) | {(.[0]) : .[$index] } ] | reduce .[] as $obj ({}; . + $obj)' < $1 

@@ -92,7 +92,12 @@ If the language translator contributed their translations using a dedicated Goog
 
 Be sure to add a field for "locale", instead of "id".
 
-If the language translator contributed their translation in a Google Sheet with all other translations, you can copy the new translation into a new dedicated spreadsheet and use the above instructions to create the json file. Make sure to copy the ID column, the English column, then the column of the new language translations. This is the only way for the `/bin/google-sheet-with-translation-to-json` to work correctly.
+If the language translator contributed their translation in a Google Sheet with all other translations, you can instead use the `bin/tsv-with-translation-to-json` script. Download the Google Sheet as a TSV (tab-separated-values) file. Copy the file into the `bin` folder. Count the columns (0-indexed) to find the column number of the language you want to use, then call `bin/tsv-with-translation-to-json` in this format:
+`bin/tsv-with-translation-to-json [tsv filename] [column number] > [XXX.json]`
+So if the TSV file name is `translations.tsv` and you want the Hindi language that's in column 5, you would type:
+`bin/tsv-with-translation-to-json ./bin/translations.tsv 5 > src/i18n/hin.json`
+
+If a language doesn't have a translation, the script will not include the id for that word. `translator.js` will use the default english translation if there is not one for the selected language.
 
 #### Moment.js
 
