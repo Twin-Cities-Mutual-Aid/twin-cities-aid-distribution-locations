@@ -352,8 +352,6 @@ input[type='checkbox'] + label {
   background-image: url(/images/heat-flame.png);
 }
 
-
-
 /* Small screens */
 @media only screen and (max-width: 640px) {
 
