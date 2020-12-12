@@ -38,6 +38,7 @@ if(import.meta.env.MODE === 'production'){
 // locales
 import 'moment/dist/locale/es'
 import 'moment/dist/locale/vi'
+import 'moment/dist/locale/fr'
 import './locale/am'
 import './locale/dak'
 import './locale/hmn'
@@ -253,6 +254,14 @@ function nameComponent(name) {
   return `<h2>${name}</h2>`
 }
 
+function warmingSiteComponent(location) {
+  if (location.warmingSite === "TRUE") {
+    return `<span data-translation-id="warming_site" class="warmingSite card-badge">Warm Up Here</span>`
+  } else {
+    return ''
+  }
+}
+
 function addressComponent(address) {
   const googleMapDirections = `https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}`
   return `<address><a href="${googleMapDirections}" target="_blank" onclick="captureOutboundLink('${googleMapDirections}', 'directions')">${address}</a></address>`;
@@ -312,6 +321,8 @@ const createListItem = (location, status, lng, lat) => {
 
   const noIdNeeded = noIdNeededComponent(location)
 
+  const warmingSite = warmingSiteComponent(location)
+
   let covid19Testing = ''
   if (location.notes && location.notes.match(/(?:\bcovid[ -]?(19)? testing\b)/i)) {
     covid19Testing = `<span data-translation-id="covid19-testing" class="covid19-testing card-badge">Covid-19 Testing Available</span>`
@@ -359,6 +370,7 @@ const createListItem = (location, status, lng, lat) => {
         ${seekingVolunteers}
         ${seekingMoney}
         ${noIdNeeded}
+        ${warmingSite}
         ${hiddenSearch}
         ${covid19Testing}
       </div>
@@ -434,6 +446,12 @@ const getPopupSectionComponent = (title, content) => (
   `<div class='p row'><p data-translation-id="${_.snakeCase(title)}"class='txt-deemphasize key'>${camelToTitle(title)}</p><p class='value'>${content}</p></div>`
 )
 
+function getWarmingSiteMarker() {
+  let marker = document.createElement("div")
+  marker.classList.add("warming-site-marker")
+  return marker
+}
+
 const request = fetch('https://tcmap-api.herokuapp.com/v1/mutual_aid_sites')
 
 // handle the map load event
@@ -459,6 +477,7 @@ const onMapLoad = async () => {
         seekingMoneyURL: (value, _) => '',
         noIdNeeded: (_, location) => noIdNeededComponent(location),
         someInfoRequired: (value, _) => '',
+        warmingSite: (_, location) => warmingSiteComponent(location),
         accepting: (value, _) => sectionUrlComponent(value, 'accepting'),
         notAccepting: (value, _) => sectionUrlComponent(value, 'not_accepting'),
         seekingVolunteers: (value, _) => sectionUrlComponent(value, 'seeking_volunteers_badge'),

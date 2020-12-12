@@ -17,6 +17,7 @@
   "sort_by_neighborhood": "Alphabetical (neighborhood)",
   "sort_by_seeking_money": "Needs money",
   "sort_by_seeking_volunteers_badge": "Needs volunteers",
+  "sort_by_warming_site": "Warming site",
   "filter_by_receiving": "open for receiving donations",
   "filter_by_distributing": "open for distributing donations",
   "filter_by_both": "open for both",
@@ -85,5 +86,6 @@
   "social_distance": "Social Distance",
   "wash_hands": "Wash Hands",
   "no_id_needed": "No ID Needed",
-  "some_info_required": "No ID Needed (some info required)"
+  "some_info_required": "No ID Needed (some info required)",
+  "warm_up_here": "Warm Up Here"
 }
