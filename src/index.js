@@ -249,6 +249,10 @@ function noIdNeededComponent(location) {
   }
 }
 
+function nameComponent(name) {
+  return `<h2>${name}</h2>`
+}
+
 function addressComponent(address) {
   const googleMapDirections = `https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(address)}`
   return `<address><a href="${googleMapDirections}" target="_blank" onclick="captureOutboundLink('${googleMapDirections}', 'directions')">${address}</a></address>`;
@@ -286,7 +290,6 @@ function sectionUrlComponent(value, key) {
 
 // get the status info for a location using the color as ID, else default to closed.
 const getStatus = id => {
-  // const status = _.find(statusOptions, s => (s.id === id.toLowerCase()))
   const status = _.find(statusOptions, s => (s.id === id))
   return status || statusClosed
 }
@@ -314,21 +317,21 @@ const createListItem = (location, status, lng, lat) => {
     covid19Testing = `<span data-translation-id="covid19-testing" class="covid19-testing card-badge">Covid-19 Testing Available</span>`
   }
 
-  const openTimeDistribution = moment(location.openingForDistributingDontations, ["h:mm A"])
-  const openTimeDistributionLessOne = moment(location.openingForDistributingDontations, ["h:mm A"]).subtract(1, 'hours')
+  const openTimeDistribution = moment(location.openingForDistributingDonations, ["h:mm A"])
+  const openTimeDistributionLessOne = moment(location.openingForDistributingDonations, ["h:mm A"]).subtract(1, 'hours')
   let openingSoonForDistribution = ''
   if (moment().isBetween(openTimeDistributionLessOne, openTimeDistribution)) {
     openingSoonForDistribution = `<p class="card-opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${openTimeDistribution.format("LT")} <span data-translation-id="for_distribution">for distributing</span></p>`
   }
 
-  const openTimeReceiving = moment(location.openingForReceivingDontations, ["h:mm A"])
-  const openTimeReceivingLessOne = moment(location.openingForReceivingDontations, ["h:mm A"]).subtract(1, 'hours')
+  const openTimeReceiving = moment(location.openingForReceivingDonations, ["h:mm A"])
+  const openTimeReceivingLessOne = moment(location.openingForReceivingDonations, ["h:mm A"]).subtract(1, 'hours')
   let openingSoonForReceiving = ''
   if (moment().isBetween(openTimeReceivingLessOne, openTimeReceiving)) {
     openingSoonForReceiving = `<p class="card-opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${openTimeReceiving.format("LT")} <span data-translation-id="for_receiving">for receiving</span></p>`
   }
 
- const hiddenSearch = hiddenSearchFields.map(field => `<p class="${field}" style="display:none">${location[field] || ''}</p>`).join('')
+  const hiddenSearch = hiddenSearchFields.map(field => `<p class="${field}" style="display:none">${location[field] || ''}</p>`).join('')
 
   const $item = document.createElement('div')
   $item.classList.add('card');
@@ -388,11 +391,12 @@ const createListItem = (location, status, lng, lat) => {
 // else returns just the opening hours text
 // e.g "not today", or "never"
 ///////////
-function getHours(openingHours, closingHours) {
+function getOpenHoursComponent(openingHours, closingHours, key) {
   if (openingHours && closingHours) {
-    return openingHours + ' to ' + closingHours
+    const value = openingHours + ' to ' + closingHours
+    return getPopupSectionComponent(key, value)
   } else {
-    return openingHours
+    return getPopupSectionComponent(key, openingHours)
   }
 }
 
@@ -426,19 +430,9 @@ function parseLineBreaks(value) {
   return replaceAll(value, '\n', '<br />');
 }
 
-function extractRawLocation(item) {
-  item.aidDistributionHours = getHours(
-    item.openingForDistributingDonations,
-    item.closingForDistributingDonations
-  )
-
-  item.aidReceivingHours = getHours(
-    item.openingForReceivingDonations,
-    item.closingForReceivingDonations
-  )
-
-  return item
-}
+const getPopupSectionComponent = (title, content) => ( 
+  `<div class='p row'><p data-translation-id="${_.snakeCase(title)}"class='txt-deemphasize key'>${camelToTitle(title)}</p><p class='value'>${content}</p></div>`
+)
 
 const request = fetch('https://tcmap-api.herokuapp.com/v1/mutual_aid_sites')
 
@@ -450,18 +444,17 @@ const onMapLoad = async () => {
   locations = _.chain(data).map(item => {
     try {
       // the location schema
-      const rawLocation = extractRawLocation(item);
-      const location = _.pickBy(rawLocation, val => val != '');
+      // const rawLocation = extractRawLocation(item);
+      const location = _.pickBy(item, val => val != '');
       const status = getStatus(item.color);
 
       // transform location properties into HTML
       const propertyTransforms = {
-        latitude: (value, _) => '',
-        longitude: (value, _) => '',
-        color: (value, _) => '',
         name: (name, _) => `<h2>${name}</h2>`,
         neighborhood: (neighborhood, _) => `<h3 class='h3'>${neighborhood}</h3>`,
         address: addressComponent, // driving directions in google, consider doing inside mapbox
+        openingForDistributingDonations: (_, location) => getOpenHoursComponent(location.openingForDistributingDonations, location.closingForDistributingDonations, 'aidDistributionHours'),
+        openingForReceivingDonations: (_, location) => getOpenHoursComponent(location.openingForReceivingDonations, location.closingForReceivingDonations, 'aidReceivingHours'),
         seekingMoney: (value, location) => needsMoneyComponent(location),
         seekingMoneyURL: (value, _) => '',
         noIdNeeded: (_, location) => noIdNeededComponent(location),
@@ -473,9 +466,13 @@ const onMapLoad = async () => {
         urgentNeed: (value, _) => sectionUrlComponent(value,'urgent_need'),
         notes: (value, _) => sectionUrlComponent(value,'notes'),
         // ignore the following properties
-        // marker and popup should not be rendered
         marker: () => '',
         popup: () => '',
+        latitude: () => '',
+        longitude: () => '',
+        color: () => '',
+        closingForDistributingDonations: () => '',
+        closingForReceivingDonations: () => '',
       }
 
       // render HTML for marker
@@ -485,7 +482,7 @@ const onMapLoad = async () => {
         } else if (propertyTransforms[key]) {
           return propertyTransforms[key](value, location)
         } else {
-          return `<div class='p row'><p data-translation-id="${_.snakeCase(key)}"class='txt-deemphasize key'>${camelToTitle(key)}</p><p class='value'>${value}</p></div>`
+          return getPopupSectionComponent(key, value)
         }
       }).join('')
 
@@ -495,26 +492,26 @@ const onMapLoad = async () => {
         .setPopup(new mapboxgl.Popup().setMaxWidth('275px'))
         .addTo(map);
 
-        location.marker.getElement().className += " status-" + status.name;
-        location.popup = location.marker.getPopup()
+      location.marker.getElement().className += " status-" + status.name;
+      location.popup = location.marker.getPopup()
 
-        location.popup.refreshPopup = () => {
-          activePopup = location.popup
-          location.popup.setHTML(`<div class='popup-content'>${markerHtml()}</div>`)
-          translator.translate(location.popup.getElement())
-        }
-
-        // run translation when popup opens
-        location.popup.on('open', location.popup.refreshPopup)
-
-        // add to the side panel
-        $locationList.appendChild(createListItem(location, status, item.longitude, item.latitude))
-
-        return location
-      } catch (e) {
-        console.error(e)
-        return
+      location.popup.refreshPopup = () => {
+        activePopup = location.popup
+        location.popup.setHTML(`<div class='popup-content'>${markerHtml()}</div>`)
+        translator.translate(location.popup.getElement())
       }
+
+      // run translation when popup opens
+      location.popup.on('open', location.popup.refreshPopup)
+
+      // add to the side panel
+      $locationList.appendChild(createListItem(location, status, item.longitude, item.latitude))
+      
+      return location
+    } catch (e) {
+      console.error(e)
+      return
+    }
   }).value()
 
   // add nav
