@@ -220,6 +220,14 @@ export const LOCATION_SCHEMA = {
           "type": "string"
         }
       }
+    },
+    "gsx$warmingsite": {
+      "type": "object",
+      "properties": {
+        "$t": {
+          "type": "string"
+        }
+      }
     }
   }
 }
