@@ -151,7 +151,8 @@ constructor() {
    orm,
    oji,
    dak,
-   vie
+   vie,
+   rus
    }
    this.detectLanguage()
 }

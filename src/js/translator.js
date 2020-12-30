@@ -17,6 +17,7 @@ import som from './../i18n/som.json'
 import spa from './../i18n/spa.json'
 import vie from './../i18n/vie.json'
 import fra from './../i18n/fra.json'
+import rus from './../i18n/rus.json'
 
 class Translator {
   constructor() {
@@ -33,7 +34,8 @@ class Translator {
       hin,
       kar,
       man,
-      fra
+      fra,
+      rus
     }
     this.detectLanguage()
   }
