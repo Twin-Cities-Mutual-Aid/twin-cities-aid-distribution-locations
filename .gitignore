@@ -4,6 +4,4 @@ build
 node_modules
 .env
 .vscode
-# Local Netlify folder
-.netlify
 

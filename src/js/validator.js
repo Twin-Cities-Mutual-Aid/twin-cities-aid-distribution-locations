@@ -205,6 +205,14 @@ export const LOCATION_SCHEMA = {
         },
       },
     },
+    "gsx$noidneeded": {	
+      "type": "object",	
+      "properties": {	
+        "$t": {	
+          "type": "string"	
+        }	
+      }	
+    },
     "gsx$someinforequiredchecknoidtoo": {
       "type": "object",
       "properties": {
@@ -244,7 +252,6 @@ export const LOCATION_SCHEMA_AIRTABLE = {
     "link": {
       "type": "array",
     }, 
-    // These are the Google Sheet columns
     "last_updated": {
       "type": "string"
     },
