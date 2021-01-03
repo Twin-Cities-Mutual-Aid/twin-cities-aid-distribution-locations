@@ -2,232 +2,83 @@ import jsonschema from "jsonschema";
 
 export const LOCATION_SCHEMA = {
   "properties": {
-    // these are injected values from Google Sheets
     "id": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" 
-        },
-      },
+      "type": "string"
     },
     "updated": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" 
-        },
-      },
+      "type": "string"
     },
     "category": {
       "type": "array",
     },
     "title": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" 
-        },
-      },
+      "type": "string"
     },
     "content": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" 
-        },
-      },
+      "type": "string"
     },
     "link": {
       "type": "array",
     }, 
-    // These are the Google Sheet columns
-    "gsx$mostrecentlyupdated": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" 
-        },
-      },
+    "last_updated": {
+      "type": "string"
     },
-    "gsx$nameoforganization": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" 
-        },
-      },
+    "org_name": {
+      "type": "string"
     },
-    "gsx$neighborhood": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" 
-        },
-      },
+    "neighborhood": {
+      "type": "string"
     },
-    "gsx$addresswithlink": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" 
-        },
-      },
+    "address": {
+      "type": "string"
     },
-    "gsx$currentlyopenforreceiving": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" 
-        },
-      },
+    "currently_open_for_receiving": {
+      "type": "string"
     },
-    "gsx$openingforreceivingdonations": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" 
-        },
-      },
+    "opening_for_receiving_donations": {
+      "type": "string"
     },
-    "gsx$closingforreceivingdonations": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" 
-        },
-      },
+    "closing_for_receiving_donations": {
+      "type": "string"
     },
-    "gsx$currentlyopenfordistributing": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" 
-        },
-      },
+    "currently_open_for_distributing": {
+      "type": "string"
     },
-    "gsx$openingfordistributingdonations": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" 
-        },
-      },
+    "opening_for_distributing_donations": {
+      "type": "string"
     },
-    "gsx$closingfordistributingdonations": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" 
-        },
-      },
+    "closing_for_distributing_donations": {
+      "type": "string"
     },
-    "gsx$urgentneed": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" 
-        },
-      },
+    "urgent_need": {
+      "type": "string"
     },
-    "gsx$accepting": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" 
-        },
-      },
+    "accepting": {
+      "type": "string"
     },
-    "gsx$notaccepting": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" 
-        },
-      },
+    "not_accepting": {
+      "type": "string"
     },
-    "gsx$seekingvolunteers": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" 
-        },
-      },
+    "seeking_volunteers": {
+      "type": "string"
     },
-    "gsx$notes": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" 
-        },
-      },
+    "notes": {
+      "type": "string"
     },
-    "gsx$latitude": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string",
-          "format": "latitude"
-        },
-      },
+    "latitude": {
+      "type": "string",
+      "format": "latitude"
     },
-    "gsx$longitude": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string",
-          "format": "longitude"
-        },
-      },
+    "longitude": {
+      "type": "string",
+      "format": "longitude"
     },
-    "gsx$color": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" ,
-          "format": "hexColor"
-        },
-      },
+    "color": {
+      "type": "string" ,
+      "format": "hexColor"
     },
-    "gsx$seekingmoney": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" 
-        },
-      },
-    },
-    "gsx$seekingmoneyurl": {
-      "type": "object",
-      "properties": {
-        "$t": { 
-          "type": "string" 
-        },
-      },
-    },
-    "gsx$noidneeded": {
-      "type": "object",
-      "properties": {
-        "$t": {
-          "type": "string"
-        }
-      }
-    },
-    "gsx$someinforequiredchecknoidtoo": {
-      "type": "object",
-      "properties": {
-        "$t": {
-          "type": "string"
-        }
-      }
-    },
-    "gsx$warmingsite": {
-      "type": "object",
-      "properties": {
-        "$t": {
-          "type": "string"
-        }
-      }
+    "seeking_money": {
+      "type": "string"
     }
   }
 }

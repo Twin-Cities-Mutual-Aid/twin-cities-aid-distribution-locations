@@ -1,24 +1,28 @@
 # Twin Cities Aid Distribution Locations
+
 A webapp to coordinate aid and care in the Twin Cities. https://twin-cities-mutual-aid.org/
 
 ## About the project
+
 This project is only a few months old, and things continue to change and develop. We'll do our best to keep this readme up-to-date, but if something doesn't look right, it may be out of date. Feel free to ask about it!
 
 This project is unusual because there are two separate teams working in tandem:
 
 * **Website team**: This team (us) is using a channel within the Open Twin Cities slack to communicate. There's a link at the top of the [Open Twin Cities](https://www.opentwincities.org) website to join, if you'd like to help out.
-* **[Twin Cities Mutual Aid Project](http://www.tcmap.org)**: TCMAP is a collective, all-volunteeer effort that works to coordinate with aid sites and manage the data that feeds the site on a day-to-day basis. Over 100 volunteers have now been involved in the project. Leadership and tech-oriented volunteers from TCMAP coordinate with stakeholders to source designs, product direction, feature requests and feedback that drive development. TCMAP spawned from a large Facebook group called [South Minneapolis Mutual Aid Autonomous Zone Coordination](https://www.facebook.com/groups/southsidemutualaid) that emerged in the wake of the uprisings in Minneapolis in May 2020. 
+* **[Twin Cities Mutual Aid Project](http://www.tcmap.org)**: TCMAP is a collective, all-volunteeer effort that works to coordinate with aid sites and manage the data that feeds the site on a day-to-day basis. Over 100 volunteers have now been involved in the project. Leadership and tech-oriented volunteers from TCMAP coordinate with stakeholders to source designs, product direction, feature requests and feedback that drive development. TCMAP spawned from a large Facebook group called [South Minneapolis Mutual Aid Autonomous Zone Coordination](https://www.facebook.com/groups/southsidemutualaid) that emerged in the wake of the uprisings in Minneapolis in May 2020.
 
-
-**Participation is welcome both on the web team and TCMAP sides of this project**. Some developers have engaged through Github and the Open Twin Cities Slack channel alone; others have joined TCMAP to help coordinate efforts, or just to better understand use cases. You can join TCMAP through the [volunteer page on their website](http://www.tcmap.org/volunteer). 
+**Participation is welcome both on the web team and TCMAP sides of this project**. Some developers have engaged through Github and the Open Twin Cities Slack channel alone; others have joined TCMAP to help coordinate efforts, or just to better understand use cases. You can join TCMAP through the [volunteer page on their website](http://www.tcmap.org/volunteer).
 
 ## Feature requests & feedback
-We're using [Github Issues](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/issues) to manage tasks, and have a [kanban board](https://github.com/orgs/Twin-Cities-Mutual-Aid/projects/1) set up. If you'd like access to the kanban board reach out in the [OTC slack channel](https://otc-slackin.herokuapp.com/). 
+
+We're using [Github Issues](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/issues) to manage tasks, and have a [kanban board](https://github.com/orgs/Twin-Cities-Mutual-Aid/projects/1) set up. If you'd like access to the kanban board reach out in the [OTC slack channel](https://otc-slackin.herokuapp.com/).
 
 If you've got a feature request or feedback to share on the website, feel free to [submit an issue](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/issues/new) on GH issues, or bring it up in slack.
 
 ## Contributions
+
 If you're ready to start contributing:
+
 1. Reach out to **#tc-aid-dev** channel in the Open Twin Cities Slack or **#dragon-riders** channel in Twin Cities Mutual Aid Project Slack and ask to be added to the **Developers** team for the Twin-Cities-Mutual-Aid Github organization. This will give you access to create branches and push to a clone of the twin-cities-aid-distribution-locations repo and will give you read access to the [secrets](https://github.com/Twin-Cities-Mutual-Aid/secrets) repo for local environment variables.
 2. Clone down the repo - be sure to clone and not fork. Our current CI/CD solution (TravisCI) cannot inject environment variables to forks so any PRs submitted from a fork will have failing tests.
 3. Take a look at the Kanban board, assign yourself to an issue, and pull it into **In Progress**. Issues on the Kanban board tagged with **Ready To Go** or **Good First Issue** are good ones to start with.
@@ -28,26 +32,15 @@ If you're ready to start contributing:
 7. When you are ready for review, submit a pull request and tag anyone from the **Approvers** team to review.
 8. When your code has been approved, squash & merge the code.
 
-
 ## Data
 
-Data is sourced from a google spreadsheet.
-* [Example spreadsheet](https://docs.google.com/spreadsheets/d/1mb6QY8El3o_U9ltL0sxGR-bzyJS4_oJGJOqs9XmGf7o/edit?copiedFromTrash#gid=0)
-* Google Apps Script utility script also available to automatically update a row timestamp and insert latitude and longitude when an address cell is added or updated: https://github.com/mc-funk/community-map-google-scripts/
+Data is sourced from an Airtable database through the tcmap-api backend.
 
-To test locally with your own copy of the spreadsheet, duplicate the example
-spreadsheet, make your changes, and re-publish it. Then follow the steps
-https://www.freecodecamp.org/news/cjn-google-sheets-as-json-endpoint to
-extract the sheet ID out of the url to plug into the `SNOWPACK_PUBLIC_DATA_URL` const.
-
-`
-  SNOWPACK_PUBLIC_DATA_URL = 'https://spreadsheets.google.com/feeds/list/1XJhbzcT_AubgnqAJRsbOEbMO3HPTybG3yNcX6i-BgH0/1/public/full?alt=json'
-`
+* [Public TCMAP Airtable Data](https://airtable.com/shr2el3WSJHLNgQUx/tblGDXjVZuA2GejcN)
 
 ## Additional Documentation
 
- * Information about adding, editing and maintaining languages can be found in [Language Translation](docs/LANGUAGE_TRANSLATION.md)
-
+* Information about adding, editing and maintaining languages can be found in [Language Translation](docs/LANGUAGE_TRANSLATION.md)
 
 ## About the application
 
@@ -61,12 +54,15 @@ Build Local
 
 1. Install [node](https://nodejs.org/) at the version specified in the [`.node-version`](.node-version) file. If you use a version manager like [nodenv](https://github.com/nodenv/nodenv) or [nvm](https://github.com/nvm-sh/nvm), this should be detected automatically.
 2. Install dependencies with npm
+
+    ```bash
+        npm install
     ```
-    npm install
-    ```
+
 3. Configure [environment variables](#environment-variables)
 4. Build and run the application with npm
-    ```
+
+    ```bash
     npm run dev
     ```
 
@@ -75,38 +71,50 @@ Build Docker
 1. install docker (If you are on a Mac or Windows machine, recommend [Docker Desktop](https://docs.docker.com/desktop/) for simplicity)
 2. Configure [environment variables](#environment-variables)
 3. build the image
-    ```
+
+    ```bash
     docker-build.sh
     ```
+
     * image base: https://hub.docker.com/_/node/
     * will fail if there is not a tagged image for the current node version specified in [./node-version](./node-version)
     * optional argument specifies "IMAGE_VERSION" (defaults to "latest" if not supplied)
 4. run the image
-    ```
+
+    ```bash
     docker-run.sh
     ```
+
     * optional argument specifies "IMAGE_VERSION" (defaults to "latest" if not supplied) should match "IMAGE_VERSION" (default or not) from build step
 5. verify container is running
-    ```
+
+    ```bash
     docker ps
     ```
+
     * if not shown, the `-a` option will show stopped containers
-    ```
+
+    ```bash
     docker ps -a
     ```
+
     * currently starts with `npm run dev` so npm steps must complete before the app is ready (~30s give or take)
 6. logs from the container can be viewed with
-    ```
+
+    ```bash
     docker logs twin-cities-aid-distribution-locations_web_1
     ```
 
     * `twin-cities-aid-distribution-locations_web_1` is the default container name used
     * the logs can be "tailed" (console will continuously show new log statements) using the `-f` option
-    ```
+
+    ```bash
     docker logs -f twin-cities-aid-distribution-locations_web_1
     ```
+
 7. to stop and remove the docker container and network
-    ```
+
+    ```bash
     docker-compose down
     ```
 
@@ -120,12 +128,14 @@ and ... go
 The application uses [environmental variables](https://en.wikipedia.org/wiki/Environment_variable) to manage configuration between environments. These values are set in a `.env` file in the project root directory. 
 
 To set up a `.env`, copy the `.env.example` file, which lists needed configuration values. For example, in the Mac OS terminal:
+
 ```bash
 cp .env.example .env
 ```
 
 A set variable in the `.env` file will look like this:
-```
+
+```env
 SNOWPACK_PUBLIC_MAPBOXGL_ACCESS_TOKEN=1234
 ```
 
@@ -141,7 +151,7 @@ If you need to introduce a new environmental variable, please coordinate with de
 
 To run a development server that will auto-reload on save, run this command from the project directory:
 
-```
+```bash
 npm run dev
 ```
 
@@ -177,4 +187,4 @@ If you need to add some other kind of static file, it should go somewhere in the
 
 ## Code of Conduct
 
-Contributors to the project are expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md). 
+Contributors to the project are expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md).

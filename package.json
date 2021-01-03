@@ -25,12 +25,14 @@
     "@snowpack/plugin-babel": "^1.0.0",
     "@snowpack/plugin-dotenv": "^1.1.1",
     "@snowpack/plugin-webpack": "^1.2.0",
+    "netlify-cli": "^2.68.0",
     "pulltorefreshjs": "^0.1.20",
     "rollup-plugin-node-polyfills": "^0.2.1",
     "snowpack": "^2.5.1",
     "testcafe": "^1.8.6"
   },
   "dependencies": {
+    "dotenv": "^8.2.0",
     "jsonschema": "^1.2.6",
     "list.js": "^1.5.0",
     "lodash": "^4.17.19",

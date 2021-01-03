@@ -2,5 +2,6 @@
   "browsers": ["chrome", "firefox"],
   "src": "./specs/functional/**/*.js",
   "appCommand": "npx servor build",
-  "appInitDelay": 3000
+  "appInitDelay": 3000,
+  "quarantineMode": true
 }

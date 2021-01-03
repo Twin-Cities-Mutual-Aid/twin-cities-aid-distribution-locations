@@ -250,6 +250,10 @@ function noIdNeededComponent(location) {
   }
 }
 
+function nameComponent(name) {
+  return `<h2>${name}</h2>`
+}
+
 function warmingSiteComponent(location) {
   if (location.warmingSite === "TRUE") {
     return `<span data-translation-id="warming_site" class="warmingSite card-badge">Warm Up Here</span>`
@@ -295,7 +299,7 @@ function sectionUrlComponent(value, key) {
 
 // get the status info for a location using the color as ID, else default to closed.
 const getStatus = id => {
-  const status = _.find(statusOptions, s => (s.id === id.toLowerCase()))
+  const status = _.find(statusOptions, s => (s.id === id))
   return status || statusClosed
 }
 
@@ -324,21 +328,21 @@ const createListItem = (location, status, lng, lat) => {
     covid19Testing = `<span data-translation-id="covid19-testing" class="covid19-testing card-badge">Covid-19 Testing Available</span>`
   }
 
-  const openTimeDistribution = moment(location.openingForDistributingDontations, ["h:mm A"])
-  const openTimeDistributionLessOne = moment(location.openingForDistributingDontations, ["h:mm A"]).subtract(1, 'hours')
+  const openTimeDistribution = moment(location.openingForDistributingDonations, ["h:mm A"])
+  const openTimeDistributionLessOne = moment(location.openingForDistributingDonations, ["h:mm A"]).subtract(1, 'hours')
   let openingSoonForDistribution = ''
   if (moment().isBetween(openTimeDistributionLessOne, openTimeDistribution)) {
     openingSoonForDistribution = `<p class="card-opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${openTimeDistribution.format("LT")} <span data-translation-id="for_distribution">for distributing</span></p>`
   }
 
-  const openTimeReceiving = moment(location.openingForReceivingDontations, ["h:mm A"])
-  const openTimeReceivingLessOne = moment(location.openingForReceivingDontations, ["h:mm A"]).subtract(1, 'hours')
+  const openTimeReceiving = moment(location.openingForReceivingDonations, ["h:mm A"])
+  const openTimeReceivingLessOne = moment(location.openingForReceivingDonations, ["h:mm A"]).subtract(1, 'hours')
   let openingSoonForReceiving = ''
   if (moment().isBetween(openTimeReceivingLessOne, openTimeReceiving)) {
     openingSoonForReceiving = `<p class="card-opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${openTimeReceiving.format("LT")} <span data-translation-id="for_receiving">for receiving</span></p>`
   }
 
- const hiddenSearch = hiddenSearchFields.map(field => `<p class="${field}" style="display:none">${location[field] || ''}</p>`).join('')
+  const hiddenSearch = hiddenSearchFields.map(field => `<p class="${field}" style="display:none">${location[field] || ''}</p>`).join('')
 
   const $item = document.createElement('div')
   $item.classList.add('card');
@@ -358,7 +362,7 @@ const createListItem = (location, status, lng, lat) => {
           ${location.name}
         </h2>
       </div>
-      ${neighborhood}
+      ${neighborhood ? neighborhood : ' '}
       <div class="card-badge-group">
         ${openingSoonForDistribution}
         ${openingSoonForReceiving}
@@ -393,39 +397,18 @@ const createListItem = (location, status, lng, lat) => {
   return $item
 }
 
-//////////////////////////
-// Protect against columns not yet existing in the spreadsheet.
-// We can remove once they are added to the sheet.
-function extractSeekingMoney(item) {
-  try {
-    return truthy(item.gsx$seekingmoney.$t);
-  } catch (err) {
-    console.info("Seeking Money Column does not exist yet.");
-    return false;
-  }
-}
-
-function extractSeekingMoneyURL(item) {
-  try {
-    return item.gsx$seekingmoneyurl.$t;
-  } catch (err) {
-    console.info("Seeking Money URL Column does not exist yet.");
-    return '';
-  }
-}
-//////////////////////////
-
 ///////////
 // returns a range of hours if opening or closing is provided
 // e.g. "7:00 AM to 5:00 PM"
 // else returns just the opening hours text
 // e.g "not today", or "never"
 ///////////
-function getHours(openingHours, closingHours) {
+function getOpenHoursComponent(openingHours, closingHours, key) {
   if (openingHours && closingHours) {
-    return openingHours + ' to ' + closingHours
+    const value = openingHours + ' to ' + closingHours
+    return getPopupSectionComponent(key, value)
   } else {
-    return openingHours
+    return getPopupSectionComponent(key, openingHours)
   }
 }
 
@@ -459,28 +442,9 @@ function parseLineBreaks(value) {
   return replaceAll(value, '\n', '<br />');
 }
 
-function extractRawLocation(item) {
-  return {
-    name: item.gsx$nameoforganization.$t,
-    neighborhood: item.gsx$neighborhood.$t,
-    address: item.gsx$addresswithlink.$t,
-    mostRecentlyUpdatedAt: item.gsx$mostrecentlyupdated.$t,
-    currentlyOpenForDistributing: item.gsx$currentlyopenfordistributing.$t,
-    aidDistributionHours: getHours(item.gsx$openingfordistributingdonations.$t, item.gsx$closingfordistributingdonations.$t),
-    currentlyOpenForReceiving: item.gsx$currentlyopenforreceiving.$t,
-    aidReceivingHours: getHours(item.gsx$openingforreceivingdonations.$t, item.gsx$closingforreceivingdonations.$t),
-    urgentNeed: item.gsx$urgentneed.$t,
-    seekingMoney: extractSeekingMoney(item),
-    seekingMoneyURL: extractSeekingMoneyURL(item),
-    noIdNeeded: item.gsx$noidneeded.$t,
-    someInfoRequired: item.gsx$someinforequiredchecknoidtoo.$t,
-    warmingSite: item.gsx$warmingsite.$t,
-    accepting: item.gsx$accepting.$t,
-    notAccepting: item.gsx$notaccepting.$t,
-    seekingVolunteers: item.gsx$seekingvolunteers.$t,
-    notes: item.gsx$notes.$t
-  }
-}
+const getPopupSectionComponent = (title, content) => ( 
+  `<div class='p row'><p data-translation-id="${_.snakeCase(title)}"class='txt-deemphasize key'>${camelToTitle(title)}</p><p class='value'>${content}</p></div>`
+)
 
 function getWarmingSiteMarker() {
   let marker = document.createElement("div")
@@ -488,144 +452,141 @@ function getWarmingSiteMarker() {
   return marker
 }
 
-// start fetching data right away
-const dataPromise = fetch(Config.dataUrl)
+const request = fetch('https://tcmap-api.herokuapp.com/v1/mutual_aid_sites')
 
 // handle the map load event
 const onMapLoad = async () => {
-  const resp = await dataPromise
+  const resp = await request
   const data = await resp.json()
 
-  // filter and transform data from google sheet
-  locations = _.chain(data.feed.entry)
-    .filter(item => (item.gsx$color.$t !== '#aaaaaa')) // filter out status unknown
-    .filter(item => (item.gsx$nameoforganization.$t !== '') && (item.gsx$longitude.$t !== '') && (item.gsx$latitude.$t !== '')) // sanity check for empty rows
-    .filter((item, i) => validate(item, LOCATION_SCHEMA, { sheetRow: i + 1 })) // only items that validate against schema
-    .sortBy(item => item.gsx$nameoforganization.$t)
-    .map(item => {
+  locations = _.chain(data).map(item => {
+    try {
+      // the location schema
+      // const rawLocation = extractRawLocation(item);
+      const location = _.pickBy(item, val => val != '');
+      const status = getStatus(item.color);
 
-      try {
-        // the location schema
-        const rawLocation = extractRawLocation(item);
-        const location = _.pickBy(rawLocation, val => val != '');
-        const status = getStatus(item.gsx$color.$t);
-        
-        // transform location properties into HTML
-        const propertyTransforms = {
-          name: (name, _) => `<h2>${name}</h2>`,
-          neighborhood: (neighborhood, _) => `<h3 class='h3'>${neighborhood}</h3>`,
-          address: addressComponent, // driving directions in google, consider doing inside mapbox
-          seekingMoney: (value, location) => needsMoneyComponent(location),
-          seekingMoneyURL: (value, _) => '',
-          noIdNeeded: (_, location) => noIdNeededComponent(location),
-          someInfoRequired: (value, _) => '',
-          warmingSite: (_, location) => warmingSiteComponent(location), 
-          accepting: (value, _) => sectionUrlComponent(value, 'accepting'),
-          notAccepting: (value, _) => sectionUrlComponent(value, 'not_accepting'),
-          seekingVolunteers: (value, _) => sectionUrlComponent(value, 'seeking_volunteers_badge'),
-          mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> <span data-translate-font>${moment(datetime, 'H:m M/D').fromNow()}</span></div>`,
-          urgentNeed: (value, _) => sectionUrlComponent(value,'urgent_need'),
-          notes: (value, _) => sectionUrlComponent(value,'notes'),
-          // ignore the following properties
-          // marker and popup should not be rendered
-          marker: () => '',
-          popup: () => '',
-        }
-
-        // render HTML for marker
-        const markerHtml = () => _.map(location, (value, key) => {
-          if (propertyTransforms[key]) return propertyTransforms[key](value, location)
-          else return `<div class='p row'><p data-translation-id="${_.snakeCase(key)}"class='txt-deemphasize key'>${camelToTitle(key)}</p><p class='value'>${value}</p></div>`
-        }).join('')
-
-        // create marker
-        location.marker = new mapboxgl.Marker({ color: status.accessibleColor})
-          .setLngLat([ parseFloat(item.gsx$longitude.$t), parseFloat(item.gsx$latitude.$t) ])
-          .setPopup(new mapboxgl.Popup().setMaxWidth('275px'))
-          .addTo(map);
-
-        location.marker.getElement().className += " status-" + status.name;
-        location.popup = location.marker.getPopup()
-
-        location.popup.refreshPopup = () => {
-          activePopup = location.popup
-          location.popup.setHTML(`<div class='popup-content'>${markerHtml()}</div>`)
-          translator.translate(location.popup.getElement())
-        }
-
-        // run translation when popup opens
-        location.popup.on('open', location.popup.refreshPopup)
-
-        // add to the side panel
-        $locationList.appendChild(createListItem(location, status, item.gsx$longitude.$, item.gsx$latitude.$))
-
-        return location
-      } catch (e) {
-        console.error(e)
-        return
+      // transform location properties into HTML
+      const propertyTransforms = {
+        name: (name, _) => `<h2>${name}</h2>`,
+        neighborhood: (neighborhood, _) => `<h3 class='h3'>${neighborhood}</h3>`,
+        address: addressComponent, // driving directions in google, consider doing inside mapbox
+        openingForDistributingDonations: (_, location) => getOpenHoursComponent(location.openingForDistributingDonations, location.closingForDistributingDonations, 'aidDistributionHours'),
+        openingForReceivingDonations: (_, location) => getOpenHoursComponent(location.openingForReceivingDonations, location.closingForReceivingDonations, 'aidReceivingHours'),
+        seekingMoney: (value, location) => needsMoneyComponent(location),
+        seekingMoneyURL: (value, _) => '',
+        noIdNeeded: (_, location) => noIdNeededComponent(location),
+        someInfoRequired: (value, _) => '',
+        warmingSite: (_, location) => warmingSiteComponent(location),
+        accepting: (value, _) => sectionUrlComponent(value, 'accepting'),
+        notAccepting: (value, _) => sectionUrlComponent(value, 'not_accepting'),
+        seekingVolunteers: (value, _) => sectionUrlComponent(value, 'seeking_volunteers_badge'),
+        mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> <span data-translate-font>${moment(datetime, 'YYYY-MM-DDTHH:mm:ss.SSSZ').fromNow()}</span></div>`,
+        urgentNeed: (value, _) => sectionUrlComponent(value,'urgent_need'),
+        notes: (value, _) => sectionUrlComponent(value,'notes'),
+        // ignore the following properties
+        marker: () => '',
+        popup: () => '',
+        latitude: () => '',
+        longitude: () => '',
+        color: () => '',
+        closingForDistributingDonations: () => '',
+        closingForReceivingDonations: () => '',
       }
-    }).value()
 
-    // add nav
-    new Filter($sidePane, {
-      sortOptions: [
-        {
-          name: 'urgentNeed',
-          label: 'Urgent requests first',
-          sort: { order: 'desc' }
-        },
-        {
-          name: 'name',
-          label: 'Alphabetical (name)',
-          sort: { order: 'asc' },
-          selected: true
-        },
-        {
-          name: 'status',
-          label: 'Location status',
-          sort: { order: 'desc' }
-        },
-        {
-          name: 'neighborhood',
-          label: 'Alphabetical (neighborhood)',
-          sort: { order: 'asc' }
-        },
-        {
-          name: 'seekingMoney',
-          label: 'Needs money',
-          sort: { order: 'desc' }
-        },
-        {
-          name: 'seekingVolunteersBadge',
-          label: 'Needs volunteers',
-          sort: { order: 'desc' }
-        },
-        {
-          name: 'noIdNeeded',
-          label: 'No ID needed',
-          sort: { order: 'desc' }
-        },
-        {
-          name: 'warmingSite',
-          label: 'Warming site',
-          sort: { order: 'desc' }
+      // render HTML for marker
+      const markerHtml = () => _.map(location, (value, key) => {
+        if (value == undefined) {
+          return ''
+        } else if (propertyTransforms[key]) {
+          return propertyTransforms[key](value, location)
+        } else {
+          return getPopupSectionComponent(key, value)
         }
-      ],
-      statusOptions,
-      searchOptions: {
-        initialSearch: getQueryParam('search'),
-        searchOn: [
-          'name',
-          'neighborhood', 
-          'urgentNeed',
-          'noIdNeeded',
-          'warmingSite',
-          ...hiddenSearchFields
-        ],
+      }).join('')
+
+      // create marker
+      location.marker = new mapboxgl.Marker({ color: status.accessibleColor })
+        .setLngLat([ item.longitude, item.latitude ])
+        .setPopup(new mapboxgl.Popup().setMaxWidth('275px'))
+        .addTo(map);
+
+      location.marker.getElement().className += " status-" + status.name;
+      location.popup = location.marker.getPopup()
+
+      location.popup.refreshPopup = () => {
+        activePopup = location.popup
+        location.popup.setHTML(`<div class='popup-content'>${markerHtml()}</div>`)
+        translator.translate(location.popup.getElement())
+      }
+
+      // run translation when popup opens
+      location.popup.on('open', location.popup.refreshPopup)
+
+      // add to the side panel
+      $locationList.appendChild(createListItem(location, status, item.longitude, item.latitude))
+      
+      return location
+    } catch (e) {
+      console.error(e)
+      return
+    }
+  }).value()
+
+  // add nav
+  new Filter($sidePane, {
+    sortOptions: [
+      {
+        name: 'urgentNeed',
+        label: 'Urgent requests first',
+        sort: { order: 'desc' }
       },
-      locations,
-      onAfterUpdate: () => translator.translate()
-    })
+      {
+        name: 'name',
+        label: 'Alphabetical (name)',
+        sort: { order: 'asc' },
+        selected: true
+      },
+      {
+        name: 'status',
+        label: 'Location status',
+        sort: { order: 'desc' }
+      },
+      {
+        name: 'neighborhood',
+        label: 'Alphabetical (neighborhood)',
+        sort: { order: 'asc' }
+      },
+      {
+        name: 'seekingMoney',
+        label: 'Needs money',
+        sort: { order: 'desc' }
+      },
+      {
+        name: 'seekingVolunteersBadge',
+        label: 'Needs volunteers',
+        sort: { order: 'desc' }
+      },
+      {
+        name: 'noIdNeeded',
+        label: 'No ID needed',
+        sort: { order: 'desc' }
+      }
+    ],
+    statusOptions,
+    searchOptions: {
+      initialSearch: getQueryParam('search'),
+      searchOn: [
+        'name',
+        'neighborhood',
+        'urgentNeed',
+        'noIdNeeded',
+        ...hiddenSearchFields
+      ],
+    },
+    locations,
+    onAfterUpdate: () => translator.translate()
+  })
 }
 
 // load map
