@@ -239,8 +239,8 @@ function needsMoneyComponent(location) {
 }
 
 function noIdNeededComponent(location) {
-  if(location.noIdNeeded === "TRUE") {
-    if (location.someInfoRequired === "TRUE") {
+  if(location.noIdNeeded === true) {
+    if (location.someInfoRequired === true) {
       return `<span data-translation-id="some_info_required" class="noIdNeeded card-badge">No ID Needed (some info required)</span>`
     } else {
         return `<span data-translation-id="no_id_needed" class="noIdNeeded card-badge">No ID Needed</span>`
@@ -255,7 +255,7 @@ function nameComponent(name) {
 }
 
 function warmingSiteComponent(location) {
-  if (location.warmingSite === "TRUE") {
+  if (location.warmingSite === true) {
     return `<span data-translation-id="warming_site" class="warmingSite card-badge">Warm Up Here</span>`
   } else {
     return ''
@@ -571,6 +571,11 @@ const onMapLoad = async () => {
         name: 'noIdNeeded',
         label: 'No ID needed',
         sort: { order: 'desc' }
+      },
+      {	
+        name: 'warmingSite',	
+        label: 'Warming site',	
+        sort: { order: 'desc' }	
       }
     ],
     statusOptions,
@@ -581,6 +586,7 @@ const onMapLoad = async () => {
         'neighborhood',
         'urgentNeed',
         'noIdNeeded',
+        'warmingSite',
         ...hiddenSearchFields
       ],
     },
