@@ -571,6 +571,11 @@ const onMapLoad = async () => {
         name: 'noIdNeeded',
         label: 'No ID needed',
         sort: { order: 'desc' }
+      },
+      {	
+        name: 'warmingSite',	
+        label: 'Warming site',	
+        sort: { order: 'desc' }	
       }
     ],
     statusOptions,
@@ -581,6 +586,7 @@ const onMapLoad = async () => {
         'neighborhood',
         'urgentNeed',
         'noIdNeeded',
+        'warmingSite',
         ...hiddenSearchFields
       ],
     },
