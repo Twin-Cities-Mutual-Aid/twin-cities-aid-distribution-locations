@@ -35,3 +35,36 @@
     padding: 0 0 .4rem 0;
     font-size: 1rem;
 }
+
+.transit-route {
+    border-radius: 0.35rem;
+    padding: 1px 4px;
+    font-size: 0.83rem;
+    color: white;
+    margin-right: 3px;
+}
+
+.transit-route-option {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.route-icon-container {
+    display: flex;
+    flex: 10%;
+    justify-content: flex-start;
+}
+
+.route-text {
+    align-self: center;
+}
+
+.route-icon {
+    font-size: 20px;
+    margin-left: 5px;
+    color: var(--gray-700);
+    padding: 3px;
+}
