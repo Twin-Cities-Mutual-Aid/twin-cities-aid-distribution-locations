@@ -366,10 +366,6 @@ const createListItem = (location, status, lng, lat) => {
     `<p class="${field}" style="display:none">${value || ''}</p>`
   }
 
-  console.log(hiddenSearchFields.map(field => hiddenSearchComponent(field, location[field])).join(''))
-
-  // hiddenSearch += hiddenSearchComponent('publicTransitOptions', location['publicTransitOptions'].map(route => `${route.routeName}`).join(' '))
-
   const $item = document.createElement('div')
   $item.classList.add('card');
   $item.classList.add('location-list--item');
