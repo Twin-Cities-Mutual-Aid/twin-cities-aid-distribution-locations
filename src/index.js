@@ -273,13 +273,11 @@ function publicTransitComponent(location, title) {
     let routes = ``
     options.forEach((option) => {
       routes += `
-      <div class="transit-route-option">
-        <div class="route-icon-container">
+        <div class="transit-route-option">
           <i class="material-icons-round route-icon" alt="">${option.icon}</i>
           <h5 class="transit-route route-text" style="background-color: ${option.backgroundColor};">${option.routeName}</h5>
           <h5 class="route-text">${option.distance}</h5>
-        </div>
-      </div>`
+        </div>`
     })
     return getPopupSectionComponent(title, routes)
   }
@@ -361,10 +359,6 @@ const createListItem = (location, status, lng, lat) => {
   }
 
   let hiddenSearch = hiddenSearchFields.map(field => `<p class="${field}" style="display:none">${location[field] || ''}</p>`).join('')
-
-  const hiddenSearchComponent = (field, value) => {
-    `<p class="${field}" style="display:none">${value || ''}</p>`
-  }
 
   const $item = document.createElement('div')
   $item.classList.add('card');

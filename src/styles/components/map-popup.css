@@ -46,14 +46,6 @@
 
 .transit-route-option {
     display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-
-.route-icon-container {
-    display: flex;
     flex: 10%;
     justify-content: flex-start;
 }
