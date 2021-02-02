@@ -267,6 +267,22 @@ function addressComponent(address) {
   return `<address><a href="${googleMapDirections}" target="_blank" onclick="captureOutboundLink('${googleMapDirections}', 'directions')">${address}</a></address>`;
 }
 
+function publicTransitComponent(location, title) {
+  if(location.publicTransitOptions) {
+    const options = location.publicTransitOptions
+    let routes = ``
+    options.forEach((option) => {
+      routes += `
+        <div class="transit-route-option">
+          <i class="material-icons-round route-icon" alt="">${option.icon}</i>
+          <h5 class="transit-route route-text" style="background-color: ${option.backgroundColor};">${option.routeName}</h5>
+          <h5 class="route-text">${option.distance}</h5>
+        </div>`
+    })
+    return getPopupSectionComponent(title, routes)
+  }
+}
+
 // builds the section within the popup and replaces and URLs with links
 function sectionUrlComponent(value, key) {
   let urls = extractUrls(value)
@@ -305,7 +321,7 @@ const getStatus = id => {
 
 // Not all the fields being searched on should be visible but need
 // to be on the DOM in order for listjs to pick them up for search
-const hiddenSearchFields = ['address', 'accepting', 'notAccepting', 'notes', 'seekingVolunteers']
+const hiddenSearchFields = ['address', 'accepting', 'notAccepting', 'notes', 'seekingVolunteers', 'publicTransitOptions']
 
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
@@ -342,7 +358,7 @@ const createListItem = (location, status, lng, lat) => {
     openingSoonForReceiving = `<p class="card-opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${openTimeReceiving.format("LT")} <span data-translation-id="for_receiving">for receiving</span></p>`
   }
 
-  const hiddenSearch = hiddenSearchFields.map(field => `<p class="${field}" style="display:none">${location[field] || ''}</p>`).join('')
+  let hiddenSearch = hiddenSearchFields.map(field => `<p class="${field}" style="display:none">${location[field] || ''}</p>`).join('')
 
   const $item = document.createElement('div')
   $item.classList.add('card');
@@ -478,6 +494,7 @@ const onMapLoad = async () => {
         noIdNeeded: (_, location) => noIdNeededComponent(location),
         someInfoRequired: (value, _) => '',
         warmingSite: (_, location) => warmingSiteComponent(location),
+        publicTransitOptions: (_, location) => publicTransitComponent(location, 'publicTransit'),
         accepting: (value, _) => sectionUrlComponent(value, 'accepting'),
         notAccepting: (value, _) => sectionUrlComponent(value, 'not_accepting'),
         seekingVolunteers: (value, _) => sectionUrlComponent(value, 'seeking_volunteers_badge'),
