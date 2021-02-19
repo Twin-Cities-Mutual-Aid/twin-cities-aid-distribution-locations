@@ -321,7 +321,7 @@ const getStatus = id => {
 
 // Not all the fields being searched on should be visible but need
 // to be on the DOM in order for listjs to pick them up for search
-const hiddenSearchFields = ['address', 'accepting', 'notAccepting', 'notes', 'seekingVolunteers', 'publicTransitOptions']
+const hiddenSearchFields = ['address', 'accepting', 'notAccepting', 'notes', 'seekingVolunteers']
 
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
@@ -357,8 +357,13 @@ const createListItem = (location, status, lng, lat) => {
   if (moment().isBetween(openTimeReceivingLessOne, openTimeReceiving)) {
     openingSoonForReceiving = `<p class="card-opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${openTimeReceiving.format("LT")} <span data-translation-id="for_receiving">for receiving</span></p>`
   }
+  
+  const publicTransitHiddenSearchComponent = `<p class="publicTransitOptions" style="display:none">${JSON.stringify(location['publicTransitOptions'] || '')}</p>`	 
 
-  let hiddenSearch = hiddenSearchFields.map(field => `<p class="${field}" style="display:none">${location[field] || ''}</p>`).join('')
+  let hiddenSearch = hiddenSearchFields.map(field => `<p class="${field}" style="display:none">${location[field] || '' }</p>`).join('') + publicTransitHiddenSearchComponent
+
+  console.log(hiddenSearch)
+  console.log(publicTransitHiddenSearchComponent)
 
   const $item = document.createElement('div')
   $item.classList.add('card');
@@ -604,6 +609,7 @@ const onMapLoad = async () => {
         'urgentNeed',
         'noIdNeeded',
         'warmingSite',
+        'publicTransitOptions',
         ...hiddenSearchFields
       ],
     },
