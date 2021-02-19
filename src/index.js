@@ -273,8 +273,9 @@ function publicTransitComponent(location, title) {
     let routes = ``
     options.forEach((option) => {
       routes += `
-        <div class="transit-route-option">
-          <i class="material-icons-round route-icon" alt="">${option.icon}</i>
+        <span class="sr-only">${option.altText}</span>  
+        <div class="transit-route-option" aria-hidden="true">
+          <i class="material-icons-round route-icon">${option.icon}</i>
           <h5 class="transit-route route-text" style="background-color: ${option.backgroundColor};">${option.routeName}</h5>
           <h5 class="route-text">${option.distance}</h5>
         </div>`
@@ -378,7 +379,7 @@ const createListItem = (location, status, lng, lat) => {
   $item.innerHTML = `
     <div class="card-content">
       <div class="card-title">
-        <span title="${status.id}" class="status" style="display:none;">${status.id}</span>
+        <span class="status" style="display:none;">${status.id}</span>
         <span title="${status.id}" class="card-status-indicator" style="background-color: ${status.accessibleColor};" ></span>
         <h2 class="name">
           ${location.name}
