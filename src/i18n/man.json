@@ -17,7 +17,7 @@
   "sort_by_seeking_money": "需要钱",
   "sort_by_seeking_volunteers_badge": "需要志愿者",
   "filter_by_receiving": "能收捐献",
-  "filter_by_distributing": "能收捐献",
+  "filter_by_distributing": "能分送捐献",
   "filter_by_both": "能收到或分送捐献",
   "filter_by_closed": "现在不能收到或分送捐献",
   "filter_by_unknown": "没有数据",
