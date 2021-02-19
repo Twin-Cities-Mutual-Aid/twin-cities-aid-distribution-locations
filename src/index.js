@@ -323,6 +323,10 @@ const getStatus = id => {
 // to be on the DOM in order for listjs to pick them up for search
 const hiddenSearchFields = ['address', 'accepting', 'notAccepting', 'notes', 'seekingVolunteers']
 
+const hiddenSearchComponent = (field, value) => (
+  `<p class="${field}" style="display:none">${value || '' }</p>`
+)
+
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
   const neighborhood = location.neighborhood ? `<h3 class="card-subtitle neighborhood">${location.neighborhood}</h3>` : '';
@@ -358,9 +362,9 @@ const createListItem = (location, status, lng, lat) => {
     openingSoonForReceiving = `<p class="card-opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${openTimeReceiving.format("LT")} <span data-translation-id="for_receiving">for receiving</span></p>`
   }
   
-  const publicTransitHiddenSearchComponent = `<p class="publicTransitOptions" style="display:none">${JSON.stringify(location['publicTransitOptions'] || '')}</p>`	 
+  const publicTransitHiddenSearchComponent = hiddenSearchComponent('publicTransitOptions', JSON.stringify(location['publicTransitOptions'] ))	 
 
-  let hiddenSearch = hiddenSearchFields.map(field => `<p class="${field}" style="display:none">${location[field] || '' }</p>`).join('') + publicTransitHiddenSearchComponent
+  let hiddenSearch = hiddenSearchFields.map(field => hiddenSearchComponent(field, location[field])).join('') + publicTransitHiddenSearchComponent
 
   console.log(hiddenSearch)
   console.log(publicTransitHiddenSearchComponent)
