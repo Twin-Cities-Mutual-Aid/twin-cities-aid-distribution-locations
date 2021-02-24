@@ -273,8 +273,9 @@ function publicTransitComponent(location, title) {
     let routes = ``
     options.forEach((option) => {
       routes += `
-        <div class="transit-route-option">
-          <i class="material-icons-round route-icon" alt="">${option.icon}</i>
+        <span class="sr-only">${option.altText}</span>  
+        <div class="transit-route-option" aria-hidden="true">
+          <i class="material-icons-round route-icon">${option.icon}</i>
           <h5 class="transit-route route-text" style="background-color: ${option.backgroundColor};">${option.routeName}</h5>
           <h5 class="route-text">${option.distance}</h5>
         </div>`
@@ -321,7 +322,11 @@ const getStatus = id => {
 
 // Not all the fields being searched on should be visible but need
 // to be on the DOM in order for listjs to pick them up for search
-const hiddenSearchFields = ['address', 'accepting', 'notAccepting', 'notes', 'seekingVolunteers', 'publicTransitOptions']
+const hiddenSearchFields = ['address', 'accepting', 'notAccepting', 'notes', 'seekingVolunteers']
+
+const hiddenSearchComponent = (field, value) => (
+  `<p class="${field}" style="display:none">${value || '' }</p>`
+)
 
 // create an item for the side pane using a location
 const createListItem = (location, status, lng, lat) => {
@@ -357,8 +362,10 @@ const createListItem = (location, status, lng, lat) => {
   if (moment().isBetween(openTimeReceivingLessOne, openTimeReceiving)) {
     openingSoonForReceiving = `<p class="card-opening-soon"><span data-translation-id="opening_soon">Opening soon!</span> ${openTimeReceiving.format("LT")} <span data-translation-id="for_receiving">for receiving</span></p>`
   }
+  
+  const publicTransitHiddenSearchComponent = hiddenSearchComponent('publicTransitOptions', JSON.stringify(location['publicTransitOptions'] ))	 
 
-  let hiddenSearch = hiddenSearchFields.map(field => `<p class="${field}" style="display:none">${location[field] || ''}</p>`).join('')
+  let hiddenSearch = hiddenSearchFields.map(field => hiddenSearchComponent(field, location[field])).join('') + publicTransitHiddenSearchComponent
 
   const $item = document.createElement('div')
   $item.classList.add('card');
@@ -372,7 +379,7 @@ const createListItem = (location, status, lng, lat) => {
   $item.innerHTML = `
     <div class="card-content">
       <div class="card-title">
-        <span title="${status.id}" class="status" style="display:none;">${status.id}</span>
+        <span class="status" style="display:none;">${status.id}</span>
         <span title="${status.id}" class="card-status-indicator" style="background-color: ${status.accessibleColor};" ></span>
         <h2 class="name">
           ${location.name}
@@ -604,6 +611,7 @@ const onMapLoad = async () => {
         'urgentNeed',
         'noIdNeeded',
         'warmingSite',
+        'publicTransitOptions',
         ...hiddenSearchFields
       ],
     },
