@@ -7,18 +7,17 @@ class HiatusModal {
         this.el.className = 'modal-wrap';
         this.el.innerHTML = this.render();
         this.closeButton = this.el.querySelector(".modal-close");
+        this.isActive = true; //change this to 'false' to disable the modal!!
 
-        //Add event listener to close button
+        //Add event listeners to close button
+        //Add event listener to close button using escape key
+        //Alternately, allow user to click outside modal to close
         this.closeButton.addEventListener('click', () => {
             this.close()})
-
-         //Add event listener to close button using escape key
          document.addEventListener('keyup', (evt) => {
             if (evt.key === 'Escape'){
             this.close()}
             })
-
-        //Alternately, allow user to click outside modal to close
         document.addEventListener('click', (evt) => {
             if (evt.target != document.querySelector('.modal')){
                 this.close()
@@ -39,13 +38,15 @@ class HiatusModal {
             <br>
             See you then!
             </p>
-            <button class="modal-close">Got it! Take me to the map.</button>
+            <button class="modal-close" autofocus>Got it! Take me to the map.</button>
         </div>
         `
     }
 
     open() {
         document.body.appendChild(this.el);
+        // save to session storage
+        sessionStorage.setItem("alertshown", true); //changing 'true' here shouldn't do anything
     }
 
     close() {
