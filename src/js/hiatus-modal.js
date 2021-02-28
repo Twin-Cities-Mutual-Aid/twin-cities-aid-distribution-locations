@@ -1,6 +1,6 @@
 /* A modal window that appears after language selection to alert users to critical information e.g. 
 reduced functionality due to a hiatus */ 
-// Based on welcome.js
+// Used welcome.js as a template
 
 class HiatusModal {
     constructor() {

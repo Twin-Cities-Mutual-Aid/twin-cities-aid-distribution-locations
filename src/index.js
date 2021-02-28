@@ -143,23 +143,20 @@ document.getElementById('lang-select-button').addEventListener('click', () => we
 // --------------
 
 /* show hiatus alertdialog modal if active and not already in user's session
-*  if language not set (translator.prompt), wait for welcome modal to close before opening ((this is currently not working))
+*  if language not set (translator.prompt), wait for welcome modal to close before opening
 * (change activeStatus to false in 'src/js/hiatus-modal.js' to disable) */
 const hiatusAlert = new HiatusModal;
 if (hiatusAlert.isActive == true && !sessionStorage.getItem('alertshown')) {
   if (translator.prompt) { 
     console.log("translator.prompt path");
-    const welcomeModal = document.querySelector(".welcome-message");
-    const observer = new MutationObserver(callback);
-    function callback(mutations) {
-      for (let mutation of mutations){
-        console.log("a mutation occured");
-        hiatusAlert.open();
-      }
-    }
-    observer.observe(welcomeModal, {attributes: true, childList: true}); // 
-    observer.disconnect();
+    const welcomeModal = document.querySelector("#welcome-modal-body");
+    welcomeModal.addEventListener('click', () => {
+      setTimeout( () => {
+        console.log("modal should open");
+        hiatusAlert.open()}, 600);
+    })
   }
+  
   else {
     console.log("just opened - lang already set");
     hiatusAlert.open();

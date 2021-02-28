@@ -29,7 +29,7 @@ class WelcomeModal {
     }).join('')
 
     return `
-      <div class="modal">
+      <div class="modal" id="welcome-modal-body">
         <h1 class="welcome-message" data-translation-id="welcome">Welcome!</h1>
         <p data-translation-id="welcome_blurb">Twin Cities Mutual Aid is an up to date resource on mutual aid sites in the Twin Cities.</p>
         <p class="bold"><span data-translation-id="lang_select">Please select a language</span>:</p>

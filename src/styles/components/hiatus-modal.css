@@ -1,7 +1,7 @@
-/* partially styles the hiatus-modal. styles/welcome.css styles the .modal and .modal-wrapper classes */
+/* partially styles the hiatus-modal. styles/welcome.css takes care of the .modal and .modal-wrapper classes */
 
-/* modal body */
-#hiatus {
+
+#hiatus { /* modal body, should probably be renamed to something more descriptive */
     border-top: solid 2em var(--primary-blue);
 }
 
