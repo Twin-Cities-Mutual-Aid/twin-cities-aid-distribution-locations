@@ -8,7 +8,7 @@ class HiatusModal {
         this.el.className = 'modal-wrap';
         this.el.innerHTML = this.render();
         this.closeButton = this.el.querySelector(".modal-close");
-        this.isActive = true; //change this to 'false' to disable the modal!!
+        this.isActive = true; //change this to 'false' to disable the modal
 
         //Add event listeners to close button
         //Add event listener to close button using escape key
@@ -17,15 +17,15 @@ class HiatusModal {
             this.close()})
          document.addEventListener('keyup', (evt) => {
             if (evt.key === 'Escape'){
-            this.close()}
+                this.close()}
             })
         document.addEventListener('click', (evt) => {
-            if (evt.target != document.querySelector('.modal')){
+            if (evt.target == document.querySelector('.modal-wrap')){
+                console.log('clicked outside')
                 this.close()
-            }  
-        })
+                }
+            })
     }
-
     render(){
         return `
         <div class="modal" id="hiatus" role="alertdialog" aria-labelledby="alertTitle" aria-describedby="alertDesc">
@@ -51,16 +51,15 @@ class HiatusModal {
     open() {
         document.body.appendChild(this.el);
         // save to session storage
-        sessionStorage.setItem("alertshown", true); //changing 'true' here shouldn't do anything
+        sessionStorage.setItem("alertshown", true); //changing 'true' here shouldn't do anything?
     }
-
     close() {
         this.el.animate([
             {opacity: 1},
             {opacity: 0} 
         ], 400);
         setTimeout( () => {
-            this.el.remove()}, 400);
+            this.el.remove()}, 350);
     }    
 }
 
