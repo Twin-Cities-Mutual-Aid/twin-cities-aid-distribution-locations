@@ -1,0 +1,51 @@
+/* partially styles the hiatus-modal. styles/welcome.css styles the .modal and .modal-wrapper classes */
+
+/* modal body */
+#hiatus {
+    border-top: solid 2em var(--primary-blue);
+}
+
+
+.modal-close {
+
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 0.5em .5em 0;
+    padding: .5em;
+    font-size: 120%;
+    font-weight: bold;
+    border: solid 1px #2c7bb6;
+    color: white;
+    background-color: #2c7bb6;
+ 
+}
+
+.modal-close:hover {
+    
+    border: solid 1px #2c7bb6;
+    color: #2c7bb6;
+    background-color: white;
+}
+
+#hiatus p {
+
+   
+    text-align: left;
+    display: flex;
+}
+
+.hiatus-alert-icon {
+
+    display: inline;
+    color: var(--primary-blue); 
+
+}
+
+
+@media only screen and (min-width: 640px) {
+
+    .modal-close{
+
+        float: right;
+    }
+}

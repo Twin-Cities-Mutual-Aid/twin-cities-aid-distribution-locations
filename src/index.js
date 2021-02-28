@@ -11,6 +11,7 @@ import './styles/components/form-control.css';
 import './styles/components/search.css';
 import './styles/components/covid-banner.css';
 import './styles/components/hours-banner.css';
+import './styles/components/hiatus-modal.css';
 import './styles/typography.css';
 
 // Import Libs
@@ -21,6 +22,7 @@ import _ from 'lodash'
 import Filter from './js/filter'
 import Translator from './js/translator'
 import WelcomeModal from './js/welcome'
+import HiatusModal from './js/hiatus-modal'
 import { getQueryParam } from './js/url-helpers';
 import { TrackJS } from 'trackjs';
 import validate, { LOCATION_SCHEMA } from "./js/validator";
@@ -138,7 +140,33 @@ if (translator.prompt) {
 
 // when language button is clicked, re-open welcome modal
 document.getElementById('lang-select-button').addEventListener('click', () => welcome.open())
+// --------------
 
+/* show hiatus alertdialog modal if active and not already in user's session
+*  if language not set (translator.prompt), wait for welcome modal to close before opening ((this is currently not working))
+* (change activeStatus to false in 'src/js/hiatus-modal.js' to disable) */
+const hiatusAlert = new HiatusModal;
+if (hiatusAlert.isActive == true && !sessionStorage.getItem('alertshown')) {
+  if (translator.prompt) { 
+    console.log("translator.prompt path");
+    const welcomeModal = document.querySelector(".welcome-message");
+    const observer = new MutationObserver(callback);
+    function callback(mutations) {
+      for (let mutation of mutations){
+        console.log("a mutation occured");
+        hiatusAlert.open();
+      }
+    }
+    observer.observe(welcomeModal, {attributes: true, childList: true}); // 
+    observer.disconnect();
+  }
+  else {
+    console.log("just opened - lang already set");
+    hiatusAlert.open();
+  } 
+}
+
+// --------------
 document.getElementById('close-covid-banner-button').addEventListener('click', () => closeCovidBanner())
 
 document.getElementById('close-hours-banner-button').addEventListener('click', () => closeHoursBanner())

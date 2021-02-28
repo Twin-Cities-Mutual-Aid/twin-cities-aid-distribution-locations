@@ -1,5 +1,6 @@
 /* A modal window that appears after language selection to alert users to critical information e.g. 
 reduced functionality due to a hiatus */ 
+// Based on welcome.js
 
 class HiatusModal {
     constructor() {
@@ -27,18 +28,23 @@ class HiatusModal {
 
     render(){
         return `
-        <div class = "modal" role="alertdialog" aria-labelledby="alertTitle" aria-describedby="alertDesc">
-            <h1 id="alertTitle">Hi friends! TCMAP is on break 3/1 -3/7 so the map is not being updated.</h1>
-            <p id="alertDesc">Information about a siteâ€™s needs, current open status, and hours may not be accurate!
-            <br>
-            Make sure to check the Notes and Contact info for a site and go to their website 
-            or contact them directly to verify info!
-            <br>
-            Normal operations will resume on Monday, 3/8.
-            <br>
-            See you then!
-            </p>
-            <button class="modal-close" autofocus>Got it! Take me to the map.</button>
+        <div class="modal" id="hiatus" role="alertdialog" aria-labelledby="alertTitle" aria-describedby="alertDesc">
+            <h1 id="alertTitle">Hi friends! TCMAP is on break! The map is not being updated.</h1>
+            <div id="alertDesc">
+                <i class="material-icons-round hiatus-alert-icon" aria-hidden="true">error</i>
+                <p class="bold"><i class="material-icons-round hiatus-alert-icon" aria-hidden="true">error</i>
+                Information about a site's needs, current open status, and hours may not be accurate!</p>
+                <p><i class="material-icons-round hiatus-alert-icon" aria-hidden="true">check_box</i>
+                Make sure to check the Contact Info for a site and go to their website
+                or contact them directly to verify info!
+                </p>
+                <p>
+                <i class="material-icons-round hiatus-alert-icon" aria-hidden="true">calendar_today</i>
+                Normal operations will resume on Monday, 3/8. <br> See you then!
+                </p>
+                
+            </div>
+                <button class="modal-close" autofocus>Got it! Take me to the map.</button>
         </div>
         `
     }
