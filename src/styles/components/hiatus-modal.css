@@ -1,4 +1,6 @@
-/* partially styles the hiatus-modal. styles/welcome.css takes care of the .modal and .modal-wrapper classes */
+/* partially styles the hiatus-modal: welcome.css styles the .modal and .modal-wrapper parents */
+/* probably should put parent styles into modal.css and styles 
+specific to modal instances in hiatus-modal.css, welcome-modal.css etc. esp if we ever have more modals*/
 
 
 #hiatus { /* modal body, should probably be renamed to something more descriptive */
