@@ -140,7 +140,7 @@ if (translator.prompt) {
 
 // when language button is clicked, re-open welcome modal
 document.getElementById('lang-select-button').addEventListener('click', () => welcome.open())
-// --------------
+
 
 /* show hiatus alertdialog modal if active and not already in user's session
 *  if language not set (translator.prompt), wait for user to click welcome modal button before opening
@@ -162,7 +162,6 @@ if (hiatusAlert.isActive == true && !sessionStorage.getItem('alertshown')) {
 }
 
 
-// --------------
 document.getElementById('close-covid-banner-button').addEventListener('click', () => closeCovidBanner())
 
 document.getElementById('close-hours-banner-button').addEventListener('click', () => closeHoursBanner())
