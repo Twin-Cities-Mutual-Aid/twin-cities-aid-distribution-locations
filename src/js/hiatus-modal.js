@@ -29,20 +29,19 @@ class HiatusModal {
     render(){
         return `
         <div class="modal" id="hiatus" role="alertdialog" aria-labelledby="alertTitle" aria-describedby="alertDesc">
-            <h1 id="alertTitle">Hi friends! TCMAP is on break! The map is not being updated.</h1>
+        <header>TCMAP is on hiatus March 1 - March 7</header>
+            <h1 id="alertTitle">Hi friends! TCMAP is on break. Site hours are not up to date.</h1>
             <div id="alertDesc">
-                <i class="material-icons-round hiatus-alert-icon" aria-hidden="true">error</i>
                 <p class="bold"><i class="material-icons-round hiatus-alert-icon" aria-hidden="true">error</i>
-                Information about a site's needs, current open status, and hours may not be accurate!</p>
-                <p><i class="material-icons-round hiatus-alert-icon" aria-hidden="true">check_box</i>
-                Make sure to check the Contact Info for a site and go to their website
-                or contact them directly to verify info!
+                Information about a site's current needs, open status, and hours may not be accurate.</p>
+                <p class="bold"><i class="material-icons-round hiatus-alert-icon" aria-hidden="true">check_box</i>
+                Make sure to verify hours directly with the site! 
+                Check the site’s Contact Info to find out how to reach them.
                 </p>
-                <p>
+                <p class="bold">
                 <i class="material-icons-round hiatus-alert-icon" aria-hidden="true">calendar_today</i>
-                Normal operations will resume on Monday, 3/8. <br> See you then!
+                Normal operations will resume Monday, March 8th. See you then!
                 </p>
-                
             </div>
                 <button class="modal-close" autofocus>Got it! Take me to the map.</button>
         </div>
