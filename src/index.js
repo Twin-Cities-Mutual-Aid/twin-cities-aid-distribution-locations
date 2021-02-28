@@ -146,7 +146,7 @@ document.getElementById('lang-select-button').addEventListener('click', () => we
 *  if language not set (translator.prompt), wait for user to click welcome modal button before opening
 * (change activeStatus to false in 'src/js/hiatus-modal.js' to disable) */
 const hiatusAlert = new HiatusModal;
-if (hiatusAlert.isActive == true && !sessionStorage.getItem('alertshown')) {
+if (hiatusAlert.isActive && !sessionStorage.getItem('alertshown')) {
   if (translator.prompt) { 
     document.querySelectorAll('.welcome-lang-button').forEach(button => {
       button.addEventListener('click', () => {
@@ -156,7 +156,6 @@ if (hiatusAlert.isActive == true && !sessionStorage.getItem('alertshown')) {
     })
   }
   else {
-    console.log("just opened - lang already set");
     hiatusAlert.open();
   } 
 }

@@ -21,17 +21,16 @@ class HiatusModal {
             })
         document.addEventListener('click', (evt) => {
             if (evt.target == document.querySelector('.modal-wrap')){
-                console.log('clicked outside')
                 this.close()
                 }
             })
     }
     render(){
         return `
-        <div class="modal" id="hiatus" role="alertdialog" aria-labelledby="alertTitle" aria-describedby="alertDesc">
+        <div class="modal" id="hiatus" role="alertdialog" aria-labelledby="alert-title" aria-describedby="alert-desc">
         <header>TCMAP is on hiatus March 1 - March 7</header>
-            <h1 id="alertTitle">Hi friends! TCMAP is on break. Site hours are not up to date.</h1>
-            <div id="alertDesc">
+            <h1 id="alert-title">Hi friends! TCMAP is on break. Site hours are not up to date.</h1>
+            <div id="alert-desc">
                 <p class="bold"><i class="material-icons-round hiatus-alert-icon" aria-hidden="true">error</i>
                 Information about a site's current needs, open status, and hours may not be accurate.</p>
                 <p class="bold"><i class="material-icons-round hiatus-alert-icon" aria-hidden="true">check_box</i>
