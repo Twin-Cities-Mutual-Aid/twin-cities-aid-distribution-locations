@@ -15,7 +15,7 @@ class HiatusModal {
         //Alternately, allow user to click outside modal to close
         this.closeButton.addEventListener('click', () => {
             this.close()})
-         document.addEventListener('keyup', (evt) => {
+        document.addEventListener('keyup', (evt) => {
             if (evt.key === 'Escape'){
                 this.close()}
             })
@@ -53,12 +53,7 @@ class HiatusModal {
         sessionStorage.setItem("alertshown", true); //changing 'true' here shouldn't do anything?
     }
     close() {
-        this.el.animate([
-            {opacity: 1},
-            {opacity: 0} 
-        ], 400);
-        setTimeout( () => {
-            this.el.remove()}, 350);
+        this.el.remove()
     }    
 }
 
