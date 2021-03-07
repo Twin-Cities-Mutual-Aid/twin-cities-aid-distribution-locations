@@ -8,7 +8,7 @@ class HiatusModal {
         this.el.className = 'modal-wrap';
         this.el.innerHTML = this.render();
         this.closeButton = this.el.querySelector(".modal-close");
-        this.isActive = true; //change this to 'false' to disable the modal
+        this.isActive = false; //change this to 'false' to disable the modal
 
         //Add event listeners to close button
         //Add event listener to close button using escape key
