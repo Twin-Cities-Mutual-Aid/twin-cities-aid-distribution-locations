@@ -314,9 +314,19 @@ function sectionUrlComponent(value, key) {
   return sectionHTML
 }
 
-// get the status info for a location using the color as ID, else default to closed.
-const getStatus = id => {
-  const status = _.find(statusOptions, s => (s.id === id))
+// get the status info for a location based on site open status, else default to closed.
+function getStatus(item) {
+  let name = ""
+  if(item.currentlyOpenForDistributing === "yes") {
+    if(item.currentlyOpenForReceiving === "yes") {
+        name ="both"
+    } else {
+      name = "distributing"
+    }
+  } else if(item.currentlyOpenForReceiving === "yes") {
+    name ="receiving"
+  } 
+  const status = _.find(statusOptions, s => (s.name === name))
   return status || statusClosed
 }
 
@@ -487,7 +497,7 @@ const onMapLoad = async () => {
       // the location schema
       // const rawLocation = extractRawLocation(item);
       const location = _.pickBy(item, val => val != '');
-      const status = getStatus(item.color);
+      const status = getStatus(item);
 
       // transform location properties into HTML
       const propertyTransforms = {
