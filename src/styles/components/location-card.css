@@ -25,6 +25,7 @@
     flex-flow: column nowrap;
     padding: 1rem;
     overflow: auto;
+    flex-grow: 1;
 }
 
 .card-title {
