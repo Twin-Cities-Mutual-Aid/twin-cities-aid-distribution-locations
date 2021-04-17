@@ -23,7 +23,6 @@ import Translator from './js/translator'
 import WelcomeModal from './js/welcome'
 import { getQueryParam } from './js/url-helpers';
 import { TrackJS } from 'trackjs';
-import validate, { LOCATION_SCHEMA } from "./js/validator";
 import replaceAll from 'string.prototype.replaceall'
 import PullToRefresh from 'pulltorefreshjs'
 
@@ -96,10 +95,9 @@ let activePopup
 const translator = new Translator()
 moment.locale(translator.locale)
 
-const ptr = PullToRefresh.init({
+PullToRefresh.init({
   mainElement: "body",
   triggerElement: "#header",
-  instructionsPullToRefresh: " ",
   iconArrow: " ",
   iconRefreshing: " ",
   instructionsRefreshing: '<h1><i class="fas fa-spinner fa-spin"></i></h1>',
@@ -121,6 +119,8 @@ const welcome = new WelcomeModal({
   onLanguageSelect: lang => {
     translator.language = lang
     moment.locale(translator.locale)
+    // Defined in index.html
+    // eslint-disable-next-line no-undef
     gtag('event', 'language_change', {
       'event_category': 'language',
       'event_label': lang
@@ -173,11 +173,6 @@ map.addControl(
 function camelToTitle(str) {
   const result = str.replace(/([A-Z])/g,' $1')
   return result.charAt(0).toUpperCase() + result.slice(1)
-}
-
-function truthy(str) {
-  const normalizedStr = _.toUpper(str);
-  return _.includes(['TRUE', 'YES', 'T', 'Y'], normalizedStr);
 }
 
 function closeCovidBanner() {
@@ -248,10 +243,6 @@ function noIdNeededComponent(location) {
   } else {
     return ''
   }
-}
-
-function nameComponent(name) {
-  return `<h2>${name}</h2>`
 }
 
 function warmingSiteComponent(location) {
@@ -339,7 +330,7 @@ const hiddenSearchComponent = (field, value) => (
 )
 
 // create an item for the side pane using a location
-const createListItem = (location, status, lng, lat) => {
+const createListItem = (location, status) => {
   const neighborhood = location.neighborhood ? `<h3 class="card-subtitle neighborhood">${location.neighborhood}</h3>` : '';
 
   const urgentNeed = location.urgentNeed ? `<p class="urgentNeed p card-urgent-need"><span data-translation-id="urgent_need">Urgent Need</span>: ${location.urgentNeed}</p>` : ''
@@ -412,7 +403,7 @@ const createListItem = (location, status, lng, lat) => {
   `
 
   
-  $item.addEventListener('click', (evt) => {
+  $item.addEventListener('click', () => {
     const popup = location.marker.getPopup()
     if (popup.isOpen()) {
       popup.remove()
@@ -451,9 +442,9 @@ function getOpenHoursComponent(openingHours, closingHours, key) {
 ///////////
 function extractUrls(item) {
   // web URL regex source: https://stackoverflow.com/questions/6927719/url-regex-does-not-work-in-javascript
-  const host_pattern = /(?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)/
+  const host_pattern = /(?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.-]+[.][a-z]{2,4}\/)/
   const path_pattern = /(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+/
-  const end_pattern = /(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’])/
+  const end_pattern = /(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()[\]{};:'".,<>?«»“”‘’])/
   const web_pattern = host_pattern.source + path_pattern.source + end_pattern.source
   const phone_pattern = /(?:\d[^\sa-z]*){9,10}\d/
   // email regexp adapted from https://www.regular-expressions.info/email.html
@@ -479,12 +470,6 @@ const getPopupSectionComponent = (title, content) => (
   `<div class='p row'><p data-translation-id="${_.snakeCase(title)}"class='txt-deemphasize key'>${camelToTitle(title)}</p><p class='value'>${content}</p></div>`
 )
 
-function getWarmingSiteMarker() {
-  let marker = document.createElement("div")
-  marker.classList.add("warming-site-marker")
-  return marker
-}
-
 const request = fetch('https://tcmap-api.herokuapp.com/v1/mutual_aid_sites')
 
 // handle the map load event
@@ -501,23 +486,23 @@ const onMapLoad = async () => {
 
       // transform location properties into HTML
       const propertyTransforms = {
-        name: (name, _) => `<h2>${name}</h2>`,
-        neighborhood: (neighborhood, _) => `<h3 class='h3'>${neighborhood}</h3>`,
+        name: (name) => `<h2>${name}</h2>`,
+        neighborhood: (neighborhood) => `<h3 class='h3'>${neighborhood}</h3>`,
         address: addressComponent, // driving directions in google, consider doing inside mapbox
-        openingForDistributingDonations: (_, location) => getOpenHoursComponent(location.openingForDistributingDonations, location.closingForDistributingDonations, 'aidDistributionHours'),
-        openingForReceivingDonations: (_, location) => getOpenHoursComponent(location.openingForReceivingDonations, location.closingForReceivingDonations, 'aidReceivingHours'),
+        openingForDistributingDonations: (value, location) => getOpenHoursComponent(location.openingForDistributingDonations, location.closingForDistributingDonations, 'aidDistributionHours'),
+        openingForReceivingDonations: (value, location) => getOpenHoursComponent(location.openingForReceivingDonations, location.closingForReceivingDonations, 'aidReceivingHours'),
         seekingMoney: (value, location) => needsMoneyComponent(location),
-        seekingMoneyURL: (value, _) => '',
-        noIdNeeded: (_, location) => noIdNeededComponent(location),
-        someInfoRequired: (value, _) => '',
-        warmingSite: (_, location) => warmingSiteComponent(location),
-        publicTransitOptions: (_, location) => publicTransitComponent(location, 'publicTransit'),
-        accepting: (value, _) => sectionUrlComponent(value, 'accepting'),
-        notAccepting: (value, _) => sectionUrlComponent(value, 'not_accepting'),
-        seekingVolunteers: (value, _) => sectionUrlComponent(value, 'seeking_volunteers_badge'),
-        mostRecentlyUpdatedAt: (datetime, _) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> <span data-translate-font>${moment(datetime, 'YYYY-MM-DDTHH:mm:ss.SSSZ').fromNow()}</span></div>`,
-        urgentNeed: (value, _) => sectionUrlComponent(value,'urgent_need'),
-        notes: (value, _) => sectionUrlComponent(value,'notes'),
+        seekingMoneyURL: () => '',
+        noIdNeeded: (value, location) => noIdNeededComponent(location),
+        someInfoRequired: () => '',
+        warmingSite: (value, location) => warmingSiteComponent(location),
+        publicTransitOptions: (value, location) => publicTransitComponent(location, 'publicTransit'),
+        accepting: (value) => sectionUrlComponent(value, 'accepting'),
+        notAccepting: (value) => sectionUrlComponent(value, 'not_accepting'),
+        seekingVolunteers: (value) => sectionUrlComponent(value, 'seeking_volunteers_badge'),
+        mostRecentlyUpdatedAt: (datetime) => `<div class='updated-at' title='${datetime}'><span data-translation-id='last_updated'>Last updated</span> <span data-translate-font>${moment(datetime, 'YYYY-MM-DDTHH:mm:ss.SSSZ').fromNow()}</span></div>`,
+        urgentNeed: (value) => sectionUrlComponent(value,'urgent_need'),
+        notes: (value) => sectionUrlComponent(value,'notes'),
         // ignore the following properties
         marker: () => '',
         popup: () => '',
