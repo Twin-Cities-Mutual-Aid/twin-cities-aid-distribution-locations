@@ -1,4 +1,3 @@
-
 {
   "locale": "en",
   "lang_name": "English",
@@ -44,6 +43,7 @@
   "currently_open_for_receiving": "Currently Open For Receiving",
   "opening_for_receiving_dontations": "Opening For Receiving Donations",
   "closing_for_receiving_donations": "Closing For Receiving Donations",
+  "public_transit": "Public Transit",
   "opening_soon": "Opening soon!",
   "for_distribution": "for distributing",
   "for_receiving": "for receiving",
@@ -80,6 +80,7 @@
   "moment_M": "a month",
   "moment_y": "a year",
   "safety_reminder": "Safety Reminder",
+  "covid_19": "COVID-19",
   "covid_request": "Please comply with social distancing and mask requirements.",
   "learn_more": "Learn More",
   "wear_masks": "Wear Masks",
