@@ -432,8 +432,6 @@ const createListItem = (location, status, lng, lat) => {
 // e.g "not today", or "never"
 ///////////
 function getOpenHoursComponent(openingHours, closingHours, key) {
-  console.log(openingHours)
-  console.log(closingHours)
   if(openingHours === "never" || openingHours === "not today") {
       return getPopupSectionComponent(key, openingHours)
   } else {

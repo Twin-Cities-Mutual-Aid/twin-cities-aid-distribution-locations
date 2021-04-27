@@ -106,11 +106,6 @@ a.txt-white:hover {
   font-size: 10px;
 }
 
-.txt-deemphasize {
-  opacity: 0.70;
-  font-size: 0.9em;
-}
-
 .bold {
   font-weight: 600;
 }
@@ -393,20 +388,3 @@ input[type='checkbox'] + label {
     display: none;
   }
 }
-
-@media (max-width: 420px) {
-      .mapboxgl-popup-content {
-          display: flex;
-          flex-flow: row wrap;
-          align-items: start;
-          box-shadow: 0 4px 12px rgba(0,0,0,.095);
-          border: 1px solid transparent;
-          /* border-radius: 1rem; */
-          /* padding: 0; */
-          background-color: rgba(255,255,255);
-          transition: transform .15s ease-in-out, border-color .15s ease-in-out;
-         cursor: pointer;
-         max-height: 300px;
-         
-     }
-    }
