@@ -7,7 +7,8 @@ html {
   font-size: 14px;
 }
 
-body {
+/* TODO: remove the `body` attribute, only keeping it in here so it doesn't break the legacy build */
+body, body > div#__next {
   position: absolute;
   top: 0;
   left: 0;
@@ -71,17 +72,18 @@ a.txt-white:hover {
   width: 100%;
 }
 
-.help-info:target {
+/* Needed to comment these out since we're hiding the help info based on different logic in the Next.js app */
+/* .help-info:target {
   display: block;
-}
+} */
 
-.help-info:not(:target) {
+/* .help-info:not(:target) {
   display: none;
 }
 
 .help-info:target + .map {
   display: none;
-}
+} */
 
 .content {
   z-index: 1;
