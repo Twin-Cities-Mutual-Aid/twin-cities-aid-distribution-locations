@@ -298,6 +298,7 @@ input[type='checkbox'] + label {
   padding: 5px 0 0 0;
   margin: 0px;
   border-bottom: 1px solid #ddd;
+  color: var(--gray-700);
 }
 
 .popup-content .value {
@@ -308,11 +309,6 @@ input[type='checkbox'] + label {
 .popup-content address {
   padding-bottom: 5px;
   font-style: normal;
-}
-
-.popup-content .updated-at {
-  padding-bottom: 20px;
-  font-style: italic;
 }
 
 /* component: traffic counter */
@@ -334,6 +330,7 @@ input[type='checkbox'] + label {
   font-size: 25px;
   padding: 4px 8px;
   line-height: .9;
+  z-index: 1;
 }
 
 .mapboxgl-marker {
@@ -396,3 +393,20 @@ input[type='checkbox'] + label {
     display: none;
   }
 }
+
+@media (max-width: 420px) {
+      .mapboxgl-popup-content {
+          display: flex;
+          flex-flow: row wrap;
+          align-items: start;
+          box-shadow: 0 4px 12px rgba(0,0,0,.095);
+          border: 1px solid transparent;
+          /* border-radius: 1rem; */
+          /* padding: 0; */
+          background-color: rgba(255,255,255);
+          transition: transform .15s ease-in-out, border-color .15s ease-in-out;
+         cursor: pointer;
+         max-height: 300px;
+         
+     }
+    }
