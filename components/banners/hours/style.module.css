@@ -1,0 +1,41 @@
+/* Ripped directly from src/styles/components/hours-banner.css */
+.hours-banner {
+    display: flex;
+    flex-flow: row nowrap;
+    background-image: linear-gradient(var(--primary-900), var(--primary-700));
+    color: white;
+}
+
+.hiatus-banner {
+    display: flex;
+    flex-flow: row nowrap;
+    background-color: #AD4637; /* slightly darker variation of tcmap-red */
+    border-bottom: 2px white solid;
+    color: white;
+}
+
+.hours-message {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    flex-flow: row wrap;
+    align-items: center;
+    margin: 5px 0 5px 0;
+    width: 100%;
+}
+
+.close-hours-banner {
+    display: flex;
+    flex: 3%;
+    justify-content: flex-end;
+    cursor: pointer;
+}
+
+@media(max-width: 420px) {
+
+    .due-to-holiday {
+        display: none;
+    }
+
+
+}
