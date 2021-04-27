@@ -6,7 +6,9 @@
     border: 1px solid transparent;
     border-radius: 1rem;
     background-color: rgba(255,255,255,.97);
-    margin: 1.75rem 0;
+    /* Why tho? */
+    /* I think removing this fixes https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/issues/239 */
+    /* margin: 1.75rem 0; */
     padding: 1rem 1.25rem;
     transition: transform .15s ease-in-out, border-color .15s ease-in-out;
     cursor: pointer;
