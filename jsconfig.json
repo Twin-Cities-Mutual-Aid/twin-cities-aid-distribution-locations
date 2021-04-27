@@ -1,0 +1,12 @@
+// https://nextjs.org/docs/advanced-features/module-path-aliases
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["components/*"],
+      "@contexts/*": ["contexts/*"],
+      "@hooks/*": ["hooks/*"]
+    }
+  },
+  "exclude": ["node_modules", "web_modules", ".next", "build"]
+}
