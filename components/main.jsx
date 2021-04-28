@@ -14,7 +14,11 @@ import useLocation from "@hooks/useLocation";
 
 const Mapbox = dynamic(() => import("@components/mapbox"), {
   // eslint-disable-next-line react/display-name
-  loading: () => <p>Loading map...</p>,
+  loading: () => (
+    <div className="map loading" id="map">
+      Loading Mutual Aid Sites...
+    </div>
+  ),
   ssr: false,
 });
 

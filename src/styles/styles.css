@@ -72,6 +72,12 @@ a.txt-white:hover {
   width: 100%;
 }
 
+.map.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Needed to comment these out since we're hiding the help info based on different logic in the Next.js app */
 /* .help-info:target {
   display: block;
