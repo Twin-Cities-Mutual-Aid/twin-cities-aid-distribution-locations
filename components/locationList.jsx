@@ -1,9 +1,7 @@
-/* eslint-disable no-unused-vars, react/prop-types */
-import React, { useContext, useEffect, useState } from "react";
+/* eslint-disable react/prop-types */
+import React from "react";
 
 import ListItem from "@components/location/listItem";
-
-import { LanguageContext } from "@contexts/translator";
 
 const LocationList = ({
   closePopups,
@@ -11,13 +9,6 @@ const LocationList = ({
   mapObject,
   toggleLocationList,
 }) => {
-  const { getTranslation, language, setWelcome } = useContext(LanguageContext);
-
-  /** @todo
-   * - Add a useEffect hook that adds onClick handlers to open the location popup
-   * - Populate card-badge-group class with content
-   */
-
   return (
     <div className="list" id="location-list">
       {locations.map((location, i) => (

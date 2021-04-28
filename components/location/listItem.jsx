@@ -37,6 +37,10 @@ const LocationListItem = ({
     toggleLocationList,
   ]);
 
+  /** @todo
+   * - Populate card-badge-group class with content
+   */
+
   return (
     <div className="card location-list--item" onClick={onClick}>
       <div className="card-content">
