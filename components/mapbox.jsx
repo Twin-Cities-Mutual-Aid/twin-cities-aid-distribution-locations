@@ -50,7 +50,6 @@ const Mapbox = ({
     if (mapContainerRef.current && !mapObject) {
       // Alternative base style: 'mapbox://styles/mapbox/light-v10',
       // See also: https://docs.mapbox.com/mapbox-gl-js/example/setstyle/
-      console.log('inside this useEffect, initializing map')
       const map = new mapboxgl.Map({
         container: "map",
         style: "mapbox://styles/saman/ckawvg6bk011x1ipepu7nqlbh",
@@ -94,8 +93,6 @@ const Mapbox = ({
 
           dispatchLocation({ location, index });
         });
-
-        console.log('map loaded!')
         setIsMapLoaded(true);
       };
 
@@ -103,7 +100,14 @@ const Mapbox = ({
 
       setMapObject(map);
     }
-  }, [locations, mapObject, setActiveLocation, setIsMapLoaded, dispatchLocation, setMapObject]);
+  }, [
+    locations,
+    mapObject,
+    setActiveLocation,
+    setIsMapLoaded,
+    dispatchLocation,
+    setMapObject,
+  ]);
 
   return (
     <div
