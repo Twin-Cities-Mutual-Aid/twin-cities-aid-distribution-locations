@@ -245,6 +245,10 @@ function noIdNeededComponent(location) {
   }
 }
 
+function nameComponent(name) {
+  return `<h2>${name}</h2>`
+}
+
 function warmingSiteComponent(location) {
   if (location.warmingSite === true) {
     return `<span data-translation-id="warming_site" class="warmingSite card-badge">Warm Up Here</span>`
