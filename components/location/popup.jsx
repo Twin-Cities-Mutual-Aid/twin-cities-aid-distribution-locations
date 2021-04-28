@@ -44,7 +44,7 @@ const PopupSection = ({ content, id }) => {
     <div className="p row">
       <p
         // data-translation-id="${_.snakeCase(id)}"
-        className="txt-deemphasize key"
+        className="key"
       >
         {getTranslation(id)}
       </p>
@@ -82,11 +82,15 @@ const NeedsMoney = ({ location }) => {
 };
 
 const OpenHours = ({ closingHours, id, openingHours }) => {
-  if (openingHours && closingHours) {
-    const value = openingHours + " to " + closingHours;
-    return <PopupSection content={value} id={id} />;
-  } else {
+  if (openingHours === "never" || openingHours === "not today") {
     return <PopupSection content={openingHours} id={id} />;
+  } else {
+    const openHours = closingHours.map((closeHour, i) => {
+      <p>
+        <span>{openingHours[i]}</span> to <span>{closingHours[i]}</span>
+      </p>;
+    });
+    return <PopupSection content={openHours} id={id} />;
   }
 };
 
@@ -199,7 +203,7 @@ const SectionUrl = ({ id, value }) => {
 
   return (
     <div className="p row">
-      <p data-translation-id={id} className="txt-deemphasize key">
+      <p data-translation-id={id} className="key">
         {getTranslation(id)}
       </p>
       <p

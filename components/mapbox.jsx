@@ -57,7 +57,7 @@ const Mapbox = ({
         center: [-93.212471, 44.934473],
       });
 
-      map.setPadding({ top: 300, bottom: 20, left: 20, right: 20 });
+      map.setPadding({ top: 0, bottom: 100, left: 20, right: 20 });
 
       // Add zoom and rotate controls
       map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
@@ -85,9 +85,12 @@ const Mapbox = ({
 
           location.marker.getElement().className += " status-" + status.name;
 
-          location.marker
-            .getPopup()
-            .on("open", () => setActiveLocation(location));
+          location.marker.getPopup().on("open", () => {
+            setActiveLocation(location);
+            map.flyTo({
+              center: [location.longitude, location.latitude],
+            });
+          });
 
           location.marker.getPopup().on("close", () => setActiveLocation(null));
 
