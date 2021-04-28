@@ -154,7 +154,7 @@ const map = new mapboxgl.Map({
   center: [-93.212471, 44.934473],
 })
 
-map.setPadding({ top: 300, bottom: 20, left: 20, right: 20 })
+map.setPadding({ top: 0, bottom: 100, left: 20, right: 20 })
 
 // Add zoom and rotate controls
 map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
@@ -281,7 +281,7 @@ function sectionUrlComponent(value, key) {
   let parsedText = parseLineBreaks(value)
   let sectionHTML = `
     <p class="p row">
-      <p data-translation-id="${key}" class="txt-deemphasize key">
+      <p data-translation-id="${key}" class="key">
         ${key.toUpperCase()}
       </p>
       <p class="value">
@@ -428,11 +428,15 @@ const createListItem = (location, status) => {
 // e.g "not today", or "never"
 ///////////
 function getOpenHoursComponent(openingHours, closingHours, key) {
-  if (openingHours && closingHours) {
-    const value = openingHours + ' to ' + closingHours
-    return getPopupSectionComponent(key, value)
+  if(openingHours === "never" || openingHours === "not today") {
+      return getPopupSectionComponent(key, openingHours)
   } else {
-    return getPopupSectionComponent(key, openingHours)
+    let openHours = ``
+    for (let i = 0; i < closingHours.length; i++) {
+      openHours += `
+        <p><span>${openingHours[i]}</span> to <span>${closingHours[i]}</span></p>`
+    }
+    return getPopupSectionComponent(key, openHours)
   }
 }
 
@@ -467,7 +471,7 @@ function parseLineBreaks(value) {
 }
 
 const getPopupSectionComponent = (title, content) => ( 
-  `<div class='p row'><p data-translation-id="${_.snakeCase(title)}"class='txt-deemphasize key'>${camelToTitle(title)}</p><p class='value'>${content}</p></div>`
+  `<div class='p row'><p data-translation-id="${_.snakeCase(title)}"class='key'>${camelToTitle(title)}</p><p class='value'>${content}</p></div>`
 )
 
 const request = fetch('https://tcmap-api.herokuapp.com/v1/mutual_aid_sites')
@@ -479,14 +483,12 @@ const onMapLoad = async () => {
 
   locations = _.chain(data).map(item => {
     try {
-      // the location schema
-      // const rawLocation = extractRawLocation(item);
       const location = _.pickBy(item, val => val != '');
       const status = getStatus(item);
 
       // transform location properties into HTML
       const propertyTransforms = {
-        name: (name) => `<h2>${name}</h2>`,
+        name: (name) => nameComponent(name),
         neighborhood: (neighborhood) => `<h3 class='h3'>${neighborhood}</h3>`,
         address: addressComponent, // driving directions in google, consider doing inside mapbox
         openingForDistributingDonations: (value, location) => getOpenHoursComponent(location.openingForDistributingDonations, location.closingForDistributingDonations, 'aidDistributionHours'),
@@ -535,6 +537,9 @@ const onMapLoad = async () => {
 
       location.popup.refreshPopup = () => {
         activePopup = location.popup
+        map.flyTo({
+          center: [ item.longitude, item.latitude]
+        })
         location.popup.setHTML(`<div class='popup-content'>${markerHtml()}</div>`)
         translator.translate(location.popup.getElement())
       }
