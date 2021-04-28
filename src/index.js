@@ -484,8 +484,7 @@ function getWarmingSiteMarker() {
   return marker
 }
 
-const request = fetch('https://tcmap-api-amaxama-suppo-xfup6y.herokuapp.com/v1/mutual_aid_sites')
-// const request = fetch('https://tcmap-api.herokuapp.com/v1/mutual_aid_sites')
+const request = fetch('https://tcmap-api.herokuapp.com/v1/mutual_aid_sites')
 
 // handle the map load event
 const onMapLoad = async () => {
