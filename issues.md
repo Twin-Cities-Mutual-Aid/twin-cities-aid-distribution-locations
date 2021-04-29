@@ -22,9 +22,11 @@ Warning: Cannot update a component (`Mapbox`) while rendering a different compon
     at TranslatorContext (webpack-internal:///./contexts/translator.jsx:59:3)
     at HomePage (webpack-internal:///./pages/index.jsx:16:3)
 ```
+- [ ] Figure out why switching languages doesn't switch language of active popup in certain situations... still need to figure out concrete reproduction steps on this one
 
 ### TODO:
 - [x] Add the react hooks ESLint config
+- [ ] Make sure the popup content is identical to production (currently missing Currently Open For Distributing/Receiving)
 - [ ] Filters/search logic
 - [ ] Migrate off of `moment`, re-implement "Last Updated At" and datetime parsing
     - Maybe [timeago](https://www.npmjs.com/package/timeago.js) for "Last Updated At"?
