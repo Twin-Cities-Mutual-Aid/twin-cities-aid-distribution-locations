@@ -138,12 +138,7 @@ const Mapbox = ({
             alt=""
             src="/images/lang-all-black.png"
           />
-          <span
-            className="lang-name"
-            // data-translation-id="lang_name"
-          >
-            {getTranslation("lang_name")}
-          </span>
+          <span className="lang-name">{getTranslation("lang_name")}</span>
         </span>
       </button>
     </div>

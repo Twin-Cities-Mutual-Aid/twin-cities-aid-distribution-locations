@@ -42,12 +42,7 @@ const PopupSection = ({ content, id }) => {
 
   return (
     <div className="p row">
-      <p
-        // data-translation-id="${_.snakeCase(id)}"
-        className="key"
-      >
-        {getTranslation(id)}
-      </p>
+      <p className="key">{getTranslation(id)}</p>
       {/** Kanad Note: I had to change this from a p tag to a div tag
        * since it was causing issues when doing a ReactDOMServer render */}
       <div className="value">{content}</div>
@@ -62,7 +57,6 @@ const NeedsMoney = ({ location }) => {
   if (location.seekingMoneyURL && location.seekingMoneyURL !== "") {
     link = (
       <a
-        data-translation-id="seeking_money_link"
         href="${location.seekingMoneyURL}"
         target="_blank"
         // onclick="captureOutboundLink('${location.seekingMoneyURL}', 'donation')"
@@ -73,10 +67,7 @@ const NeedsMoney = ({ location }) => {
   }
   return (
     <span className="seekingMoney seeking-money card-badge">
-      <span data-translation-id="seeking_money">
-        {getTranslation("seeking_money")}
-      </span>{" "}
-      {link}
+      <span>{getTranslation("seeking_money")}</span> {link}
     </span>
   );
 };
@@ -99,19 +90,13 @@ const NoIdNeeded = ({ location }) => {
 
   if (location.someInfoRequired === true) {
     return (
-      <span
-        className="noIdNeeded card-badge"
-        // data-translation-id="some_info_required"
-      >
+      <span className="noIdNeeded card-badge">
         {getTranslation("some_info_required")}
       </span>
     );
   } else {
     return (
-      <span
-        className="noIdNeeded card-badge"
-        // data-translation-id="no_id_needed"
-      >
+      <span className="noIdNeeded card-badge">
         {getTranslation("no_id_needed")}
       </span>
     );
@@ -123,7 +108,6 @@ const WarmingSite = () => {
   return (
     <span
       // Kanad note: this translation ID is wrong!
-      // data-translation-id="warming_site"
       className="warmingSite card-badge"
     >
       {getTranslation("warm_up_here")}
@@ -185,9 +169,7 @@ const SectionUrl = ({ id, value }) => {
 
   return (
     <div className="p row">
-      <p data-translation-id={id} className="key">
-        {getTranslation(id)}
-      </p>
+      <p className="key">{getTranslation(id)}</p>
       <p
         className="value"
         dangerouslySetInnerHTML={{

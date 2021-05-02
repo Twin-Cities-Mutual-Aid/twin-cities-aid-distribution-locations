@@ -12,7 +12,6 @@ const LocationListToggle = ({ showLocationList, toggleLocationList }) => {
 
   return (
     <button
-      // data-translation-id="show_list_button"
       id="locations-toggle-button"
       className="location-list-toggle toggle-button"
       onClick={() => toggleLocationList()}

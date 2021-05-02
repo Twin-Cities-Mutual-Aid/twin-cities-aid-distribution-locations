@@ -65,12 +65,7 @@ const Main = ({ initialLocations }) => {
         <div className="content">
           <div id="header">
             <div className="title white-and-blue">
-              <h1
-                // data-translation-id="page_title"
-                className="h1"
-              >
-                {getTranslation("page_title")}
-              </h1>
+              <h1 className="h1">{getTranslation("page_title")}</h1>
             </div>
             <div className="filter-pane white-and-blue">
               <div className="legend" id="key"></div>

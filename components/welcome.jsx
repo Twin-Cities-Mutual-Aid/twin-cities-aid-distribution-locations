@@ -10,24 +10,10 @@ const Welcome = ({ onSelect }) => {
   return (
     <div className="modal-wrap">
       <div className="modal">
-        <h1
-          className="welcome-message"
-          // data-translation-id="welcome"
-        >
-          {getTranslation("welcome")}
-        </h1>
-        <p
-        // data-translation-id="welcome_blurb"
-        >
-          {getTranslation("welcome_blurb")}
-        </p>
+        <h1 className="welcome-message">{getTranslation("welcome")}</h1>
+        <p>{getTranslation("welcome_blurb")}</p>
         <p className="bold">
-          <span
-          // data-translation-id="lang_select"
-          >
-            {getTranslation("lang_select")}
-          </span>
-          :
+          <span>{getTranslation("lang_select")}</span>:
         </p>
         <div className="modal-languages">
           {Object.keys(languages).map((key) => {

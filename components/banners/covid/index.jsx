@@ -21,27 +21,19 @@ const CovidBanner = () => {
           </i>
           <div>
             <a
-              // data-translation-id="covid_19"
               className={styles["covid-19"]}
               href="https://www.health.state.mn.us/diseases/coronavirus/index.html"
             >
               {getTranslation("covid_19")}
             </a>
-            <p
-              // data-translation-id="safety_reminder"
-              className={styles["safety-reminder-message"]}
-            >
+            <p className={styles["safety-reminder-message"]}>
               {getTranslation("safety_reminder")}
             </p>
           </div>
         </div>
 
         <div className={styles["covid-comply-message"]}>
-          <p
-          // data-translation-id="covid_request"
-          >
-            {getTranslation("covid_request")}
-          </p>
+          <p>{getTranslation("covid_request")}</p>
           <a
             className={styles["learn-more"]}
             href="https://www.health.state.mn.us/diseases/coronavirus/index.html"
@@ -49,11 +41,7 @@ const CovidBanner = () => {
             <i className="material-icons-round" alt="double arrow icon">
               double_arrow
             </i>
-            <p
-            // data-translation-id="learn_more"
-            >
-              {getTranslation("learn_more")}
-            </p>
+            <p>{getTranslation("learn_more")}</p>
           </a>
         </div>
 
@@ -64,10 +52,7 @@ const CovidBanner = () => {
           >
             masks
           </i>
-          <h5
-            // data-translation-id="wear_masks"
-            className={styles["covid-icon-message"]}
-          >
+          <h5 className={styles["covid-icon-message"]}>
             {getTranslation("wear_masks")}
           </h5>
         </div>
@@ -78,10 +63,7 @@ const CovidBanner = () => {
           >
             6_ft_apart
           </i>
-          <h5
-            // data-translation-id="social_distance"
-            className={styles["covid-icon-message"]}
-          >
+          <h5 className={styles["covid-icon-message"]}>
             {getTranslation("social_distance")}
           </h5>
         </div>
@@ -92,10 +74,7 @@ const CovidBanner = () => {
           >
             wash
           </i>
-          <h5
-            // data-translation-id="wash_hands"
-            className={styles["covid-icon-message"]}
-          >
+          <h5 className={styles["covid-icon-message"]}>
             {getTranslation("wash_hands")}
           </h5>
         </div>

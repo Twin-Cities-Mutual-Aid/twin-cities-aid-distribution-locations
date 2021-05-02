@@ -10,7 +10,6 @@ const HelpToggle = ({ toggleHelp }) => {
 
   return (
     <button
-      // data-translation-id="help_info"
       id="help-info-toggle-button"
       className="toggle-button"
       // TODO: do we need an aria label here if the inner text is already set?
