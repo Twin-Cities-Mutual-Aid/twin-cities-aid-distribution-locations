@@ -131,9 +131,6 @@ const Mapbox = ({
         id="lang-select-button"
         onClick={() => setWelcome(true)}
       >
-        <span className="lang-select-label" data-translation-id="language">
-          Language
-        </span>
         <span className="lang-current">
           <img
             data-translation-flag
