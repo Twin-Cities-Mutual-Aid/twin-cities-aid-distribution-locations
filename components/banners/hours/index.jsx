@@ -14,10 +14,10 @@ const HoursBanner = () => {
         >
           warning
         </i>
-        <h4 data-translation-id="" className={styles["due-to-holiday"]}>
+        <h4 className={styles["due-to-holiday"]}>
           TCMAP is on hiatus.{" "}
         </h4>
-        <h4 data-translation-id="">
+        <h4>
           &nbsp;Info not up to date March 1 - March 7.
         </h4>
       </div>
