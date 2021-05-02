@@ -1,8 +1,0 @@
-{
-  "env": {
-    "development": {
-      "compact": false
-    }
-  },
-  "presets": ["@babel/preset-react"]
-}
