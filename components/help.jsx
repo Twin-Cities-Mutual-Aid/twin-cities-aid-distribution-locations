@@ -18,7 +18,11 @@ const Help = ({ close }) => {
       </button>
       <p className="p txt-small">
         <span
-          // I don't love this but alas
+          /** We use inline anchor tags in this translation,
+           * which is why we need to use dangerouslySetInnerHTML.
+           * Not ideal...
+           * @todo use a Markdown parser instead!
+           */
           dangerouslySetInnerHTML={{
             __html: getTranslation("project_description"),
           }}
