@@ -31,3 +31,5 @@ Warning: Cannot update a component (`Mapbox`) while rendering a different compon
 - [ ] Migrate off of `moment`, re-implement "Last Updated At" and datetime parsing
     - Maybe [timeago](https://www.npmjs.com/package/timeago.js) for "Last Updated At"?
 - [ ] Re-enable all the ESLint issues I disabled
+- [ ] Rip out all the data-translation-ids that are properly translated
+    - Ugh and also figure out the 'kar' language font-family override defined in translator.css
