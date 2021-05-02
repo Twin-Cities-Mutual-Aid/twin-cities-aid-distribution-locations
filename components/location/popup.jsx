@@ -131,24 +131,6 @@ const WarmingSite = () => {
   );
 };
 
-// const Address = ({ address }) => {
-//   const googleMapDirections = `https://maps.google.com?saddr=Current+Location&daddr=${encodeURI(
-//     address
-//   )}`;
-//   return (
-//     <address>
-//       <a
-//         href={googleMapDirections}
-//         target="_blank"
-//         onClick="captureOutboundLink('${googleMapDirections}', 'directions')"
-//         rel="noreferrer"
-//       >
-//         {address}
-//       </a>
-//     </address>
-//   );
-// };
-
 const PublicTransit = ({ location }) => {
   const options = location.publicTransitOptions;
   const routes = options.map((option, i) => (
