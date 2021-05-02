@@ -1,0 +1,98 @@
+/* Ripped directly from src/styles/components/location-card.css */
+.card {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2);
+    margin-bottom: .55rem;
+    border-radius: 0.9rem;
+    background-color: white; 
+    transition:  0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-1px) ;
+    box-shadow: 0px 4px 4px 1px rgba(0,0,0,0.2);
+    background-color: rgba(360,360,360,0.75);
+}
+
+.card:hover .card-status-border {
+    opacity: 1;
+}
+
+.card-content {
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 1rem;
+    overflow: auto;
+    flex-grow: 1;
+}
+
+.card-title {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    font-size: .9rem;
+}
+
+.card-status-indicator {
+    flex: 0 0 16px;
+    border-radius: 50%;
+    height: 16px;
+    margin-right: 1rem;
+}
+
+.location-list--indicator {
+    display: block;
+    border-radius: 3px;
+    width: 16px;
+    height: 16px;
+    border: 2px solid  rgba(0, 0, 0, .1);
+    margin-right: 5px;
+    flex-shrink: 0;
+    text-indent: -10000px;
+    overflow: hidden;
+  }
+
+.card-subtitle {
+    color: var(--gray-600); /* against white, color contrast ratio is 5.43 -- against hover background, color contrast ratio is 5.17 */
+    font-size: 1rem;
+    font-weight: normal;
+    margin-top: .5rem;
+}
+
+.card-badge-group {
+    flex-flow: row wrap;
+}
+
+.card-status-border {
+    display: flex;
+    border-radius: 0 20rem 20rem 0 / 0 20rem 20rem 0; /* this is a pretty hacky way to get the corners here... */
+    flex: 0 0 10px;
+    opacity: 0.9;
+}
+
+.card-badge {
+    display: inline-block;
+    font-size: 12px;
+    padding: 5px 10px;
+    margin-top: 0.75rem;
+    margin-right: 5px;
+    border-radius: 100px;
+    color: var(--primary-900);
+    background-color: var(--primary-100);
+}
+  
+.card-opening-soon {
+    font: bold 12px/1.2 Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    margin: 0 0 5px 0;
+    color: #269C26;
+}
+
+.card-urgent-need {
+    color: rgba(0,0,0, 0.8);
+    margin-top: 0.5rem;
+}
+

@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 
+import styles from "./style.module.css";
+
 const LocationListItem = ({
   closePopups,
   index,
@@ -45,30 +47,30 @@ const LocationListItem = ({
    */
 
   return (
-    <div className="card location-list--item" onClick={onClick}>
-      <div className="card-content">
-        <div className="card-title">
+    <div className={`${styles.card} location-list--item`} onClick={onClick}>
+      <div className={styles["card-content"]}>
+        <div className={styles["card-title"]}>
           {/* Kanad note: got rid of the weird `id` span and set the title to be the status label */}
           <span
             title={location.status.label}
-            className="card-status-indicator"
+            className={styles["card-status-indicator"]}
             style={{ backgroundColor: location.status.accessibleColor }}
           ></span>
           <h2 className="name">{location.name}</h2>
         </div>
         {location.neighborhood && (
-          <h3 className="card-subtitle neighborhood">
+          <h3 className={`${styles["card-subtitle"]} neighborhood`}>
             {location.neighborhood}
           </h3>
         )}
-        {/* <div className="card-badge-group">
-            ${openingSoonForDistribution}${openingSoonForReceiving}$
+        <div className={styles["card-badge-group"]}>
+          {/* ${openingSoonForDistribution}${openingSoonForReceiving}$
             {urgentNeed}${seekingVolunteers}${seekingMoney}${noIdNeeded}$
-            {warmingSite}${hiddenSearch}${covid19Testing}
-          </div> */}
+            {warmingSite}${hiddenSearch}${covid19Testing} */}
+        </div>
       </div>
       <div
-        className="card-status-border"
+        className={styles["card-status-border"]}
         style={{ backgroundColor: location.status.accessibleColor }}
       ></div>
     </div>
