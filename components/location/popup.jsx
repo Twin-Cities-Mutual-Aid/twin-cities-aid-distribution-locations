@@ -278,7 +278,7 @@ const Popup = ({ getTranslation, language, location }) => (
               className="updated-at"
               title={location.mostRecentlyUpdatedAt}
             >
-              <span data-translation-id="last_updated">Last updated</span>{" "}
+              <span>{getTranslation("last_updated")}</span>{" "}
               <span data-translate-font>
                 {/* TODO: format this! */}
                 {/* ${moment(location.mostRecentlyUpdatedAt, "YYYY-MM-DDTHH:mm:ss.SSSZ").fromNow()} */}
