@@ -15,8 +15,6 @@ const LocationListToggle = ({ showLocationList, toggleLocationList }) => {
       // data-translation-id="show_list_button"
       id="locations-toggle-button"
       className="location-list-toggle toggle-button"
-      // TODO: do we need an aria label here if the inner text is already set?
-      aria-label={label}
       onClick={() => toggleLocationList()}
     >
       {label}
