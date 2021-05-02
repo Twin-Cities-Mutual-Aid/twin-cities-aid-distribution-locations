@@ -11,7 +11,7 @@ import "../src/styles/theme.css";
 
 // TODO: convert these component-level CSS files into modules!
 // https://nextjs.org/docs/basic-features/built-in-css-support#adding-component-level-css
-import "../src/styles/components/location-card.css";
+// import "../src/styles/components/location-card.css"; // done!
 import "../src/styles/components/map-popup.css";
 import "../src/styles/components/form-control.css";
 import "../src/styles/components/search.css";
