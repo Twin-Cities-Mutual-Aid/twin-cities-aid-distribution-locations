@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "snowpack dev",
     "build": "snowpack build",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
     "snowpack": "snowpack",
     "test": "npm run build && npm run test:headless",
     "test:functional": "testcafe",
@@ -25,6 +27,7 @@
     "@snowpack/plugin-babel": "^1.0.0",
     "@snowpack/plugin-dotenv": "^1.1.1",
     "@snowpack/plugin-webpack": "^1.2.0",
+    "eslint": "^7.25.0",
     "netlify-cli": "^2.68.0",
     "pulltorefreshjs": "^0.1.20",
     "rollup-plugin-node-polyfills": "^0.2.1",
