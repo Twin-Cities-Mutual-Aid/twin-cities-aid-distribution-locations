@@ -4,11 +4,9 @@
   "description": "A webapp to coordinate aid and care in the Twin Cities.",
   "main": "index.html",
   "scripts": {
-    "dev-next": "next dev",
-    "build-next": "next build",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
-    "dev": "snowpack dev",
-    "build": "snowpack build",
     "snowpack": "snowpack",
     "test": "npm run build && npm run test:headless",
     "test:functional": "testcafe",
