@@ -1,12 +1,12 @@
-## Issues
+# TODO/Issues
 
-### Preexisting Issues
+## Preexisting Issues
 - [ ] Running `snowpack` yields a bunch of new package updates, including some that haven't been built
 - [ ] ESLint issues (ignoring style for now)
 - [ ] Node version is out of date
 - [ ] Get rid of Moment.js, lodash
 
-### New Issues (i.e. as a result of my changes)
+## New Issues (i.e. as a result of my changes)
 - [x] Figure out how to re-render active popup with correct language if language changes
     - Update: Re-rendered entire map when language changes... feels clunkier than before, but it's a very specific use-case I guess?
     - Another update: I broke this lol not sure how :sob:
@@ -24,8 +24,10 @@ Warning: Cannot update a component (`Mapbox`) while rendering a different compon
 ```
 - [ ] Figure out why switching languages doesn't switch language of active popup in certain situations... still need to figure out concrete reproduction steps on this one
 
-### TODO:
+## TODO (before merge):
 - [x] Add the react hooks ESLint config
+- [ ] Rename banner files per [this comment](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/302#discussion_r624758043)
+- [ ] Rename Location List Item file to `LocationCard` per [this comment](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/302#discussion_r624776866)
 - [ ] Make sure the popup content is identical to production (currently missing Currently Open For Distributing/Receiving)
 - [ ] Filters/search logic
 - [ ] Migrate off of `moment`, re-implement "Last Updated At" and datetime parsing
@@ -33,3 +35,12 @@ Warning: Cannot update a component (`Mapbox`) while rendering a different compon
 - [ ] Re-enable all the ESLint issues I disabled
 - [ ] Rip out all the data-translation-ids that are properly translated
     - Ugh and also figure out the 'kar' language font-family override defined in translator.css
+- [ ] Make sure that [font optimization](https://github.com/vercel/next.js/blob/canary/docs/basic-features/font-optimization.md) is working properly (I don’t think it is…)
+
+## TODO (after merge):
+- [ ] Revisit url parsing/regexing ([comment](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/302#discussion_r624588776))
+- [ ] Redo [popup rendering](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/302#discussion_r624563359)
+- [ ] Make help page close button consistent ([comment](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/302#discussion_r624558929))
+- [ ] Look into large list rendering (i.e. [windowing](https://web.dev/virtualize-long-lists-react-window))
+- [ ] Change h tag in PublicTransit (i.e. these [bad boys](https://github.com/kanadgupta/twin-cities-aid-distribution-locations/blob/fdd719ceaaacfcceaa3e7789b2ef4ac7b16f5f54/components/location/popup.jsx#L134-L140))
+- [ ] GeoJSON generation for passing in markers (apparently [our approach is good for fewer than... 20 markers](https://docs.mapbox.com/help/getting-started/add-markers/#approach-2-adding-markers-on-top-of-a-map) haha)
