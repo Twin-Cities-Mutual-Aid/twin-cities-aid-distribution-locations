@@ -1,3 +1,5 @@
+/* global gtag, List */
+
 import _ from 'lodash'
 import { setQueryParam } from './url-helpers';
 
@@ -155,7 +157,7 @@ class Filter {
           </label>
           <img class="search-icon" src='images/icon_search.svg' alt='search icon'/>
           
-          <input type="text" class="search-input" value="${this.searchOptions.initialSearch.replace(/\"/g, '')}" id="search" placeholder="Search sites or needs..." data-translation-id="search"></input>
+          <input type="text" class="search-input" value="${this.searchOptions.initialSearch.replace(/"/g, '')}" id="search" placeholder="Search sites or needs..." data-translation-id="search"></input>
           <img id="clear-search-btn" class="hide-clear-search" data-translation-id="search_clear" src='images/icon_clear_search.svg' alt='clear search button'/>
         </div>
       </form>
