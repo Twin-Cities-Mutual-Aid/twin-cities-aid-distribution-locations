@@ -15,7 +15,7 @@ const LocationListItem = ({
   useEffect(() => {
     if (location.marker && !onClick) {
       /** The reason we have double-arrow-function action going on here
-       * is because we're the `onClick` state variable to be a function.
+       * is because we're setting the `onClick` state variable to be a function.
        *
        * Source https://stackoverflow.com/a/55621325 */
       setOnClick(() => () => {
