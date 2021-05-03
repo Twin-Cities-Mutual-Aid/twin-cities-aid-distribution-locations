@@ -27,7 +27,7 @@ Warning: Cannot update a component (`Mapbox`) while rendering a different compon
 ## TODO (before merge):
 - [x] Add the react hooks ESLint config
 - [ ] Rename banner files per [this comment](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/302#discussion_r624758043)
-- [ ] Rename Location List Item file to `LocationCard` per [this comment](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/302#discussion_r624776866)
+- [x] Rename Location List Item file to `LocationCard` per [this comment](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/302#discussion_r624776866)
 - [ ] Make sure the popup content is identical to production (currently missing Currently Open For Distributing/Receiving)
 - [ ] Filters/search logic
 - [ ] Migrate off of `moment`, re-implement "Last Updated At" and datetime parsing
