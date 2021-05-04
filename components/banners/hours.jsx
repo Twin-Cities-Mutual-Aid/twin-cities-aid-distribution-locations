@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import styles from "./style.module.css";
+import styles from "./hours.module.css";
 
 const HoursBanner = () => {
   const [hidden, setHidden] = useState(true); // defaulting to true to hide this component

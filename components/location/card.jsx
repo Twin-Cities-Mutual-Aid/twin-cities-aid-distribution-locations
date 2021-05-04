@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 
-import styles from "./style.module.css";
+import styles from "./card.module.css";
 
 const LocationListItem = ({
   closePopups,

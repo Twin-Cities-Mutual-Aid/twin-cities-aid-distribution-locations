@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 
 import { LanguageContext } from "@contexts/translator";
 
-import styles from "./style.module.css";
+import styles from "./covid.module.css";
 
 const CovidBanner = () => {
   const [hidden, setHidden] = useState(false);
