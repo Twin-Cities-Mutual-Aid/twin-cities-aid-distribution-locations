@@ -116,7 +116,7 @@ class Filter {
     }
   }
 
-  search(searchTerm) {
+  search() {
     this.list.search(searchTerm, this.searchOptions.searchOn)
     const searchResults = this.list.items.filter(item => item.found).map(item => item.values().address);
     if(!searchTerm) {
