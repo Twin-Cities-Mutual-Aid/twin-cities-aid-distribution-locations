@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import styles from "./card.module.css";
 
-const LocationListItem = ({
+const LocationCard = ({
   closePopups,
   index,
   location,
@@ -77,4 +77,4 @@ const LocationListItem = ({
   );
 };
 
-export default LocationListItem;
+export default LocationCard;

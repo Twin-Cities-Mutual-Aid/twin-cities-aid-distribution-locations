@@ -12,7 +12,7 @@ const LocationList = ({
   return (
     <div className="list" id="location-list">
       {locations.map((location, i) => (
-        <ListItem
+        <LocationCard
           key={`location-${location.name}-${i}`}
           closePopups={closePopups}
           index={i}
