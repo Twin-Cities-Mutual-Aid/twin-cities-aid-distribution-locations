@@ -39,6 +39,7 @@ Warning: Cannot update a component (`Mapbox`) while rendering a different compon
 
 ## TODO (after merge):
 - [ ] Revisit url parsing/regexing ([comment](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/302#discussion_r624588776))
+- [ ] Refactor CSS Module class names ([comment](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/302#discussion_r624751710))
 - [ ] Redo [popup rendering](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/302#discussion_r624563359)
 - [ ] Make help page close button consistent ([comment](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/302#discussion_r624558929))
 - [ ] Look into large list rendering (i.e. [windowing](https://web.dev/virtualize-long-lists-react-window))
