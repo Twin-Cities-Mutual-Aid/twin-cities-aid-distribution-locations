@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 
-import ListItem from "@components/location/card";
+import LocationCard from "@components/location/card";
 
 const LocationList = ({
   closePopups,
