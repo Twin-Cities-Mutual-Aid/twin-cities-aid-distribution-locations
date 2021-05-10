@@ -1,3 +1,5 @@
+/* global gtag */
+
 // Import Styles
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './styles/normalize.css';
@@ -499,10 +501,10 @@ const onMapLoad = async () => {
         openingForReceivingDonations: (value, location) => getOpenHoursComponent(location.openingForReceivingDonations, location.closingForReceivingDonations, 'aidReceivingHours'),
         seekingMoney: (value, location) => needsMoneyComponent(location),
         seekingMoneyURL: () => '',
-        noIdNeeded: (value, location) => noIdNeededComponent(location),
+        noIdNeeded: (_, location) => noIdNeededComponent(location),
         someInfoRequired: () => '',
-        warmingSite: (value, location) => warmingSiteComponent(location),
-        publicTransitOptions: (value, location) => publicTransitComponent(location, 'publicTransit'),
+        warmingSite: (_, location) => warmingSiteComponent(location),
+        publicTransitOptions: (_, location) => publicTransitComponent(location, 'publicTransit'),
         accepting: (value) => sectionUrlComponent(value, 'accepting'),
         notAccepting: (value) => sectionUrlComponent(value, 'not_accepting'),
         seekingVolunteers: (value) => sectionUrlComponent(value, 'seeking_volunteers_badge'),
