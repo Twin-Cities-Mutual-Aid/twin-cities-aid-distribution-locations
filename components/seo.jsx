@@ -20,7 +20,7 @@ const SEO = () => {
         crossOrigin="anonymous"
       ></script>
       <link
-        href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+        href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp&display=swap"
         rel="stylesheet"
       />
       <meta property="og:image" content={image} />
