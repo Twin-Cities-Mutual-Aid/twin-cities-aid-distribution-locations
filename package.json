@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "lint": "eslint src",
-    "lint:fix": "eslint src --fix",
+    "lint": "eslint --ext .jsx,.js .",
+    "lint:fix": "eslint --ext .jsx,.js . --fix",
     "start": "next start",
     "test": "npm run build && npm run test:headless",
     "test:functional": "testcafe",
