@@ -1,12 +1,13 @@
-/* eslint-disable react/prop-types */
 import React, { useContext } from "react";
 
 import { LanguageContext } from "@contexts/translator";
 
-const Welcome = ({ onSelect }) => {
-  const { getTranslation, languages, updateLanguage } = useContext(
-    LanguageContext
-  );
+const Welcome = () => {
+  const { getTranslation, languages, setWelcome, showWelcome, updateLanguage } =
+    useContext(LanguageContext);
+
+  if (!showWelcome) return null;
+
   return (
     <div className="modal-wrap">
       <div className="modal">
@@ -23,7 +24,7 @@ const Welcome = ({ onSelect }) => {
                 key={key}
                 className="welcome-lang-button"
                 onClick={(e) => {
-                  onSelect(e.target.value);
+                  setWelcome(false);
                   updateLanguage(e.target.value);
                 }}
                 value={key}

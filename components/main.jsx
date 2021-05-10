@@ -26,9 +26,7 @@ import { LanguageContext } from "@contexts/translator";
 
 // eslint-disable-next-line react/prop-types
 const Main = ({ initialLocations }) => {
-  const { getTranslation, setWelcome, showWelcome } = useContext(
-    LanguageContext
-  );
+  const { getTranslation } = useContext(LanguageContext);
 
   const [mapObject, setMapObject] = useState(null);
   const [activeLocation, setActiveLocation] = useState(null);
@@ -43,9 +41,8 @@ const Main = ({ initialLocations }) => {
   const toggleLocationList = () =>
     setShowLocationList((prevLocationList) => !prevLocationList);
 
-  const { closePopups, locations, dispatchLocation } = useLocation(
-    initialLocations
-  );
+  const { closePopups, locations, dispatchLocation } =
+    useLocation(initialLocations);
 
   return (
     <>
@@ -105,15 +102,7 @@ const Main = ({ initialLocations }) => {
           setMapObject={setMapObject}
         />
       </div>
-      {showWelcome && (
-        <Welcome
-          onSelect={(lang) => {
-            // We should do a lot of shit here, like updating the translator object, updating moment, etc.
-            console.log("lang has been set to", lang);
-            setWelcome(false);
-          }}
-        />
-      )}
+      <Welcome />
     </>
   );
 };
