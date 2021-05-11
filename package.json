@@ -23,7 +23,7 @@
     "url": "https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/issues"
   },
   "devDependencies": {
-    "@netlify/plugin-nextjs": "^1.1.5",
+    "@netlify/plugin-nextjs": "^3.2.2",
     "eslint": "^7.25.0",
     "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-react-hooks": "^4.2.0",
