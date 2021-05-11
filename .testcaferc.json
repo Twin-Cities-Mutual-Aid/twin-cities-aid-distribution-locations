@@ -1,7 +1,7 @@
 {
   "browsers": ["chrome", "firefox"],
   "src": "./specs/functional/**/*.js",
-  "appCommand": "npx servor build",
+  "appCommand": "npm start",
   "appInitDelay": 3000,
   "quarantineMode": true
 }
