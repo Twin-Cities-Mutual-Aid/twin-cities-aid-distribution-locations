@@ -61,9 +61,8 @@ const HomePage = ({ locations }) => {
   );
 };
 
-export async function getStaticProps(context) {
+export async function getStaticProps() {
   // TODO: do something with the locale passed into this context?
-  console.log("context in getStaticProps:", context);
   const res = await fetch(
     `https://tcmap-api.herokuapp.com/v1/mutual_aid_sites`
   );
