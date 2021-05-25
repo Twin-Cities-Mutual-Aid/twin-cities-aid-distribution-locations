@@ -3,13 +3,6 @@
     "browser": true,
     "es2021": true
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended"
-  ],
-  "ignorePatterns": ["specs/", "build/"],
-  "parserOptions": {
-    "sourceType": "module"
-  }
+  "extends": ["eslint:recommended", "next"],
+  "ignorePatterns": ["specs/", "build/"]
 }
