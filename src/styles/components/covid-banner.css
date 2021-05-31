@@ -29,6 +29,11 @@
     align-items: center;
 }
 
+.covid-banner-message {
+    display: flex;
+    flex-flow: row wrap;
+}
+
 .covid-comply-message {
     display: flex;
     flex: 65%;
