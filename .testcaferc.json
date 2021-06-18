@@ -1,6 +1,7 @@
 {
   "browsers": ["chrome", "firefox"],
   "src": "./specs/functional/**/*.js",
+  "port1": "3000",
   "appCommand": "npm start",
   "appInitDelay": 3000,
   "quarantineMode": true
