@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 import React, { useContext, useEffect, useRef } from "react";
 import ReactDOMServer from "react-dom/server";
+import Image from "next/image";
+
 import { LanguageContext } from "@contexts/translator";
 import Popup from "@components/location/popup";
 
@@ -124,15 +126,14 @@ const Mapbox = ({
         id="lang-select-button"
         onClick={() => setWelcome(true)}
       >
-        <span className="lang-current">
-          <img
-            data-translation-flag
-            className="lang-globe lang-globe-current"
-            alt=""
-            src="/images/lang-all-black.png"
-          />
-          <span className="lang-name">{getTranslation("lang_name")}</span>
-        </span>
+        <Image
+          className="lang-globe"
+          height={16}
+          layout="fixed"
+          src="/images/lang-all-black.png"
+          width={16}
+        />
+        <span className="lang-name">{getTranslation("lang_name")}</span>
       </button>
     </div>
   );
