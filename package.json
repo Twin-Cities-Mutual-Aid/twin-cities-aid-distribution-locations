@@ -8,6 +8,7 @@
     "build": "next build",
     "lint": "eslint --ext .jsx,.js .",
     "lint:fix": "eslint --ext .jsx,.js . --fix",
+    "lint:next": "next lint",
     "start": "next start -p 8080",
     "test": "npm run test:headless",
     "test:functional": "npm run build && testcafe",
@@ -34,7 +35,7 @@
     "dotenv": "^8.2.0",
     "list.js": "^1.5.0",
     "mapbox-gl": "^1.10.1",
-    "next": "^10.2.3",
+    "next": "^11.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   }
