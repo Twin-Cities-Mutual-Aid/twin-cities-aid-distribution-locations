@@ -119,13 +119,6 @@ const Mapbox = ({
       ref={mapContainerRef}
       style={{ display: display ? "block" : "none" }}
     >
-      {/* TODO: remove this counter component */}
-      <div className="counter">
-        <script
-          type="text/javascript"
-          src="//counter.websiteout.net/js/7/0/41000/0"
-        ></script>
-      </div>
       <button
         className="lang-select-button"
         id="lang-select-button"
