@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import Image from "next/image";
 
 import { LanguageContext } from "@contexts/translator";
 
@@ -29,12 +30,14 @@ const Welcome = () => {
                 }}
                 value={key}
               >
-                <img
+                <Image
                   alt={lang_name}
-                  className="lang-globe-white"
+                  height={16}
+                  layout="fixed"
                   src="/images/lang-all-white.png"
+                  width={16}
                 />
-                {lang_name}
+                <span className="lang-text">{lang_name}</span>
               </button>
             );
           })}
