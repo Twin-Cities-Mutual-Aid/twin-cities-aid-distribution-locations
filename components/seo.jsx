@@ -15,11 +15,13 @@ const SEO = () => {
         content="initial-scale=1,maximum-scale=1,user-scalable=no"
       />
       <link rel="icon" href="favicon.ico" />
-      <script
+      {/* Experimental feature */}
+      <script // eslint-disable-line @next/next/no-sync-scripts
         src="https://kit.fontawesome.com/5438b173e4.js"
         crossOrigin="anonymous"
       ></script>
-      <link
+      {/* This is a single page app, so this is fine for now! */}
+      <link // eslint-disable-line @next/next/no-page-custom-font
         href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp&display=swap"
         rel="stylesheet"
       />
