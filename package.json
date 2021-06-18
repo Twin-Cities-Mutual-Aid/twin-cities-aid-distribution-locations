@@ -9,7 +9,7 @@
     "lint": "eslint --ext .jsx,.js .",
     "lint:fix": "eslint --ext .jsx,.js . --fix",
     "lint:next": "next lint",
-    "start": "next start -p 8080",
+    "start": "next start",
     "test": "npm run test:headless",
     "test:functional": "npm run build && testcafe",
     "test:headless": "npm run build && testcafe chrome:headless"
