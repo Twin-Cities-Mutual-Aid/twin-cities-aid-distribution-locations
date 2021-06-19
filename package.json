@@ -26,9 +26,7 @@
   "devDependencies": {
     "@netlify/plugin-nextjs": "^3.4.2",
     "eslint": "^7.25.0",
-    "eslint-config-next": "^10.2.3",
-    "eslint-plugin-react": "^7.23.2",
-    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-config-next": "^11.0.0",
     "testcafe": "^1.8.6"
   },
   "dependencies": {
