@@ -1,5 +1,3 @@
-import React from "react";
-
 import Main from "@components/main";
 
 import TranslatorContext from "@contexts/translator";

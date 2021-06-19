@@ -1,6 +1,4 @@
 /* eslint-disable react/prop-types */
-import React from "react";
-
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 import "../src/styles/normalize.css";

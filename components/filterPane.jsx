@@ -1,6 +1,4 @@
 // TODO: this isn't being imported in pages/index.jsx yet! Figure out how to make this useful and then do that
-import React from "react";
-
 const FilterPane = () => {
   return (
     <div className="filter-pane white-and-blue">
