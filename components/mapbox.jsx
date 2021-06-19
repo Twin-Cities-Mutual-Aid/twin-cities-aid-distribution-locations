@@ -127,6 +127,7 @@ const Mapbox = ({
         onClick={() => setWelcome(true)}
       >
         <Image
+          alt=""
           className="lang-globe"
           height={16}
           layout="fixed"
