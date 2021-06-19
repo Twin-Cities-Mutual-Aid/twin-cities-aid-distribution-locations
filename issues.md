@@ -6,9 +6,10 @@
 - [x] Running `snowpack` yields a bunch of new package updates, including some that haven't been built
   - No longer applicable once we switch to Next.js! 🎉
 - [x] Node version is out of date
-  - Updated to 14.16 in https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/303
+  - Updated to 14.16 in [this PR](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/303)
 
 ## New Issues (i.e. as a result of my changes)
+- [ ] Figure out why switching languages doesn't switch language of active popup in certain situations... still need to figure out concrete reproduction steps on this one
 - [x] Figure out how to re-render active popup with correct language if language changes
     - Update: Re-rendered entire map when language changes... feels clunkier than before, but it's a very specific use-case I guess?
     - Another update: I broke this lol not sure how :sob:
@@ -24,21 +25,21 @@ Warning: Cannot update a component (`Mapbox`) while rendering a different compon
     at TranslatorContext (webpack-internal:///./contexts/translator.jsx:59:3)
     at HomePage (webpack-internal:///./pages/index.jsx:16:3)
 ```
-- [ ] Figure out why switching languages doesn't switch language of active popup in certain situations... still need to figure out concrete reproduction steps on this one
 
 ## TODO (before merge):
-- [x] Add the react hooks ESLint config
-- [x] Rename banner files per [this comment](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/302#discussion_r624758043)
-- [x] Rename Location List Item file to `LocationCard` per [this comment](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/302#discussion_r624776866)
 - [ ] Make sure the popup content is identical to production (currently missing Currently Open For Distributing/Receiving)
 - [ ] Filters/search logic
+- [ ] Re-implement Google Analytics
 - [ ] Migrate off of `moment`, re-implement "Last Updated At" and datetime parsing
     - Maybe [timeago](https://www.npmjs.com/package/timeago.js) for "Last Updated At"?
 - [ ] Re-enable all the ESLint issues I disabled
 - [ ] Rip out all the data-translation-ids that are properly translated
     - Ugh and also figure out the 'kar' language font-family override defined in translator.css
+- [x] Add the react hooks ESLint config
+- [x] Rename banner files per [this comment](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/302#discussion_r624758043)
+- [x] Rename Location List Item file to `LocationCard` per [this comment](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/302#discussion_r624776866)
 - [x] Make sure that [font optimization](https://github.com/vercel/next.js/blob/canary/docs/basic-features/font-optimization.md) is working properly ~~(I don’t think it is…)~~
-  - Fixed in https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/304/commits/2d6ab5533ba62016fa7beabb7114b1209079b1b6
+  - Fixed in [this commit](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/304/commits/2d6ab5533ba62016fa7beabb7114b1209079b1b6), we needed to add a `display` property
 
 ## TODO (after merge):
 - [ ] Revisit url parsing/regexing ([comment](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/302#discussion_r624588776))
