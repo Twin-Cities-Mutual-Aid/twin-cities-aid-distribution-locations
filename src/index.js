@@ -329,7 +329,7 @@ function getStatus(item) {
 
 // Not all the fields being searched on should be visible but need
 // to be on the DOM in order for listjs to pick them up for search
-const hiddenSearchFields = ['address', 'accepting', 'notAccepting', 'notes', 'seekingVolunteers']
+const hiddenSearchFields = ['address', 'accepting', 'notes', 'seekingVolunteers']
 
 const hiddenSearchComponent = (field, value) => (
   `<p class="${field}" style="display:none">${value || '' }</p>`
