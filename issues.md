@@ -1,10 +1,12 @@
 # TODO/Issues
 
 ## Preexisting Issues
-- [ ] Running `snowpack` yields a bunch of new package updates, including some that haven't been built
 - [ ] ESLint issues (ignoring style for now)
-- [ ] Node version is out of date
 - [ ] Get rid of Moment.js, lodash
+- [x] Running `snowpack` yields a bunch of new package updates, including some that haven't been built
+  - No longer applicable once we switch to Next.js! 🎉
+- [x] Node version is out of date
+  - Updated to 14.16 in https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/303
 
 ## New Issues (i.e. as a result of my changes)
 - [x] Figure out how to re-render active popup with correct language if language changes
@@ -35,7 +37,8 @@ Warning: Cannot update a component (`Mapbox`) while rendering a different compon
 - [ ] Re-enable all the ESLint issues I disabled
 - [ ] Rip out all the data-translation-ids that are properly translated
     - Ugh and also figure out the 'kar' language font-family override defined in translator.css
-- [ ] Make sure that [font optimization](https://github.com/vercel/next.js/blob/canary/docs/basic-features/font-optimization.md) is working properly (I don’t think it is…)
+- [x] Make sure that [font optimization](https://github.com/vercel/next.js/blob/canary/docs/basic-features/font-optimization.md) is working properly ~~(I don’t think it is…)~~
+  - Fixed in https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/304/commits/2d6ab5533ba62016fa7beabb7114b1209079b1b6
 
 ## TODO (after merge):
 - [ ] Revisit url parsing/regexing ([comment](https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/pull/302#discussion_r624588776))
