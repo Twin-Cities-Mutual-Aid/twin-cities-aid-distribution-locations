@@ -13,6 +13,7 @@ import './styles/components/form-control.css';
 import './styles/components/search.css';
 import './styles/components/covid-banner.css';
 import './styles/components/hours-banner.css';
+import './styles/components/cooling-banner.css';
 import './styles/typography.css';
 
 // Import Libs
@@ -143,6 +144,8 @@ document.getElementById('close-covid-banner-button').addEventListener('click', (
 
 document.getElementById('close-hours-banner-button').addEventListener('click', () => closeHoursBanner())
 
+document.getElementById('close-cooling-banner-button').addEventListener('click', () => closeCoolingBanner())
+
 let locations = []
 
 // Alternative base style: 'mapbox://styles/mapbox/light-v10',
@@ -183,6 +186,12 @@ function closeCovidBanner() {
 
 function closeHoursBanner() {
   const hoursBanner = document.getElementById('hours-banner')
+  hoursBanner.style.display = "none"
+  hoursBanner.setAttribute("aria-hidden", true)
+}
+
+function closeCoolingBanner() {
+  const hoursBanner = document.getElementById('cooling-banner')
   hoursBanner.style.display = "none"
   hoursBanner.setAttribute("aria-hidden", true)
 }
