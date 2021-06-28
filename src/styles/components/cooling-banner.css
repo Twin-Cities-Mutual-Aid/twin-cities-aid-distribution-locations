@@ -1,0 +1,37 @@
+.cooling-banner {
+    display: flex;
+    flex-flow: row nowrap;
+    background-image: linear-gradient(var(--primary-200), var(--primary-100));
+    color: var(--primary-900);
+}
+
+.cooling-message {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    flex-flow: row wrap;
+    align-items: center;
+    margin: 5px 0 5px 0;
+    width: 100%;
+}
+
+.county-link {
+    display: flex;
+    border-radius: 8px;
+    font-weight: bold;
+    color: var(--primary-900);
+    align-items: center;
+    cursor: pointer;
+}
+
+.county-link:link {
+    text-decoration: none;
+}
+
+.county-link:visited {
+    text-decoration: none;
+}
+
+.county-link:hover {
+    color: var(--secondary-600);
+}
