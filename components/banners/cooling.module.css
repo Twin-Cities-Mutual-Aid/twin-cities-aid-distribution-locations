@@ -35,3 +35,10 @@
 .county-link:hover {
     color: var(--secondary-600);
 }
+
+.close-cooling-banner {
+    display: flex;
+    flex: 3%;
+    justify-content: flex-end;
+    cursor: pointer;
+}

@@ -23,7 +23,7 @@ const HoursBanner = () => {
       </div>
       <div
         id="close-hours-banner-button"
-        className={styles["close-banner"]}
+        className={styles["close-hours-banner"]}
         onClick={() => setHidden(true)}
       >
         <i

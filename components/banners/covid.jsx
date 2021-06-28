@@ -81,7 +81,7 @@ const CovidBanner = () => {
       </div>
       <div
         id="close-covid-banner-button"
-        className={styles["close-banner"]}
+        className={styles["close-covid-banner"]}
         onClick={() => setHidden(true)}
       >
         <i
