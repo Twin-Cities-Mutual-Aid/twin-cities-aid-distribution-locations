@@ -24,13 +24,6 @@
     width: 100%;
 }
 
-.close-hours-banner {
-    display: flex;
-    flex: 3%;
-    justify-content: flex-end;
-    cursor: pointer;
-}
-
 @media(max-width: 420px) {
 
     .due-to-holiday {

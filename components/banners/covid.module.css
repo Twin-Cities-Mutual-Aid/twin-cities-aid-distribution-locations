@@ -81,7 +81,7 @@
     color: var(--secondary-100);
 }
 
-.close-covid-banner {
+.close-banner {
     display: flex;
     flex: 3%;
     justify-content: flex-end;
