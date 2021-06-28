@@ -25,7 +25,7 @@ const CoolingBanner = () => {
       </div>  
       <div
         id="close-cooling-banner-button"
-        className={styles["close-banner"]}
+        className={styles["close-cooling-banner"]}
         onClick={() => setHidden(true)}
       >
         <i
