@@ -4,14 +4,15 @@
   "description": "A webapp to coordinate aid and care in the Twin Cities.",
   "main": "index.html",
   "scripts": {
-    "dev": "snowpack dev",
-    "build": "snowpack build",
-    "lint": "eslint src",
-    "lint:fix": "eslint src --fix",
-    "snowpack": "snowpack",
-    "test": "npm run build && npm run test:headless",
-    "test:functional": "testcafe",
-    "test:headless": "testcafe chrome:headless"
+    "dev": "next dev",
+    "build": "next build",
+    "lint": "eslint --ext .jsx,.js .",
+    "lint:fix": "eslint --ext .jsx,.js . --fix",
+    "lint:next": "next lint",
+    "start": "next start -p 8080",
+    "test": "npm run test:headless",
+    "test:functional": "npm run build && testcafe",
+    "test:headless": "npm run build && testcafe chrome:headless"
   },
   "repository": {
     "type": "git",
@@ -23,25 +24,17 @@
     "url": "https://github.com/Twin-Cities-Mutual-Aid/twin-cities-aid-distribution-locations/issues"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.10.2",
-    "@snowpack/plugin-babel": "^1.0.0",
-    "@snowpack/plugin-dotenv": "^1.1.1",
-    "@snowpack/plugin-webpack": "^1.2.0",
+    "@netlify/plugin-nextjs": "^3.4.2",
     "eslint": "^7.25.0",
-    "netlify-cli": "^2.68.0",
-    "pulltorefreshjs": "^0.1.20",
-    "rollup-plugin-node-polyfills": "^0.2.1",
-    "snowpack": "^2.5.1",
+    "eslint-config-next": "^11.0.0",
     "testcafe": "^1.8.6"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
-    "jsonschema": "^1.2.6",
     "list.js": "^1.5.0",
-    "lodash": "^4.17.21",
     "mapbox-gl": "^1.10.1",
-    "moment": "^2.26.0",
-    "string.prototype.replaceall": "^1.0.3",
-    "trackjs": "^3.7.4"
+    "next": "^11.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   }
 }

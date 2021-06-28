@@ -66,63 +66,6 @@ Build Local
     npm run dev
     ```
 
-Build Docker
-
-1. install docker (If you are on a Mac or Windows machine, recommend [Docker Desktop](https://docs.docker.com/desktop/) for simplicity)
-2. Configure [environment variables](#environment-variables)
-3. build the image
-
-    ```bash
-    docker-build.sh
-    ```
-
-    * image base: https://hub.docker.com/_/node/
-    * will fail if there is not a tagged image for the current node version specified in [./node-version](./node-version)
-    * optional argument specifies "IMAGE_VERSION" (defaults to "latest" if not supplied)
-4. run the image
-
-    ```bash
-    docker-run.sh
-    ```
-
-    * optional argument specifies "IMAGE_VERSION" (defaults to "latest" if not supplied) should match "IMAGE_VERSION" (default or not) from build step
-5. verify container is running
-
-    ```bash
-    docker ps
-    ```
-
-    * if not shown, the `-a` option will show stopped containers
-
-    ```bash
-    docker ps -a
-    ```
-
-    * currently starts with `npm run dev` so npm steps must complete before the app is ready (~30s give or take)
-6. logs from the container can be viewed with
-
-    ```bash
-    docker logs twin-cities-aid-distribution-locations_web_1
-    ```
-
-    * `twin-cities-aid-distribution-locations_web_1` is the default container name used
-    * the logs can be "tailed" (console will continuously show new log statements) using the `-f` option
-
-    ```bash
-    docker logs -f twin-cities-aid-distribution-locations_web_1
-    ```
-
-7. to stop and remove the docker container and network
-
-    ```bash
-    docker-compose down
-    ```
-
-and ... go
-
-1. Visit the application in your browser at [http://localhost:8080](http://localhost:8080)
-2. Start building!
-
 ### Environment Variables
 
 The application uses [environmental variables](https://en.wikipedia.org/wiki/Environment_variable) to manage configuration between environments. These values are set in a `.env` file in the project root directory. 

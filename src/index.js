@@ -121,6 +121,8 @@ const welcome = new WelcomeModal({
   onLanguageSelect: lang => {
     translator.language = lang
     moment.locale(translator.locale)
+    // Defined in index.html
+    // eslint-disable-next-line no-undef
     gtag('event', 'language_change', {
       'event_category': 'language',
       'event_label': lang
@@ -495,8 +497,8 @@ const onMapLoad = async () => {
         name: (name) => nameComponent(name),
         neighborhood: (neighborhood) => `<h3 class='h3'>${neighborhood}</h3>`,
         address: addressComponent, // driving directions in google, consider doing inside mapbox
-        openingForDistributingDonations: (_, location) => getOpenHoursComponent(location.openingForDistributingDonations, location.closingForDistributingDonations, 'aidDistributionHours'),
-        openingForReceivingDonations: (_, location) => getOpenHoursComponent(location.openingForReceivingDonations, location.closingForReceivingDonations, 'aidReceivingHours'),
+        openingForDistributingDonations: (value, location) => getOpenHoursComponent(location.openingForDistributingDonations, location.closingForDistributingDonations, 'aidDistributionHours'),
+        openingForReceivingDonations: (value, location) => getOpenHoursComponent(location.openingForReceivingDonations, location.closingForReceivingDonations, 'aidReceivingHours'),
         seekingMoney: (value, location) => needsMoneyComponent(location),
         seekingMoneyURL: () => '',
         noIdNeeded: (_, location) => noIdNeededComponent(location),

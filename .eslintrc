@@ -3,8 +3,6 @@
     "browser": true,
     "es2021": true
   },
-  "extends": "eslint:recommended",
-  "parserOptions": {
-    "sourceType": "module"
-  }
+  "extends": ["eslint:recommended", "next"],
+  "ignorePatterns": ["specs/", "build/"]
 }

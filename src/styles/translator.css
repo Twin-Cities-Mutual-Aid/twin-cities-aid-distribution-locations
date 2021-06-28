@@ -20,39 +20,19 @@ html:lang(kar) [data-translation-id], html:lang(kar) [data-translate-font] {
   z-index: 9999;
   top: 10px;
   left: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .lang-select-label {
   display: none;
 }
 
-.lang-current {
-  cursor: pointer;
-}
-/* 
-.lang-current::after {
-  content: '';
-  display: inline-block;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 6.1px 3.5px 0 3.5px;
-  border-color: #000000 transparent transparent 
-} */
-
 .lang-name {
   display: none;
 }
-
-.lang-globe {
-  display: inline-block;
-  vertical-align: middle;
-  margin: 0 2px;
-  width: 16px;
-  /* hide alt text if image is missing */
-  text-indent: -9999px;
-}
-
 
 /** Larger screens */
 @media only screen and (min-width: 640px) {
@@ -62,5 +42,6 @@ html:lang(kar) [data-translation-id], html:lang(kar) [data-translate-font] {
   .lang-name {
     display: inline;
     vertical-align: middle;
+    margin-left: 4px;
   }
 }

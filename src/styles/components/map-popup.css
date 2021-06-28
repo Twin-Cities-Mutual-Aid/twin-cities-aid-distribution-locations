@@ -1,7 +1,7 @@
 .mapboxgl-popup-content {
     display: flex;
     flex-flow: column wrap;
-    align-items: start;
+    align-items: flex-start;
     box-shadow: 0 4px 12px rgba(0,0,0,.095);
     border: 1px solid transparent;
     border-radius: 1rem;

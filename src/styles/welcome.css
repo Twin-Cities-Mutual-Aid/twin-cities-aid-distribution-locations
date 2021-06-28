@@ -44,15 +44,13 @@
   border: none;
   color: white;
   background-color: royalblue;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.lang-globe-white {
-  display: inline-block;
-  margin: 0;
-  width: 16px;
-  vertical-align: -4%;
-}
-.welcome-lang-button .lang-globe-white {
-  margin-right: .5em;
+
+.welcome-lang-button .lang-text {
+  margin-left: .5em;
 }
 
 /** Larger screens */

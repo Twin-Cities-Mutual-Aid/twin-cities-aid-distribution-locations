@@ -7,7 +7,7 @@ html {
   font-size: 14px;
 }
 
-body {
+div#__next {
   position: absolute;
   top: 0;
   left: 0;
@@ -71,16 +71,10 @@ a.txt-white:hover {
   width: 100%;
 }
 
-.help-info:target {
-  display: block;
-}
-
-.help-info:not(:target) {
-  display: none;
-}
-
-.help-info:target + .map {
-  display: none;
+.map.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .content {
