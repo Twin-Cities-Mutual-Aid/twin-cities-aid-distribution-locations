@@ -237,7 +237,6 @@ input[type='checkbox'] + label {
 
 /* component:legend */
 .legend {
-  margin-bottom: 10px;
   flex-shrink: 0;
 }
 
@@ -276,7 +275,6 @@ input[type='checkbox'] + label {
 .help-info-close-button {
   display: inline;
   float: right;
-  margin-top: 10px;
   cursor: pointer;
   font-weight: 600;
   font-size: 13px;

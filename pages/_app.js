@@ -16,7 +16,15 @@ import "../src/styles/components/search.css";
 // import "../src/styles/components/covid-banner.css"; // done!
 // import "../src/styles/components/hours-banner.css"; // done!
 import "../src/styles/typography.css";
+import TranslatorContext from "@contexts/translator";
+import LocationsProvider from "@contexts/locations";
 
 export default function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+  return (
+    <LocationsProvider>
+      <TranslatorContext>
+        <Component {...pageProps} />
+      </TranslatorContext>
+    </LocationsProvider>
+  );
 }

@@ -59,8 +59,11 @@ mapboxgl.accessToken = Config.accessToken
 // we're using the map color from google sheet to indicate location status,
 // but using a different display color for accessibility. so the original
 // color is treated as an ID
+// Changed this ^^
+
+// Repeating this list all over the place right now - need to put in central location (also not sure about count yet)
 const statusClosed =  {
-  id: '#c70000',
+  id: 3,
   name: 'closed',
   label: 'not open now',
   accessibleColor: '#d7191c',
@@ -69,21 +72,21 @@ const statusClosed =  {
 
 const statusOptions = [
   {
-    id: '#fc03df',
+    id: 0,
     name: 'receiving',
     label: 'open for receiving donations',
     accessibleColor: '#2c7bb6',
     count: 0
   },
   {
-    id: '#03bafc',
+    id: 1,
     name: 'distributing',
     label: 'open for distributing donations',
     accessibleColor: '#abd9e9',
     count: 0
   },
   {
-    id: '#9f48ea',
+    id: 2,
     name: 'both',
     label: 'open for both',
     accessibleColor: '#fdae61',
