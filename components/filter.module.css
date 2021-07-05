@@ -1,0 +1,70 @@
+
+/* shared: buttons */
+.toggle-button {
+  padding: 5px 10px;
+  border: none;
+  color: black;
+  display: inline-block;
+  background-color: rgba(255,255,255,.75);
+  border-radius: 3px;
+  margin-right: 0.67em;
+  margin-bottom: 0.67em;
+}
+
+.toggle-button:hover {
+  cursor: pointer;
+  background-color: white;
+}
+
+.toggle-button:last-child {
+  margin-right: 0;
+}
+
+/* Shared:forms
+input[type='checkbox'] + label {
+  margin-left: 5px;
+} */
+
+.select-container {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.select-container select {
+  border-radius: 5px;
+  margin-left: 10px;
+  width: 150px;
+}
+
+.white-and-blue {
+  color: white;
+  background-color: var(--primary-blue);
+}
+
+/* component: title */
+.title {
+  padding: 10px 15px 0px 15px;
+}
+
+.filter-pane {
+  padding: 0px 15px 5px 15px;
+}
+
+/* component:filters */
+.filters {
+  list-style: none;
+  padding: 0;
+  margin: 0px;
+}
+
+.filter-item {
+  padding: 2px 0px;
+}
+
+.list-meta {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 8px 0 0;
+  font-weight: bold;
+  background: var(--gray-50);
+}

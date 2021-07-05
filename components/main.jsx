@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
 import CovidBanner from "@components/banners/covid";
@@ -9,8 +9,12 @@ import Help from "@components/help";
 import LocationList from "@components/locationList";
 import SEO from "@components/seo";
 import Welcome from "@components/welcome";
+import FilterPane from "@components/filterPane";
 
 import useLocation from "@hooks/useLocation";
+import { LocationsContext } from "@contexts/locations";
+import { LanguageContext } from "@contexts/translator";
+
 
 const Mapbox = dynamic(() => import("@components/mapbox"), {
   // eslint-disable-next-line react/display-name
@@ -22,11 +26,14 @@ const Mapbox = dynamic(() => import("@components/mapbox"), {
   ssr: false,
 });
 
-import { LanguageContext } from "@contexts/translator";
 
 // eslint-disable-next-line react/prop-types
 const Main = ({ initialLocations }) => {
   const { getTranslation } = useContext(LanguageContext);
+
+  const { filteredLocations, filter, closePopups } = useContext(LocationsContext)
+
+
 
   const [mapObject, setMapObject] = useState(null);
   const [activeLocation, setActiveLocation] = useState(null);
@@ -41,8 +48,9 @@ const Main = ({ initialLocations }) => {
   const toggleLocationList = () =>
     setShowLocationList((prevLocationList) => !prevLocationList);
 
-  const { closePopups, locations, dispatchLocation } =
-    useLocation(initialLocations);
+  // Might not need this
+  const { locations, dispatchLocation, filterResults } = useLocation(initialLocations);
+
 
   return (
     <>
@@ -72,6 +80,7 @@ const Main = ({ initialLocations }) => {
               />
               <HelpToggle toggleHelp={toggleHelp} />
             </div>
+            <FilterPane initialLocations={filteredLocations} />
             <div id="search-controls"></div>
           </div>
           {/* This is so there isn't so much jumpiness when the map loads. Need to figure out if this is the best place for this! */}
@@ -80,7 +89,7 @@ const Main = ({ initialLocations }) => {
               <div id="filter-controls"></div>
               <LocationList
                 closePopups={closePopups}
-                locations={locations}
+                locations={filteredLocations}
                 mapObject={mapObject}
                 toggleLocationList={toggleLocationList}
               />
@@ -94,12 +103,13 @@ const Main = ({ initialLocations }) => {
         <Mapbox
           activeLocation={activeLocation}
           display={!showHelp}
-          locations={locations}
+          locations={filteredLocations}
           mapObject={mapObject}
           setActiveLocation={setActiveLocation}
           setIsMapLoaded={setIsMapLoaded}
           dispatchLocation={dispatchLocation}
           setMapObject={setMapObject}
+          filter={filter}
         />
       </div>
       <Welcome />

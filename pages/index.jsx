@@ -1,9 +1,15 @@
+import React, { useContext, useEffect } from "react";
+
 import Main from "@components/main";
 
 import TranslatorContext from "@contexts/translator";
+import LocationsProvider from "@contexts/locations";
+import { LanguageContext } from "@contexts/translator";
+import { LocationsContext } from "@contexts/locations";
+
 
 const statusClosed = {
-  id: "#c70000",
+  id: 3,
   name: "closed",
   label: "not open now",
   accessibleColor: "#d7191c",
@@ -12,21 +18,21 @@ const statusClosed = {
 
 const statusOptions = [
   {
-    id: "#fc03df",
+    id: 0,
     name: "receiving",
     label: "open for receiving donations",
     accessibleColor: "#2c7bb6",
     count: 0,
   },
   {
-    id: "#03bafc",
+    id: 1,
     name: "distributing",
     label: "open for distributing donations",
     accessibleColor: "#abd9e9",
     count: 0,
   },
   {
-    id: "#9f48ea",
+    id: 2,
     name: "both",
     label: "open for both",
     accessibleColor: "#fdae61",
@@ -51,11 +57,20 @@ function getStatus(item) {
 }
 
 // eslint-disable-next-line react/prop-types
-const HomePage = ({ locations }) => {
+const HomePage = ({ initialLocations }) => {
+  const { getTranslation, language, setWelcome } = useContext(LanguageContext);
+  const { setLocations, filteredLocations, setFilteredLocations } = useContext(LocationsContext);
+
+  useEffect(() => {
+    setFilteredLocations(initialLocations)
+    setLocations(initialLocations)
+  }, []);
+
+
   return (
-    <TranslatorContext>
-      <Main initialLocations={locations} />
-    </TranslatorContext>
+      // <TranslatorContext>
+        <Main initialLocations={filteredLocations} />
+      // </TranslatorContext>
   );
 };
 
@@ -73,7 +88,7 @@ export async function getStaticProps() {
   //   };
   // }
 
-  const locations = [];
+  const locationList = [];
 
   data.forEach((item) => {
     const location = Object.keys(item)
@@ -85,11 +100,11 @@ export async function getStaticProps() {
 
     location.status = getStatus(item);
 
-    locations.push(location);
+    locationList.push(location);
   });
 
   return {
-    props: { locations },
+    props: { initialLocations: locationList, },
     // Revalidate every 60 seconds!
     // This might be a good opportunity to axe the backend entirely!
     // https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation

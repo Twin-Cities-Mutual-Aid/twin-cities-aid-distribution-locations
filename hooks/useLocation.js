@@ -1,4 +1,9 @@
+// Might not need this hook? Did a bunch of random stuff with this before realizing I think it can all be handled in the context Didn't clean anything up here
 import { useReducer } from "react";
+
+function init(filteredLocations) {
+  return filteredLocations
+}
 
 function reducer(state, action) {
   if (action.type === "close") {
@@ -20,6 +25,15 @@ function reducer(state, action) {
 
     return state;
   }
+
+  if (action.type === "reload") {
+    action.payload.forEach((location, index) => {
+      state[index] = location
+    })
+    return state
+    // return action.payload
+    // return init(action.payload);
+  }
   const { index, location } = action;
   const newLocation = { ...state[index], ...location };
   state[index] = newLocation;
@@ -27,9 +41,14 @@ function reducer(state, action) {
 }
 
 const useLocation = (initialLocations) => {
+  // const updatedLocations = () => (filteredLocations)
+
+  // const [locations, dispatch] = useReducer(reducer, initialLocations, updatedLocations);
+  // const [locations, dispatch] = useReducer(reducer, initialLocations, init);
   const [locations, dispatch] = useReducer(reducer, initialLocations);
   const closePopups = (index) => dispatch({ type: "close", index });
-  return { closePopups, locations, dispatchLocation: dispatch };
+  const filterResults = (filteredLocations) => dispatch({ type: "reload", payload: filteredLocations });
+  return { closePopups, locations, dispatchLocation: dispatch, filterResults };
 };
 
 export default useLocation;

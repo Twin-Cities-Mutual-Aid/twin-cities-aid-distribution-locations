@@ -10,7 +10,7 @@ const Help = ({ close }) => {
     <div id="help-info" className="help-info padded spaced-lines">
       <button
         id="help-info-close-button"
-        className="help-info-close-button"
+        // className="help-info-close-button"
         aria-label="Close help info section"
         onClick={close}
       >

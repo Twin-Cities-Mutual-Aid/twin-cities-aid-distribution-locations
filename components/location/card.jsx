@@ -32,6 +32,7 @@ const LocationCard = ({
           });
         } else closePopups();
       });
+      // NOTE: Sometimes clicking the card doesn't open popup - not sure if that's since I made changes or from before too
     }
   }, [
     closePopups,

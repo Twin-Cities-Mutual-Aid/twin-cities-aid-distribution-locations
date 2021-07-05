@@ -21,6 +21,7 @@ const Mapbox = ({
   setIsMapLoaded,
   dispatchLocation,
   setMapObject,
+  filter
 }) => {
   const { getTranslation, language, setWelcome } = useContext(LanguageContext);
   const mapContainerRef = useRef(null);
@@ -52,6 +53,7 @@ const Mapbox = ({
     if (mapContainerRef.current && !mapObject) {
       // Alternative base style: 'mapbox://styles/mapbox/light-v10',
       // See also: https://docs.mapbox.com/mapbox-gl-js/example/setstyle/
+
       const map = new mapboxgl.Map({
         container: "map",
         style: "mapbox://styles/saman/ckawvg6bk011x1ipepu7nqlbh",
@@ -75,7 +77,7 @@ const Mapbox = ({
       );
 
       const onMapLoad = () => {
-        locations.forEach((location, index) => {
+        locations && locations.forEach((location, index) => {
           // create marker
           const { status } = location;
           location.marker = new mapboxgl.Marker({
@@ -95,8 +97,8 @@ const Mapbox = ({
           });
 
           location.marker.getPopup().on("close", () => setActiveLocation(null));
-
-          dispatchLocation({ location, index });
+          // Might not need this
+          // dispatchLocation({ location, index });
         });
         setIsMapLoaded(true);
       };
@@ -113,6 +115,56 @@ const Mapbox = ({
     dispatchLocation,
     setMapObject,
   ]);
+
+  useEffect(() => {
+    // Repeating this list all over the place right now - need to put in central location (also not sure about count yet)
+    const statusList = [
+      {
+        id: 0,
+        name: "receiving",
+        label: "open for receiving donations",
+        accessibleColor: "#2c7bb6",
+        count: 0,
+      },
+      {
+        id: 1 ,
+        name: "distributing",
+        label: "open for distributing donations",
+        accessibleColor: "#abd9e9",
+        count: 0,
+      },
+      {
+        id: 2,
+        name: "both",
+        label: "open for both",
+        accessibleColor: "#fdae61",
+        count: 0,
+      },
+      {
+        id: 3,
+        name: "closed",
+        label: "not open now",
+        accessibleColor: "#d7191c",
+        count: 0,
+      }
+    ]
+
+
+    const { statuses } = filter
+    if (statuses) {
+      const filteredOutStatuses = statusList.filter(statusOption => !statuses.some((status) => status.id === statusOption.id))
+    // Tried updating through onMapLoad but caused whole map object to reload each time. May be a cleaner way to do this than hiding markers but not sure
+    if(mapContainerRef.current) {
+      filteredOutStatuses.forEach((status) => {
+        mapContainerRef.current.classList.add(`hide-${status.name}`)
+      })
+      statuses.forEach((status) => {
+        mapContainerRef.current.classList.remove(`hide-${status.name}`)
+      })
+    }
+  }
+
+  }, [locations, mapObject, filter])
 
   return (
     <div
