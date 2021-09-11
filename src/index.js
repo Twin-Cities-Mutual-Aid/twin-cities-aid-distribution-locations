@@ -429,6 +429,10 @@ const createListItem = (location, status) => {
         zoom: 13
       })
       popup.addTo(map)
+      gtag('event', 'open_site_popup', {
+        'event_category': 'Site Interaction',
+        'event_label': location.name
+      })
     }
   })
   return $item
