@@ -128,7 +128,6 @@ class Filter {
     }
 
     this.toggleMapPointsForSearch(searchTerm, searchResults)
-//     this.$locationList.classList.remove('loading-indicator')
     this.onAfterUpdate()
     this.getListResults();
     setQueryParam('search', searchTerm);
@@ -190,8 +189,9 @@ class Filter {
     this.$filters = Array.prototype.slice.call($key.querySelectorAll('input[type="checkbox"]'))
     this.$sort.addEventListener('change', this.update.bind(this))
     this.$search.addEventListener('input', event => {
-//       this.$locationList.classList.add('loading-indicator');
+      this.$locationList.classList.add('loading-indicator');
       debouncedSearch.bind(this)(event.currentTarget.value);
+      this.$locationList.classList.remove('loading-indicator')
     })
     this.$searchForm.addEventListener('keydown', (event) => {
       // disable enter as it clears out search which is not likely a desired action
