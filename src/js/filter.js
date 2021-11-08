@@ -189,10 +189,10 @@ class Filter {
     this.$clearSearchBtn = document.getElementById('clear-search-btn')
     this.$filters = Array.prototype.slice.call($key.querySelectorAll('input[type="checkbox"]'))
     this.$sort.addEventListener('change', this.update.bind(this))
-//     this.$search.addEventListener('input', event => {
+    this.$search.addEventListener('input', event => {
 //       this.$locationList.classList.add('loading-indicator');
-//       debouncedSearch.bind(this)(event.currentTarget.value);
-//     })
+      debouncedSearch.bind(this)(event.currentTarget.value);
+    })
     this.$searchForm.addEventListener('keydown', (event) => {
       // disable enter as it clears out search which is not likely a desired action
       if(event.keyCode === 13) event.preventDefault();
