@@ -5,7 +5,7 @@
     color: white;
 }
 
-.hiatus-banner {
+.hiatus-banner, .technicaldifficulties-banner {
     display: flex;
     flex-flow: row nowrap;
     background-color: #AD4637; /* slightly darker variation of tcmap-red */
