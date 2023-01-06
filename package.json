@@ -32,7 +32,7 @@
     "pulltorefreshjs": "^0.1.20",
     "rollup-plugin-node-polyfills": "^0.2.1",
     "snowpack": "^2.5.1",
-    "testcafe": "^1.8.6"
+    "testcafe": "^1.20.1"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
